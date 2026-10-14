@@ -1,0 +1,24 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  container-type: inline-size;
+  container-name: login;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.main {
+  flex: 1 1 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+}
+
+@container login (max-width: 760px) {
+  .main {
+    align-items: flex-start;
+    padding: 32px 16px 40px;
+  }
+}

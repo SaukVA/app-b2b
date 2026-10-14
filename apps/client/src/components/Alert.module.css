@@ -1,0 +1,23 @@
+.alert {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: var(--radius-control);
+  font: 500 14px/1.45 var(--font-sans);
+}
+
+.icon {
+  flex: none;
+  margin-top: 1px;
+}
+
+.error {
+  background: var(--stamp-error-bg);
+  color: var(--stamp-error-fg);
+}
+
+.info {
+  background: var(--surface2);
+  color: var(--ink2);
+}

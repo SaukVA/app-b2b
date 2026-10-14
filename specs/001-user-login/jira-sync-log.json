@@ -65,5 +65,44 @@
     "skipped_issues": [
       "AB2B-2"
     ]
+  },
+  {
+    "synced_at": "2026-10-14T15:25:11Z",
+    "spec": "001-user-login",
+    "project": "AB2B",
+    "epic": "AB2B-1",
+    "total_tasks": 103,
+    "completed_tasks": 62,
+    "completion_pct": 60,
+    "updated_issues": [
+      "AB2B-14",
+      "AB2B-20",
+      "AB2B-25",
+      "AB2B-31",
+      "AB2B-36",
+      "AB2B-41",
+      "AB2B-46",
+      "AB2B-51",
+      "AB2B-56",
+      "AB2B-61",
+      "AB2B-66",
+      "AB2B-71",
+      "AB2B-76",
+      "AB2B-81",
+      "AB2B-87",
+      "AB2B-91",
+      "AB2B-97",
+      "AB2B-100",
+      "AB2B-103",
+      "AB2B-105",
+      "AB2B-107",
+      "AB2B-109",
+      "AB2B-111",
+      "AB2B-4"
+    ],
+    "skipped_issues": [
+      "AB2B-2",
+      "AB2B-3"
+    ]
   }
 ]

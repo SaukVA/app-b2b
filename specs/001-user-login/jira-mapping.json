@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-14T15:04:55Z",
+  "updated_at": "2026-10-14T15:25:11Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -348,7 +348,7 @@
           "key": "AB2B-14",
           "id": "T040",
           "summary": "T040: Tests unitarios de normalizeLogin (mayúsculas y espacios), hashPassword/verifyPassword y signAccessToken/verifyAccessToken en apps/server/src/utils/password.test.ts y apps/server/src/utils/tokens.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-14"
         },
@@ -356,7 +356,7 @@
           "key": "AB2B-20",
           "id": "T041",
           "summary": "T041: Tests unitarios de auth.service (login): credenciales correctas; contraseña errónea con email existente e inexistente (mismo mensaje y contador; failedCount sube); estado Bloqueado → AUTH_ACCOUNT_BLOCKED solo con contraseña correcta; Invitado → AUT…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-20"
         },
@@ -364,7 +364,7 @@
           "key": "AB2B-25",
           "id": "T042",
           "summary": "T042: Tests de integración con supertest de POST /api/auth/login (200, 400 VALIDATION_ERROR, 401 AUTH_INVALID_CREDENTIALS, 403), GET /api/auth/me (200 y 401 AUTH_UNAUTHENTICATED) y de que la respuesta nunca contiene passwordHash en apps/server/src/module…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-25"
         },
@@ -372,7 +372,7 @@
           "key": "AB2B-31",
           "id": "T043",
           "summary": "T043: Tests de componentes Button, TextField, PasswordField (alternar visibilidad, aria-label \"Mostrar/Ocultar contraseña\", aria-pressed), Checkbox, Alert (role=\"alert\") y BrandMark en apps/client/src/components/*.test.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-31"
         },
@@ -380,7 +380,7 @@
           "key": "AB2B-36",
           "id": "T044",
           "summary": "T044: Test de LoginForm: campos vacíos marcan el campo que falta sin llamar a la API; envío correcto despacha login; el error se muestra en Alert; \"Entrar\" deshabilitado mientras hay petición en curso; \"¿La has olvidado?\" muestra \"Contacta con un adminis…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-36"
         },
@@ -388,7 +388,7 @@
           "key": "AB2B-41",
           "id": "T045",
           "summary": "T045: Test de RequireAuth: sin sesión redirige a /login conservando from; tras el login navega a from, si no a homeScreen, si no a DEFAULT_HOME_SCREEN, y si el rol no tiene acceso, a la pantalla por defecto en apps/client/src/routes/RequireAuth.test.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-41"
         },
@@ -396,7 +396,7 @@
           "key": "AB2B-46",
           "id": "T046",
           "summary": "T046: Implementar normalizeLogin(raw) (trim + minúsculas), hashPassword y verifyPassword con bcryptjs coste 10 y un DUMMY_HASH para comparar en tiempo constante cuando el usuario no existe en apps/server/src/utils/password.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-46"
         },
@@ -404,7 +404,7 @@
           "key": "AB2B-51",
           "id": "T047",
           "summary": "T047: Implementar signAccessToken({ sub, sid, role }) (15 min) y verifyAccessToken con jsonwebtoken y JWT_ACCESS_SECRET, más createRefreshToken() (crypto.randomBytes(32)) y hashToken() (SHA-256) en apps/server/src/utils/tokens.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-51"
         },
@@ -412,7 +412,7 @@
           "key": "AB2B-56",
           "id": "T048",
           "summary": "T048: Crear modelo Session según data-model.md: userId (índice), refreshTokenHash (único), persistent, client ('web' | 'desktop'), lastActivityAt, expiresAt (índice TTL expireAfterSeconds: 0), revokedAt (nullable) en apps/server/src/modules/auth/session.…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-56"
         },
@@ -420,7 +420,7 @@
           "key": "AB2B-61",
           "id": "T049",
           "summary": "T049: Crear modelo LoginAttempt según data-model.md: identifier (único), failedCount (0–5), lockedUntil (nullable), updatedAt con índice TTL de 24 h en apps/server/src/modules/auth/loginAttempt.model.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-61"
         },
@@ -428,7 +428,7 @@
           "key": "AB2B-66",
           "id": "T050",
           "summary": "T050: Crear esquemas zod loginSchema (login string trim min 1, password string min 1, persistent boolean, client enum web|desktop) en apps/server/src/modules/auth/auth.validation.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-66"
         },
@@ -436,7 +436,7 @@
           "key": "AB2B-71",
           "id": "T051",
           "summary": "T051: Implementar en auth.service.ts las funciones findUserByLogin, registerFailure(identifier) (devuelve intentos restantes), resetAttempts, assertCanSignIn(user) (estado) y createSession(user, { persistent, client }) (emite access y refresh, guarda el…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-71"
         },
@@ -444,7 +444,7 @@
           "key": "AB2B-76",
           "id": "T052",
           "summary": "T052: Implementar middleware requireAuth que verifica el Bearer, carga la sesión (no revocada y no caducada) y el usuario (status = 'Activo'), y si no, lanza AUTH_UNAUTHENTICATED/AUTH_SESSION_EXPIRED; deja req.auth = { userId, sessionId, role } en apps/s…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-76"
         },
@@ -452,7 +452,7 @@
           "key": "AB2B-81",
           "id": "T053",
           "summary": "T053: Implementar middleware requirePermission(module, level) con can() de shared → AppError('AUTH_FORBIDDEN', 403) en apps/server/src/middlewares/requirePermission.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-81"
         },
@@ -460,7 +460,7 @@
           "key": "AB2B-87",
           "id": "T054",
           "summary": "T054: Implementar authController.login (web: cookie refreshToken httpOnly, SameSite=Strict, Path=/api/auth, Secure en producción, sin Max-Age si no es persistente; desktop: refreshToken en el cuerpo) y authController.me en apps/server/src/modules/auth/au…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-87"
         },
@@ -468,7 +468,7 @@
           "key": "AB2B-91",
           "id": "T055",
           "summary": "T055: Crear POST /api/auth/login (con validate(loginSchema)) y GET /api/auth/me (con requireAuth) con sus bloques @openapi del contrato, y montarlas en buildApp() en apps/server/src/modules/auth/auth.routes.ts y apps/server/src/app.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-91"
         },
@@ -476,7 +476,7 @@
           "key": "AB2B-97",
           "id": "T056",
           "summary": "T056: Implementar componentes genéricos Button (variantes primary/secondary/tertiary, alto 44 px), TextField (label en estilo Etiqueta, error con borde y mensaje), PasswordField (botón 44×44 con aria-label y aria-pressed), Checkbox (≥44 px de objetivo),…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-97"
         },
@@ -484,7 +484,7 @@
           "key": "AB2B-100",
           "id": "T057",
           "summary": "T057: Implementar authApi.ts con loginRequest(body) y fetchMe() usando httpClient en apps/client/src/features/auth/authApi.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-100"
         },
@@ -492,7 +492,7 @@
           "key": "AB2B-103",
           "id": "T058",
           "summary": "T058: Implementar authSlice (estado user, accessToken, status, error; thunks login y loadMe) y authSelectors (selectIsAuthenticated, selectCan(module, level)), y registrar el reducer en la store en apps/client/src/features/auth/authSlice.ts, apps/client/…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-103"
         },
@@ -500,7 +500,7 @@
           "key": "AB2B-105",
           "id": "T059",
           "summary": "T059: Añadir a httpClient un interceptor de petición que pone Authorization: Bearer <accessToken> leído de la store en apps/client/src/utils/httpClient.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-105"
         },
@@ -508,7 +508,7 @@
           "key": "AB2B-107",
           "id": "T060",
           "summary": "T060: Implementar LoginForm (campo \"Email\" type=\"text\", inputMode=\"email\", autoComplete=\"username\" para admitir admin; contraseña; \"¿La has olvidado?\"; \"Mantener la sesión iniciada en este equipo\"; \"Entrar\") componiendo los genéricos, y LoginHero (panel…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-107"
         },
@@ -516,7 +516,7 @@
           "key": "AB2B-109",
           "id": "T061",
           "summary": "T061: Implementar LoginPage con el layout del diseño «Albarán» (hero + formulario; ≤760 px: hero reducido a franja, con container query) en apps/client/src/pages/LoginPage.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-109"
         },
@@ -524,11 +524,12 @@
           "key": "AB2B-111",
           "id": "T062",
           "summary": "T062: Implementar RequireAuth, resolveHomeRoute(user, from) y rutas protegidas (placeholder /productos mientras no exista el módulo) en apps/client/src/routes/RequireAuth.tsx, apps/client/src/routes/homeRoute.ts y apps/client/src/routes/AppRouter.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-111"
         }
-      ]
+      ],
+      "status": "completed"
     },
     {
       "key": "AB2B-5",

@@ -1,0 +1,55 @@
+/* El hero es oscuro en ambos temas (diseño «Albarán», pantalla Login). */
+.hero {
+  flex: 1 1 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-12);
+  background-color: #16191d;
+  background-image: repeating-linear-gradient(0deg, transparent 0, transparent 39px, #252a30 39px, #252a30 40px);
+  color: #e8eae6;
+}
+
+.claim {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 520px;
+}
+
+.kicker {
+  font: 400 12px var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--nav-icon-active);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-display);
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #b3b9c0;
+}
+
+.footer {
+  font: 400 12px var(--font-mono);
+  color: var(--disabled);
+}
+
+@container login (max-width: 760px) {
+  .hero {
+    padding: 16px 20px;
+    gap: 0;
+  }
+
+  .claim,
+  .footer {
+    display: none;
+  }
+}

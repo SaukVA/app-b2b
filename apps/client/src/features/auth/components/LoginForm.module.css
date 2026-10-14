@@ -1,0 +1,40 @@
+.form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-screen-title);
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  color: var(--ink2);
+}
+
+.forgot {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: 500 13px var(--font-sans);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.forgot:hover {
+  color: var(--accent-hover);
+}

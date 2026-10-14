@@ -1,0 +1,77 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.label {
+  font: var(--text-label);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+
+.control {
+  position: relative;
+  display: flex;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font: 400 15px var(--font-sans);
+}
+
+.input:focus {
+  outline: none;
+  border: 2px solid var(--accent);
+  padding: 0 11px;
+}
+
+.input[aria-invalid='true'] {
+  border: 1px solid var(--danger);
+}
+
+.md {
+  height: var(--control-height);
+}
+
+.lg {
+  height: var(--control-height-login);
+  padding: 0 14px;
+}
+
+.lg:focus {
+  padding: 0 13px;
+}
+
+.withAdornment,
+.withAdornment:focus {
+  padding-right: 56px;
+}
+
+.adornment {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.error {
+  font-size: 12px;
+  color: var(--danger);
+}
