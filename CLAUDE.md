@@ -41,7 +41,7 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | Librería | Versión | Uso |
 |---|---|---|
 | Express | 5.1.x | Framework HTTP |
-| Mongoose | 8.9.x | ODM sobre MongoDB |
+| Mongoose | 8.24.x | ODM sobre MongoDB |
 | MongoDB Server | 8.0.x (Community) | Base de datos (local vía Docker en dev) |
 | zod | 3.24.x | Validación de payloads de entrada |
 | jsonwebtoken | 9.0.x | Autenticación con access/refresh token |
@@ -61,10 +61,10 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 |---|---|---|
 | React / React DOM | 19.0.x | UI |
 | Vite | 6.0.x | Dev server y build |
-| React Router | 7.1.x | Enrutado |
+| React Router | 7.18.x | Enrutado |
 | Redux Toolkit | 2.5.x | Estado global (productos, clientes, proveedores, ventas, cobros) |
 | React Redux | 9.2.x | Bindings de Redux con React |
-| axios | 1.7.x | Cliente HTTP contra `apps/server` |
+| axios | 1.20.x | Cliente HTTP contra `apps/server` |
 | @vitejs/plugin-react | 4.x | Plugin de React para Vite (JSX, Fast Refresh) |
 | @testing-library/react + @testing-library/dom | 16.x / 10.x | Tests de componentes centrados en accesibilidad |
 | @testing-library/user-event | 14.x | Simular la interacción del usuario en los tests de componentes |
