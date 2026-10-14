@@ -1,0 +1,14 @@
+installed:
+- jira
+settings:
+  auto_execute_hooks: true
+hooks:
+  after_tasks:
+  - extension: jira
+    command: speckit.jira.specstoissues
+    enabled: true
+    optional: true
+    priority: 10
+    prompt: Create Jira issues from tasks?
+    description: Automatically create Jira hierarchy after task generation
+    condition: null

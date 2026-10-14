@@ -1,0 +1,97 @@
+# Jira Integration Configuration — AB2B (team-managed, sauk.atlassian.net)
+# Fields discovered via /speckit.jira.discover-fields → see discovered-fields.json
+
+# MCP Server Configuration
+mcp_server: "atlassian"
+cloud_id: "ef80a990-c286-4712-8fd9-59d6ee5e41c7"
+jira_base_url: "https://sauk.atlassian.net"
+
+# Jira Project Configuration
+project:
+  key: "AB2B"
+
+# Artifact Mapping Configuration
+# Hierarchy: spec.md → Epic, Phase (tasks.md) → Tarea, task item (T001…) → Subtask
+mapping:
+  spec_artifact: "Epic"        # id 10017
+  phase_artifact: "Tarea"      # id 10020
+  task_artifact: "Subtask"     # id 10016 — parent is REQUIRED (the phase Tarea)
+
+  # Issue type IDs, used as fallback if the localized name is rejected
+  issue_type_ids:
+    spec: "10017"
+    phase: "10020"
+    task: "10016"
+
+  relationships:
+    spec_phase: "Parent"   # Tarea.parent = Epic
+    phase_task: "Parent"   # Subtask.parent = Tarea
+    spec_task: "none"      # Subtasks inherit the Epic through their parent Tarea
+
+  # Dependencies declared in tasks.md ("depends on T012", phase ordering, Dependencies section)
+  # are created as issue links of this type (blocker → blocked)
+  dependency_link_type: "Blocks"
+
+# Field Mappings (AB2B custom field IDs)
+field_mappings:
+  team: "customfield_10001"                 # No Atlassian teams exist yet → left empty
+  start_date: "customfield_10015"           # Epic/Tarea only — intentionally left empty
+  # story_points (customfield_10016) intentionally not mapped — story points are never set
+  epic_color: "customfield_10017"           # Epic only
+  sprint: "customfield_10020"               # Intentionally left empty (backlog)
+  flagged: "customfield_10021"              # "Impediment" — only set for blocked tasks
+  acceptance_criteria: "customfield_10048"  # Tarea, Subtask
+  definition_of_ready: "customfield_10049"  # Tarea, Subtask — checklist
+  definition_of_done: "customfield_10050"   # Tarea, Subtask — checklist
+
+# Field population policy for specstoissues
+population:
+  assignee_account_id: "5c51672b3e729341b3516cc8"   # Saul Verdu Aparicio — "" to leave unassigned
+  team_id: ""              # Atlassian team UUID; empty = skip (no teams exist in the org)
+  sprint: "none"           # "none" = backlog | "active" | sprint name | sprint id
+  dates: "none"            # Fecha de inicio / Fecha de vencimiento are not filled
+  epic_color: "purple"
+  flag_blocked_tasks: true       # Set Flagged=Impediment on tasks marked [B]/BLOCKED in tasks.md
+
+  # Base checklist items, merged with task-specific items generated from spec.md / plan.md / tasks.md.
+  # DoR and DoD are written to Jira as checklists (ADF taskList, one checkbox per item).
+  definition_of_ready:
+    - "La descripción, ruta(s) de archivo y alcance de la tarea están claros"
+    - "Las dependencias (bloqueantes) están resueltas o identificadas"
+    - "Los criterios de aceptación están definidos y son verificables"
+    - "El diseño de referencia (plan.md, data-model.md, contracts/) está disponible"
+  definition_of_done:
+    - "El código está implementado según plan.md y la constitución del proyecto"
+    - "Los criterios de aceptación se cumplen"
+    - "Tests relevantes añadidos/actualizados y pasando"
+    - "Lint y build sin errores"
+    - "Código revisado (PR aprobada) y mergeado"
+    - "Tarea marcada como [x] en tasks.md"
+
+# Default Values for Issue Creation (merged into additional_fields)
+defaults:
+  spec:
+    labels: ["speckit"]
+    custom_fields: {}
+  phase:
+    labels: ["speckit"]
+    custom_fields: {}
+  task:
+    labels: ["speckit"]
+    custom_fields: {}
+
+# Status Mapping for sync-status command (AB2B workflow statuses)
+status_mapping:
+  completed: "Listo"          # [x] in TASKS.md
+  pending: "Por hacer"        # [ ] in TASKS.md
+  in_progress: "En curso"     # [~] in TASKS.md (optional)
+
+# Environment Variable Overrides:
+# - SPECKIT_JIRA_MCP_SERVER
+# - SPECKIT_JIRA_PROJECT_KEY
+# - SPECKIT_JIRA_SPEC_ARTIFACT
+# - SPECKIT_JIRA_PHASE_ARTIFACT
+# - SPECKIT_JIRA_TASK_ARTIFACT
+# - SPECKIT_JIRA_SPEC_PHASE_RELATIONSHIP
+# - SPECKIT_JIRA_PHASE_TASK_RELATIONSHIP
+# - SPECKIT_JIRA_SPEC_TASK_RELATIONSHIP
