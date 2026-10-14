@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+release/
+coverage/
+package-lock.json
+docs/design/canvas/
+specs/
+.specify/
+.claude/
+*.md

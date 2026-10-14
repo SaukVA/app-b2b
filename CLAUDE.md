@@ -31,9 +31,9 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | Node.js | 22.x LTS (≥22.12.0) | Runtime, fijado en `engines` del `package.json` raíz |
 | npm | 10.x (bundlado con Node 22) | Gestor de paquetes y workspaces |
 | TypeScript | 5.7.x | Tipado en los 3 apps y en `packages/shared` |
-| ESLint | 9.x (flat config) + `typescript-eslint` 8.x | Linting |
+| ESLint | 9.x (flat config) + `@eslint/js` 9.x + `typescript-eslint` 8.x | Linting |
 | Prettier | 3.4.x | Formateo |
-| Jest | 30.x + `ts-jest` 29.2.x | Tests unitarios e integración en todos los workspaces |
+| Jest | 30.x + `ts-jest` 29.4.x | Tests unitarios e integración en todos los workspaces (`ts-jest` ≥29.4 es la primera versión compatible con Jest 30) |
 | concurrently | 9.x | Levantar client+server+desktop en paralelo en dev |
 
 ### `apps/server` (Express + MongoDB)
@@ -49,6 +49,9 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | swagger-jsdoc | 6.2.x | Genera el spec OpenAPI desde comentarios JSDoc en las rutas |
 | swagger-ui-express | 5.0.x | Sirve la UI de Swagger en `/api-docs` |
 | dotenv | 16.x | Carga de variables de entorno |
+| cookie-parser | 1.4.x | Lee la cookie `httpOnly` del refresh token en la web (ADR/plan 001-user-login, R2) |
+| cors | 2.8.x | Permite las peticiones del cliente de escritorio (origen `app://`) y del cliente en dev |
+| tsx | 4.x | Ejecuta el servidor TypeScript en modo watch (`npm run dev`) |
 | supertest | 7.0.x | Tests de integración sobre los endpoints Express |
 | mongodb-memory-server | 10.x | MongoDB en memoria para tests, sin depender de una instancia real |
 
@@ -62,6 +65,10 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | Redux Toolkit | 2.5.x | Estado global (productos, clientes, proveedores, ventas, cobros) |
 | React Redux | 9.2.x | Bindings de Redux con React |
 | axios | 1.7.x | Cliente HTTP contra `apps/server` |
+| @vitejs/plugin-react | 4.x | Plugin de React para Vite (JSX, Fast Refresh) |
+| @testing-library/react + @testing-library/dom | 16.x / 10.x | Tests de componentes centrados en accesibilidad |
+| @testing-library/user-event | 14.x | Simular la interacción del usuario en los tests de componentes |
+| jest-environment-jsdom | 30.x | Entorno DOM para Jest en `apps/client` |
 
 ### `apps/desktop` (Electron)
 

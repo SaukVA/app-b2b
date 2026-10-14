@@ -35,18 +35,18 @@ US1 → US7 → US2 → US3 → US4 → US5 → US6.
 
 **Purpose**: montar el monorepo con el stack de CLAUDE.md y las dependencias aprobadas
 
-- [ ] T001 Crear `package.json` raíz con `"private": true`, `"workspaces": ["apps/*", "packages/*"]`, `"engines": { "node": ">=22.12.0" }`, scripts `dev` (concurrently server + client + desktop), `lint`, `format`, `test` y devDependencies TypeScript 5.7, ESLint 9, typescript-eslint 8, Prettier 3.4, Jest 30, ts-jest 29.2, concurrently 9 en `package.json`
-- [ ] T002 [P] Crear `tsconfig.base.json` (strict, `moduleResolution: bundler`, `paths` para `@app/shared`) en la raíz
-- [ ] T003 [P] Crear `eslint.config.js` (flat config + typescript-eslint, regla `max-lines-per-function` 40 con `skipBlankLines` y `skipComments`, `max-depth` 2) y `.prettierrc` en la raíz
-- [ ] T004 [P] Crear `docker-compose.yml` con servicio `mongo:8.0` en el puerto 27017 y volumen nombrado
-- [ ] T005 [P] Crear `.env.example` con `PORT`, `MONGODB_URI`, `JWT_ACCESS_SECRET`, `CORS_ORIGINS`, `NODE_ENV` (sin valores reales)
-- [ ] T006 [P] Inicializar `packages/shared` (`package.json` con nombre `@app/shared`, `tsconfig.json`, `jest.config.ts`, `src/index.ts`)
-- [ ] T007 [P] Inicializar `apps/server` (`package.json` con Express 5.1, Mongoose 8.9, zod 3.24, jsonwebtoken 9.0, bcryptjs 2.4, swagger-jsdoc 6.2, swagger-ui-express 5.0, dotenv 16, cookie-parser 1.4, cors 2.8; dev: supertest 7.0, mongodb-memory-server 10, tsx; `tsconfig.json`; `jest.config.ts` con ts-jest)
-- [ ] T008 [P] Inicializar `apps/client` con Vite 6 + React 19 (`package.json` con React Router 7.1, Redux Toolkit 2.5, React Redux 9.2, axios 1.7; dev: @testing-library/react, @testing-library/user-event, jest-environment-jsdom; `vite.config.ts` con proxy `/api` → servidor; `index.html`; `jest.config.ts` con entorno jsdom y `moduleNameMapper` para `*.module.css`)
-- [ ] T009 [P] Inicializar `apps/desktop` (`package.json` con Electron 34 y electron-builder 25, `tsconfig.json`, script `dev` que carga la URL de Vite)
-- [ ] T010 Actualizar la tabla de Tecnologías de `CLAUDE.md` añadiendo cookie-parser 1.4.x y cors 2.8.x en `apps/server` y @testing-library/react, @testing-library/user-event y jest-environment-jsdom en `apps/client`, con su uso
-- [ ] T011 [P] Crear `docs/adr/0001-http-client-axios-thunks.md` registrando la decisión R8 de research.md (axios + createAsyncThunk frente a RTK Query)
-- [ ] T012 Ejecutar `npm install` en la raíz y comprobar que `npm run lint` y `npm test --workspaces` se ejecutan sin errores (con 0 tests)
+- [X] T001 Crear `package.json` raíz con `"private": true`, `"workspaces": ["apps/*", "packages/*"]`, `"engines": { "node": ">=22.12.0" }`, scripts `dev` (concurrently server + client + desktop), `lint`, `format`, `test` y devDependencies TypeScript 5.7, ESLint 9, typescript-eslint 8, Prettier 3.4, Jest 30, ts-jest 29.2, concurrently 9 en `package.json`
+- [X] T002 [P] Crear `tsconfig.base.json` (strict, `moduleResolution: bundler`, `paths` para `@app/shared`) en la raíz
+- [X] T003 [P] Crear `eslint.config.js` (flat config + typescript-eslint, regla `max-lines-per-function` 40 con `skipBlankLines` y `skipComments`, `max-depth` 2) y `.prettierrc` en la raíz
+- [X] T004 [P] Crear `docker-compose.yml` con servicio `mongo:8.0` en el puerto 27017 y volumen nombrado
+- [X] T005 [P] Crear `.env.example` con `PORT`, `MONGODB_URI`, `JWT_ACCESS_SECRET`, `CORS_ORIGINS`, `NODE_ENV` (sin valores reales)
+- [X] T006 [P] Inicializar `packages/shared` (`package.json` con nombre `@app/shared`, `tsconfig.json`, `jest.config.ts`, `src/index.ts`)
+- [X] T007 [P] Inicializar `apps/server` (`package.json` con Express 5.1, Mongoose 8.9, zod 3.24, jsonwebtoken 9.0, bcryptjs 2.4, swagger-jsdoc 6.2, swagger-ui-express 5.0, dotenv 16, cookie-parser 1.4, cors 2.8; dev: supertest 7.0, mongodb-memory-server 10, tsx; `tsconfig.json`; `jest.config.ts` con ts-jest)
+- [X] T008 [P] Inicializar `apps/client` con Vite 6 + React 19 (`package.json` con React Router 7.1, Redux Toolkit 2.5, React Redux 9.2, axios 1.7; dev: @testing-library/react, @testing-library/user-event, jest-environment-jsdom; `vite.config.ts` con proxy `/api` → servidor; `index.html`; `jest.config.ts` con entorno jsdom y `moduleNameMapper` para `*.module.css`)
+- [X] T009 [P] Inicializar `apps/desktop` (`package.json` con Electron 34 y electron-builder 25, `tsconfig.json`, script `dev` que carga la URL de Vite)
+- [X] T010 Actualizar la tabla de Tecnologías de `CLAUDE.md` añadiendo cookie-parser 1.4.x y cors 2.8.x en `apps/server` y @testing-library/react, @testing-library/user-event y jest-environment-jsdom en `apps/client`, con su uso
+- [X] T011 [P] Crear `docs/adr/0001-http-client-axios-thunks.md` registrando la decisión R8 de research.md (axios + createAsyncThunk frente a RTK Query)
+- [X] T012 Ejecutar `npm install` en la raíz y comprobar que `npm run lint` y `npm test --workspaces` se ejecutan sin errores (con 0 tests)
 
 ---
 

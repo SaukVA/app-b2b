@@ -1,0 +1,31 @@
+{
+  "name": "@app/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shell de escritorio (Electron) que empaqueta apps/client",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "tsc -p tsconfig.json && electron .",
+    "build": "tsc -p tsconfig.json",
+    "package": "npm run build && electron-builder",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@app/shared": "*"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "es.mayorista.app-b2b",
+    "productName": "Venta a mayoristas",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "renderer/**"
+    ]
+  }
+}
