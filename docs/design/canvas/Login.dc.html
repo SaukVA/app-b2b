@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Iniciar sesión</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B4430F}a:hover{color:#8A320A}
+.mob{display:none}
+@container app (max-width: 760px){
+.nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
+.nav-brand{padding:0 8px 0 0!important}
+.nav-brand-text,.nav-user-info,.hide-m{display:none!important}
+.nav>a{flex:none;white-space:nowrap}
+.nav-push{margin-top:0!important}
+.nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
+.nav-user a{margin:0!important;white-space:nowrap}
+.main{padding:16px 16px 32px!important;gap:16px!important}
+.desk{display:none!important}
+.mob{display:flex!important}
+.sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
+.lg-hero{padding:16px 20px!important;gap:0!important}
+.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+}
+</style>
+</helmet>
+<div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: #F3F4F1; color: #16191D; font-family: 'IBM Plex Sans', system-ui, sans-serif">
+
+<section class="lg-hero" aria-label="Presentación" style="flex: 1 1 420px; box-sizing: border-box; padding: 48px; background-color: #16191D; background-image: repeating-linear-gradient(0deg, transparent 0, transparent 39px, #252A30 39px, #252A30 40px); color: #E8EAE6; display: flex; flex-direction: column; justify-content: space-between; gap: 48px">
+<div style="display: flex; align-items: center; gap: 12px">
+<div style="width: 40px; height: 40px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 18px">M</div>
+<div style="display: flex; flex-direction: column"><span style="font-size: 15px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
+</div>
+<div class="hide-m" style="display: flex; flex-direction: column; gap: 20px; max-width: 520px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #F08A5D">PEDIDOS · STOCK · COBROS</span>
+<h1 style="margin: 0; font-size: 48px; line-height: 1.05; font-weight: 600; letter-spacing: -0.02em">Todo el ciclo de venta, en una sola hoja.</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #B3B9C0">Del pedido del cliente al cobro de la factura, con el stock y las tarifas siempre al día, en la oficina o en el almacén.</p>
+</div>
+<div class="hide-m" style="display: flex; flex-wrap: wrap; gap: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #9AA1A9">
+<span>v[VERSIÓN]</span><span>·</span><span>Web y escritorio</span>
+</div>
+</section>
+
+<main class="lg-main" style="flex: 1 1 480px; box-sizing: border-box; padding: 48px 24px; display: flex; align-items: center; justify-content: center">
+<form style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 2px solid #16191D">
+<h2 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Iniciar sesión</h2>
+<span style="font-size: 14px; color: #4A5058">Accede con tu cuenta de empresa.</span>
+</div>
+
+<sc-if value="{{showError}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 6px; background: #FBE4E1; color: #A12A1C; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>Email o contraseña incorrectos. Te quedan [N] intentos.</div>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="lg-email" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Email</label>
+<input id="lg-email" type="email" autocomplete="username" placeholder="nombre@[EMPRESA].es" style="height: 48px; box-sizing: border-box; padding: 0 14px; border: {{fieldBorder}}; border-radius: 6px; font: 400 15px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<label for="lg-pass" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Contraseña</label>
+<a href="#" style="font-size: 13px; font-weight: 500">¿La has olvidado?</a>
+</div>
+<div style="position: relative; display: flex">
+<input id="lg-pass" type="{{passType}}" autocomplete="current-password" style="flex: 1; min-width: 0; height: 48px; box-sizing: border-box; padding: 0 56px 0 14px; border: {{fieldBorder}}; border-radius: 6px; font: 400 15px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+<button type="button" aria-label="{{toggleLabel}}" aria-pressed="{{toggleOn}}" onClick="{{togglePass}}" style="position: absolute; right: 2px; top: 2px; width: 44px; height: 44px; border: 0; border-radius: 4px; background: transparent; color: #4A5058; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+</div>
+</div>
+
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" style="width: 20px; height: 20px; margin: 0; accent-color: {{accent}}">Mantener la sesión iniciada en este equipo</label>
+
+<a href="Dashboard.dc.html" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 600">Entrar</a>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding-top: 16px; border-top: 1px solid #D9DCD5; font-size: 13px; color: #4A5058">
+<span style="display: inline-flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; border-radius: 2px; background: #1F6B3F"></span>Servidor: <span style="font-family: 'IBM Plex Mono', monospace">[SERVIDOR]</span></span>
+<a href="Ajustes.dc.html" style="font-weight: 500">Cambiar servidor</a>
+</div>
+</form>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"showError":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { show: false };
+}
+renderVals() {
+const accent = this.props.accent ?? '#B4430F';
+const showError = this.props.showError ?? false;
+const show = this.state.show;
+return {
+accent, showError,
+fieldBorder: showError ? '1px solid #A12A1C' : '1px solid #C5C9C1',
+passType: show ? 'text' : 'password',
+toggleLabel: show ? 'Ocultar contraseña' : 'Mostrar contraseña',
+toggleOn: show ? 'true' : 'false',
+togglePass: () => this.setState({ show: !show })
+};
+}
+}
+</script>
+</body>
+</html>

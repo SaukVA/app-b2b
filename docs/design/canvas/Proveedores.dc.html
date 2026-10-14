@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Proveedores</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B4430F}a:hover{color:#8A320A}
+.mob{display:none}
+@container app (max-width: 760px){
+.nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
+.nav-brand{padding:0 8px 0 0!important}
+.nav-brand-text,.nav-user-info,.hide-m{display:none!important}
+.nav>a{flex:none;white-space:nowrap}
+.nav-push{margin-top:0!important}
+.nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
+.nav-user a{margin:0!important;white-space:nowrap}
+.main{padding:16px 16px 32px!important;gap:16px!important}
+.desk{display:none!important}
+.mob{display:flex!important}
+.sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
+.lg-hero{padding:16px 20px!important;gap:0!important}
+.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+}
+</style>
+</helmet>
+<div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: #F3F4F1; color: #16191D; font-family: 'IBM Plex Sans', system-ui, sans-serif">
+
+<nav class="nav" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: #16191D; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
+<div class="nav-brand" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 24px">
+<div style="width: 36px; height: 36px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
+<div class="nav-brand-text" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
+</div>
+<a href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>Clientes</a>
+<a href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg>Productos</a>
+<a href="Proveedores.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: #262B31; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linejoin="round"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Proveedores</a>
+<a class="nav-push" href="Ajustes.dc.html" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>Ajustes</a>
+<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">[USUARIO]</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Compras · Web</span><a href="Login.dc.html" style="margin-top: 6px; font-size: 13px; color: #C9CDD2">Cerrar sesión</a></div>
+</nav>
+
+<main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; align-items: baseline; gap: 12px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Proveedores</h1>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5058">[N] activos</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{accent}}; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Nuevo proveedor</button>
+</div>
+</div>
+
+<div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+<section aria-label="Listado de proveedores" style="flex: 2 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden">
+<div style="padding: 16px 20px; border-bottom: 1px solid #D9DCD5; display: flex; flex-direction: column; gap: 6px">
+<label for="pv-q" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Buscar proveedor</label>
+<div style="position: relative; display: flex; align-items: center">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B717A" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; pointer-events: none"><circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path></svg>
+<input id="pv-q" type="search" placeholder="Nombre del proveedor" value="{{q}}" onChange="{{onSearch}}" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 12px 0 40px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+</div>
+</div>
+<div class="sup-row" style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 120px; gap: 12px; padding: 12px 20px; background: #EEF0EC; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058"><span>Proveedor</span><span class="hide-m" style="text-align: right">Plazo</span><span style="text-align: right">Compras año</span></div>
+<sc-for list="{{suppliers}}" as="s" hint-placeholder-count="6">
+<button class="sup-row" type="button" onClick="{{s.pick}}" style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 120px; gap: 12px; align-items: center; min-height: 64px; padding: 10px 20px; border: 0; border-top: 1px solid #E4E6E1; background: {{s.rowBg}}; text-align: left; font: inherit; color: #16191D; cursor: pointer">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{s.name}}</span><span style="font-size: 12px; color: {{s.noteColor}}; font-weight: 500">{{s.note}}</span></span>
+<span class="hide-m" style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">{{s.lead}}</span>
+<span style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500">{{s.yearTxt}}</span>
+</button>
+</sc-for>
+<sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 40px 20px; text-align: center; font-size: 14px; color: #4A5058">Ningún proveedor coincide con «{{q}}».</div>
+</sc-if>
+<div style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid #D9DCD5; font-size: 13px; color: #4A5058">
+<span style="font-family: 'IBM Plex Mono', monospace">{{rangeTxt}}</span>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" onClick="{{prev}}" disabled="{{prevDisabled}}" style="height: 44px; padding: 0 14px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{prevColor}}; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Anterior</button>
+<span style="font-family: 'IBM Plex Mono', monospace; min-width: 48px; text-align: center">{{pageTxt}}</span>
+<button type="button" onClick="{{next}}" disabled="{{nextDisabled}}" style="height: 44px; padding: 0 14px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{nextColor}}; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Siguiente</button>
+</div>
+</div>
+</section>
+
+<section aria-label="Detalle del proveedor" style="flex: 3 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; display: flex; flex-direction: column">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; padding: 20px; border-bottom: 2px solid #16191D">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Productos asociados</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">{{sel.name}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">CIF [CIF] · Entrega en {{sel.lead}} · Pedido mínimo {{sel.minTxt}}</span>
+</div>
+<button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Editar proveedor</button>
+</div>
+<div class="desk" style="overflow-x: auto">
+<table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 14px">
+<thead>
+<tr style="background: #EEF0EC; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">
+<th style="padding: 10px 20px; font-weight: 600; width: 44px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Incluir en pedido</span></th><th style="padding: 10px 12px; font-weight: 600">Producto</th><th style="padding: 10px 12px; font-weight: 600; text-align: right">Stock / mín.</th><th style="padding: 10px 12px; font-weight: 600; text-align: right">Coste</th><th style="padding: 10px 20px; font-weight: 600; text-align: right">A pedir</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{sel.products}}" as="p" hint-placeholder-count="4">
+<tr style="border-top: 1px solid #E4E6E1">
+<td style="padding: 8px 20px"><input type="checkbox" checked="{{p.low}}" aria-label="Incluir en el pedido de compra" style="width: 20px; height: 20px; margin: 0; accent-color: {{accent}}"></td>
+<td style="padding: 12px"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">{{p.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">{{p.sku}}</span></div></td>
+<td style="padding: 12px; text-align: right; font-family: 'IBM Plex Mono', monospace; color: {{p.stockColor}}; font-weight: 500">{{p.stock}} / {{p.min}}</td>
+<td style="padding: 12px; text-align: right; font-family: 'IBM Plex Mono', monospace">{{p.costTxt}}</td>
+<td style="padding: 12px 20px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{p.suggest}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div class="mob" style="flex-direction: column">
+<sc-for list="{{sel.products}}" as="p" hint-placeholder-count="3">
+<article style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-top: 1px solid #E4E6E1">
+<input type="checkbox" checked="{{p.low}}" aria-label="Incluir en el pedido de compra" style="flex: none; width: 22px; height: 22px; margin: 2px 0 0; accent-color: {{accent}}">
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{p.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">{{p.sku}}</span></div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Stock / mín.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: {{p.stockColor}}">{{p.stock}} / {{p.min}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Coste</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">{{p.costTxt}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">A pedir</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600">{{p.suggest}}</span></div>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; padding: 16px 20px; margin-top: auto; border-top: 1px solid #D9DCD5">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #6B717A">Pedido de compra sugerido (stock bajo mínimos)</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 500">{{sel.orderTxt}}</span></div>
+<button type="button" style="height: 44px; padding: 0 20px; border: 0; border-radius: 6px; background: {{accent}}; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Generar pedido de compra</button>
+</div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { picked: 0, page: 0, q: '' };
+}
+renderVals() {
+const accent = this.props.accent ?? '#B4430F';
+const fmt = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const data = [
+{ name: 'Aceites del Sur', lead: '3 días', min: 300, year: 48210, products: [['SKU 10233', 'Aceite de oliva virgen extra 5 L', 12, 40, 26.8], ['SKU 10240', 'Aceite de girasol 5 L', 55, 30, 11.2]] },
+{ name: 'Cafés Torrefactos Mar', lead: '5 días', min: 200, year: 21640, products: [['SKU 20871', 'Café en grano 1 kg', 8, 25, 12.9], ['SKU 20880', 'Café molido 500 g', 34, 20, 6.1], ['SKU 20902', 'Azúcar en sobres (caja 1000)', 18, 10, 9.4]] },
+{ name: 'Distribuciones Levante', lead: '2 días', min: 500, year: 96380, products: [['SKU 10410', 'Arroz redondo 1 kg', 0, 60, 0.98], ['SKU 10077', 'Harina de trigo 25 kg', 46, 20, 14.3]] },
+{ name: 'Bebidas Mediterráneo', lead: '2 días', min: 400, year: 132900, products: [['SKU 30112', 'Cerveza lata 33 cl (pack 24)', 140, 80, 11.6], ['SKU 30020', 'Agua mineral 1,5 L (pack 6)', 320, 150, 2.05]] },
+{ name: 'Higiene Profesional Norte', lead: '4 días', min: 250, year: 18750, products: [['SKU 40201', 'Detergente industrial 10 L', 18, 15, 17.9], ['SKU 40215', 'Lejía 5 L (caja 3)', 54, 30, 4.4]] },
+{ name: 'Envases y Menaje Ruiz', lead: '6 días', min: 150, year: 12480, products: [['SKU 50410', 'Servilletas 30×30 (caja 2400)', 3, 10, 16.5], ['SKU 50033', 'Vaso desechable 200 ml (1000 u.)', 22, 12, 13.8]] },
+{ name: 'Conservas Atlántico', lead: '4 días', min: 200, year: 27310, products: [['SKU 11020', 'Atún en aceite (pack 6)', 24, 20, 5.9], ['SKU 11035', 'Tomate triturado 1 kg', 9, 30, 0.85]] },
+{ name: 'Lácteos Valle Verde', lead: '1 día', min: 150, year: 58940, products: [['SKU 12001', 'Leche entera 1 L (pack 6)', 60, 40, 4.8], ['SKU 12015', 'Nata para cocinar 1 L', 14, 12, 2.6]] },
+{ name: 'Refrescos Costa', lead: '3 días', min: 300, year: 41200, products: [['SKU 30210', 'Refresco de cola 2 L (pack 6)', 38, 50, 6.3]] },
+{ name: 'Vinos y Licores Turia', lead: '4 días', min: 350, year: 36450, products: [['SKU 31010', 'Vino tinto crianza 75 cl (caja 6)', 30, 18, 21.5], ['SKU 31022', 'Vino blanco 75 cl (caja 6)', 12, 18, 16.9]] },
+{ name: 'Papelera Industrial Sur', lead: '5 días', min: 200, year: 9870, products: [['SKU 50500', 'Papel secamanos (caja 20)', 6, 8, 18.2]] },
+{ name: 'Frutos Secos Ruzafa', lead: '3 días', min: 120, year: 8430, products: [['SKU 14010', 'Almendra tostada 1 kg', 11, 8, 9.7]] }
+];
+const PER_PAGE = 6;
+const q = this.state.q;
+const needle = q.trim().toLowerCase();
+const filtered = data.map((s, i) => ({ s, i })).filter(({ s }) => !needle || s.name.toLowerCase().includes(needle));
+const pages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+const page = Math.min(this.state.page, pages - 1);
+const start = page * PER_PAGE;
+const suppliers = filtered.slice(start, start + PER_PAGE).map(({ s, i }) => {
+const low = s.products.filter((p) => p[2] < p[3]).length;
+return {
+name: s.name, lead: s.lead, yearTxt: fmt(s.year),
+note: low ? low + (low > 1 ? ' productos bajo mínimos' : ' producto bajo mínimos') : s.products.length + (s.products.length > 1 ? ' productos' : ' producto') + ' · stock correcto',
+noteColor: low ? '#7A5300' : '#6B717A',
+rowBg: i === this.state.picked ? '#FBEDE5' : '#FFFFFF',
+pick: () => this.setState({ picked: i })
+};
+});
+const pager = {
+q,
+onSearch: (e) => this.setState({ q: e.target.value, page: 0 }),
+noResults: filtered.length === 0,
+rangeTxt: filtered.length ? (start + 1) + '–' + Math.min(start + PER_PAGE, filtered.length) + ' de ' + filtered.length : '0 de 0',
+pageTxt: (page + 1) + ' / ' + pages,
+prevDisabled: page === 0, nextDisabled: page >= pages - 1,
+prevColor: page === 0 ? '#9AA1A9' : '#16191D', nextColor: page >= pages - 1 ? '#9AA1A9' : '#16191D',
+prev: () => this.setState({ page: Math.max(0, page - 1) }),
+next: () => this.setState({ page: Math.min(pages - 1, page + 1) })
+};
+const s = data[this.state.picked];
+let order = 0;
+const products = s.products.map(([sku, name, stock, min, cost]) => {
+const low = stock < min;
+const suggest = low ? min * 2 - stock : 0;
+order += suggest * cost;
+return { sku, name, stock, min, low, costTxt: fmt(cost), suggest: suggest || '—', stockColor: stock === 0 ? '#A12A1C' : low ? '#7A5300' : '#16191D' };
+});
+const sel = { name: s.name, lead: s.lead, minTxt: fmt(s.min), products, orderTxt: fmt(order) };
+return { accent, suppliers, sel, ...pager };
+}
+}
+</script>
+</body>
+</html>

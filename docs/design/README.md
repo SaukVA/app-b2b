@@ -1,0 +1,148 @@
+# Diseño visual «Albarán»
+
+> Copia del lienzo publicado: https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya (fuente de verdad).
+> Última sincronización: 2026-10-14 (versión `1791974205-d3c3` del lienzo).
+
+La estética toma prestado el lenguaje del albarán y la hoja de pedido: líneas finas, cifras en monoespaciada bien alineadas y sellos de estado. Densa para quien trabaja con ella ocho horas al día; legible a un metro en el puesto del almacén.
+
+## Principios
+
+1. **Las cifras mandan**: importes, cantidades, códigos y fechas en IBM Plex Mono, alineados a la derecha en tablas.
+2. **Un solo acento** (óxido), reservado a la acción principal y al foco.
+3. **El estado se lee siempre como texto**; el color solo lo refuerza.
+
+## Color
+
+### Tema claro (por defecto)
+
+| Token | Nombre | Hex | Uso |
+|---|---|---|---|
+| `bg` | Papel | `#F3F4F1` | Fondo de la aplicación |
+| `surface` | Blanco | `#FFFFFF` | Paneles, tablas, inputs |
+| `surface2` | — | `#EEF0EC` | Cabeceras de tabla, pistas de barras, tabs |
+| `border` | Línea | `#D9DCD5` | Bordes de panel y separadores |
+| `borderRow` | — | `#E4E6E1` | Separador entre filas de tabla |
+| `control` | — | `#C5C9C1` | Borde de inputs y botones secundarios |
+| `ink` | Tinta | `#16191D` | Texto principal, barra lateral, regla de título (2 px) |
+| `ink2` | Grafito | `#4A5058` | Texto secundario, etiquetas, cabeceras |
+| `ink3` | Niebla | `#6B717A` | Ayudas y metadatos |
+| `disabled` | — | `#9AA1A9` | Texto deshabilitado; texto secundario en la barra lateral |
+| `nav` | — | `#16191D` | Fondo de la barra lateral |
+| `navActive` | — | `#262B31` | Elemento activo de la barra lateral |
+| `navText` | — | `#C9CDD2` | Enlaces inactivos de la barra lateral |
+| `navIconActive` | — | `#F08A5D` | Icono del elemento activo |
+| `accent` | Óxido | `#B4430F` | Acción principal, foco, enlaces |
+| `accentHover` | — | `#8A320A` | Hover de enlaces |
+| `onAccent` | — | `#FFFFFF` | Texto sobre acento |
+| `accentSoft` | Óxido claro | `#FBEDE5` | Fila seleccionada, opción marcada |
+
+### Tema oscuro
+
+| Token | Hex |
+|---|---|
+| `bg` | `#111417` |
+| `surface` | `#1A1E23` |
+| `surface2` | `#23282E` |
+| `border` | `#2F353C` |
+| `control` | `#3A4148` |
+| `ink` | `#E8EAE6` |
+| `ink2` | `#B3B9C0` |
+| `ink3` | `#949BA3` |
+| `nav` | `#0B0D0F` |
+| `navActive` | `#23282E` |
+| `accent` | `#E8794A` |
+| `onAccent` | `#16191D` |
+| `accentSoft` | `#3A2419` |
+
+Tema seleccionable en Ajustes: **Claro**, **Oscuro** o **Según el sistema**; se guarda por usuario y aplica en web y escritorio.
+
+### Sellos de estado (fondo / texto)
+
+| Estado | Claro | Oscuro |
+|---|---|---|
+| Borrador | `#EEF0EC` / `#4A5058` | — |
+| Pendiente · Stock bajo · Invitado | `#FDF3D7` / `#7A5300` | `#3A3014` / `#E8C66A` |
+| Servido | `#E3ECFA` / `#1E4C9A` | — |
+| Facturado · Disponible · Activo · Conectado | `#E2F1E8` / `#1F6B3F` | `#1B3326` / `#7FD3A0` |
+| Cobro parcial | `#F1E6F7` / `#6A2C8A` | — |
+| Vencido · Sin stock · Bloqueado · Error | `#FBE4E1` / `#A12A1C` | `#3A1D1A` / `#F09A8E` |
+
+«—» = el lienzo no define variante oscura todavía.
+
+Anatomía del sello: alto 24 px, padding 0 8 px, radio 4 px, Plex Mono 11/600, `letter-spacing: 0.06em`, mayúsculas, cuadradito de 6×6 px (radio 1) del color del texto delante de la etiqueta.
+
+Semáforo de umbrales (riesgo de cliente, stock): verde `#1F6B3F` < 50 % ≤ ámbar `#7A5300` < 80 % ≤ rojo `#A12A1C`.
+
+## Tipografía
+
+Fuentes: **IBM Plex Sans** (400, 500, 600, 700) e **IBM Plex Mono** (400, 500, 600), desde Google Fonts. Fallback: `system-ui, sans-serif` / `monospace`.
+
+| Rol | Fuente · tamaño/peso | Notas |
+|---|---|---|
+| Display (login) | Sans 48/600 | `line-height: 1.05`, `letter-spacing: -0.02em` |
+| Título de pantalla | Sans 28/600 | `letter-spacing: -0.01em` |
+| Título de panel | Sans 22/600 | |
+| Sección | Sans 18/600 | |
+| Cuerpo | Sans 14/400 | `line-height: 1.5` |
+| Etiqueta | Sans 12/500 | mayúsculas, `letter-spacing: 0.06em`, color `ink2` |
+| Cabecera de tabla | Sans 11/600 | mayúsculas, `letter-spacing: 0.06em`, fondo `surface2` |
+| Cifras | Mono 13–14/500 | `font-variant-numeric: tabular-nums`, alineadas a la derecha |
+| KPI | Mono 32–36/500 | `letter-spacing: -0.02em` |
+
+Formato de importes por defecto: `1.248,50 €` (`toLocaleString('es-ES', { minimumFractionDigits: 2 })`). Ajustes permite `€ 1,248.50`.
+
+## Espaciado, radios y tamaños
+
+- Escala base 4: `4, 8, 12, 16, 24, 32, 48` px.
+- Radios: **4** sello · **6** control (botón, input) · **8** grupo de tabs / tarjeta de opción · **10** panel.
+- Altura mínima de control y objetivo táctil: **44 px** (48 px en el formulario de login).
+- Barra lateral: base 232 px; contenido principal con padding `24px 32px 48px` y gap 20 px.
+
+## Componentes
+
+- **Botón primario**: fondo `accent`, texto `onAccent`, Sans 14/600, alto 44, padding 0 18, radio 6, icono opcional 18 px.
+- **Botón secundario**: fondo `surface`, borde 1 px `control`, texto `ink`.
+- **Botón terciario**: transparente, texto `ink2` subrayado (`text-underline-offset: 3px`).
+- **Botón de icono**: 44×44, borde `control`, `aria-label` obligatorio.
+- **Input**: alto 44, padding 0 12, borde 1 px `control`, radio 6. Foco: borde 2 px `accent`. Error: borde 1 px `#A12A1C` + mensaje 12 px en el mismo color. Inputs numéricos en Mono y alineados a la derecha.
+- **Etiqueta de campo**: estilo «Etiqueta» encima del control, gap 6.
+- **Tabla**: dentro de panel blanco con borde y radio 10; cabecera en `surface2`; filas separadas por `borderRow`; fila seleccionada en `accentSoft`. En móvil se sustituye por tarjetas (`article`).
+- **Barra de progreso** (stock / riesgo): 4 px de alto, pista `surface2`, relleno del color del umbral.
+- **Tarjeta KPI**: panel blanco, etiqueta + cifra Mono 32 + línea de alerta en rojo.
+- **Paginación**: texto Mono `1–8 de N`, botones secundarios «Anterior»/«Siguiente», deshabilitados en `#9AA1A9`.
+- **Cabecera de detalle**: etiqueta + título 22/600 + metadatos Mono 13, cerrada por regla de 2 px `ink`.
+- **Iconos**: SVG de trazo inline 18 px, `stroke-width: 1.8`; nunca emoji.
+- **Logotipo provisional**: cuadrado de 36 px (40 en login), fondo `accent`, inicial «M» en Mono 600.
+
+## Responsive
+
+Los tableros usan **container queries** (`container-name: app`) con un único punto de corte a **760 px**:
+
+- La barra lateral pasa a barra horizontal superior *sticky* con scroll horizontal; se ocultan el texto de marca y los datos del usuario.
+- Padding del contenido: `16px 16px 32px`, gap 16.
+- `.desk` (tablas) se oculta y `.mob` (tarjetas) se muestra.
+- `.hide-m` oculta columnas o bloques secundarios (p. ej. «Plazo» en proveedores, textos del hero de login).
+- Login: el panel oscuro se reduce a una franja con la marca y el formulario sube arriba.
+
+Las pantallas de escritorio son fluidas (anchura de referencia 1440 px); las versiones móviles del lienzo (390 px) reutilizan el mismo tablero de escritorio importado, no son diseños independientes.
+
+## Pantallas
+
+| Pantalla | Tablero escritorio | Tablero móvil | Contenido |
+|---|---|---|---|
+| Sistema visual | `Main.dc.html` | — | Tokens, tipografía, componentes |
+| Productos | `Productos.dc.html` | `ProductosMovil.dc.html` | Filtros (búsqueda, categoría, subcategoría, proveedor, solo stock bajo), tabla con stock/mín., precio y estado, importar CSV |
+| Clientes | `Clientes.dc.html` | `ClientesMovil.dc.html` | Listado con riesgo usado y saldo + ficha lateral con historial reciente |
+| Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Listado con plazo y compras del año + productos asociados y pedido de compra sugerido |
+| Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio), Base de datos (API / MongoDB directo) y Usuarios (invitaciones, roles, matriz de permisos) |
+| Login | `Login.dc.html` | `LoginMovil.dc.html` | Hero oscuro + formulario, estado de error, indicador de servidor |
+
+**Pendientes de diseño**: Panel (`Dashboard`), Ventas, Nueva venta y Cobros. Los tableros ya enlazan a `Dashboard.dc.html`, `Ventas.dc.html` y `NuevaVenta.dc.html`, que todavía no existen.
+
+Roles que aparecen en los diseños: Administrador, Comercial, Almacén, Administración (matriz de permisos en Ajustes › Usuarios).
+
+## Carpeta `canvas/`
+
+Copia literal de los ficheros `project/` del lienzo (`canvas.json` + un `*.dc.html` por tablero). Son especificación visual: dependen del runtime del editor (`support.js`, `<x-dc>`, `<sc-for>`, `{{…}}`) y no se abren sueltos en el navegador. Los textos entre corchetes (`[NOMBRE EMPRESA]`, `[N]`, `[CIF]`…) son marcadores de contenido real.
+
+Si se modifica el lienzo, refrescar esta carpeta y este README en el mismo cambio.

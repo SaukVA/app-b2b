@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sistema visual Albarán</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B4430F}a:hover{color:#8A320A}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1600px; box-sizing: border-box; padding: 72px; background: #F3F4F1; color: #16191D; font-family: 'IBM Plex Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 56px">
+
+<header style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-bottom: 40px; border-bottom: 2px solid #16191D">
+<div style="grid-column: span 7; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: {{accent}}">SISTEMA VISUAL · v0.1 · VENTA A MAYORISTAS</div>
+<h1 style="margin: 0; font-size: 64px; line-height: 1; font-weight: 600; letter-spacing: -0.02em">Albarán</h1>
+<p style="margin: 0; font-size: 18px; line-height: 1.55; color: #4A5058; max-width: 680px">La estética toma prestado el lenguaje del albarán y la hoja de pedido: líneas finas, cifras en monoespaciada bien alineadas y sellos de estado. Densa para quien trabaja con ella ocho horas al día; legible a un metro en el puesto del almacén.</p>
+</div>
+<ol style="grid-column: 9 / span 4; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0; align-self: end">
+<li style="display: flex; gap: 16px; padding: 14px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #6B717A">01</span><span style="font-size: 15px; font-weight: 500">Las cifras mandan: importes y cantidades en mono, alineados a la derecha.</span></li>
+<li style="display: flex; gap: 16px; padding: 14px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #6B717A">02</span><span style="font-size: 15px; font-weight: 500">Un solo acento, el óxido, reservado a la acción principal y al foco.</span></li>
+<li style="display: flex; gap: 16px; padding: 14px 0; border-top: 1px solid #D9DCD5; border-bottom: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #6B717A">03</span><span style="font-size: 15px; font-weight: 500">El estado se lee siempre como texto; el color solo lo refuerza.</span></li>
+</ol>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">Color</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">TEXTO SOBRE BLANCO ≥ 4.5:1</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{swatches}}" as="s" hint-placeholder-count="8">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="height: 96px; border-radius: 6px; border: 1px solid #D9DCD5; background: {{s.hex}}"></div>
+<div style="font-size: 14px; font-weight: 600">{{s.name}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5058">{{s.hex}}</div>
+<div style="font-size: 12px; line-height: 1.4; color: #6B717A">{{s.use}}</div>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 20px; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #6B717A; margin-right: 12px">Sellos de estado</span>
+<sc-for list="{{statuses}}" as="b" hint-placeholder-count="6">
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{b.bg}}; color: {{b.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{b.fg}}"></span>{{b.label}}</span>
+</sc-for>
+</div>
+</section>
+
+<section style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px">
+<div style="grid-column: span 6; display: flex; flex-direction: column; gap: 24px; padding: 32px; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">Tipografía</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">IBM PLEX SANS + PLEX MONO</span>
+</div>
+<div style="display: flex; flex-direction: column">
+<div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">Título · 28/600</span><span style="font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Pedidos pendientes de servir</span></div>
+<div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">Sección · 18/600</span><span style="font-size: 18px; font-weight: 600">Líneas del pedido</span></div>
+<div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">Cuerpo · 14/400</span><span style="font-size: 14px; line-height: 1.5; color: #16191D">Condiciones: pago a 30 días, tarifa B, riesgo máximo [IMPORTE]. Entrega en ruta de martes y jueves.</span></div>
+<div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">Etiqueta · 12/500</span><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Cliente · Fecha de entrega · Forma de pago</span></div>
+<div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">Cifras · Mono 14</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums">1.248,50 €   PED-2026-00412   SKU 40021</span></div>
+<div style="display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid #D9DCD5; border-bottom: 1px solid #D9DCD5"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">KPI · Mono 36</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 500; letter-spacing: -0.02em">18.420,00 €</span></div>
+</div>
+</div>
+
+<div style="grid-column: span 6; display: flex; flex-direction: column; gap: 28px; padding: 32px; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">Componentes</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{accent}}; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Nueva venta</button>
+<button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Guardar borrador</button>
+<button type="button" style="height: 44px; padding: 0 14px; border: 0; border-radius: 6px; background: transparent; color: #4A5058; font: 500 14px 'IBM Plex Sans', sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Cancelar</button>
+<button type="button" aria-label="Más opciones" style="width: 44px; height: 44px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ds-cliente" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Cliente</label>
+<input id="ds-cliente" type="text" placeholder="Nombre o CIF" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 2px solid {{accent}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF; outline: none">
+<span style="font-size: 12px; color: #6B717A">Foco: borde de 2 px en óxido</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="ds-cantidad" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Cantidad</label>
+<input id="ds-cantidad" type="text" value="0" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #A12A1C; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; text-align: right; color: #16191D; background: #FFFFFF">
+<span style="font-size: 12px; color: #A12A1C">La cantidad debe ser mayor que 0</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 0; border: 1px solid #D9DCD5; border-radius: 6px; overflow: hidden">
+<div style="display: grid; grid-template-columns: 1fr 80px 110px 110px; gap: 12px; padding: 10px 14px; background: #EEF0EC; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058"><span>Pedido</span><span style="text-align: right">Bultos</span><span style="text-align: right">Importe</span><span>Estado</span></div>
+<div style="display: grid; grid-template-columns: 1fr 80px 110px 110px; gap: 12px; align-items: center; padding: 12px 14px; border-top: 1px solid #D9DCD5; font-size: 14px"><span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">PED-00412</span> · Bar La Plaza</span><span style="text-align: right; font-family: 'IBM Plex Mono', monospace">14</span><span style="text-align: right; font-family: 'IBM Plex Mono', monospace">1.248,50 €</span><span style="justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: #FDF3D7; color: #7A5300; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em">PENDIENTE</span></div>
+<div style="display: grid; grid-template-columns: 1fr 80px 110px 110px; gap: 12px; align-items: center; padding: 12px 14px; border-top: 1px solid #D9DCD5; font-size: 14px; background: #FBEDE5"><span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">PED-00411</span> · Hostal Mirador</span><span style="text-align: right; font-family: 'IBM Plex Mono', monospace">6</span><span style="text-align: right; font-family: 'IBM Plex Mono', monospace">386,20 €</span><span style="justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: #E3ECFA; color: #1E4C9A; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em">SERVIDO</span></div>
+</div>
+<span style="font-size: 12px; color: #6B717A">Fila seleccionada: fondo óxido claro. Cabeceras en etiqueta sobre papel.</span>
+</div>
+</section>
+
+<section style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px">
+<div style="grid-column: span 5; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">Espaciado · base 4</h2>
+<div style="display: flex; align-items: flex-end; gap: 20px">
+<sc-for list="{{spaces}}" as="sp" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><div style="width: {{sp.px}}px; height: {{sp.px}}px; background: #16191D; border-radius: 2px"></div><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5058">{{sp.px}}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="grid-column: span 3; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">Radios</h2>
+<div style="display: flex; gap: 20px; align-items: flex-end">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><div style="width: 56px; height: 56px; border: 2px solid #16191D; border-radius: 4px"></div><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5058">4 sello</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><div style="width: 56px; height: 56px; border: 2px solid #16191D; border-radius: 6px"></div><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5058">6 control</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px"><div style="width: 56px; height: 56px; border: 2px solid #16191D; border-radius: 10px"></div><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5058">10 panel</span></div>
+</div>
+</div>
+<div style="grid-column: span 4; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">Tarjeta KPI</h2>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 20px; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Saldo pendiente de cobro</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 500; letter-spacing: -0.02em">[IMPORTE] €</span>
+<span style="font-size: 13px; color: #A12A1C; font-weight: 500">[N] facturas vencidas</span>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1600}}'>
+class Component extends DCLogic {
+renderVals() {
+const accent = this.props.accent ?? '#B4430F';
+return {
+accent,
+swatches: [
+{ name: 'Tinta', hex: '#16191D', use: 'Texto principal, barra lateral' },
+{ name: 'Grafito', hex: '#4A5058', use: 'Texto secundario, cabeceras' },
+{ name: 'Niebla', hex: '#6B717A', use: 'Ayudas y metadatos' },
+{ name: 'Línea', hex: '#D9DCD5', use: 'Bordes y separadores' },
+{ name: 'Papel', hex: '#F3F4F1', use: 'Fondo de la aplicación' },
+{ name: 'Blanco', hex: '#FFFFFF', use: 'Superficies y tablas' },
+{ name: 'Óxido', hex: accent, use: 'Acción principal y foco' },
+{ name: 'Óxido claro', hex: '#FBEDE5', use: 'Selección y resaltado' }
+],
+statuses: [
+{ label: 'Borrador', bg: '#EEF0EC', fg: '#4A5058' },
+{ label: 'Pendiente', bg: '#FDF3D7', fg: '#7A5300' },
+{ label: 'Servido', bg: '#E3ECFA', fg: '#1E4C9A' },
+{ label: 'Facturado', bg: '#E2F1E8', fg: '#1F6B3F' },
+{ label: 'Cobro parcial', bg: '#F1E6F7', fg: '#6A2C8A' },
+{ label: 'Vencido', bg: '#FBE4E1', fg: '#A12A1C' }
+],
+spaces: [4, 8, 12, 16, 24, 32, 48].map((px) => ({ px }))
+};
+}
+}
+</script>
+</body>
+</html>

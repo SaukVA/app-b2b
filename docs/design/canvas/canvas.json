@@ -1,0 +1,131 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Ajustes.dc.html": {
+      "expand": "fill",
+      "h": 1100,
+      "is_interactive": true,
+      "title": "Ajustes",
+      "w": 1440,
+      "x": 1520,
+      "y": 1720
+    },
+    "AjustesMovil.dc.html": {
+      "h": 1300,
+      "is_interactive": true,
+      "title": "Ajustes · móvil",
+      "w": 390,
+      "x": 1410,
+      "y": 3200
+    },
+    "Clientes.dc.html": {
+      "expand": "fill",
+      "h": 1060,
+      "is_interactive": true,
+      "title": "Clientes",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "ClientesMovil.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "Clientes · móvil",
+      "w": 390,
+      "x": 470,
+      "y": 3200
+    },
+    "Login.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Login",
+      "w": 1440,
+      "x": 3040,
+      "y": 1720
+    },
+    "LoginMovil.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "Login · móvil",
+      "w": 390,
+      "x": 1880,
+      "y": 3200
+    },
+    "Main.dc.html": {
+      "h": 1600,
+      "title": "Sistema visual · Albarán",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Productos.dc.html": {
+      "expand": "fill",
+      "h": 1060,
+      "is_interactive": true,
+      "title": "Productos",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "ProductosMovil.dc.html": {
+      "h": 2200,
+      "is_interactive": true,
+      "title": "Productos · móvil",
+      "w": 390,
+      "x": 0,
+      "y": 3200
+    },
+    "Proveedores.dc.html": {
+      "expand": "fill",
+      "h": 1060,
+      "is_interactive": true,
+      "title": "Proveedores",
+      "w": 1440,
+      "x": 0,
+      "y": 1720
+    },
+    "ProveedoresMovil.dc.html": {
+      "h": 1600,
+      "is_interactive": true,
+      "title": "Proveedores · móvil",
+      "w": 390,
+      "x": 940,
+      "y": 3200
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-08T10:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "movil": {
+      "kind": "title1",
+      "maxW": 2270,
+      "text": "Móvil · 390 px",
+      "w": 240,
+      "x": 0,
+      "y": 2940
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Productos.dc.html",
+    "Clientes.dc.html",
+    "Proveedores.dc.html",
+    "Ajustes.dc.html",
+    "Login.dc.html",
+    "ProductosMovil.dc.html",
+    "ClientesMovil.dc.html",
+    "ProveedoresMovil.dc.html",
+    "AjustesMovil.dc.html",
+    "LoginMovil.dc.html"
+  ],
+  "pages": [],
+  "title": "Diseño visual — Venta a mayoristas"
+}

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Clientes</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B4430F}a:hover{color:#8A320A}
+.mob{display:none}
+@container app (max-width: 760px){
+.nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
+.nav-brand{padding:0 8px 0 0!important}
+.nav-brand-text,.nav-user-info,.hide-m{display:none!important}
+.nav>a{flex:none;white-space:nowrap}
+.nav-push{margin-top:0!important}
+.nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
+.nav-user a{margin:0!important;white-space:nowrap}
+.main{padding:16px 16px 32px!important;gap:16px!important}
+.desk{display:none!important}
+.mob{display:flex!important}
+.sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
+.lg-hero{padding:16px 20px!important;gap:0!important}
+.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+}
+</style>
+</helmet>
+<div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: #F3F4F1; color: #16191D; font-family: 'IBM Plex Sans', system-ui, sans-serif">
+
+<nav class="nav" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: #16191D; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
+<div class="nav-brand" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 24px">
+<div style="width: 36px; height: 36px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
+<div class="nav-brand-text" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
+</div>
+<a href="Clientes.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: #262B31; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>Clientes</a>
+<a href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg>Productos</a>
+<a href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Proveedores</a>
+<a class="nav-push" href="Ajustes.dc.html" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>Ajustes</a>
+<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">[USUARIO]</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Comercial · Web</span><a href="Login.dc.html" style="margin-top: 6px; font-size: 13px; color: #C9CDD2">Cerrar sesión</a></div>
+</nav>
+
+<main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; align-items: baseline; gap: 12px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Clientes</h1>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5058">[N] fichas</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+<label for="cl-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Buscar cliente</label>
+<input id="cl-q" type="search" placeholder="Nombre o población" value="{{q}}" onChange="{{onSearch}}" style="width: 260px; max-width: 100%; height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{accent}}; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Nuevo cliente</button>
+</div>
+</div>
+
+<div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+<section aria-label="Listado de clientes" style="flex: 3 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column">
+<div class="desk" style="overflow-x: auto">
+<table style="width: 100%; min-width: 600px; border-collapse: collapse; font-size: 14px">
+<thead>
+<tr style="background: #EEF0EC; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">
+<th style="padding: 10px 20px; font-weight: 600">Cliente</th><th style="padding: 10px 12px; font-weight: 600; width: 160px">Riesgo usado</th><th style="padding: 10px 12px; font-weight: 600; text-align: right">Saldo</th><th style="padding: 10px 20px; font-weight: 600">Último pedido</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{customers}}" as="c" hint-placeholder-count="8">
+<tr style="border-top: 1px solid #E4E6E1; background: {{c.rowBg}}">
+<td style="padding: 6px 20px"><button type="button" onClick="{{c.pick}}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 44px; justify-content: center; padding: 0; border: 0; background: transparent; text-align: left; font: inherit; color: #16191D; cursor: pointer"><span style="font-weight: 600; text-decoration: underline; text-decoration-color: #C5C9C1; text-underline-offset: 3px">{{c.name}}</span><span style="font-size: 12px; color: #6B717A">{{c.city}}</span></button></td>
+<td style="padding: 12px"><div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{c.riskColor}}; font-weight: 500">{{c.riskPct}} %</span><div style="height: 4px; background: #EEF0EC; border-radius: 2px; overflow: hidden"><div style="height: 4px; width: {{c.riskPct}}%; background: {{c.riskColor}}"></div></div></div></td>
+<td style="padding: 12px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-weight: 500">{{c.balanceTxt}}</td>
+<td style="padding: 12px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">{{c.last}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div class="mob" style="flex-direction: column">
+<sc-for list="{{customers}}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{c.pick}}" style="display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border: 0; border-top: 1px solid #E4E6E1; background: {{c.rowBg}}; text-align: left; font: inherit; color: #16191D; cursor: pointer">
+<span style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; width: 100%">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 15px; font-weight: 600">{{c.name}}</span><span style="font-size: 12px; color: #6B717A">{{c.city}} · Último pedido {{c.last}}</span></span>
+</span>
+<span style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; width: 100%"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: {{c.riskColor}}">Riesgo {{c.riskPct}} %</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 500">{{c.balanceTxt}}</span></span>
+<span style="display: block; width: 100%; height: 4px; background: #EEF0EC; border-radius: 2px; overflow: hidden"><span style="display: block; height: 4px; width: {{c.riskPct}}%; background: {{c.riskColor}}"></span></span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 40px 20px; text-align: center; font-size: 14px; color: #4A5058">Ningún cliente coincide con «{{q}}».</div>
+</sc-if>
+<div style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid #D9DCD5; font-size: 13px; color: #4A5058">
+<span style="font-family: 'IBM Plex Mono', monospace">{{rangeTxt}}</span>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" onClick="{{prev}}" disabled="{{prevDisabled}}" style="height: 44px; padding: 0 14px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{prevColor}}; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Anterior</button>
+<span style="font-family: 'IBM Plex Mono', monospace; min-width: 48px; text-align: center">{{pageTxt}}</span>
+<button type="button" onClick="{{next}}" disabled="{{nextDisabled}}" style="height: 44px; padding: 0 14px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{nextColor}}; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Siguiente</button>
+</div>
+</div>
+</section>
+
+<aside aria-label="Ficha del cliente" style="flex: 2 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 20px; border-bottom: 2px solid #16191D; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Ficha de cliente</span>
+<h2 style="margin: 0; font-size: 22px; font-weight: 600">{{sel.name}}</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">CIF [CIF] · {{sel.city}}</span>
+</div>
+<dl style="margin: 0; padding: 4px 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px">
+<div style="padding: 12px 0; border-bottom: 1px solid #E4E6E1"><dt style="font-size: 12px; color: #6B717A">Riesgo máximo</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-weight: 500">{{sel.limitTxt}}</dd></div>
+<div style="padding: 12px 0; border-bottom: 1px solid #E4E6E1"><dt style="font-size: 12px; color: #6B717A">Saldo pendiente</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-weight: 500">{{sel.balanceTxt}}</dd></div>
+<div style="padding: 12px 0; border-bottom: 1px solid #E4E6E1"><dt style="font-size: 12px; color: #6B717A">Contacto</dt><dd style="margin: 4px 0 0; font-weight: 500">[NOMBRE CONTACTO]</dd></div>
+<div style="padding: 12px 0; border-bottom: 1px solid #E4E6E1"><dt style="font-size: 12px; color: #6B717A">Teléfono</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace">[TELÉFONO]</dd></div>
+<div style="padding: 12px 0; grid-column: span 2"><dt style="font-size: 12px; color: #6B717A">Entrega</dt><dd style="margin: 4px 0 0; font-weight: 500">{{sel.route}}</dd></div>
+</dl>
+<div style="padding: 16px 20px 8px; display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid #D9DCD5">
+<h3 style="margin: 0; font-size: 16px; font-weight: 600">Historial reciente</h3>
+<a href="Ventas.dc.html" style="font-size: 14px; font-weight: 500">Ver ventas</a>
+</div>
+<sc-for list="{{sel.history}}" as="h" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 20px; border-top: 1px solid #E4E6E1; font-size: 14px">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500">{{h.id}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">{{h.date}}</span></span>
+<span style="display: flex; align-items: center; gap: 12px"><span style="font-family: 'IBM Plex Mono', monospace">{{h.amount}}</span><span style="display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 4px; background: {{h.bg}}; color: {{h.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">{{h.status}}</span></span>
+</div>
+</sc-for>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding: 20px; margin-top: auto; border-top: 1px solid #D9DCD5">
+<a href="NuevaVenta.dc.html" style="flex: 1 1 140px; display: inline-flex; align-items: center; justify-content: center; height: 44px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600">Nueva venta</a>
+<button type="button" style="flex: 1 1 140px; height: 44px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Editar ficha</button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { picked: 0, page: 0, q: '' };
+}
+renderVals() {
+const accent = this.props.accent ?? '#B4430F';
+const fmt = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const S = { Pendiente: ['#FDF3D7', '#7A5300'], Servido: ['#E3ECFA', '#1E4C9A'], Facturado: ['#E2F1E8', '#1F6B3F'], Borrador: ['#EEF0EC', '#4A5058'] };
+const data = [
+{ name: 'Bar Restaurante La Plaza', city: 'Valencia', limit: 6000, balance: 1248.5, last: '07/10/2026', route: 'Ruta centro · martes y jueves', history: [['PED-00419', '08/10/2026', 512.6, 'Borrador'], ['PED-00417', '07/10/2026', 1248.5, 'Pendiente'], ['PED-00398', '24/09/2026', 980.1, 'Facturado']] },
+{ name: 'Supermercados Vega', city: 'Alzira', limit: 25000, balance: 9022.15, last: '07/10/2026', route: 'Ruta sur · lunes, miércoles y viernes', history: [['PED-00416', '07/10/2026', 5902.15, 'Servido'], ['PED-00412', '03/10/2026', 3120.0, 'Facturado']] },
+{ name: 'Ultramarinos Hnos. Gil', city: 'Sagunto', limit: 8000, balance: 2310.4, last: '08/10/2026', route: 'Ruta norte · miércoles', history: [['PED-00418', '08/10/2026', 2310.4, 'Pendiente']] },
+{ name: 'Hostal Mirador', city: 'Cullera', limit: 3000, balance: 1490.2, last: '06/10/2026', route: 'Ruta costa · jueves', history: [['PED-00415', '06/10/2026', 386.2, 'Servido'], ['PED-00411', '02/10/2026', 1104.0, 'Facturado']] },
+{ name: 'Cafetería Central', city: 'Valencia', limit: 2000, balance: 1061.2, last: '05/10/2026', route: 'Ruta centro · martes y jueves', history: [['PED-00414', '05/10/2026', 742.8, 'Facturado'], ['PED-00410', '01/10/2026', 655.3, 'Facturado']] },
+{ name: 'Frutería Lola', city: 'Torrent', limit: 1000, balance: 219.0, last: '05/10/2026', route: 'Ruta oeste · viernes', history: [['PED-00413', '05/10/2026', 219.0, 'Facturado']] },
+{ name: 'Restaurante El Puerto', city: 'Gandia', limit: 4000, balance: 1830.75, last: '04/10/2026', route: 'Ruta costa · jueves', history: [['PED-00409', '04/10/2026', 1830.75, 'Servido']] },
+{ name: 'Pastelería Dulce Hogar', city: 'Paterna', limit: 1500, balance: 312.4, last: '03/10/2026', route: 'Ruta oeste · viernes', history: [['PED-00407', '03/10/2026', 312.4, 'Facturado']] },
+{ name: 'Bodega Los Arcos', city: 'Requena', limit: 5000, balance: 4120.0, last: '02/10/2026', route: 'Ruta interior · martes', history: [['PED-00405', '02/10/2026', 2260.0, 'Facturado'], ['PED-00396', '23/09/2026', 1860.0, 'Facturado']] },
+{ name: 'Hotel Miramar', city: 'Benidorm', limit: 12000, balance: 3540.6, last: '01/10/2026', route: 'Ruta costa · jueves', history: [['PED-00403', '01/10/2026', 3540.6, 'Servido']] },
+{ name: 'Cash Familia Roig', city: 'Xàtiva', limit: 9000, balance: 7650.0, last: '30/09/2026', route: 'Ruta sur · lunes, miércoles y viernes', history: [['PED-00401', '30/09/2026', 4100.0, 'Facturado'], ['PED-00392', '22/09/2026', 3550.0, 'Facturado']] },
+{ name: 'Comedor Colegio San José', city: 'Valencia', limit: 3500, balance: 0, last: '29/09/2026', route: 'Ruta centro · martes y jueves', history: [['PED-00399', '29/09/2026', 845.3, 'Facturado']] },
+{ name: 'Kiosko La Alameda', city: 'Valencia', limit: 800, balance: 96.5, last: '28/09/2026', route: 'Ruta centro · martes y jueves', history: [['PED-00397', '28/09/2026', 96.5, 'Facturado']] },
+{ name: 'Asador Casa Pepe', city: 'Llíria', limit: 3000, balance: 2480.0, last: '26/09/2026', route: 'Ruta interior · martes', history: [['PED-00394', '26/09/2026', 1240.0, 'Facturado']] }
+];
+const PER_PAGE = 8;
+const q = this.state.q;
+const needle = q.trim().toLowerCase();
+const filtered = data.map((c, i) => ({ c, i })).filter(({ c }) => !needle || (c.name + ' ' + c.city).toLowerCase().includes(needle));
+const pages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+const page = Math.min(this.state.page, pages - 1);
+const start = page * PER_PAGE;
+const pager = {
+q,
+onSearch: (e) => this.setState({ q: e.target.value, page: 0 }),
+noResults: filtered.length === 0,
+rangeTxt: filtered.length ? (start + 1) + '–' + Math.min(start + PER_PAGE, filtered.length) + ' de ' + filtered.length : '0 de 0',
+pageTxt: (page + 1) + ' / ' + pages,
+prevDisabled: page === 0, nextDisabled: page >= pages - 1,
+prevColor: page === 0 ? '#9AA1A9' : '#16191D', nextColor: page >= pages - 1 ? '#9AA1A9' : '#16191D',
+prev: () => this.setState({ page: Math.max(0, page - 1) }),
+next: () => this.setState({ page: Math.min(pages - 1, page + 1) })
+};
+const customers = filtered.slice(start, start + PER_PAGE).map(({ c, i }) => {
+const riskPct = Math.min(100, Math.round((c.balance / c.limit) * 100));
+return {
+name: c.name, city: c.city, last: c.last, riskPct,
+riskColor: riskPct >= 80 ? '#A12A1C' : riskPct >= 50 ? '#7A5300' : '#1F6B3F',
+balanceTxt: fmt(c.balance),
+rowBg: i === this.state.picked ? '#FBEDE5' : '#FFFFFF',
+pick: () => this.setState({ picked: i })
+};
+});
+const s = data[this.state.picked];
+const sel = {
+name: s.name, city: s.city, route: s.route,
+limitTxt: fmt(s.limit), balanceTxt: fmt(s.balance),
+history: s.history.map(([id, date, amt, status]) => ({ id, date, amount: fmt(amt), status, bg: S[status][0], fg: S[status][1] }))
+};
+return { accent, customers, sel, ...pager };
+}
+}
+</script>
+</body>
+</html>

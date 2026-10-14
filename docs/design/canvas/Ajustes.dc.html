@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ajustes</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B4430F}a:hover{color:#8A320A}
+.mob{display:none}
+@container app (max-width: 760px){
+.nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
+.nav-brand{padding:0 8px 0 0!important}
+.nav-brand-text,.nav-user-info,.hide-m{display:none!important}
+.nav>a{flex:none;white-space:nowrap}
+.nav-push{margin-top:0!important}
+.nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
+.nav-user a{margin:0!important;white-space:nowrap}
+.main{padding:16px 16px 32px!important;gap:16px!important}
+.desk{display:none!important}
+.mob{display:flex!important}
+.sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
+.lg-hero{padding:16px 20px!important;gap:0!important}
+.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+}
+</style>
+</helmet>
+<div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: {{t.bg}}; color: {{t.ink}}; font-family: 'IBM Plex Sans', system-ui, sans-serif">
+
+<nav class="nav" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: {{t.nav}}; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
+<div class="nav-brand" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 24px">
+<div style="width: 36px; height: 36px; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
+<div class="nav-brand-text" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
+</div>
+<a href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>Clientes</a>
+<a href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg>Productos</a>
+<a href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Proveedores</a>
+<a class="nav-push" href="Ajustes.dc.html" aria-current="page" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: {{t.navActive}}; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>Ajustes</a>
+<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">[USUARIO]</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Administrador · Web</span><a href="Login.dc.html" style="margin-top: 6px; font-size: 13px; color: #C9CDD2">Cerrar sesión</a></div>
+</nav>
+
+<main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 20px; border-bottom: 2px solid {{t.ink}}">
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Ajustes</h1>
+<span style="font-size: 14px; color: {{t.ink2}}">Preferencias de la aplicación, conexión de datos y acceso de usuarios.</span>
+</div>
+
+<div role="tablist" aria-label="Secciones de ajustes" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: {{t.surface2}}; border-radius: 8px; align-self: flex-start">
+<sc-for list="{{tabs}}" as="tb" hint-placeholder-count="3">
+<button type="button" role="tab" aria-selected="{{tb.selected}}" onClick="{{tb.pick}}" style="height: 40px; padding: 0 16px; border: 0; border-radius: 6px; background: {{tb.bg}}; color: {{tb.fg}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">{{tb.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{showApariencia}}" hint-placeholder-val="{{ true }}">
+<section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Tema</h2>
+<span style="font-size: 14px; color: {{t.ink2}}">Se guarda por usuario y se aplica en la web y en la aplicación de escritorio.</span>
+</div>
+<div role="radiogroup" aria-label="Tema" style="padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<sc-for list="{{themes}}" as="th" hint-placeholder-count="3">
+<button type="button" role="radio" aria-checked="{{th.checked}}" onClick="{{th.pick}}" style="display: flex; flex-direction: column; gap: 12px; padding: 12px; border: {{th.border}}; border-radius: 10px; background: {{t.surface}}; color: {{t.ink}}; text-align: left; font: inherit; cursor: pointer">
+<span style="display: flex; height: 110px; border-radius: 6px; overflow: hidden; border: 1px solid {{t.border}}">
+<span style="width: 28%; background: {{th.pNav}}"></span>
+<span style="flex: 1; background: {{th.pBg}}; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+<span style="height: 8px; width: 50%; border-radius: 2px; background: {{th.pInk}}"></span>
+<span style="flex: 1; border-radius: 4px; background: {{th.pSurface}}; border: 1px solid {{th.pBorder}}"></span>
+<span style="height: 14px; width: 36%; border-radius: 3px; background: {{th.pAccent}}"></span>
+</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{th.label}}</span><span style="font-size: 13px; color: {{t.ink2}}">{{th.desc}}</span></span>
+</button>
+</sc-for>
+</div>
+<div style="padding: 20px; border-top: 1px solid {{t.border}}; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span id="aj-dens" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Densidad de tablas</span>
+<div role="radiogroup" aria-labelledby="aj-dens" style="display: flex; gap: 8px">
+<sc-for list="{{densities}}" as="d" hint-placeholder-count="2">
+<button type="button" role="radio" aria-checked="{{d.checked}}" onClick="{{d.pick}}" style="height: 44px; padding: 0 16px; border-radius: 6px; border: {{d.border}}; background: {{d.bg}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">{{d.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="aj-num" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Formato de importes</label>
+<select id="aj-num" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; background: {{t.surface}}; color: {{t.ink}}"><option>1.248,50 €</option><option>€ 1,248.50</option></select>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="aj-home" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Pantalla de inicio</label>
+<select id="aj-home" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; background: {{t.surface}}; color: {{t.ink}}"><option>Panel</option><option>Ventas</option><option>Productos</option></select>
+</div>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{showDatos}}" hint-placeholder-val="{{ false }}">
+<section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Conexión a la base de datos</h2>
+<span style="font-size: 14px; color: {{t.ink2}}">Solo administradores. La cadena de conexión se guarda en el servidor y nunca se envía al navegador.</span>
+</div>
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 4px; background: {{t.okBg}}; color: {{t.okFg}}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.06em"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{t.okFg}}"></span>CONECTADO</span>
+</div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span id="aj-modo" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Origen de datos</span>
+<div role="radiogroup" aria-labelledby="aj-modo" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px">
+<sc-for list="{{sources}}" as="so" hint-placeholder-count="2">
+<button type="button" role="radio" aria-checked="{{so.checked}}" onClick="{{so.pick}}" style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 8px; border: {{so.border}}; background: {{so.bg}}; color: {{t.ink}}; text-align: left; font: inherit; cursor: pointer"><span style="font-size: 15px; font-weight: 600">{{so.label}}</span><span style="font-size: 13px; color: {{t.ink2}}">{{so.desc}}</span></button>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px; grid-column: 1 / -1">
+<label for="aj-uri" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">{{uriLabel}}</label>
+<input id="aj-uri" type="text" value="{{uriValue}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
+<span style="font-size: 12px; color: {{t.ink3}}">{{uriHelp}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="aj-db" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Base de datos</label>
+<input id="aj-db" type="text" value="wholesale" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="aj-timeout" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Tiempo de espera (s)</label>
+<input id="aj-timeout" type="text" value="10" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; text-align: right; color: {{t.ink}}; background: {{t.surface}}">
+</div>
+</div>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 1px solid {{t.border}}; border-radius: 8px; overflow: hidden">
+<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Servidor</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">[HOST]</dd></div>
+<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Versión MongoDB</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">8.0.x</dd></div>
+<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Última comprobación</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">[FECHA Y HORA]</dd></div>
+</dl>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
+<button type="button" style="height: 44px; padding: 0 18px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Probar conexión</button>
+<button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Guardar cambios</button>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{showUsuarios}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section style="flex: 3 1 560px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Usuarios</h2>
+<form style="display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-inv" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Invitar por email</label><input id="aj-inv" type="email" placeholder="nombre@[EMPRESA].es" style="width: 220px; height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-rol" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Rol</label><select id="aj-rol" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"><option>Comercial</option><option>Almacén</option><option>Administración</option><option>Administrador</option></select></div>
+<button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Invitar</button>
+</form>
+</div>
+<div class="desk" style="overflow-x: auto">
+<table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
+<thead>
+<tr style="background: {{t.surface2}}; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">
+<th style="padding: 10px 20px; font-weight: 600">Usuario</th><th style="padding: 10px 12px; font-weight: 600">Rol</th><th style="padding: 10px 12px; font-weight: 600">Último acceso</th><th style="padding: 10px 12px; font-weight: 600">Estado</th><th style="padding: 10px 20px; font-weight: 600"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Acciones</span></th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{users}}" as="u" hint-placeholder-count="5">
+<tr style="border-top: 1px solid {{t.border}}">
+<td style="padding: 10px 20px"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 32px; height: 32px; border-radius: 6px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600">{{u.initials}}</span><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: {{t.ink3}}">{{u.email}}</span></span></div></td>
+<td style="padding: 10px 12px; font-weight: 500">{{u.role}}</td>
+<td style="padding: 10px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{t.ink2}}">{{u.last}}</td>
+<td style="padding: 10px 12px"><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{u.bg}}; color: {{u.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{u.fg}}"></span>{{u.status}}</span></td>
+<td style="padding: 10px 20px; text-align: right"><button type="button" aria-label="Opciones del usuario" style="width: 44px; height: 44px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div class="mob" style="flex-direction: column">
+<sc-for list="{{users}}" as="u" hint-placeholder-count="5">
+<article style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid {{t.border}}">
+<span style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600">{{u.initials}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: {{t.ink3}}">{{u.role}} · {{u.last}}</span></span>
+<span style="flex: none; display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{u.bg}}; color: {{u.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{u.fg}}"></span>{{u.status}}</span>
+</article>
+</sc-for>
+</div>
+</section>
+
+<section style="flex: 2 1 340px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}"><h2 style="margin: 0; font-size: 18px; font-weight: 600">Permisos por rol</h2></div>
+<div style="overflow-x: auto">
+<table style="width: 100%; min-width: 360px; border-collapse: collapse; font-size: 13px">
+<thead>
+<tr style="background: {{t.surface2}}; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: {{t.ink2}}">
+<th style="padding: 10px 16px; text-align: left; font-weight: 600">Módulo</th><th style="padding: 10px 6px; font-weight: 600">Adm.</th><th style="padding: 10px 6px; font-weight: 600">Com.</th><th style="padding: 10px 6px; font-weight: 600">Alm.</th><th style="padding: 10px 16px 10px 6px; font-weight: 600">Admón.</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{perms}}" as="p" hint-placeholder-count="6">
+<tr style="border-top: 1px solid {{t.border}}">
+<td style="padding: 10px 16px; font-weight: 500">{{p.module}}</td>
+<td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.a}}</td>
+<td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.c}}</td>
+<td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.w}}</td>
+<td style="padding: 10px 16px 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.f}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; padding: 12px 16px; border-top: 1px solid {{t.border}}; font-size: 12px; color: {{t.ink3}}">E = editar · V = solo ver · — = sin acceso</p>
+</section>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { tab: 'apariencia', theme: 'claro', density: 'comoda', source: 'api' };
+}
+renderVals() {
+const accent = this.props.accent ?? '#B4430F';
+const light = { bg: '#F3F4F1', surface: '#FFFFFF', surface2: '#EEF0EC', border: '#D9DCD5', control: '#C5C9C1', ink: '#16191D', ink2: '#4A5058', ink3: '#6B717A', nav: '#16191D', navActive: '#262B31', accent, onAccent: '#FFFFFF', accentSoft: '#FBEDE5', okBg: '#E2F1E8', okFg: '#1F6B3F' };
+const dark = { bg: '#111417', surface: '#1A1E23', surface2: '#23282E', border: '#2F353C', control: '#3A4148', ink: '#E8EAE6', ink2: '#B3B9C0', ink3: '#949BA3', nav: '#0B0D0F', navActive: '#23282E', accent: '#E8794A', onAccent: '#16191D', accentSoft: '#3A2419', okBg: '#1B3326', okFg: '#7FD3A0' };
+const st = this.state;
+const t = st.theme === 'oscuro' ? dark : light;
+const sel = (on) => (on ? '2px solid ' + t.accent : '1px solid ' + t.control);
+const tabs = [['apariencia', 'Apariencia'], ['datos', 'Base de datos'], ['usuarios', 'Usuarios']].map(([id, label]) => ({
+label, selected: st.tab === id ? 'true' : 'false',
+bg: st.tab === id ? t.surface : 'transparent', fg: st.tab === id ? t.ink : t.ink2,
+pick: () => this.setState({ tab: id })
+}));
+const themes = [
+['claro', 'Claro', 'Papel y tinta. Recomendado para oficina.', light],
+['oscuro', 'Oscuro', 'Menos brillo en turnos largos o poca luz.', dark],
+['sistema', 'Según el sistema', 'Sigue la configuración del equipo.', light]
+].map(([id, label, desc, p]) => ({
+label, desc, checked: st.theme === id ? 'true' : 'false', border: sel(st.theme === id),
+pNav: p.nav, pBg: id === 'sistema' ? 'linear-gradient(90deg, #F3F4F1 50%, #111417 50%)' : p.bg, pInk: id === 'sistema' ? '#6B717A' : p.ink, pSurface: id === 'sistema' ? 'transparent' : p.surface, pBorder: p.border, pAccent: p.accent,
+pick: () => this.setState({ theme: id })
+}));
+const densities = [['comoda', 'Cómoda'], ['compacta', 'Compacta']].map(([id, label]) => ({
+label, checked: st.density === id ? 'true' : 'false', border: sel(st.density === id), bg: st.density === id ? t.accentSoft : t.surface,
+pick: () => this.setState({ density: id })
+}));
+const sources = [
+['api', 'Servidor de la empresa', 'La web y el escritorio se conectan a la API REST compartida.'],
+['local', 'MongoDB directo', 'Para el servidor o una instalación de escritorio sin red.']
+].map(([id, label, desc]) => ({
+label, desc, checked: st.source === id ? 'true' : 'false', border: sel(st.source === id), bg: st.source === id ? t.accentSoft : t.surface,
+pick: () => this.setState({ source: id })
+}));
+const isApi = st.source === 'api';
+const U = { Activo: [t.okBg, t.okFg], Invitado: st.theme === 'oscuro' ? ['#3A3014', '#E8C66A'] : ['#FDF3D7', '#7A5300'], Bloqueado: st.theme === 'oscuro' ? ['#3A1D1A', '#F09A8E'] : ['#FBE4E1', '#A12A1C'] };
+const users = [
+['MI', 'Marta Ibáñez', 'Administrador', 'Hoy 09:12', 'Activo'],
+['JR', 'Jorge Ruiz', 'Comercial', 'Hoy 08:47', 'Activo'],
+['AP', 'Ana Pons', 'Administración', 'Ayer 18:03', 'Activo'],
+['LM', 'Luis Moreno', 'Almacén', '06/10 07:30', 'Activo'],
+['—', 'Pendiente de alta', 'Comercial', '—', 'Invitado'],
+['CS', 'Carlos Sanz', 'Almacén', '12/08 14:20', 'Bloqueado']
+].map(([initials, name, role, last, status]) => ({ initials, name, role, last, status, email: '[EMAIL]', bg: U[status][0], fg: U[status][1] }));
+const perms = [
+['Ventas', 'E', 'E', 'V', 'V'], ['Clientes', 'E', 'E', '—', 'V'], ['Productos', 'E', 'V', 'E', 'V'],
+['Proveedores', 'E', '—', 'V', 'E'], ['Cobros', 'E', 'V', '—', 'E'], ['Ajustes', 'E', '—', '—', '—']
+].map(([module, a, c, w, f]) => ({ module, a, c, w, f }));
+return {
+t, tabs, themes, densities, sources, users, perms,
+showApariencia: st.tab === 'apariencia', showDatos: st.tab === 'datos', showUsuarios: st.tab === 'usuarios',
+uriLabel: isApi ? 'URL del servidor API' : 'Cadena de conexión MongoDB',
+uriValue: isApi ? 'https://[SERVIDOR]/api' : 'mongodb://[USUARIO]:••••••••@[HOST]:27017',
+uriHelp: isApi ? 'La dirección que usan la web y el escritorio para hablar con el backend.' : 'La contraseña se muestra oculta. Se lee de las variables de entorno del servidor.'
+};
+}
+}
+</script>
+</body>
+</html>

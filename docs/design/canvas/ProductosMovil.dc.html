@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Productos · móvil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B4430F}a:hover{color:#8A320A}
+.mob{display:none}
+@container app (max-width: 760px){
+.nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
+.nav-brand{padding:0 8px 0 0!important}
+.nav-brand-text,.nav-user-info,.hide-m{display:none!important}
+.nav>a{flex:none;white-space:nowrap}
+.nav-push{margin-top:0!important}
+.nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
+.nav-user a{margin:0!important;white-space:nowrap}
+.main{padding:16px 16px 32px!important;gap:16px!important}
+.desk{display:none!important}
+.mob{display:flex!important}
+.sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
+.lg-hero{padding:16px 20px!important;gap:0!important}
+.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 2200px; background: #F3F4F1">
+<dc-import name="Productos" hint-size="390px,2200px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2200}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
