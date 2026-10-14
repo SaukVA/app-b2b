@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-14T12:05:09Z",
+  "updated_at": "2026-10-14T12:20:02Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -20,7 +20,7 @@
           "key": "AB2B-15",
           "id": "T001",
           "summary": "T001: Crear package.json raíz con \"private\": true, workspaces [\"apps/*\", \"packages/*\"], engines node >=22.12.0, scripts dev (concurrently), lint, format, test y devDependencies TypeScript 5.7, ESLint 9…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-15"
         },
@@ -28,7 +28,7 @@
           "key": "AB2B-17",
           "id": "T002",
           "summary": "T002: Crear tsconfig.base.json (strict, moduleResolution: bundler, paths para @app/shared) en la raíz",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-17"
         },
@@ -36,7 +36,7 @@
           "key": "AB2B-22",
           "id": "T003",
           "summary": "T003: Crear eslint.config.js (flat config + typescript-eslint, regla max-lines-per-function 40 con skipBlankLines y skipComments, max-depth 2) y .prettierrc en la raíz",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-22"
         },
@@ -44,7 +44,7 @@
           "key": "AB2B-26",
           "id": "T004",
           "summary": "T004: Crear docker-compose.yml con servicio mongo:8.0 en el puerto 27017 y volumen nombrado",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-26"
         },
@@ -52,7 +52,7 @@
           "key": "AB2B-30",
           "id": "T005",
           "summary": "T005: Crear .env.example con PORT, MONGODB_URI, JWT_ACCESS_SECRET, CORS_ORIGINS, NODE_ENV (sin valores reales)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-30"
         },
@@ -60,7 +60,7 @@
           "key": "AB2B-34",
           "id": "T006",
           "summary": "T006: Inicializar packages/shared (package.json con nombre @app/shared, tsconfig.json, jest.config.ts, src/index.ts)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-34"
         },
@@ -68,7 +68,7 @@
           "key": "AB2B-40",
           "id": "T007",
           "summary": "T007: Inicializar apps/server (package.json con Express 5.1, Mongoose 8.9, zod 3.24, jsonwebtoken 9.0, bcryptjs 2.4, swagger, dotenv, cookie-parser 1.4, cors 2.8; dev: supertest, mongodb-memory-server, tsx; tsconfig; jest…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-40"
         },
@@ -76,7 +76,7 @@
           "key": "AB2B-45",
           "id": "T008",
           "summary": "T008: Inicializar apps/client con Vite 6 + React 19 (React Router 7.1, Redux Toolkit 2.5, React Redux 9.2, axios 1.7; dev: Testing Library, jest-environment-jsdom; vite.config.ts con proxy /api; index.html; jest.config.ts)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-45"
         },
@@ -84,7 +84,7 @@
           "key": "AB2B-50",
           "id": "T009",
           "summary": "T009: Inicializar apps/desktop (package.json con Electron 34 y electron-builder 25, tsconfig.json, script dev que carga la URL de Vite)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-50"
         },
@@ -92,7 +92,7 @@
           "key": "AB2B-55",
           "id": "T010",
           "summary": "T010: Actualizar la tabla de Tecnologías de CLAUDE.md añadiendo cookie-parser 1.4.x y cors 2.8.x en apps/server y @testing-library/react, @testing-library/user-event y jest-environment-jsdom en apps/client, con su uso",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-55"
         },
@@ -100,7 +100,7 @@
           "key": "AB2B-60",
           "id": "T011",
           "summary": "T011: Crear docs/adr/0001-http-client-axios-thunks.md registrando la decisión R8 de research.md (axios + createAsyncThunk frente a RTK Query)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-60"
         },
@@ -108,11 +108,12 @@
           "key": "AB2B-65",
           "id": "T012",
           "summary": "T012: Ejecutar npm install en la raíz y comprobar que npm run lint y npm test --workspaces se ejecutan sin errores (con 0 tests)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-65"
         }
-      ]
+      ],
+      "status": "completed"
     },
     {
       "key": "AB2B-3",
@@ -976,7 +977,7 @@
   "summary": {
     "total_stories": 10,
     "total_tasks": 103,
-    "completed_tasks": 0,
-    "pending_tasks": 103
+    "completed_tasks": 12,
+    "pending_tasks": 91
   }
 }
