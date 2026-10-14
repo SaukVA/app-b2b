@@ -1,0 +1,982 @@
+{
+  "created_at": "2026-10-14T12:05:09Z",
+  "updated_at": "2026-10-14T12:05:09Z",
+  "spec": "001-user-login",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-1",
+    "summary": "Inicio de sesión (login)",
+    "url": "https://sauk.atlassian.net/browse/AB2B-1"
+  },
+  "stories": [
+    {
+      "key": "AB2B-2",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-2",
+      "tasks": [
+        {
+          "key": "AB2B-15",
+          "id": "T001",
+          "summary": "T001: Crear package.json raíz con \"private\": true, workspaces [\"apps/*\", \"packages/*\"], engines node >=22.12.0, scripts dev (concurrently), lint, format, test y devDependencies TypeScript 5.7, ESLint 9…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-15"
+        },
+        {
+          "key": "AB2B-17",
+          "id": "T002",
+          "summary": "T002: Crear tsconfig.base.json (strict, moduleResolution: bundler, paths para @app/shared) en la raíz",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-17"
+        },
+        {
+          "key": "AB2B-22",
+          "id": "T003",
+          "summary": "T003: Crear eslint.config.js (flat config + typescript-eslint, regla max-lines-per-function 40 con skipBlankLines y skipComments, max-depth 2) y .prettierrc en la raíz",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-22"
+        },
+        {
+          "key": "AB2B-26",
+          "id": "T004",
+          "summary": "T004: Crear docker-compose.yml con servicio mongo:8.0 en el puerto 27017 y volumen nombrado",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-26"
+        },
+        {
+          "key": "AB2B-30",
+          "id": "T005",
+          "summary": "T005: Crear .env.example con PORT, MONGODB_URI, JWT_ACCESS_SECRET, CORS_ORIGINS, NODE_ENV (sin valores reales)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-30"
+        },
+        {
+          "key": "AB2B-34",
+          "id": "T006",
+          "summary": "T006: Inicializar packages/shared (package.json con nombre @app/shared, tsconfig.json, jest.config.ts, src/index.ts)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-34"
+        },
+        {
+          "key": "AB2B-40",
+          "id": "T007",
+          "summary": "T007: Inicializar apps/server (package.json con Express 5.1, Mongoose 8.9, zod 3.24, jsonwebtoken 9.0, bcryptjs 2.4, swagger, dotenv, cookie-parser 1.4, cors 2.8; dev: supertest, mongodb-memory-server, tsx; tsconfig; jest…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-40"
+        },
+        {
+          "key": "AB2B-45",
+          "id": "T008",
+          "summary": "T008: Inicializar apps/client con Vite 6 + React 19 (React Router 7.1, Redux Toolkit 2.5, React Redux 9.2, axios 1.7; dev: Testing Library, jest-environment-jsdom; vite.config.ts con proxy /api; index.html; jest.config.ts)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-45"
+        },
+        {
+          "key": "AB2B-50",
+          "id": "T009",
+          "summary": "T009: Inicializar apps/desktop (package.json con Electron 34 y electron-builder 25, tsconfig.json, script dev que carga la URL de Vite)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-50"
+        },
+        {
+          "key": "AB2B-55",
+          "id": "T010",
+          "summary": "T010: Actualizar la tabla de Tecnologías de CLAUDE.md añadiendo cookie-parser 1.4.x y cors 2.8.x en apps/server y @testing-library/react, @testing-library/user-event y jest-environment-jsdom en apps/client, con su uso",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-55"
+        },
+        {
+          "key": "AB2B-60",
+          "id": "T011",
+          "summary": "T011: Crear docs/adr/0001-http-client-axios-thunks.md registrando la decisión R8 de research.md (axios + createAsyncThunk frente a RTK Query)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-60"
+        },
+        {
+          "key": "AB2B-65",
+          "id": "T012",
+          "summary": "T012: Ejecutar npm install en la raíz y comprobar que npm run lint y npm test --workspaces se ejecutan sin errores (con 0 tests)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-65"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-3",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-3",
+      "tasks": [
+        {
+          "key": "AB2B-12",
+          "id": "T013",
+          "summary": "T013: Crear tipos del envelope ApiSuccess<T> ({ success: true, data: T }) y ApiError ({ success: false, error: { code: string, message: string } }) en packages/shared/src/types/api.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-12"
+        },
+        {
+          "key": "AB2B-16",
+          "id": "T014",
+          "summary": "T014: Crear Role ('Administrador' | 'Comercial' | 'Almacén' | 'Administración'), UserStatus ('Activo' | 'Invitado' | 'Bloqueado'), HomeScreen ('panel' | 'ventas' | 'productos') en packages/shared/src/types/user.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-16"
+        },
+        {
+          "key": "AB2B-18",
+          "id": "T015",
+          "summary": "T015: Crear AppModule, PermissionLevel ('edit' | 'view' | 'none'), ROLES y la matriz PERMISSIONS exactamente como en data-model.md, más can(role, module, level) en packages/shared/src/constants/roles.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-18"
+        },
+        {
+          "key": "AB2B-28",
+          "id": "T016",
+          "summary": "T016: Crear constantes ACCESS_TOKEN_TTL_SEC = 900, IDLE_TIMEOUT_MIN = 30, PERSISTENT_SESSION_DAYS = 30, MAX_FAILED_ATTEMPTS = 5, LOCK_MINUTES = 15, MIN_PASSWORD_LENGTH = 8, DEFAULT_HOME_SCREEN = 'productos', BOOTSTRAP_LOGIN = 'admin' en packages/shar…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-28"
+        },
+        {
+          "key": "AB2B-35",
+          "id": "T017",
+          "summary": "T017: Crear ClientKind, AuthUser, LoginRequest, LoginResponse según data-model.md en packages/shared/src/types/auth.ts y DesktopBridge según contracts/desktop-bridge.md en packages/shared/src/types/desktop.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-35"
+        },
+        {
+          "key": "AB2B-39",
+          "id": "T018",
+          "summary": "T018: Exportar todos los tipos y constantes desde packages/shared/src/index.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-39"
+        },
+        {
+          "key": "AB2B-44",
+          "id": "T019",
+          "summary": "T019: Test unitario de can() cubriendo las 24 celdas de la matriz en packages/shared/src/constants/roles.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-44"
+        },
+        {
+          "key": "AB2B-49",
+          "id": "T020",
+          "summary": "T020: Crear config/env.ts que valida las variables de entorno con zod y falla al arrancar si falta alguna en apps/server/src/config/env.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-49"
+        },
+        {
+          "key": "AB2B-54",
+          "id": "T021",
+          "summary": "T021: Crear connectDatabase() / disconnectDatabase() con Mongoose en apps/server/src/config/database.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-54"
+        },
+        {
+          "key": "AB2B-59",
+          "id": "T022",
+          "summary": "T022: Crear clase AppError (code, status, message) en apps/server/src/utils/AppError.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-59"
+        },
+        {
+          "key": "AB2B-64",
+          "id": "T023",
+          "summary": "T023: Crear middleware errorHandler que traduce AppError al envelope de error, responde 500 INTERNAL_ERROR en lo demás y nunca expone stack si NODE_ENV=production en apps/server/src/middlewares/errorHandler.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-64"
+        },
+        {
+          "key": "AB2B-68",
+          "id": "T024",
+          "summary": "T024: Crear middleware validate({ body?, params?, query? }) con zod que lanza AppError('VALIDATION_ERROR', 400) en apps/server/src/middlewares/validate.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-68"
+        },
+        {
+          "key": "AB2B-73",
+          "id": "T025",
+          "summary": "T025: Crear configuración swagger-jsdoc que lee los @openapi de src/modules/**/*.routes.ts en apps/server/src/docs/swagger.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-73"
+        },
+        {
+          "key": "AB2B-78",
+          "id": "T026",
+          "summary": "T026: Crear modelo User con los campos de data-model.md: login (string, único, minúsculas, formato email salvo isBootstrap), name, passwordHash (select: false), role (enum Role), status (enum UserStatus), isBootstrap (boolean, índice), homeScreen (en…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-78"
+        },
+        {
+          "key": "AB2B-83",
+          "id": "T027",
+          "summary": "T027: Crear toAuthUser(doc) que mapea un User a AuthUser en apps/server/src/modules/users/user.mapper.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-83"
+        },
+        {
+          "key": "AB2B-88",
+          "id": "T028",
+          "summary": "T028: Crear ruta GET /api/health → { success: true, data: { status: 'ok' } } con su bloque @openapi en apps/server/src/modules/health/health.routes.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-88"
+        },
+        {
+          "key": "AB2B-92",
+          "id": "T029",
+          "summary": "T029: Crear buildApp() con express.json(), cookie-parser, cors (orígenes de CORS_ORIGINS con credentials: true), /api/health, /api-docs y errorHandler al final en apps/server/src/app.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-92"
+        },
+        {
+          "key": "AB2B-94",
+          "id": "T030",
+          "summary": "T030: Crear arranque (connectDatabase + listen) en apps/server/src/server.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-94"
+        },
+        {
+          "key": "AB2B-98",
+          "id": "T031",
+          "summary": "T031: Crear helper de tests que levanta mongodb-memory-server y limpia colecciones entre tests en apps/server/src/utils/testDb.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-98"
+        },
+        {
+          "key": "AB2B-101",
+          "id": "T032",
+          "summary": "T032: Test de integración de /api/health y de un 404/500 con el envelope de error en apps/server/src/modules/health/health.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-101"
+        },
+        {
+          "key": "AB2B-104",
+          "id": "T033",
+          "summary": "T033: Crear tokens de color (claro y oscuro con [data-theme=\"dark\"]), tipografía, espaciado y radios de docs/design/README.md como custom properties en apps/client/src/styles/tokens.css y estilos base (IBM Plex Sans/Mono, body con --bg) en apps/clien…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-104"
+        },
+        {
+          "key": "AB2B-106",
+          "id": "T034",
+          "summary": "T034: Crear instancia axios con baseURL resuelta por resolveApiBaseUrl() (window.desktop → getServerUrl(), si no /api) y withCredentials: true en apps/client/src/utils/httpClient.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-106"
+        },
+        {
+          "key": "AB2B-108",
+          "id": "T035",
+          "summary": "T035: Crear isDesktop() y getDesktopBridge() que leen window.desktop tipado con DesktopBridge en apps/client/src/utils/desktop.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-108"
+        },
+        {
+          "key": "AB2B-110",
+          "id": "T036",
+          "summary": "T036: Crear store de Redux Toolkit vacía con RootState y AppDispatch tipados en apps/client/src/store/store.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-110"
+        },
+        {
+          "key": "AB2B-112",
+          "id": "T037",
+          "summary": "T037: Crear AppRouter con React Router 7 (ruta /login y layout raíz) y montar store + router en apps/client/src/App.tsx y apps/client/src/main.tsx",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-112"
+        },
+        {
+          "key": "AB2B-113",
+          "id": "T038",
+          "summary": "T038: Crear main.ts con BrowserWindow (contextIsolation: true, nodeIntegration: false, preload) que carga la URL de Vite en dev y app:// en producción en apps/desktop/src/main.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-113"
+        },
+        {
+          "key": "AB2B-114",
+          "id": "T039",
+          "summary": "T039: Crear lectura y escritura de userData/config.json (serverUrl, con DEFAULT_SERVER_URL por defecto) usando fs en apps/desktop/src/ipc/config.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-114"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-4",
+      "summary": "Phase 3: User Story 1 - Iniciar sesión con email y contraseña (P1) 🎯 MVP",
+      "url": "https://sauk.atlassian.net/browse/AB2B-4",
+      "tasks": [
+        {
+          "key": "AB2B-14",
+          "id": "T040",
+          "summary": "T040: Tests unitarios de normalizeLogin (mayúsculas y espacios), hashPassword/verifyPassword y signAccessToken/verifyAccessToken en apps/server/src/utils/password.test.ts y apps/server/src/utils/tokens.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-14"
+        },
+        {
+          "key": "AB2B-20",
+          "id": "T041",
+          "summary": "T041: Tests unitarios de auth.service (login): credenciales correctas; contraseña errónea con email existente e inexistente (mismo mensaje y contador; failedCount sube); estado Bloqueado → AUTH_ACCOUNT_BLOCKED solo con contraseña correcta; Invitado → AUT…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-20"
+        },
+        {
+          "key": "AB2B-25",
+          "id": "T042",
+          "summary": "T042: Tests de integración con supertest de POST /api/auth/login (200, 400 VALIDATION_ERROR, 401 AUTH_INVALID_CREDENTIALS, 403), GET /api/auth/me (200 y 401 AUTH_UNAUTHENTICATED) y de que la respuesta nunca contiene passwordHash en apps/server/src/module…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-25"
+        },
+        {
+          "key": "AB2B-31",
+          "id": "T043",
+          "summary": "T043: Tests de componentes Button, TextField, PasswordField (alternar visibilidad, aria-label \"Mostrar/Ocultar contraseña\", aria-pressed), Checkbox, Alert (role=\"alert\") y BrandMark en apps/client/src/components/*.test.tsx",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-31"
+        },
+        {
+          "key": "AB2B-36",
+          "id": "T044",
+          "summary": "T044: Test de LoginForm: campos vacíos marcan el campo que falta sin llamar a la API; envío correcto despacha login; el error se muestra en Alert; \"Entrar\" deshabilitado mientras hay petición en curso; \"¿La has olvidado?\" muestra \"Contacta con un adminis…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-36"
+        },
+        {
+          "key": "AB2B-41",
+          "id": "T045",
+          "summary": "T045: Test de RequireAuth: sin sesión redirige a /login conservando from; tras el login navega a from, si no a homeScreen, si no a DEFAULT_HOME_SCREEN, y si el rol no tiene acceso, a la pantalla por defecto en apps/client/src/routes/RequireAuth.test.tsx",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-41"
+        },
+        {
+          "key": "AB2B-46",
+          "id": "T046",
+          "summary": "T046: Implementar normalizeLogin(raw) (trim + minúsculas), hashPassword y verifyPassword con bcryptjs coste 10 y un DUMMY_HASH para comparar en tiempo constante cuando el usuario no existe en apps/server/src/utils/password.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-46"
+        },
+        {
+          "key": "AB2B-51",
+          "id": "T047",
+          "summary": "T047: Implementar signAccessToken({ sub, sid, role }) (15 min) y verifyAccessToken con jsonwebtoken y JWT_ACCESS_SECRET, más createRefreshToken() (crypto.randomBytes(32)) y hashToken() (SHA-256) en apps/server/src/utils/tokens.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-51"
+        },
+        {
+          "key": "AB2B-56",
+          "id": "T048",
+          "summary": "T048: Crear modelo Session según data-model.md: userId (índice), refreshTokenHash (único), persistent, client ('web' | 'desktop'), lastActivityAt, expiresAt (índice TTL expireAfterSeconds: 0), revokedAt (nullable) en apps/server/src/modules/auth/session.…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-56"
+        },
+        {
+          "key": "AB2B-61",
+          "id": "T049",
+          "summary": "T049: Crear modelo LoginAttempt según data-model.md: identifier (único), failedCount (0–5), lockedUntil (nullable), updatedAt con índice TTL de 24 h en apps/server/src/modules/auth/loginAttempt.model.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-61"
+        },
+        {
+          "key": "AB2B-66",
+          "id": "T050",
+          "summary": "T050: Crear esquemas zod loginSchema (login string trim min 1, password string min 1, persistent boolean, client enum web|desktop) en apps/server/src/modules/auth/auth.validation.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-66"
+        },
+        {
+          "key": "AB2B-71",
+          "id": "T051",
+          "summary": "T051: Implementar en auth.service.ts las funciones findUserByLogin, registerFailure(identifier) (devuelve intentos restantes), resetAttempts, assertCanSignIn(user) (estado) y createSession(user, { persistent, client }) (emite access y refresh, guarda el…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-71"
+        },
+        {
+          "key": "AB2B-76",
+          "id": "T052",
+          "summary": "T052: Implementar middleware requireAuth que verifica el Bearer, carga la sesión (no revocada y no caducada) y el usuario (status = 'Activo'), y si no, lanza AUTH_UNAUTHENTICATED/AUTH_SESSION_EXPIRED; deja req.auth = { userId, sessionId, role } en apps/s…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-76"
+        },
+        {
+          "key": "AB2B-81",
+          "id": "T053",
+          "summary": "T053: Implementar middleware requirePermission(module, level) con can() de shared → AppError('AUTH_FORBIDDEN', 403) en apps/server/src/middlewares/requirePermission.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-81"
+        },
+        {
+          "key": "AB2B-87",
+          "id": "T054",
+          "summary": "T054: Implementar authController.login (web: cookie refreshToken httpOnly, SameSite=Strict, Path=/api/auth, Secure en producción, sin Max-Age si no es persistente; desktop: refreshToken en el cuerpo) y authController.me en apps/server/src/modules/auth/au…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-87"
+        },
+        {
+          "key": "AB2B-91",
+          "id": "T055",
+          "summary": "T055: Crear POST /api/auth/login (con validate(loginSchema)) y GET /api/auth/me (con requireAuth) con sus bloques @openapi del contrato, y montarlas en buildApp() en apps/server/src/modules/auth/auth.routes.ts y apps/server/src/app.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-91"
+        },
+        {
+          "key": "AB2B-97",
+          "id": "T056",
+          "summary": "T056: Implementar componentes genéricos Button (variantes primary/secondary/tertiary, alto 44 px), TextField (label en estilo Etiqueta, error con borde y mensaje), PasswordField (botón 44×44 con aria-label y aria-pressed), Checkbox (≥44 px de objetivo),…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-97"
+        },
+        {
+          "key": "AB2B-100",
+          "id": "T057",
+          "summary": "T057: Implementar authApi.ts con loginRequest(body) y fetchMe() usando httpClient en apps/client/src/features/auth/authApi.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-100"
+        },
+        {
+          "key": "AB2B-103",
+          "id": "T058",
+          "summary": "T058: Implementar authSlice (estado user, accessToken, status, error; thunks login y loadMe) y authSelectors (selectIsAuthenticated, selectCan(module, level)), y registrar el reducer en la store en apps/client/src/features/auth/authSlice.ts, apps/client/…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-103"
+        },
+        {
+          "key": "AB2B-105",
+          "id": "T059",
+          "summary": "T059: Añadir a httpClient un interceptor de petición que pone Authorization: Bearer <accessToken> leído de la store en apps/client/src/utils/httpClient.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-105"
+        },
+        {
+          "key": "AB2B-107",
+          "id": "T060",
+          "summary": "T060: Implementar LoginForm (campo \"Email\" type=\"text\", inputMode=\"email\", autoComplete=\"username\" para admitir admin; contraseña; \"¿La has olvidado?\"; \"Mantener la sesión iniciada en este equipo\"; \"Entrar\") componiendo los genéricos, y LoginHero (panel…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-107"
+        },
+        {
+          "key": "AB2B-109",
+          "id": "T061",
+          "summary": "T061: Implementar LoginPage con el layout del diseño «Albarán» (hero + formulario; ≤760 px: hero reducido a franja, con container query) en apps/client/src/pages/LoginPage.tsx",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-109"
+        },
+        {
+          "key": "AB2B-111",
+          "id": "T062",
+          "summary": "T062: Implementar RequireAuth, resolveHomeRoute(user, from) y rutas protegidas (placeholder /productos mientras no exista el módulo) en apps/client/src/routes/RequireAuth.tsx, apps/client/src/routes/homeRoute.ts y apps/client/src/routes/AppRouter.tsx",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-111"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-5",
+      "summary": "Phase 4: User Story 7 - Primer acceso con la cuenta inicial \"admin\" (P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-5",
+      "tasks": [
+        {
+          "key": "AB2B-21",
+          "id": "T063",
+          "summary": "T063: Tests unitarios de `ensureBootstrapAccount` (crea `admin` con rol Administrador e `isBootstrap: true` si no hay usuarios; no la duplica; la borra y revoca sus sesiones si hay usuarios reales) y de `retireBootstrapIfNeeded` en `apps/server/src/modul…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-21"
+        },
+        {
+          "key": "AB2B-24",
+          "id": "T064",
+          "summary": "T064: Test de integración: login `admin`/`admin` con base vacía → 200 `isBootstrap: true`; tras insertar un usuario real → login 401 `AUTH_INVALID_CREDENTIALS` y `GET /api/auth/me` con el token anterior → 401 `AUTH_SESSION_EXPIRED` en `apps/server/src/mo…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-24"
+        },
+        {
+          "key": "AB2B-29",
+          "id": "T065",
+          "summary": "T065: Implementar `countRealUsers()`, `ensureBootstrapAccount()` (crea `{ login: 'admin', name: 'Administrador inicial', role: 'Administrador', status: 'Activo', isBootstrap: true }` con hash de `admin`) y `retireBootstrapIfNeeded()` (borra la cuenta y r…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-29"
+        },
+        {
+          "key": "AB2B-33",
+          "id": "T066",
+          "summary": "T066: Llamar a `ensureBootstrapAccount()` al arrancar, tras conectar con la base de datos, en `apps/server/src/server.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-33"
+        },
+        {
+          "key": "AB2B-38",
+          "id": "T067",
+          "summary": "T067: Llamar a `retireBootstrapIfNeeded()` en `login()` antes de buscar al usuario y en `requireAuth` cuando el usuario autenticado tenga `isBootstrap: true` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/middlewares/requireAuth.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-38"
+        },
+        {
+          "key": "AB2B-43",
+          "id": "T068",
+          "summary": "T068: Permitir `login = 'admin'` sin formato email en `user.model.ts` solo cuando `isBootstrap: true` (validador condicional) en `apps/server/src/modules/users/user.model.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-43"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-6",
+      "summary": "Phase 5: User Story 2 - Sesión activa mientras se trabaja (P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-6",
+      "tasks": [
+        {
+          "key": "AB2B-48",
+          "id": "T069",
+          "summary": "T069: Tests unitarios de `refresh()`: rota el hash; un refresh token ya rotado revoca la sesión (reutilización); sesión no persistente con `lastActivityAt` > 30 min → `AUTH_SESSION_EXPIRED`; persistente con `createdAt` > 30 días → `AUTH_SESSION_EXPIRED`…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-48"
+        },
+        {
+          "key": "AB2B-53",
+          "id": "T070",
+          "summary": "T070: Test de integración de `POST /api/auth/refresh` con cookie (web) y con cuerpo (desktop) y de que `requireAuth` actualiza `lastActivityAt` como mucho una vez por minuto en `apps/server/src/modules/auth/auth.routes.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-53"
+        },
+        {
+          "key": "AB2B-58",
+          "id": "T071",
+          "summary": "T071: Test del interceptor de respuesta: ante 401 hace un único refresh, encola las peticiones concurrentes y las reintenta; si el refresh falla, limpia la sesión y redirige a `/login` con `from` en `apps/client/src/utils/httpClient.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-58"
+        },
+        {
+          "key": "AB2B-63",
+          "id": "T072",
+          "summary": "T072: Implementar `touchSession(session)` (actualiza `lastActivityAt` y, si no es persistente, `expiresAt = lastActivityAt + 30 min`, como mucho una vez por minuto) y usarla en `requireAuth` en `apps/server/src/modules/auth/auth.service.ts` y `apps/serve…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-63"
+        },
+        {
+          "key": "AB2B-70",
+          "id": "T073",
+          "summary": "T073: Implementar `refresh(token)` en el servicio (buscar por hash, validar caducidad, detectar reutilización, rotar y emitir un access nuevo) y `authController.refresh` (lee la cookie o `body.refreshToken` según el cliente y reescribe la cookie o devuel…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-70"
+        },
+        {
+          "key": "AB2B-74",
+          "id": "T074",
+          "summary": "T074: Crear `POST /api/auth/refresh` con su `@openapi` y su esquema zod opcional `{ refreshToken?: string }` en `apps/server/src/modules/auth/auth.routes.ts` y `apps/server/src/modules/auth/auth.validation.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-74"
+        },
+        {
+          "key": "AB2B-79",
+          "id": "T075",
+          "summary": "T075: Implementar `refreshRequest()` en `authApi.ts`, el thunk `refreshSession` y la restauración de sesión al arrancar (`refreshSession` + `loadMe` antes de pintar rutas protegidas) en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/feature…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-79"
+        },
+        {
+          "key": "AB2B-84",
+          "id": "T076",
+          "summary": "T076: Implementar el interceptor de respuesta con refresh único y cola en `apps/client/src/utils/httpClient.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-84"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-7",
+      "summary": "Phase 6: User Story 3 - Cerrar sesión (P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-7",
+      "tasks": [
+        {
+          "key": "AB2B-89",
+          "id": "T077",
+          "summary": "T077: Test de integración: `POST /api/auth/logout` → 200, la cookie se borra y tanto el access token anterior (`/auth/me`) como el refresh token anterior (`/auth/refresh`) responden 401 en `apps/server/src/modules/auth/auth.routes.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-89"
+        },
+        {
+          "key": "AB2B-93",
+          "id": "T078",
+          "summary": "T078: Test de cliente: el thunk `logout` limpia el estado, llama a `clearRefreshToken()` en escritorio y navega a `/login` en `apps/client/src/features/auth/authSlice.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-93"
+        },
+        {
+          "key": "AB2B-96",
+          "id": "T079",
+          "summary": "T079: Implementar `logout(sessionId)` (fija `revokedAt`) y `authController.logout` (borra la cookie con el mismo `Path`) en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-96"
+        },
+        {
+          "key": "AB2B-99",
+          "id": "T080",
+          "summary": "T080: Crear `POST /api/auth/logout` con `requireAuth` y su `@openapi` en `apps/server/src/modules/auth/auth.routes.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-99"
+        },
+        {
+          "key": "AB2B-102",
+          "id": "T081",
+          "summary": "T081: Implementar `logoutRequest()` y el thunk `logout`, y un `LogoutButton` en la barra lateral provisional que lo despacha en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/features/auth/comp…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-102"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-8",
+      "summary": "Phase 7: User Story 4 - Mantener la sesión en este equipo (P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-8",
+      "tasks": [
+        {
+          "key": "AB2B-13",
+          "id": "T082",
+          "summary": "T082: Test de integración: login web con `persistent: true` → cookie con `Max-Age=2592000`; con `persistent: false` → cookie sin `Max-Age`/`Expires`; `expiresAt` de la sesión acorde a cada caso en `apps/server/src/modules/auth/auth.routes.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-13"
+        },
+        {
+          "key": "AB2B-19",
+          "id": "T083",
+          "summary": "T083: Tests de `ipc/auth.ts`: `setRefreshToken(t, true)` cifra con `safeStorage` en `session.bin`; `setRefreshToken(t, false)` lo deja solo en memoria y borra `session.bin`; `getRefreshToken` prioriza la memoria en `apps/desktop/src/ipc/auth.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-19"
+        },
+        {
+          "key": "AB2B-23",
+          "id": "T084",
+          "summary": "T084: Fijar `expiresAt` en `createSession` según `persistent` (30 días absolutos frente a 30 min de inactividad) y `Max-Age` de la cookie en `authController` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controlle…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-23"
+        },
+        {
+          "key": "AB2B-27",
+          "id": "T085",
+          "summary": "T085: Implementar handlers `auth:get-refresh`, `auth:set-refresh` y `auth:clear-refresh` con `safeStorage` y `userData/session.bin` según contracts/desktop-bridge.md en `apps/desktop/src/ipc/auth.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-27"
+        },
+        {
+          "key": "AB2B-32",
+          "id": "T086",
+          "summary": "T086: Exponer `getRefreshToken`, `setRefreshToken` y `clearRefreshToken` en `window.desktop` con `contextBridge` en `apps/desktop/src/preload.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-32"
+        },
+        {
+          "key": "AB2B-37",
+          "id": "T087",
+          "summary": "T087: En el cliente de escritorio: enviar `client: 'desktop'`, guardar el refresh token con `setRefreshToken(token, persistent)` tras el login y el refresh, y mandarlo en el cuerpo de `refreshRequest()` en `apps/client/src/features/auth/authSlice.ts` y `…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-37"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-9",
+      "summary": "Phase 8: User Story 5 - Bloqueo temporal por intentos fallidos (P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-9",
+      "tasks": [
+        {
+          "key": "AB2B-42",
+          "id": "T088",
+          "summary": "T088: Tests unitarios: el 5.º fallo fija `lockedUntil = ahora + 15 min`; con `lockedUntil` futuro se rechaza la contraseña correcta con `AUTH_ACCOUNT_LOCKED` (423) y la hora en el mensaje; con `lockedUntil` pasado se entra y `failedCount` vuelve a 0; un…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-42"
+        },
+        {
+          "key": "AB2B-47",
+          "id": "T089",
+          "summary": "T089: Test de integración de la secuencia 5 × 401 → 423 en `apps/server/src/modules/auth/auth.routes.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-47"
+        },
+        {
+          "key": "AB2B-52",
+          "id": "T090",
+          "summary": "T090: Implementar `assertNotLocked(identifier)` (paso 2 de R5) y que `registerFailure` fije `lockedUntil` al alcanzar `MAX_FAILED_ATTEMPTS`, con el mensaje \"Demasiados intentos. Vuelve a intentarlo a las HH:MM.\" en `apps/server/src/modules/auth/auth.serv…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-52"
+        },
+        {
+          "key": "AB2B-57",
+          "id": "T091",
+          "summary": "T091: Mostrar en `LoginForm` el mensaje de bloqueo devuelto por la API y diferenciar los errores de conexión (\"No se puede conectar con el servidor\") de los de credenciales, sin contarlos como intento en `apps/client/src/features/auth/components/LoginFor…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-57"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-10",
+      "summary": "Phase 9: User Story 6 - Servidor visible y cambiable en escritorio (P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-10",
+      "tasks": [
+        {
+          "key": "AB2B-62",
+          "id": "T092",
+          "summary": "T092: Test del componente `ServerStatus` (texto \"Conectado\"/\"Sin conexión\" además del color, dirección en Mono, enlace \"Cambiar servidor\") en `apps/client/src/components/ServerStatus.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-62"
+        },
+        {
+          "key": "AB2B-67",
+          "id": "T093",
+          "summary": "T093: Test de `LoginPage`: sin `window.desktop` no se pinta `ServerStatus`; con un `window.desktop` simulado se pinta con el resultado de `checkServer()` en `apps/client/src/pages/LoginPage.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-67"
+        },
+        {
+          "key": "AB2B-72",
+          "id": "T094",
+          "summary": "T094: Tests de `ipc/server.ts`: `server:get-url` lee la configuración; `server:check` devuelve `reachable: false` si `/health` no responde en 5 s en `apps/desktop/src/ipc/server.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-72"
+        },
+        {
+          "key": "AB2B-77",
+          "id": "T095",
+          "summary": "T095: Implementar handlers `server:get-url` y `server:check` (timeout de 5 s) en `apps/desktop/src/ipc/server.ts` y registrarlos en `apps/desktop/src/main.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-77"
+        },
+        {
+          "key": "AB2B-82",
+          "id": "T096",
+          "summary": "T096: Exponer `isDesktop`, `getServerUrl` y `checkServer` en `window.desktop` en `apps/desktop/src/preload.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-82"
+        },
+        {
+          "key": "AB2B-86",
+          "id": "T097",
+          "summary": "T097: Implementar el componente genérico `ServerStatus` (props `url`, `reachable`, `settingsHref`) con CSS Modules en `apps/client/src/components/ServerStatus.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-86"
+        },
+        {
+          "key": "AB2B-90",
+          "id": "T098",
+          "summary": "T098: Pintar `ServerStatus` en `LoginPage` solo si `isDesktop()`, consultando `checkServer()` al montar en `apps/client/src/pages/LoginPage.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-90"
+        },
+        {
+          "key": "AB2B-95",
+          "id": "T099",
+          "summary": "T099: Crear la ruta pública `/ajustes/servidor`, solo registrada en escritorio, con `ServerSettingsPlaceholder` (muestra la URL actual y que la configuración llegará con Ajustes › Base de datos) en `apps/client/src/pages/ServerSettingsPlaceholder.tsx` y…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-95"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-11",
+      "summary": "Phase 10: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-11",
+      "tasks": [
+        {
+          "key": "AB2B-69",
+          "id": "T100",
+          "summary": "T100: Revisar que todas las funciones nuevas cumplen ≤40 líneas efectivas y anidamiento ≤2 con npm run lint y extraer helpers donde haga falta",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-69"
+        },
+        {
+          "key": "AB2B-75",
+          "id": "T101",
+          "summary": "T101: Comprobar que /api-docs coincide con contracts/auth-api.openapi.yaml (rutas, códigos y esquemas)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-75"
+        },
+        {
+          "key": "AB2B-80",
+          "id": "T102",
+          "summary": "T102: Revisar la accesibilidad de la pantalla de login a 390 px y 1440 px (etiquetas, foco visible de 2 px en óxido, objetivos de 44 px, contraste 4.5:1) en LoginPage.tsx y components/",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-80"
+        },
+        {
+          "key": "AB2B-85",
+          "id": "T103",
+          "summary": "T103: Ejecutar npm run lint y npm test --workspaces en verde y validar manualmente quickstart.md completo",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-85"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-2",
+      "to": "AB2B-3"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-3",
+      "to": "AB2B-4"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-4",
+      "to": "AB2B-5"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-4",
+      "to": "AB2B-6"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-4",
+      "to": "AB2B-7"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-4",
+      "to": "AB2B-9"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-4",
+      "to": "AB2B-10"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-6",
+      "to": "AB2B-8"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-7",
+      "to": "AB2B-8"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-5",
+      "to": "AB2B-11"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-8",
+      "to": "AB2B-11"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-9",
+      "to": "AB2B-11"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-10",
+      "to": "AB2B-11"
+    }
+  ],
+  "summary": {
+    "total_stories": 10,
+    "total_tasks": 103,
+    "completed_tasks": 0,
+    "pending_tasks": 103
+  }
+}
