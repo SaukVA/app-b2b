@@ -5,8 +5,8 @@
   "description": "Shell de escritorio (Electron) que empaqueta apps/client",
   "main": "dist/main.js",
   "scripts": {
-    "dev": "tsc -p tsconfig.json && electron .",
-    "build": "tsc -p tsconfig.json",
+    "dev": "npm run build && electron .",
+    "build": "npm run build --workspace=@app/shared && tsc -p tsconfig.build.json",
     "package": "npm run build && electron-builder",
     "test": "jest --passWithNoTests"
   },

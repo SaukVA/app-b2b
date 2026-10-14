@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Sin el alias a packages/shared/src: el build resuelve @app/shared desde su dist/ compilado.
+    "paths": {}
+  }
+}

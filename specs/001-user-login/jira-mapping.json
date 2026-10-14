@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-14T12:20:02Z",
+  "updated_at": "2026-10-14T15:04:55Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -124,7 +124,7 @@
           "key": "AB2B-12",
           "id": "T013",
           "summary": "T013: Crear tipos del envelope ApiSuccess<T> ({ success: true, data: T }) y ApiError ({ success: false, error: { code: string, message: string } }) en packages/shared/src/types/api.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-12"
         },
@@ -132,7 +132,7 @@
           "key": "AB2B-16",
           "id": "T014",
           "summary": "T014: Crear Role ('Administrador' | 'Comercial' | 'Almacén' | 'Administración'), UserStatus ('Activo' | 'Invitado' | 'Bloqueado'), HomeScreen ('panel' | 'ventas' | 'productos') en packages/shared/src/types/user.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-16"
         },
@@ -140,7 +140,7 @@
           "key": "AB2B-18",
           "id": "T015",
           "summary": "T015: Crear AppModule, PermissionLevel ('edit' | 'view' | 'none'), ROLES y la matriz PERMISSIONS exactamente como en data-model.md, más can(role, module, level) en packages/shared/src/constants/roles.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-18"
         },
@@ -148,7 +148,7 @@
           "key": "AB2B-28",
           "id": "T016",
           "summary": "T016: Crear constantes ACCESS_TOKEN_TTL_SEC = 900, IDLE_TIMEOUT_MIN = 30, PERSISTENT_SESSION_DAYS = 30, MAX_FAILED_ATTEMPTS = 5, LOCK_MINUTES = 15, MIN_PASSWORD_LENGTH = 8, DEFAULT_HOME_SCREEN = 'productos', BOOTSTRAP_LOGIN = 'admin' en packages/shar…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-28"
         },
@@ -156,7 +156,7 @@
           "key": "AB2B-35",
           "id": "T017",
           "summary": "T017: Crear ClientKind, AuthUser, LoginRequest, LoginResponse según data-model.md en packages/shared/src/types/auth.ts y DesktopBridge según contracts/desktop-bridge.md en packages/shared/src/types/desktop.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-35"
         },
@@ -164,7 +164,7 @@
           "key": "AB2B-39",
           "id": "T018",
           "summary": "T018: Exportar todos los tipos y constantes desde packages/shared/src/index.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-39"
         },
@@ -172,7 +172,7 @@
           "key": "AB2B-44",
           "id": "T019",
           "summary": "T019: Test unitario de can() cubriendo las 24 celdas de la matriz en packages/shared/src/constants/roles.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-44"
         },
@@ -180,7 +180,7 @@
           "key": "AB2B-49",
           "id": "T020",
           "summary": "T020: Crear config/env.ts que valida las variables de entorno con zod y falla al arrancar si falta alguna en apps/server/src/config/env.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-49"
         },
@@ -188,7 +188,7 @@
           "key": "AB2B-54",
           "id": "T021",
           "summary": "T021: Crear connectDatabase() / disconnectDatabase() con Mongoose en apps/server/src/config/database.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-54"
         },
@@ -196,7 +196,7 @@
           "key": "AB2B-59",
           "id": "T022",
           "summary": "T022: Crear clase AppError (code, status, message) en apps/server/src/utils/AppError.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-59"
         },
@@ -204,7 +204,7 @@
           "key": "AB2B-64",
           "id": "T023",
           "summary": "T023: Crear middleware errorHandler que traduce AppError al envelope de error, responde 500 INTERNAL_ERROR en lo demás y nunca expone stack si NODE_ENV=production en apps/server/src/middlewares/errorHandler.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-64"
         },
@@ -212,7 +212,7 @@
           "key": "AB2B-68",
           "id": "T024",
           "summary": "T024: Crear middleware validate({ body?, params?, query? }) con zod que lanza AppError('VALIDATION_ERROR', 400) en apps/server/src/middlewares/validate.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-68"
         },
@@ -220,7 +220,7 @@
           "key": "AB2B-73",
           "id": "T025",
           "summary": "T025: Crear configuración swagger-jsdoc que lee los @openapi de src/modules/**/*.routes.ts en apps/server/src/docs/swagger.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-73"
         },
@@ -228,7 +228,7 @@
           "key": "AB2B-78",
           "id": "T026",
           "summary": "T026: Crear modelo User con los campos de data-model.md: login (string, único, minúsculas, formato email salvo isBootstrap), name, passwordHash (select: false), role (enum Role), status (enum UserStatus), isBootstrap (boolean, índice), homeScreen (en…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-78"
         },
@@ -236,7 +236,7 @@
           "key": "AB2B-83",
           "id": "T027",
           "summary": "T027: Crear toAuthUser(doc) que mapea un User a AuthUser en apps/server/src/modules/users/user.mapper.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-83"
         },
@@ -244,7 +244,7 @@
           "key": "AB2B-88",
           "id": "T028",
           "summary": "T028: Crear ruta GET /api/health → { success: true, data: { status: 'ok' } } con su bloque @openapi en apps/server/src/modules/health/health.routes.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-88"
         },
@@ -252,7 +252,7 @@
           "key": "AB2B-92",
           "id": "T029",
           "summary": "T029: Crear buildApp() con express.json(), cookie-parser, cors (orígenes de CORS_ORIGINS con credentials: true), /api/health, /api-docs y errorHandler al final en apps/server/src/app.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-92"
         },
@@ -260,7 +260,7 @@
           "key": "AB2B-94",
           "id": "T030",
           "summary": "T030: Crear arranque (connectDatabase + listen) en apps/server/src/server.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-94"
         },
@@ -268,7 +268,7 @@
           "key": "AB2B-98",
           "id": "T031",
           "summary": "T031: Crear helper de tests que levanta mongodb-memory-server y limpia colecciones entre tests en apps/server/src/utils/testDb.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-98"
         },
@@ -276,7 +276,7 @@
           "key": "AB2B-101",
           "id": "T032",
           "summary": "T032: Test de integración de /api/health y de un 404/500 con el envelope de error en apps/server/src/modules/health/health.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-101"
         },
@@ -284,7 +284,7 @@
           "key": "AB2B-104",
           "id": "T033",
           "summary": "T033: Crear tokens de color (claro y oscuro con [data-theme=\"dark\"]), tipografía, espaciado y radios de docs/design/README.md como custom properties en apps/client/src/styles/tokens.css y estilos base (IBM Plex Sans/Mono, body con --bg) en apps/clien…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-104"
         },
@@ -292,7 +292,7 @@
           "key": "AB2B-106",
           "id": "T034",
           "summary": "T034: Crear instancia axios con baseURL resuelta por resolveApiBaseUrl() (window.desktop → getServerUrl(), si no /api) y withCredentials: true en apps/client/src/utils/httpClient.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-106"
         },
@@ -300,7 +300,7 @@
           "key": "AB2B-108",
           "id": "T035",
           "summary": "T035: Crear isDesktop() y getDesktopBridge() que leen window.desktop tipado con DesktopBridge en apps/client/src/utils/desktop.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-108"
         },
@@ -308,7 +308,7 @@
           "key": "AB2B-110",
           "id": "T036",
           "summary": "T036: Crear store de Redux Toolkit vacía con RootState y AppDispatch tipados en apps/client/src/store/store.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-110"
         },
@@ -316,7 +316,7 @@
           "key": "AB2B-112",
           "id": "T037",
           "summary": "T037: Crear AppRouter con React Router 7 (ruta /login y layout raíz) y montar store + router en apps/client/src/App.tsx y apps/client/src/main.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-112"
         },
@@ -324,7 +324,7 @@
           "key": "AB2B-113",
           "id": "T038",
           "summary": "T038: Crear main.ts con BrowserWindow (contextIsolation: true, nodeIntegration: false, preload) que carga la URL de Vite en dev y app:// en producción en apps/desktop/src/main.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-113"
         },
@@ -332,11 +332,12 @@
           "key": "AB2B-114",
           "id": "T039",
           "summary": "T039: Crear lectura y escritura de userData/config.json (serverUrl, con DEFAULT_SERVER_URL por defecto) usando fs en apps/desktop/src/ipc/config.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-114"
         }
-      ]
+      ],
+      "status": "completed"
     },
     {
       "key": "AB2B-4",

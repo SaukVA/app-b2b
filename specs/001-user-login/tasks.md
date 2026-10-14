@@ -58,42 +58,42 @@ US1 → US7 → US2 → US3 → US4 → US5 → US6.
 
 ### Shared
 
-- [ ] T013 [P] Crear tipos del envelope `ApiSuccess<T>` (`{ success: true, data: T }`) y `ApiError` (`{ success: false, error: { code: string, message: string } }`) en `packages/shared/src/types/api.ts`
-- [ ] T014 [P] Crear `Role` (`'Administrador' | 'Comercial' | 'Almacén' | 'Administración'`), `UserStatus` (`'Activo' | 'Invitado' | 'Bloqueado'`), `HomeScreen` (`'panel' | 'ventas' | 'productos'`) en `packages/shared/src/types/user.ts`
-- [ ] T015 [P] Crear `AppModule`, `PermissionLevel` (`'edit' | 'view' | 'none'`), `ROLES` y la matriz `PERMISSIONS` exactamente como en data-model.md, más `can(role, module, level)` en `packages/shared/src/constants/roles.ts`
-- [ ] T016 [P] Crear constantes `ACCESS_TOKEN_TTL_SEC = 900`, `IDLE_TIMEOUT_MIN = 30`, `PERSISTENT_SESSION_DAYS = 30`, `MAX_FAILED_ATTEMPTS = 5`, `LOCK_MINUTES = 15`, `MIN_PASSWORD_LENGTH = 8`, `DEFAULT_HOME_SCREEN = 'productos'`, `BOOTSTRAP_LOGIN = 'admin'` en `packages/shared/src/constants/auth.ts`
-- [ ] T017 [P] Crear `ClientKind`, `AuthUser`, `LoginRequest`, `LoginResponse` según data-model.md en `packages/shared/src/types/auth.ts` y `DesktopBridge` según contracts/desktop-bridge.md en `packages/shared/src/types/desktop.ts`
-- [ ] T018 Exportar todos los tipos y constantes desde `packages/shared/src/index.ts`
-- [ ] T019 [P] Test unitario de `can()` cubriendo las 24 celdas de la matriz en `packages/shared/src/constants/roles.test.ts`
+- [X] T013 [P] Crear tipos del envelope `ApiSuccess<T>` (`{ success: true, data: T }`) y `ApiError` (`{ success: false, error: { code: string, message: string } }`) en `packages/shared/src/types/api.ts`
+- [X] T014 [P] Crear `Role` (`'Administrador' | 'Comercial' | 'Almacén' | 'Administración'`), `UserStatus` (`'Activo' | 'Invitado' | 'Bloqueado'`), `HomeScreen` (`'panel' | 'ventas' | 'productos'`) en `packages/shared/src/types/user.ts`
+- [X] T015 [P] Crear `AppModule`, `PermissionLevel` (`'edit' | 'view' | 'none'`), `ROLES` y la matriz `PERMISSIONS` exactamente como en data-model.md, más `can(role, module, level)` en `packages/shared/src/constants/roles.ts`
+- [X] T016 [P] Crear constantes `ACCESS_TOKEN_TTL_SEC = 900`, `IDLE_TIMEOUT_MIN = 30`, `PERSISTENT_SESSION_DAYS = 30`, `MAX_FAILED_ATTEMPTS = 5`, `LOCK_MINUTES = 15`, `MIN_PASSWORD_LENGTH = 8`, `DEFAULT_HOME_SCREEN = 'productos'`, `BOOTSTRAP_LOGIN = 'admin'` en `packages/shared/src/constants/auth.ts`
+- [X] T017 [P] Crear `ClientKind`, `AuthUser`, `LoginRequest`, `LoginResponse` según data-model.md en `packages/shared/src/types/auth.ts` y `DesktopBridge` según contracts/desktop-bridge.md en `packages/shared/src/types/desktop.ts`
+- [X] T018 Exportar todos los tipos y constantes desde `packages/shared/src/index.ts`
+- [X] T019 [P] Test unitario de `can()` cubriendo las 24 celdas de la matriz en `packages/shared/src/constants/roles.test.ts`
 
 ### Server
 
-- [ ] T020 [P] Crear `config/env.ts` que valida las variables de entorno con zod y falla al arrancar si falta alguna en `apps/server/src/config/env.ts`
-- [ ] T021 [P] Crear `connectDatabase()` / `disconnectDatabase()` con Mongoose en `apps/server/src/config/database.ts`
-- [ ] T022 [P] Crear clase `AppError` (`code`, `status`, `message`) en `apps/server/src/utils/AppError.ts`
-- [ ] T023 Crear middleware `errorHandler` que traduce `AppError` al envelope de error, responde 500 `INTERNAL_ERROR` en lo demás y nunca expone `stack` si `NODE_ENV=production` en `apps/server/src/middlewares/errorHandler.ts`
-- [ ] T024 [P] Crear middleware `validate({ body?, params?, query? })` con zod que lanza `AppError('VALIDATION_ERROR', 400)` en `apps/server/src/middlewares/validate.ts`
-- [ ] T025 [P] Crear configuración swagger-jsdoc que lee los `@openapi` de `src/modules/**/*.routes.ts` en `apps/server/src/docs/swagger.ts`
-- [ ] T026 Crear modelo `User` con los campos de data-model.md: `login` (string, único, minúsculas, formato email salvo `isBootstrap`), `name`, `passwordHash` (`select: false`), `role` (enum Role), `status` (enum UserStatus), `isBootstrap` (boolean, índice), `homeScreen` (enum HomeScreen, nullable), `lastLoginAt` (Date, nullable), timestamps en `apps/server/src/modules/users/user.model.ts`
-- [ ] T027 [P] Crear `toAuthUser(doc)` que mapea un User a `AuthUser` en `apps/server/src/modules/users/user.mapper.ts`
-- [ ] T028 [P] Crear ruta `GET /api/health` → `{ success: true, data: { status: 'ok' } }` con su bloque `@openapi` en `apps/server/src/modules/health/health.routes.ts`
-- [ ] T029 Crear `buildApp()` con `express.json()`, `cookie-parser`, `cors` (orígenes de `CORS_ORIGINS` con `credentials: true`), `/api/health`, `/api-docs` y `errorHandler` al final en `apps/server/src/app.ts`
-- [ ] T030 Crear arranque (`connectDatabase` + `listen`) en `apps/server/src/server.ts`
-- [ ] T031 Crear helper de tests que levanta mongodb-memory-server y limpia colecciones entre tests en `apps/server/src/utils/testDb.ts`
-- [ ] T032 [P] Test de integración de `/api/health` y de un 404/500 con el envelope de error en `apps/server/src/modules/health/health.test.ts`
+- [X] T020 [P] Crear `config/env.ts` que valida las variables de entorno con zod y falla al arrancar si falta alguna en `apps/server/src/config/env.ts`
+- [X] T021 [P] Crear `connectDatabase()` / `disconnectDatabase()` con Mongoose en `apps/server/src/config/database.ts`
+- [X] T022 [P] Crear clase `AppError` (`code`, `status`, `message`) en `apps/server/src/utils/AppError.ts`
+- [X] T023 Crear middleware `errorHandler` que traduce `AppError` al envelope de error, responde 500 `INTERNAL_ERROR` en lo demás y nunca expone `stack` si `NODE_ENV=production` en `apps/server/src/middlewares/errorHandler.ts`
+- [X] T024 [P] Crear middleware `validate({ body?, params?, query? })` con zod que lanza `AppError('VALIDATION_ERROR', 400)` en `apps/server/src/middlewares/validate.ts`
+- [X] T025 [P] Crear configuración swagger-jsdoc que lee los `@openapi` de `src/modules/**/*.routes.ts` en `apps/server/src/docs/swagger.ts`
+- [X] T026 Crear modelo `User` con los campos de data-model.md: `login` (string, único, minúsculas, formato email salvo `isBootstrap`), `name`, `passwordHash` (`select: false`), `role` (enum Role), `status` (enum UserStatus), `isBootstrap` (boolean, índice), `homeScreen` (enum HomeScreen, nullable), `lastLoginAt` (Date, nullable), timestamps en `apps/server/src/modules/users/user.model.ts`
+- [X] T027 [P] Crear `toAuthUser(doc)` que mapea un User a `AuthUser` en `apps/server/src/modules/users/user.mapper.ts`
+- [X] T028 [P] Crear ruta `GET /api/health` → `{ success: true, data: { status: 'ok' } }` con su bloque `@openapi` en `apps/server/src/modules/health/health.routes.ts`
+- [X] T029 Crear `buildApp()` con `express.json()`, `cookie-parser`, `cors` (orígenes de `CORS_ORIGINS` con `credentials: true`), `/api/health`, `/api-docs` y `errorHandler` al final en `apps/server/src/app.ts`
+- [X] T030 Crear arranque (`connectDatabase` + `listen`) en `apps/server/src/server.ts`
+- [X] T031 Crear helper de tests que levanta mongodb-memory-server y limpia colecciones entre tests en `apps/server/src/utils/testDb.ts`
+- [X] T032 [P] Test de integración de `/api/health` y de un 404/500 con el envelope de error en `apps/server/src/modules/health/health.test.ts`
 
 ### Client
 
-- [ ] T033 [P] Crear tokens de color (claro y oscuro con `[data-theme="dark"]`), tipografía, espaciado y radios de `docs/design/README.md` como custom properties en `apps/client/src/styles/tokens.css` y estilos base (IBM Plex Sans/Mono, `body` con `--bg`) en `apps/client/src/styles/global.css`
-- [ ] T034 [P] Crear instancia axios con `baseURL` resuelta por `resolveApiBaseUrl()` (`window.desktop` → `getServerUrl()`, si no `/api`) y `withCredentials: true` en `apps/client/src/utils/httpClient.ts`
-- [ ] T035 [P] Crear `isDesktop()` y `getDesktopBridge()` que leen `window.desktop` tipado con `DesktopBridge` en `apps/client/src/utils/desktop.ts`
-- [ ] T036 Crear store de Redux Toolkit vacía con `RootState` y `AppDispatch` tipados en `apps/client/src/store/store.ts`
-- [ ] T037 Crear `AppRouter` con React Router 7 (ruta `/login` y layout raíz) y montar store + router en `apps/client/src/App.tsx` y `apps/client/src/main.tsx`
+- [X] T033 [P] Crear tokens de color (claro y oscuro con `[data-theme="dark"]`), tipografía, espaciado y radios de `docs/design/README.md` como custom properties en `apps/client/src/styles/tokens.css` y estilos base (IBM Plex Sans/Mono, `body` con `--bg`) en `apps/client/src/styles/global.css`
+- [X] T034 [P] Crear instancia axios con `baseURL` resuelta por `resolveApiBaseUrl()` (`window.desktop` → `getServerUrl()`, si no `/api`) y `withCredentials: true` en `apps/client/src/utils/httpClient.ts`
+- [X] T035 [P] Crear `isDesktop()` y `getDesktopBridge()` que leen `window.desktop` tipado con `DesktopBridge` en `apps/client/src/utils/desktop.ts`
+- [X] T036 Crear store de Redux Toolkit vacía con `RootState` y `AppDispatch` tipados en `apps/client/src/store/store.ts`
+- [X] T037 Crear `AppRouter` con React Router 7 (ruta `/login` y layout raíz) y montar store + router en `apps/client/src/App.tsx` y `apps/client/src/main.tsx`
 
 ### Desktop
 
-- [ ] T038 Crear `main.ts` con `BrowserWindow` (`contextIsolation: true`, `nodeIntegration: false`, `preload`) que carga la URL de Vite en dev y `app://` en producción en `apps/desktop/src/main.ts`
-- [ ] T039 [P] Crear lectura y escritura de `userData/config.json` (`serverUrl`, con `DEFAULT_SERVER_URL` por defecto) usando `fs` en `apps/desktop/src/ipc/config.ts`
+- [X] T038 Crear `main.ts` con `BrowserWindow` (`contextIsolation: true`, `nodeIntegration: false`, `preload`) que carga la URL de Vite en dev y `app://` en producción en `apps/desktop/src/main.ts`
+- [X] T039 [P] Crear lectura y escritura de `userData/config.json` (`serverUrl`, con `DEFAULT_SERVER_URL` por defecto) usando `fs` en `apps/desktop/src/ipc/config.ts`
 
 **Checkpoint**: base lista. `npm run dev` levanta servidor, cliente y escritorio; `/api/health` y `/api-docs` responden.
 
