@@ -205,6 +205,11 @@ El diseño de la interfaz («Albarán») está documentado en `docs/design/`:
 - Antes de crear archivos nuevos, MUST anunciarlo y esperar OK.
 - Antes de instalar dependencias nuevas, MUST justificar la necesidad y esperar OK.
 - Al terminar un cambio, SHOULD indicar cómo verificarlo (comando o test concreto).
+- Al lanzar `/speckit-implement`, antes de escribir código MUST pasar a **"En curso"** en Jira la fase
+  (Tarea) y las subtareas que se van a implementar en esa ejecución, usando las claves de
+  `specs/<feature>/jira-mapping.json` (proyecto y `cloud_id` en `.specify/extensions/jira/jira-config.yml`).
+  Las que ya estén en "En curso" o "Listo" no se tocan. Al terminar, las completadas pasan a **"Listo"**
+  con `/speckit-jira-sync-status`.
 
 ## Comandos Habituales
 
