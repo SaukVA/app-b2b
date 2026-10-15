@@ -3,7 +3,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { app, BrowserWindow, ipcMain, net, protocol, safeStorage } from 'electron';
 import { createRefreshTokenStore, registerAuthIpc } from './ipc/auth';
-import { readConfig } from './ipc/config';
+import { registerServerIpc } from './ipc/server';
 
 // En producción el cliente se sirve desde app://. (origen admitido por CORS_ORIGINS).
 const APP_SCHEME = 'app';
@@ -20,18 +20,19 @@ function registerAppProtocol(): void {
     const requested = path.normalize(decodeURIComponent(new URL(request.url).pathname));
     const filePath = path.join(RENDERER_DIR, requested);
     const insideRenderer = filePath.startsWith(RENDERER_DIR);
-    const target = insideRenderer && fs.existsSync(filePath) && fs.statSync(filePath).isFile()
-      ? filePath
-      : path.join(RENDERER_DIR, 'index.html');
+    const target =
+      insideRenderer && fs.existsSync(filePath) && fs.statSync(filePath).isFile()
+        ? filePath
+        : path.join(RENDERER_DIR, 'index.html');
     return net.fetch(pathToFileURL(target).toString());
   });
 }
 
-/** Handlers de window.desktop. server:get-url se adelanta de la fase 9 para que el puente esté completo. */
+/** Handlers de window.desktop (contracts/desktop-bridge.md). */
 function registerIpc(): void {
   const userDataDir = app.getPath('userData');
   registerAuthIpc(ipcMain, createRefreshTokenStore({ userDataDir, encryptor: safeStorage }));
-  ipcMain.handle('server:get-url', () => readConfig(userDataDir).serverUrl);
+  registerServerIpc(ipcMain, { userDataDir });
 }
 
 function createWindow(): void {

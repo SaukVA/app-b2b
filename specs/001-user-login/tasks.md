@@ -261,17 +261,17 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T092 [P] [US6] Test del componente `ServerStatus` (texto "Conectado"/"Sin conexión" además del color, dirección en Mono, enlace "Cambiar servidor") en `apps/client/src/components/ServerStatus.test.tsx`
-- [ ] T093 [P] [US6] Test de `LoginPage`: sin `window.desktop` no se pinta `ServerStatus`; con un `window.desktop` simulado se pinta con el resultado de `checkServer()` en `apps/client/src/pages/LoginPage.test.tsx`
-- [ ] T094 [P] [US6] Tests de `ipc/server.ts`: `server:get-url` lee la configuración; `server:check` devuelve `reachable: false` si `/health` no responde en 5 s en `apps/desktop/src/ipc/server.test.ts`
+- [X] T092 [P] [US6] Test del componente `ServerStatus` (texto "Conectado"/"Sin conexión" además del color, dirección en Mono, enlace "Cambiar servidor") en `apps/client/src/components/ServerStatus.test.tsx`
+- [X] T093 [P] [US6] Test de `LoginPage`: sin `window.desktop` no se pinta `ServerStatus`; con un `window.desktop` simulado se pinta con el resultado de `checkServer()` en `apps/client/src/pages/LoginPage.test.tsx`
+- [X] T094 [P] [US6] Tests de `ipc/server.ts`: `server:get-url` lee la configuración; `server:check` devuelve `reachable: false` si `/health` no responde en 5 s en `apps/desktop/src/ipc/server.test.ts`
 
 ### Implementation for User Story 6
 
-- [ ] T095 [P] [US6] Implementar handlers `server:get-url` y `server:check` (timeout de 5 s) en `apps/desktop/src/ipc/server.ts` y registrarlos en `apps/desktop/src/main.ts`
-- [ ] T096 [US6] Exponer `isDesktop`, `getServerUrl` y `checkServer` en `window.desktop` en `apps/desktop/src/preload.ts`
-- [ ] T097 [P] [US6] Implementar el componente genérico `ServerStatus` (props `url`, `reachable`, `settingsHref`) con CSS Modules en `apps/client/src/components/ServerStatus.tsx`
-- [ ] T098 [US6] Pintar `ServerStatus` en `LoginPage` solo si `isDesktop()`, consultando `checkServer()` al montar en `apps/client/src/pages/LoginPage.tsx`
-- [ ] T099 [US6] Crear la ruta pública `/ajustes/servidor`, solo registrada en escritorio, con `ServerSettingsPlaceholder` (muestra la URL actual y que la configuración llegará con Ajustes › Base de datos) en `apps/client/src/pages/ServerSettingsPlaceholder.tsx` y `apps/client/src/routes/AppRouter.tsx`
+- [X] T095 [P] [US6] Implementar handlers `server:get-url` y `server:check` (timeout de 5 s) en `apps/desktop/src/ipc/server.ts` y registrarlos en `apps/desktop/src/main.ts`
+- [X] T096 [US6] Exponer `isDesktop`, `getServerUrl` y `checkServer` en `window.desktop` en `apps/desktop/src/preload.ts`
+- [X] T097 [P] [US6] Implementar el componente genérico `ServerStatus` (props `url`, `reachable`, `settingsHref`) con CSS Modules en `apps/client/src/components/ServerStatus.tsx`
+- [X] T098 [US6] Pintar `ServerStatus` en `LoginPage` solo si `isDesktop()`, consultando `checkServer()` al montar en `apps/client/src/pages/LoginPage.tsx`
+- [X] T099 [US6] Crear la ruta pública `/ajustes/servidor`, solo registrada en escritorio, con `ServerSettingsPlaceholder` (muestra la URL actual y que la configuración llegará con Ajustes › Base de datos) en `apps/client/src/pages/ServerSettingsPlaceholder.tsx` y `apps/client/src/routes/AppRouter.tsx`
 
 **Checkpoint**: quickstart §3, escenario 10, y §4, escenarios 1–3.
 

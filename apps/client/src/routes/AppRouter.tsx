@@ -2,8 +2,10 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-rou
 import type { AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
 import { LogoutButton } from '../features/auth/components/LogoutButton';
-import { LoginPage } from '../pages/LoginPage';
+import { LoginPage, SERVER_SETTINGS_PATH } from '../pages/LoginPage';
+import { ServerSettingsPlaceholder } from '../pages/ServerSettingsPlaceholder';
 import { useAppSelector } from '../store/store';
+import { isDesktop } from '../utils/desktop';
 import { APP_MODULES, resolveHomeRoute } from './homeRoute';
 import { RequireAuth } from './RequireAuth';
 
@@ -37,6 +39,11 @@ const moduleRoutes = APP_MODULES.map((module) => ({
   ),
 }));
 
+// Pública y solo en escritorio (FR-018/FR-019): en web /ajustes/servidor cae en la ruta protegida /ajustes.
+const desktopRoutes = isDesktop()
+  ? [{ path: SERVER_SETTINGS_PATH.slice(1), element: <ServerSettingsPlaceholder /> }]
+  : [];
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -44,6 +51,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomeRedirect /> },
       { path: 'login', element: <LoginPage /> },
+      ...desktopRoutes,
       ...moduleRoutes,
       { path: '*', element: <HomeRedirect /> },
     ],

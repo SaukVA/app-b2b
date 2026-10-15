@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-15T14:35:21Z",
+  "updated_at": "2026-10-15T15:18:16Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -807,7 +807,7 @@
           "key": "AB2B-62",
           "id": "T092",
           "summary": "T092: Test del componente `ServerStatus` (texto \"Conectado\"/\"Sin conexión\" además del color, dirección en Mono, enlace \"Cambiar servidor\") en `apps/client/src/components/ServerStatus.test.tsx`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-62"
         },
@@ -815,7 +815,7 @@
           "key": "AB2B-67",
           "id": "T093",
           "summary": "T093: Test de `LoginPage`: sin `window.desktop` no se pinta `ServerStatus`; con un `window.desktop` simulado se pinta con el resultado de `checkServer()` en `apps/client/src/pages/LoginPage.test.tsx`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-67"
         },
@@ -823,7 +823,7 @@
           "key": "AB2B-72",
           "id": "T094",
           "summary": "T094: Tests de `ipc/server.ts`: `server:get-url` lee la configuración; `server:check` devuelve `reachable: false` si `/health` no responde en 5 s en `apps/desktop/src/ipc/server.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-72"
         },
@@ -831,7 +831,7 @@
           "key": "AB2B-77",
           "id": "T095",
           "summary": "T095: Implementar handlers `server:get-url` y `server:check` (timeout de 5 s) en `apps/desktop/src/ipc/server.ts` y registrarlos en `apps/desktop/src/main.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-77"
         },
@@ -839,7 +839,7 @@
           "key": "AB2B-82",
           "id": "T096",
           "summary": "T096: Exponer `isDesktop`, `getServerUrl` y `checkServer` en `window.desktop` en `apps/desktop/src/preload.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-82"
         },
@@ -847,7 +847,7 @@
           "key": "AB2B-86",
           "id": "T097",
           "summary": "T097: Implementar el componente genérico `ServerStatus` (props `url`, `reachable`, `settingsHref`) con CSS Modules en `apps/client/src/components/ServerStatus.tsx`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-86"
         },
@@ -855,7 +855,7 @@
           "key": "AB2B-90",
           "id": "T098",
           "summary": "T098: Pintar `ServerStatus` en `LoginPage` solo si `isDesktop()`, consultando `checkServer()` al montar en `apps/client/src/pages/LoginPage.tsx`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-90"
         },
@@ -863,7 +863,7 @@
           "key": "AB2B-95",
           "id": "T099",
           "summary": "T099: Crear la ruta pública `/ajustes/servidor`, solo registrada en escritorio, con `ServerSettingsPlaceholder` (muestra la URL actual y que la configuración llegará con Ajustes › Base de datos) en `apps/client/src/pages/ServerSettingsPlaceholder.tsx` y…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-95"
         }
