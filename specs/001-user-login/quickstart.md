@@ -60,14 +60,17 @@ curl.exe -i http://localhost:<PUERTO_SERVER>/api/auth/me
 
 ## 4. Escenarios del escritorio
 
+> Los escenarios 1–3 (indicador y cambio de servidor, US6) quedan **sustituidos** por
+> [002-desktop-local-backend](../002-desktop-local-backend/quickstart.md) y no forman parte del cierre de esta spec.
+
 ```powershell
 npm run dev --workspace=apps/desktop
 ```
 
 | # | Acción | Resultado esperado | Requisitos |
 |---|---|---|---|
-| 1 | Abrir el login con el servidor arrancado | Dirección del servidor + "Conectado" + "Cambiar servidor" | FR-018 |
-| 2 | Parar el servidor y reabrir el login | Indicador "Sin conexión" en texto; "Entrar" da un error de conexión que no cuenta como intento | FR-017, FR-018 |
-| 3 | Pulsar "Cambiar servidor" sin sesión | Navega a `/ajustes/servidor` | FR-018 |
+| ~~1~~ (sustituido) | Abrir el login con el servidor arrancado | Dirección del servidor + "Conectado" + "Cambiar servidor" | FR-018 |
+| ~~2~~ (sustituido) | Parar el servidor y reabrir el login | Indicador "Sin conexión" en texto; "Entrar" da un error de conexión que no cuenta como intento | FR-017, FR-018 |
+| ~~3~~ (sustituido) | Pulsar "Cambiar servidor" sin sesión | Navega a `/ajustes/servidor` | FR-018 |
 | 4 | Login con "Mantener la sesión", cerrar y reabrir la aplicación | Entra sin identificarse | FR-012 |
 | 5 | Cerrar sesión y reabrir la aplicación | Pide identificarse | FR-013 |

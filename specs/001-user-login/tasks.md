@@ -255,6 +255,8 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 ## Phase 9: User Story 6 - Servidor visible y cambiable en escritorio (Priority: P2)
 
+> Implementada y después **sustituida** por 002-desktop-local-backend (2026-10-15).
+
 **Goal**: solo en escritorio el login muestra la dirección del servidor, su estado como texto y "Cambiar servidor".
 
 **Independent Test**: abrir el login en web (sin bloque) y en escritorio (con bloque y estado real).
@@ -281,8 +283,8 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 - [X] T100 [P] Revisar que todas las funciones nuevas cumplen ≤40 líneas efectivas y anidamiento ≤2 con `npm run lint` y extraer helpers donde haga falta
 - [X] T101 [P] Comprobar que `/api-docs` coincide con `contracts/auth-api.openapi.yaml` (rutas, códigos y esquemas)
-- [ ] T102 [P] Revisar la accesibilidad de la pantalla de login a 390 px y 1440 px (etiquetas, foco visible de 2 px en óxido, objetivos de 44 px, contraste 4.5:1) en `apps/client/src/pages/LoginPage.tsx` y `apps/client/src/components/`
-- [ ] T103 Ejecutar `npm run lint` y `npm test --workspaces` en verde y validar manualmente quickstart.md completo
+- [X] T102 [P] Revisar la accesibilidad de la pantalla de login a 390 px y 1440 px (etiquetas, foco visible de 2 px en óxido, objetivos de 44 px, contraste 4.5:1) en `apps/client/src/pages/LoginPage.tsx` y `apps/client/src/components/`
+- [X] T103 Ejecutar `npm run lint` y `npm test --workspaces` en verde y validar manualmente quickstart.md completo
 
 ---
 

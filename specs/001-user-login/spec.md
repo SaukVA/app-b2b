@@ -154,7 +154,11 @@ la contraseña correcta se rechaza hasta que expira el bloqueo.
 
 ---
 
-### User Story 6 - Servidor visible y cambiable en escritorio (Priority: P2)
+### User Story 6 - Servidor visible y cambiable en escritorio (Priority: P2) — SUSTITUIDA
+
+> **Sustituida** (2026-10-15) por [002-desktop-local-backend](../002-desktop-local-backend/spec.md): en escritorio el
+> indicador pasa a ser de base de datos y no hay servidor externo configurable. Se implementó (fase 9) y se
+> reemplazará al implementar la 002; no se valida como requisito de cierre de esta spec.
 
 Solo en la versión de escritorio, la pantalla de inicio de sesión muestra a qué servidor está conectada la
 aplicación (estado de la conexión y dirección) y ofrece "Cambiar servidor" antes de iniciar sesión. En la
@@ -277,7 +281,7 @@ usuario real (directamente en datos, mientras no exista el módulo de usuarios) 
   fallidos.
 - **FR-017**: Los fallos de conexión con el servidor NEVER MUST contar como intentos fallidos.
 
-**Servidor (solo escritorio)**
+**Servidor (solo escritorio)** — FR-018 sustituido por 002-desktop-local-backend; FR-019 (nada en la web) sigue vigente.
 
 - **FR-018**: En la versión de escritorio, la pantalla de inicio de sesión MUST mostrar la dirección del
   servidor configurado, su estado de conexión expresado como texto y el enlace "Cambiar servidor", accesible
