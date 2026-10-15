@@ -17,6 +17,7 @@ import {
 import { toAuthUser } from '../users/user.mapper';
 import { UserModel, type UserDocument } from '../users/user.model';
 import type { LoginInput } from './auth.validation';
+import { retireBootstrapIfNeeded } from './bootstrap.service';
 import { LoginAttemptModel } from './loginAttempt.model';
 import { SessionModel, type SessionDocument } from './session.model';
 
@@ -112,6 +113,7 @@ export async function createSession(
 /** Orden de research R5: credenciales → estado → sesión. */
 export async function login(input: LoginInput): Promise<IssuedSession> {
   const identifier = normalizeLogin(input.login);
+  await retireBootstrapIfNeeded();
   const user = await findUserByLogin(identifier);
   const passwordOk = await verifyPassword(input.password, user?.passwordHash);
   if (!user || !passwordOk) throw invalidCredentials(await registerFailure(identifier));
@@ -131,6 +133,7 @@ export async function resolveAuthContext(payload: AccessTokenPayload): Promise<A
   if (!isSessionActive(session, payload.sub)) throw sessionExpired();
   const user = await UserModel.findById(payload.sub);
   if (!user || user.status !== 'Activo') throw sessionExpired();
+  if (user.isBootstrap && (await retireBootstrapIfNeeded())) throw sessionExpired();
   return { userId: user.id, sessionId: session.id, role: user.role };
 }
 

@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-14T15:25:11Z",
+  "updated_at": "2026-10-15T10:10:09Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -540,7 +540,7 @@
           "key": "AB2B-21",
           "id": "T063",
           "summary": "T063: Tests unitarios de `ensureBootstrapAccount` (crea `admin` con rol Administrador e `isBootstrap: true` si no hay usuarios; no la duplica; la borra y revoca sus sesiones si hay usuarios reales) y de `retireBootstrapIfNeeded` en `apps/server/src/modul…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-21"
         },
@@ -548,7 +548,7 @@
           "key": "AB2B-24",
           "id": "T064",
           "summary": "T064: Test de integración: login `admin`/`admin` con base vacía → 200 `isBootstrap: true`; tras insertar un usuario real → login 401 `AUTH_INVALID_CREDENTIALS` y `GET /api/auth/me` con el token anterior → 401 `AUTH_SESSION_EXPIRED` en `apps/server/src/mo…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-24"
         },
@@ -556,7 +556,7 @@
           "key": "AB2B-29",
           "id": "T065",
           "summary": "T065: Implementar `countRealUsers()`, `ensureBootstrapAccount()` (crea `{ login: 'admin', name: 'Administrador inicial', role: 'Administrador', status: 'Activo', isBootstrap: true }` con hash de `admin`) y `retireBootstrapIfNeeded()` (borra la cuenta y r…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-29"
         },
@@ -564,7 +564,7 @@
           "key": "AB2B-33",
           "id": "T066",
           "summary": "T066: Llamar a `ensureBootstrapAccount()` al arrancar, tras conectar con la base de datos, en `apps/server/src/server.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-33"
         },
@@ -572,7 +572,7 @@
           "key": "AB2B-38",
           "id": "T067",
           "summary": "T067: Llamar a `retireBootstrapIfNeeded()` en `login()` antes de buscar al usuario y en `requireAuth` cuando el usuario autenticado tenga `isBootstrap: true` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/middlewares/requireAuth.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-38"
         },
@@ -580,7 +580,7 @@
           "key": "AB2B-43",
           "id": "T068",
           "summary": "T068: Permitir `login = 'admin'` sin formato email en `user.model.ts` solo cuando `isBootstrap: true` (validador condicional) en `apps/server/src/modules/users/user.model.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-43"
         }

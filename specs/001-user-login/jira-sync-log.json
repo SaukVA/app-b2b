@@ -104,5 +104,28 @@
       "AB2B-2",
       "AB2B-3"
     ]
+  },
+  {
+    "synced_at": "2026-10-15T10:10:09Z",
+    "spec": "001-user-login",
+    "project": "AB2B",
+    "epic": "AB2B-1",
+    "total_tasks": 103,
+    "completed_tasks": 68,
+    "completion_pct": 66,
+    "updated_issues": [
+      "AB2B-21",
+      "AB2B-24",
+      "AB2B-29",
+      "AB2B-33",
+      "AB2B-38",
+      "AB2B-43",
+      "AB2B-5"
+    ],
+    "skipped_issues": [
+      "AB2B-2",
+      "AB2B-3",
+      "AB2B-4"
+    ]
   }
 ]

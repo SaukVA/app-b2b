@@ -150,15 +150,15 @@ cuenta inicial desaparece y sus sesiones dejan de valer.
 
 ### Tests for User Story 7 ⚠️
 
-- [ ] T063 [P] [US7] Tests unitarios de `ensureBootstrapAccount` (crea `admin` con rol Administrador e `isBootstrap: true` si no hay usuarios; no la duplica; la borra y revoca sus sesiones si hay usuarios reales) y de `retireBootstrapIfNeeded` en `apps/server/src/modules/auth/bootstrap.service.test.ts`
-- [ ] T064 [P] [US7] Test de integración: login `admin`/`admin` con base vacía → 200 `isBootstrap: true`; tras insertar un usuario real → login 401 `AUTH_INVALID_CREDENTIALS` y `GET /api/auth/me` con el token anterior → 401 `AUTH_SESSION_EXPIRED` en `apps/server/src/modules/auth/bootstrap.routes.test.ts`
+- [X] T063 [P] [US7] Tests unitarios de `ensureBootstrapAccount` (crea `admin` con rol Administrador e `isBootstrap: true` si no hay usuarios; no la duplica; la borra y revoca sus sesiones si hay usuarios reales) y de `retireBootstrapIfNeeded` en `apps/server/src/modules/auth/bootstrap.service.test.ts`
+- [X] T064 [P] [US7] Test de integración: login `admin`/`admin` con base vacía → 200 `isBootstrap: true`; tras insertar un usuario real → login 401 `AUTH_INVALID_CREDENTIALS` y `GET /api/auth/me` con el token anterior → 401 `AUTH_SESSION_EXPIRED` en `apps/server/src/modules/auth/bootstrap.routes.test.ts`
 
 ### Implementation for User Story 7
 
-- [ ] T065 [US7] Implementar `countRealUsers()`, `ensureBootstrapAccount()` (crea `{ login: 'admin', name: 'Administrador inicial', role: 'Administrador', status: 'Activo', isBootstrap: true }` con hash de `admin`) y `retireBootstrapIfNeeded()` (borra la cuenta y revoca sus sesiones) en `apps/server/src/modules/auth/bootstrap.service.ts`
-- [ ] T066 [US7] Llamar a `ensureBootstrapAccount()` al arrancar, tras conectar con la base de datos, en `apps/server/src/server.ts`
-- [ ] T067 [US7] Llamar a `retireBootstrapIfNeeded()` en `login()` antes de buscar al usuario y en `requireAuth` cuando el usuario autenticado tenga `isBootstrap: true` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/middlewares/requireAuth.ts`
-- [ ] T068 [US7] Permitir `login = 'admin'` sin formato email en `user.model.ts` solo cuando `isBootstrap: true` (validador condicional) en `apps/server/src/modules/users/user.model.ts`
+- [X] T065 [US7] Implementar `countRealUsers()`, `ensureBootstrapAccount()` (crea `{ login: 'admin', name: 'Administrador inicial', role: 'Administrador', status: 'Activo', isBootstrap: true }` con hash de `admin`) y `retireBootstrapIfNeeded()` (borra la cuenta y revoca sus sesiones) en `apps/server/src/modules/auth/bootstrap.service.ts`
+- [X] T066 [US7] Llamar a `ensureBootstrapAccount()` al arrancar, tras conectar con la base de datos, en `apps/server/src/server.ts`
+- [X] T067 [US7] Llamar a `retireBootstrapIfNeeded()` en `login()` antes de buscar al usuario y en `requireAuth` cuando el usuario autenticado tenga `isBootstrap: true` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/middlewares/requireAuth.ts`
+- [X] T068 [US7] Permitir `login = 'admin'` sin formato email en `user.model.ts` solo cuando `isBootstrap: true` (validador condicional) en `apps/server/src/modules/users/user.model.ts`
 
 **Checkpoint**: una instalación nueva se puede usar sin preparación manual (quickstart §2).
 
