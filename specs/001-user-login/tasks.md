@@ -198,14 +198,14 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T077 [P] [US3] Test de integración: `POST /api/auth/logout` → 200, la cookie se borra y tanto el access token anterior (`/auth/me`) como el refresh token anterior (`/auth/refresh`) responden 401 en `apps/server/src/modules/auth/auth.routes.test.ts`
-- [ ] T078 [P] [US3] Test de cliente: el thunk `logout` limpia el estado, llama a `clearRefreshToken()` en escritorio y navega a `/login` en `apps/client/src/features/auth/authSlice.test.ts`
+- [X] T077 [P] [US3] Test de integración: `POST /api/auth/logout` → 200, la cookie se borra y tanto el access token anterior (`/auth/me`) como el refresh token anterior (`/auth/refresh`) responden 401 en `apps/server/src/modules/auth/auth.routes.test.ts`
+- [X] T078 [P] [US3] Test de cliente: el thunk `logout` limpia el estado, llama a `clearRefreshToken()` en escritorio y navega a `/login` en `apps/client/src/features/auth/authSlice.test.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T079 [US3] Implementar `logout(sessionId)` (fija `revokedAt`) y `authController.logout` (borra la cookie con el mismo `Path`) en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`
-- [ ] T080 [US3] Crear `POST /api/auth/logout` con `requireAuth` y su `@openapi` en `apps/server/src/modules/auth/auth.routes.ts`
-- [ ] T081 [US3] Implementar `logoutRequest()` y el thunk `logout`, y un `LogoutButton` en la barra lateral provisional que lo despacha en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/features/auth/components/LogoutButton.tsx`
+- [X] T079 [US3] Implementar `logout(sessionId)` (fija `revokedAt`) y `authController.logout` (borra la cookie con el mismo `Path`) en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`
+- [X] T080 [US3] Crear `POST /api/auth/logout` con `requireAuth` y su `@openapi` en `apps/server/src/modules/auth/auth.routes.ts`
+- [X] T081 [US3] Implementar `logoutRequest()` y el thunk `logout`, y un `LogoutButton` en la barra lateral provisional que lo despacha en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/features/auth/components/LogoutButton.tsx`
 
 **Checkpoint**: quickstart §3, escenario 5.
 

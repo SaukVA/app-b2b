@@ -142,6 +142,28 @@ authRouter.post('/refresh', validate({ body: refreshSchema }), authController.re
 
 /**
  * @openapi
+ * /auth/logout:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Revoca la sesión actual y borra la cookie
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       '200':
+ *         description: Sesión cerrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { type: 'null' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ */
+authRouter.post('/logout', requireAuth, authController.logout);
+
+/**
+ * @openapi
  * /auth/me:
  *   get:
  *     tags: [Auth]

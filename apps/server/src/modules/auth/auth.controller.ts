@@ -6,7 +6,7 @@ import {
   type LoginResponse,
 } from '@app/shared';
 import { getEnv } from '../../config/env';
-import { getCurrentUser, login, refresh } from './auth.service';
+import { getCurrentUser, login, logout, refresh } from './auth.service';
 import type { LoginInput, RefreshInput } from './auth.validation';
 
 export const REFRESH_COOKIE = 'refreshToken';
@@ -54,6 +54,14 @@ export const authController = {
     }
     res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions(persistent));
     sendSuccess<LoginResponse>(res, session);
+  },
+
+  /** En escritorio no hay cookie; borrarla igualmente no tiene efecto. */
+  async logout(req: Request, res: Response): Promise<void> {
+    await logout(req.auth!.sessionId);
+    // Mismas opciones que al crearla (sin Max-Age): si no, el navegador no la borra.
+    res.clearCookie(REFRESH_COOKIE, refreshCookieOptions(false));
+    sendSuccess<null>(res, null);
   },
 
   async me(req: Request, res: Response): Promise<void> {

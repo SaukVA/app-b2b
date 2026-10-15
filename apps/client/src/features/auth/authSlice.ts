@@ -1,7 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { AuthUser, LoginRequest, LoginResponse } from '@app/shared';
-import { isDesktop } from '../../utils/desktop';
-import { fetchMe, loginRequest, refreshRequest, toAuthErrorMessage } from './authApi';
+import { getDesktopBridge, isDesktop } from '../../utils/desktop';
+import {
+  fetchMe,
+  loginRequest,
+  logoutRequest,
+  refreshRequest,
+  toAuthErrorMessage,
+} from './authApi';
 
 export interface AuthState {
   user: AuthUser | null;
@@ -49,6 +55,16 @@ export const refreshSession = createAsyncThunk<LoginResponse, void, { rejectValu
   },
 );
 
+/** Cierra la sesión en el servidor y en el equipo (FR-013). */
+export const logout = createAsyncThunk('auth/logout', async () => {
+  try {
+    await logoutRequest();
+  } catch {
+    // Aunque el servidor falle o no responda, la sesión se cierra en este equipo.
+  }
+  await getDesktopBridge()?.clearRefreshToken();
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -77,6 +93,7 @@ const authSlice = createSlice({
         state.user = null;
         state.accessToken = null;
       })
+      .addCase(logout.fulfilled, () => initialState)
       .addCase(loadMe.fulfilled, (state, action) => {
         state.user = action.payload;
       });

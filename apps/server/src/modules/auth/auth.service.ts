@@ -227,6 +227,11 @@ export async function refresh(token: string | undefined): Promise<RefreshedSessi
   };
 }
 
+/** Revoca la sesión: ni su access ni su refresh token vuelven a valer (FR-013). */
+export async function logout(sessionId: string): Promise<void> {
+  await SessionModel.updateOne({ _id: sessionId, revokedAt: null }, { revokedAt: new Date() });
+}
+
 export async function getCurrentUser(userId: string): Promise<AuthUser> {
   const user = await UserModel.findById(userId);
   if (!user) throw sessionExpired();

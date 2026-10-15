@@ -242,3 +242,55 @@ describe('requireAuth · actividad de la sesión', () => {
     expect(session!.expiresAt.getTime()).toBe(session!.lastActivityAt.getTime() + 30 * 60 * 1000);
   });
 });
+
+async function loginWeb() {
+  await createUser();
+  const res = await postLogin({});
+  return {
+    accessToken: res.body.data.accessToken as string,
+    cookie: refreshCookie(res).split(';')[0],
+  };
+}
+
+function postLogout(accessToken?: string) {
+  const req = request(app()).post('/api/auth/logout');
+  return accessToken ? req.set('Authorization', `Bearer ${accessToken}`) : req;
+}
+
+describe('POST /api/auth/logout', () => {
+  it('200: revoca la sesión y borra la cookie con el mismo Path', async () => {
+    const { accessToken, cookie } = await loginWeb();
+    const res = await postLogout(accessToken).set('Cookie', cookie);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ success: true, data: null });
+    const cleared = refreshCookie(res);
+    expect(cleared).toMatch(/^refreshToken=;/);
+    expect(cleared).toMatch(/Path=\/api\/auth/);
+    expect(cleared).toMatch(/Expires=Thu, 01 Jan 1970/);
+    expect((await SessionModel.findOne())?.revokedAt).toBeInstanceOf(Date);
+  });
+
+  it('después, el access token anterior da 401 en /auth/me', async () => {
+    const { accessToken } = await loginWeb();
+    await postLogout(accessToken);
+    const res = await request(app())
+      .get('/api/auth/me')
+      .set('Authorization', `Bearer ${accessToken}`);
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe('AUTH_SESSION_EXPIRED');
+  });
+
+  it('después, el refresh token anterior da 401 en /auth/refresh', async () => {
+    const { accessToken, cookie } = await loginWeb();
+    await postLogout(accessToken);
+    const res = await postRefresh().set('Cookie', cookie);
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe('AUTH_SESSION_EXPIRED');
+  });
+
+  it('401 AUTH_UNAUTHENTICATED sin token', async () => {
+    const res = await postLogout();
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe('AUTH_UNAUTHENTICATED');
+  });
+});

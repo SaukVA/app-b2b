@@ -25,6 +25,10 @@ export function refreshRequest(): Promise<LoginResponse> {
   return pendingRefresh;
 }
 
+export async function logoutRequest(): Promise<void> {
+  await httpClient.post('/auth/logout');
+}
+
 export async function fetchMe(): Promise<AuthUser> {
   const { data } = await httpClient.get<ApiSuccess<AuthUser>>('/auth/me');
   return data.data;

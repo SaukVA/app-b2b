@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router';
 import type { AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
+import { LogoutButton } from '../features/auth/components/LogoutButton';
 import { LoginPage } from '../pages/LoginPage';
 import { useAppSelector } from '../store/store';
 import { APP_MODULES, resolveHomeRoute } from './homeRoute';
@@ -22,6 +23,7 @@ function ModulePlaceholder({ module }: { module: AppModule }) {
     <main>
       <h1>{module.charAt(0).toUpperCase() + module.slice(1)}</h1>
       <p>Módulo pendiente de implementar.</p>
+      <LogoutButton />
     </main>
   );
 }
