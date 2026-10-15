@@ -14,7 +14,10 @@ export function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, BCRYPT_COST);
 }
 
-export async function verifyPassword(password: string, hash: string | null | undefined): Promise<boolean> {
+export async function verifyPassword(
+  password: string,
+  hash: string | null | undefined,
+): Promise<boolean> {
   const matches = await bcrypt.compare(password, hash ?? DUMMY_HASH);
   return Boolean(hash) && matches;
 }

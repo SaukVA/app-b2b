@@ -10,8 +10,8 @@ export function LoginHero() {
         <span className={styles.kicker}>PEDIDOS · STOCK · COBROS</span>
         <h1 className={styles.title}>Todo el ciclo de venta, en una sola hoja.</h1>
         <p className={styles.lead}>
-          Del pedido del cliente al cobro de la factura, con el stock y las tarifas siempre al día, en la
-          oficina o en el almacén.
+          Del pedido del cliente al cobro de la factura, con el stock y las tarifas siempre al día,
+          en la oficina o en el almacén.
         </p>
       </div>
       <div className={styles.footer}>Web y escritorio</div>

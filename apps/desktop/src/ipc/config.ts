@@ -17,7 +17,9 @@ function configPath(userDataDir: string): string {
 /** Lee userData/config.json; si no existe o está corrupto, usa los valores por defecto. */
 export function readConfig(userDataDir: string): DesktopConfig {
   try {
-    const raw = JSON.parse(fs.readFileSync(configPath(userDataDir), 'utf8')) as Partial<DesktopConfig>;
+    const raw = JSON.parse(
+      fs.readFileSync(configPath(userDataDir), 'utf8'),
+    ) as Partial<DesktopConfig>;
     return { serverUrl: raw.serverUrl || DEFAULT_SERVER_URL };
   } catch {
     return { serverUrl: DEFAULT_SERVER_URL };

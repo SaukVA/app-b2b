@@ -18,7 +18,13 @@ export function Button({
   className,
   ...rest
 }: ButtonProps) {
-  const classes = [styles.button, styles[variant], styles[size], fullWidth && styles.fullWidth, className]
+  const classes = [
+    styles.button,
+    styles[variant],
+    styles[size],
+    fullWidth && styles.fullWidth,
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
   return <button type={type} className={classes} {...rest} />;

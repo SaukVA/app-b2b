@@ -8,7 +8,8 @@ function isJsonParseError(err: unknown): boolean {
 
 function toAppError(err: unknown): AppError {
   if (err instanceof AppError) return err;
-  if (isJsonParseError(err)) return new AppError('VALIDATION_ERROR', 400, 'El cuerpo no es JSON válido');
+  if (isJsonParseError(err))
+    return new AppError('VALIDATION_ERROR', 400, 'El cuerpo no es JSON válido');
   if (process.env.NODE_ENV !== 'test') console.error(err);
   return new AppError('INTERNAL_ERROR', 500, 'Error interno del servidor');
 }
@@ -20,8 +21,13 @@ export function notFoundHandler(req: Request, _res: Response, next: NextFunction
 
 /** Último middleware. El cuerpo nunca incluye el stack: solo se registra en el log del servidor. */
 // Express identifica el manejador de errores por sus 4 parámetros, aunque _next no se use.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
+export function errorHandler(
+  err: unknown,
+  _req: Request,
+  res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _next: NextFunction,
+): void {
   const appError = toAppError(err);
   const body: ApiError = {
     success: false,

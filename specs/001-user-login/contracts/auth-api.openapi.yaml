@@ -104,6 +104,7 @@ paths:
                   - type: object
                     properties:
                       data: { $ref: '#/components/schemas/LoginResponse' }
+        '400': { $ref: '#/components/responses/ValidationError' }
         '401':
           description: AUTH_SESSION_EXPIRED (caducada, revocada, reutilizada o usuario no activo)
           content:
@@ -175,6 +176,9 @@ components:
           properties:
             code:
               type: string
+              description: >
+                Códigos que devuelven las rutas /auth/*. En /api-docs el envelope es común a toda la API,
+                así que allí `code` es un texto libre (otros módulos añaden sus propios códigos).
               enum:
                 - VALIDATION_ERROR
                 - AUTH_INVALID_CREDENTIALS

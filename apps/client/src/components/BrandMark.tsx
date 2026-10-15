@@ -11,7 +11,9 @@ export interface BrandMarkProps {
 export function BrandMark({ name, subtitle, size = 'md' }: BrandMarkProps) {
   return (
     <div className={styles.brand}>
-      <span className={`${styles.logo} ${styles[size]}`} aria-hidden={Boolean(name)}>M</span>
+      <span className={`${styles.logo} ${styles[size]}`} aria-hidden={Boolean(name)}>
+        M
+      </span>
       {name && (
         <span className={styles.text}>
           <span className={styles.name}>{name}</span>

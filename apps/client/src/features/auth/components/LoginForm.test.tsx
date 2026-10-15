@@ -15,7 +15,14 @@ const mockedLogin = jest.mocked(loginRequest);
 
 const response: LoginResponse = {
   accessToken: 'jwt',
-  user: { id: '1', login: 'ana@empresa.es', name: 'Ana', role: 'Comercial', isBootstrap: false, homeScreen: null },
+  user: {
+    id: '1',
+    login: 'ana@empresa.es',
+    name: 'Ana',
+    role: 'Comercial',
+    isBootstrap: false,
+    homeScreen: null,
+  },
 };
 
 function renderForm() {
@@ -74,10 +81,14 @@ describe('LoginForm · envío', () => {
     mockedLogin.mockReturnValue(new Promise(() => undefined));
     renderForm();
     await fillAndSubmit();
-    expect((screen.getByRole('button', { name: /Entrar/ }) as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole('button', { name: /Entrar/ }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
     expect(mockedLogin).toHaveBeenCalledTimes(1);
   });
+});
 
+describe('LoginForm · errores del servidor', () => {
   it('muestra el error del servidor en un Alert', async () => {
     const message = 'Email o contraseña incorrectos. Te quedan 4 intentos.';
     mockedLogin.mockRejectedValue({
@@ -92,7 +103,9 @@ describe('LoginForm · envío', () => {
     mockedLogin.mockRejectedValue(new Error('Network Error'));
     renderForm();
     await fillAndSubmit();
-    expect((await screen.findByRole('alert')).textContent).toContain('No se ha podido conectar con el servidor');
+    expect((await screen.findByRole('alert')).textContent).toContain(
+      'No se ha podido conectar con el servidor',
+    );
   });
 });
 
@@ -114,7 +127,9 @@ describe('LoginForm · bloqueo y errores de conexión', () => {
 
   it('con credenciales incorrectas marca los campos', async () => {
     mockedLogin.mockRejectedValue({
-      response: { data: { success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'x' } } },
+      response: {
+        data: { success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'x' } },
+      },
     });
     renderForm();
     await fillAndSubmit();

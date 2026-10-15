@@ -24,8 +24,10 @@
   color: var(--ink2);
 }
 
+/* Objetivo de 44 px de alto sin mover la maqueta: el padding vertical se compensa con margen negativo. */
 .forgot {
-  padding: 0;
+  padding: 13px 0;
+  margin: -13px 0;
   border: 0;
   background: transparent;
   color: var(--accent);

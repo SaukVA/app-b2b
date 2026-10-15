@@ -11,7 +11,12 @@ export const PERMISSIONS: Readonly<Record<AppModule, Readonly<Record<Role, Permi
   ventas: { Administrador: 'edit', Comercial: 'edit', Almacén: 'view', Administración: 'view' },
   clientes: { Administrador: 'edit', Comercial: 'edit', Almacén: 'none', Administración: 'view' },
   productos: { Administrador: 'edit', Comercial: 'view', Almacén: 'edit', Administración: 'view' },
-  proveedores: { Administrador: 'edit', Comercial: 'none', Almacén: 'view', Administración: 'edit' },
+  proveedores: {
+    Administrador: 'edit',
+    Comercial: 'none',
+    Almacén: 'view',
+    Administración: 'edit',
+  },
   cobros: { Administrador: 'edit', Comercial: 'view', Almacén: 'none', Administración: 'edit' },
   ajustes: { Administrador: 'edit', Comercial: 'none', Almacén: 'none', Administración: 'none' },
 };

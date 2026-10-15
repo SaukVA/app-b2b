@@ -14,6 +14,31 @@ export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   controlSize?: 'md' | 'lg';
 }
 
+function FieldLabel({
+  htmlFor,
+  label,
+  action,
+}: {
+  htmlFor: string;
+  label: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className={styles.labelRow}>
+      <label htmlFor={htmlFor} className={styles.label}>
+        {label}
+      </label>
+      {action}
+    </div>
+  );
+}
+
+function inputClassName(size: 'md' | 'lg', withAdornment: boolean, extra?: string): string {
+  return [styles.input, styles[size], withAdornment && styles.withAdornment, extra]
+    .filter(Boolean)
+    .join(' ');
+}
+
 export function TextField({
   label,
   error,
@@ -29,24 +54,24 @@ export function TextField({
   const inputId = id ?? generatedId;
   const errorId = `${inputId}-error`;
   const isInvalid = invalid || Boolean(error);
-  const inputClasses = [styles.input, styles[controlSize], endAdornment && styles.withAdornment, className];
   return (
     <div className={styles.field}>
-      <div className={styles.labelRow}>
-        <label htmlFor={inputId} className={styles.label}>{label}</label>
-        {labelAction}
-      </div>
+      <FieldLabel htmlFor={inputId} label={label} action={labelAction} />
       <div className={styles.control}>
         <input
           id={inputId}
-          className={inputClasses.filter(Boolean).join(' ')}
+          className={inputClassName(controlSize, Boolean(endAdornment), className)}
           aria-invalid={isInvalid || undefined}
           aria-describedby={error ? errorId : undefined}
           {...inputProps}
         />
         {endAdornment && <div className={styles.adornment}>{endAdornment}</div>}
       </div>
-      {error && <span id={errorId} className={styles.error}>{error}</span>}
+      {error && (
+        <span id={errorId} className={styles.error}>
+          {error}
+        </span>
+      )}
     </div>
   );
 }

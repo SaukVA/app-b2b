@@ -25,7 +25,11 @@ export async function requireAuth(req: Request, _res: Response, next: NextFuncti
   if (!token) throw new AppError('AUTH_UNAUTHENTICATED', 401, 'Inicia sesión para continuar.');
   const payload = verifyAccessToken(token);
   if (!payload) {
-    throw new AppError('AUTH_SESSION_EXPIRED', 401, 'Tu sesión ha caducado. Vuelve a iniciar sesión.');
+    throw new AppError(
+      'AUTH_SESSION_EXPIRED',
+      401,
+      'Tu sesión ha caducado. Vuelve a iniciar sesión.',
+    );
   }
   req.auth = await resolveAuthContext(payload);
   next();

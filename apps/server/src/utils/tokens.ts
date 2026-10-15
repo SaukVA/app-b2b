@@ -18,7 +18,11 @@ export function signAccessToken(payload: AccessTokenPayload): string {
 
 function isPayload(decoded: unknown): decoded is AccessTokenPayload {
   const value = decoded as Partial<AccessTokenPayload> | null;
-  return typeof value?.sub === 'string' && typeof value.sid === 'string' && ROLES.includes(value.role as Role);
+  return (
+    typeof value?.sub === 'string' &&
+    typeof value.sid === 'string' &&
+    ROLES.includes(value.role as Role)
+  );
 }
 
 /** Devuelve el payload si la firma y la caducidad son válidas; si no, null. */

@@ -40,7 +40,8 @@ function useLoginForm() {
     if (errors.login || errors.password) return;
     void dispatch(login(values));
   };
-  const update = (patch: Partial<typeof values>) => setValues((current) => ({ ...current, ...patch }));
+  const update = (patch: Partial<typeof values>) =>
+    setValues((current) => ({ ...current, ...patch }));
   return { values, update, fieldErrors, showForgot, setShowForgot, loading, submit };
 }
 
@@ -53,34 +54,57 @@ function LoginHeader() {
   );
 }
 
-export function LoginForm() {
-  const form = useLoginForm();
-  const serverError = useAppSelector(selectAuthError);
-  const credentialsInvalid = Boolean(serverError) && serverError !== CONNECTION_ERROR_MESSAGE;
+type LoginFormState = ReturnType<typeof useLoginForm>;
+
+function LoginFields({ form, invalid }: { form: LoginFormState; invalid: boolean }) {
   const forgotLink = (
     <button type="button" className={styles.forgot} onClick={() => form.setShowForgot(true)}>
       ¿La has olvidado?
     </button>
   );
   return (
+    <>
+      <TextField
+        label="Email"
+        type="text"
+        inputMode="email"
+        autoComplete="username"
+        controlSize="lg"
+        placeholder="nombre@empresa.es"
+        value={form.values.login}
+        error={form.fieldErrors.login}
+        invalid={invalid}
+        onChange={(event) => form.update({ login: event.target.value })}
+      />
+      <PasswordField
+        label="Contraseña"
+        autoComplete="current-password"
+        controlSize="lg"
+        labelAction={forgotLink}
+        value={form.values.password}
+        error={form.fieldErrors.password}
+        invalid={invalid}
+        onChange={(event) => form.update({ password: event.target.value })}
+      />
+      <Checkbox
+        label="Mantener la sesión iniciada en este equipo"
+        checked={form.values.persistent}
+        onChange={(event) => form.update({ persistent: event.target.checked })}
+      />
+    </>
+  );
+}
+
+export function LoginForm() {
+  const form = useLoginForm();
+  const serverError = useAppSelector(selectAuthError);
+  const credentialsInvalid = Boolean(serverError) && serverError !== CONNECTION_ERROR_MESSAGE;
+  return (
     <form className={styles.form} onSubmit={form.submit} noValidate>
       <LoginHeader />
       {serverError && <Alert>{serverError}</Alert>}
       {form.showForgot && <Alert variant="info">{FORGOT_PASSWORD_MESSAGE}</Alert>}
-      <TextField
-        label="Email" type="text" inputMode="email" autoComplete="username" controlSize="lg"
-        placeholder="nombre@empresa.es" value={form.values.login} error={form.fieldErrors.login}
-        invalid={credentialsInvalid} onChange={(event) => form.update({ login: event.target.value })}
-      />
-      <PasswordField
-        label="Contraseña" autoComplete="current-password" controlSize="lg" labelAction={forgotLink}
-        value={form.values.password} error={form.fieldErrors.password} invalid={credentialsInvalid}
-        onChange={(event) => form.update({ password: event.target.value })}
-      />
-      <Checkbox
-        label="Mantener la sesión iniciada en este equipo" checked={form.values.persistent}
-        onChange={(event) => form.update({ persistent: event.target.checked })}
-      />
+      <LoginFields form={form} invalid={credentialsInvalid} />
       <Button type="submit" size="lg" fullWidth disabled={form.loading} aria-busy={form.loading}>
         Entrar
       </Button>

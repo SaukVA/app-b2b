@@ -29,8 +29,22 @@ function renderAt(path: string, authUser: AuthUser | null) {
       <MemoryRouter initialEntries={[path]}>
         <Routes>
           <Route path="/login" element={<LoginProbe />} />
-          <Route path="/clientes" element={<RequireAuth module="clientes"><p>Clientes</p></RequireAuth>} />
-          <Route path="/productos" element={<RequireAuth module="productos"><p>Productos</p></RequireAuth>} />
+          <Route
+            path="/clientes"
+            element={
+              <RequireAuth module="clientes">
+                <p>Clientes</p>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/productos"
+            element={
+              <RequireAuth module="productos">
+                <p>Productos</p>
+              </RequireAuth>
+            }
+          />
         </Routes>
       </MemoryRouter>
     </Provider>,

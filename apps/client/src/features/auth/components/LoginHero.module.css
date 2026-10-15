@@ -7,7 +7,13 @@
   gap: var(--space-12);
   padding: var(--space-12);
   background-color: #16191d;
-  background-image: repeating-linear-gradient(0deg, transparent 0, transparent 39px, #252a30 39px, #252a30 40px);
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 39px,
+    #252a30 39px,
+    #252a30 40px
+  );
   color: #e8eae6;
 }
 

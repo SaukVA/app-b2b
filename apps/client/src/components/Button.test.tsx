@@ -19,7 +19,11 @@ describe('Button', () => {
 
   it('no dispara el clic si está deshabilitado', async () => {
     const onClick = jest.fn();
-    render(<Button disabled onClick={onClick}>Entrar</Button>);
+    render(
+      <Button disabled onClick={onClick}>
+        Entrar
+      </Button>,
+    );
     await userEvent.click(screen.getByRole('button'));
     expect(onClick).not.toHaveBeenCalled();
   });

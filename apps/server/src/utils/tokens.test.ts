@@ -4,7 +4,11 @@ import { createRefreshToken, hashToken, signAccessToken, verifyAccessToken } fro
 
 setTestEnv();
 
-const payload = { sub: '64b000000000000000000001', sid: '64b000000000000000000002', role: 'Comercial' as const };
+const payload = {
+  sub: '64b000000000000000000001',
+  sid: '64b000000000000000000002',
+  role: 'Comercial' as const,
+};
 
 describe('signAccessToken / verifyAccessToken', () => {
   afterEach(() => jest.useRealTimers());
