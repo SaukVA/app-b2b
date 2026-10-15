@@ -241,13 +241,13 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T088 [P] [US5] Tests unitarios: el 5.º fallo fija `lockedUntil = ahora + 15 min`; con `lockedUntil` futuro se rechaza la contraseña correcta con `AUTH_ACCOUNT_LOCKED` (423) y la hora en el mensaje; con `lockedUntil` pasado se entra y `failedCount` vuelve a 0; un login correcto antes del límite reinicia el contador (con reloj simulado de Jest) en `apps/server/src/modules/auth/auth.service.test.ts`
-- [ ] T089 [P] [US5] Test de integración de la secuencia 5 × 401 → 423 en `apps/server/src/modules/auth/auth.routes.test.ts`
+- [X] T088 [P] [US5] Tests unitarios: el 5.º fallo fija `lockedUntil = ahora + 15 min`; con `lockedUntil` futuro se rechaza la contraseña correcta con `AUTH_ACCOUNT_LOCKED` (423) y la hora en el mensaje; con `lockedUntil` pasado se entra y `failedCount` vuelve a 0; un login correcto antes del límite reinicia el contador (con reloj simulado de Jest) en `apps/server/src/modules/auth/auth.service.test.ts`
+- [X] T089 [P] [US5] Test de integración de la secuencia 4 × 401 → 423 (el 5.º fallo ya bloquea e indica la hora, US5 escenario 1) en `apps/server/src/modules/auth/auth.routes.test.ts`
 
 ### Implementation for User Story 5
 
-- [ ] T090 [US5] Implementar `assertNotLocked(identifier)` (paso 2 de R5) y que `registerFailure` fije `lockedUntil` al alcanzar `MAX_FAILED_ATTEMPTS`, con el mensaje "Demasiados intentos. Vuelve a intentarlo a las HH:MM." en `apps/server/src/modules/auth/auth.service.ts`
-- [ ] T091 [US5] Mostrar en `LoginForm` el mensaje de bloqueo devuelto por la API y diferenciar los errores de conexión ("No se puede conectar con el servidor") de los de credenciales, sin contarlos como intento en `apps/client/src/features/auth/components/LoginForm.tsx`
+- [X] T090 [US5] Implementar `assertNotLocked(identifier)` (paso 2 de R5) y que `registerFailure` fije `lockedUntil` al alcanzar `MAX_FAILED_ATTEMPTS`, con el mensaje "Demasiados intentos. Vuelve a intentarlo a las HH:MM." en `apps/server/src/modules/auth/auth.service.ts`
+- [X] T091 [US5] Mostrar en `LoginForm` el mensaje de bloqueo devuelto por la API y diferenciar los errores de conexión ("No se puede conectar con el servidor") de los de credenciales, sin contarlos como intento en `apps/client/src/features/auth/components/LoginForm.tsx`
 
 **Checkpoint**: quickstart §3, escenario 3.
 

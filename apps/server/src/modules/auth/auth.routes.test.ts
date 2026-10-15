@@ -328,3 +328,29 @@ describe('Mantener la sesión · caducidad', () => {
     expect(refreshCookie(await postLogin({}))).not.toMatch(/Max-Age|Expires/);
   });
 });
+
+describe('POST /api/auth/login · bloqueo temporal', () => {
+  it('4 × 401 con los intentos restantes, el 5.º fallo da 423 y luego la correcta también', async () => {
+    await createUser();
+    for (const remaining of ['4 intentos', '3 intentos', '2 intentos', '1 intento']) {
+      const res = await postLogin({ password: 'mal' });
+      expect(res.status).toBe(401);
+      expect(res.body.error.message).toContain(
+        `Te ${remaining === '1 intento' ? 'queda' : 'quedan'} ${remaining}.`,
+      );
+    }
+    const locked = await postLogin({ password: 'mal' });
+    expect(locked.status).toBe(423);
+    expect(locked.body).toEqual({
+      success: false,
+      error: {
+        code: 'AUTH_ACCOUNT_LOCKED',
+        message: expect.stringMatching(
+          /^Demasiados intentos\. Vuelve a intentarlo a las \d{2}:\d{2}\.$/,
+        ),
+      },
+    });
+    const correct = await postLogin({});
+    expect(correct.status).toBe(423);
+  });
+});

@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-15T12:16:34Z",
+  "updated_at": "2026-10-15T14:35:21Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -768,7 +768,7 @@
           "key": "AB2B-42",
           "id": "T088",
           "summary": "T088: Tests unitarios: el 5.º fallo fija `lockedUntil = ahora + 15 min`; con `lockedUntil` futuro se rechaza la contraseña correcta con `AUTH_ACCOUNT_LOCKED` (423) y la hora en el mensaje; con `lockedUntil` pasado se entra y `failedCount` vuelve a 0; un…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-42"
         },
@@ -776,7 +776,7 @@
           "key": "AB2B-47",
           "id": "T089",
           "summary": "T089: Test de integración de la secuencia 5 × 401 → 423 en `apps/server/src/modules/auth/auth.routes.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-47"
         },
@@ -784,7 +784,7 @@
           "key": "AB2B-52",
           "id": "T090",
           "summary": "T090: Implementar `assertNotLocked(identifier)` (paso 2 de R5) y que `registerFailure` fije `lockedUntil` al alcanzar `MAX_FAILED_ATTEMPTS`, con el mensaje \"Demasiados intentos. Vuelve a intentarlo a las HH:MM.\" en `apps/server/src/modules/auth/auth.serv…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-52"
         },
@@ -792,7 +792,7 @@
           "key": "AB2B-57",
           "id": "T091",
           "summary": "T091: Mostrar en `LoginForm` el mensaje de bloqueo devuelto por la API y diferenciar los errores de conexión (\"No se puede conectar con el servidor\") de los de credenciales, sin contarlos como intento en `apps/client/src/features/auth/components/LoginFor…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-57"
         }

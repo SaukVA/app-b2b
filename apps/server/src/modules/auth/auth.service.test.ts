@@ -226,3 +226,93 @@ describe('touchSession', () => {
     expect((await SessionModel.findOne())?.expiresAt).toEqual(session?.expiresAt);
   });
 });
+
+// --- Bloqueo temporal (US5) ---
+// Solo se simula Date: los temporizadores reales los necesita el driver de MongoDB.
+const REAL_TIMERS = [
+  'nextTick',
+  'setImmediate',
+  'clearImmediate',
+  'setInterval',
+  'clearInterval',
+  'setTimeout',
+  'clearTimeout',
+  'queueMicrotask',
+  'hrtime',
+  'performance',
+] as const;
+const T0 = new Date('2026-10-15T10:00:00Z'); // 12:00 en Madrid (CEST)
+const LOCKED = {
+  code: 'AUTH_ACCOUNT_LOCKED',
+  status: 423,
+  message: 'Demasiados intentos. Vuelve a intentarlo a las 12:15.',
+};
+
+const setNow = (offsetMinutes: number) =>
+  jest.setSystemTime(T0.getTime() + offsetMinutes * MINUTE_MS);
+const wrong = () => login(credentials('ana@empresa.es', 'mal'));
+const right = () => login(credentials('ana@empresa.es'));
+
+async function failTimes(times: number) {
+  for (let i = 0; i < times; i += 1) await wrong().catch(() => undefined);
+}
+
+function useLockoutClock() {
+  beforeEach(async () => {
+    jest.useFakeTimers({ doNotFake: [...REAL_TIMERS] });
+    setNow(0);
+    await createUser('ana@empresa.es');
+  });
+  afterEach(() => jest.useRealTimers());
+}
+
+describe('login · bloqueo temporal por intentos fallidos', () => {
+  useLockoutClock();
+
+  it('el 5.º fallo bloquea 15 min e indica la hora de Madrid', async () => {
+    await failTimes(4);
+    await expect(wrong()).rejects.toMatchObject(LOCKED);
+    const attempt = await LoginAttemptModel.findOne({ identifier: 'ana@empresa.es' });
+    expect(attempt?.lockedUntil).toEqual(new Date(T0.getTime() + 15 * MINUTE_MS));
+  });
+
+  it('con el bloqueo activo rechaza incluso la contraseña correcta', async () => {
+    await failTimes(5);
+    setNow(14);
+    await expect(right()).rejects.toMatchObject(LOCKED);
+    await expect(SessionModel.countDocuments()).resolves.toBe(0);
+  });
+});
+
+describe('login · fin del bloqueo y reinicio del contador', () => {
+  useLockoutClock();
+
+  it('pasado el bloqueo, la contraseña correcta entra y reinicia el contador', async () => {
+    await failTimes(5);
+    setNow(16);
+    await expect(right()).resolves.toMatchObject({ user: { login: 'ana@empresa.es' } });
+    await expect(LoginAttemptModel.countDocuments()).resolves.toBe(0);
+  });
+
+  it('pasado el bloqueo, un fallo vuelve a contar desde el principio', async () => {
+    await failTimes(5);
+    setNow(16);
+    await expect(wrong()).rejects.toMatchObject({
+      message: 'Email o contraseña incorrectos. Te quedan 4 intentos.',
+    });
+  });
+
+  it('un acceso correcto antes del límite reinicia el contador', async () => {
+    await failTimes(4);
+    await right();
+    await expect(wrong()).rejects.toMatchObject({
+      message: 'Email o contraseña incorrectos. Te quedan 4 intentos.',
+    });
+  });
+
+  it('también bloquea un email que no existe, con el mismo mensaje', async () => {
+    for (let i = 0; i < 4; i += 1)
+      await login(credentials('nadie@empresa.es', 'mal')).catch(() => undefined);
+    await expect(login(credentials('nadie@empresa.es', 'mal'))).rejects.toMatchObject(LOCKED);
+  });
+});

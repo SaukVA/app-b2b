@@ -95,3 +95,38 @@ describe('LoginForm · envío', () => {
     expect((await screen.findByRole('alert')).textContent).toContain('No se ha podido conectar con el servidor');
   });
 });
+
+describe('LoginForm · bloqueo y errores de conexión', () => {
+  const fieldsInvalid = () =>
+    [screen.getByLabelText('Email'), screen.getByLabelText('Contraseña')].map((field) =>
+      field.getAttribute('aria-invalid'),
+    );
+
+  it('muestra el mensaje de bloqueo temporal devuelto por la API', async () => {
+    const message = 'Demasiados intentos. Vuelve a intentarlo a las 12:15.';
+    mockedLogin.mockRejectedValue({
+      response: { data: { success: false, error: { code: 'AUTH_ACCOUNT_LOCKED', message } } },
+    });
+    renderForm();
+    await fillAndSubmit();
+    expect((await screen.findByRole('alert')).textContent).toBe(message);
+  });
+
+  it('con credenciales incorrectas marca los campos', async () => {
+    mockedLogin.mockRejectedValue({
+      response: { data: { success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'x' } } },
+    });
+    renderForm();
+    await fillAndSubmit();
+    await screen.findByRole('alert');
+    expect(fieldsInvalid()).toEqual(['true', 'true']);
+  });
+
+  it('un error de conexión no marca los campos como erróneos', async () => {
+    mockedLogin.mockRejectedValue(new Error('Network Error'));
+    renderForm();
+    await fillAndSubmit();
+    await screen.findByRole('alert');
+    expect(fieldsInvalid()).toEqual([null, null]);
+  });
+});

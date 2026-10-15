@@ -1,5 +1,7 @@
 import {
+  APP_TIME_ZONE,
   IDLE_TIMEOUT_MIN,
+  LOCK_MINUTES,
   MAX_FAILED_ATTEMPTS,
   PERSISTENT_SESSION_DAYS,
   type AuthUser,
@@ -57,24 +59,55 @@ export function findUserByLogin(login: string): Promise<UserDocument | null> {
   return UserModel.findOne({ login }).select('+passwordHash').exec();
 }
 
-/** Suma un fallo (como mucho hasta MAX_FAILED_ATTEMPTS) y devuelve los intentos restantes. */
-export async function registerFailure(identifier: string): Promise<number> {
+const timeFormat = new Intl.DateTimeFormat('es-ES', {
+  timeZone: APP_TIME_ZONE,
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function accountLocked(lockedUntil: Date): AppError {
+  const time = timeFormat.format(lockedUntil);
+  return new AppError(
+    'AUTH_ACCOUNT_LOCKED',
+    423,
+    `Demasiados intentos. Vuelve a intentarlo a las ${time}.`,
+  );
+}
+
+/**
+ * Suma un fallo y, al llegar a MAX_FAILED_ATTEMPTS, bloquea el identificador LOCK_MINUTES (research R4).
+ * Devuelve el error que ve el usuario: intentos restantes o la hora de fin del bloqueo.
+ */
+export async function registerFailure(identifier: string): Promise<AppError> {
+  const lockUntil = new Date(Date.now() + LOCK_MINUTES * MINUTE_MS);
+  const nextCount = {
+    $min: [{ $add: [{ $ifNull: ['$failedCount', 0] }, 1] }, MAX_FAILED_ATTEMPTS],
+  };
   const attempt = await LoginAttemptModel.findOneAndUpdate(
     { identifier },
     [
+      { $set: { failedCount: nextCount, updatedAt: '$$NOW' } },
       {
         $set: {
-          failedCount: {
-            $min: [{ $add: [{ $ifNull: ['$failedCount', 0] }, 1] }, MAX_FAILED_ATTEMPTS],
+          lockedUntil: {
+            $cond: [{ $gte: ['$failedCount', MAX_FAILED_ATTEMPTS] }, lockUntil, null],
           },
-          lockedUntil: { $ifNull: ['$lockedUntil', null] },
-          updatedAt: '$$NOW',
         },
       },
     ],
     { upsert: true, new: true, timestamps: false },
   );
-  return Math.max(MAX_FAILED_ATTEMPTS - (attempt?.failedCount ?? MAX_FAILED_ATTEMPTS), 0);
+  if (attempt?.lockedUntil) return accountLocked(attempt.lockedUntil);
+  return invalidCredentials(MAX_FAILED_ATTEMPTS - (attempt?.failedCount ?? 0));
+}
+
+/** Paso 2 de R5: con un bloqueo vigente no se mira la contraseña; si ya expiró, el contador vuelve a 0 (FR-016). */
+export async function assertNotLocked(identifier: string): Promise<void> {
+  const attempt = await LoginAttemptModel.findOne({ identifier });
+  if (!attempt?.lockedUntil) return;
+  if (attempt.lockedUntil.getTime() > Date.now()) throw accountLocked(attempt.lockedUntil);
+  await resetAttempts(identifier);
 }
 
 export async function resetAttempts(identifier: string): Promise<void> {
@@ -124,13 +157,14 @@ export async function createSession(
   return { accessToken, refreshToken, user: toAuthUser(user) };
 }
 
-/** Orden de research R5: credenciales → estado → sesión. */
+/** Orden de research R5: bloqueo temporal → credenciales → estado → sesión. */
 export async function login(input: LoginInput): Promise<IssuedSession> {
   const identifier = normalizeLogin(input.login);
   await retireBootstrapIfNeeded();
+  await assertNotLocked(identifier);
   const user = await findUserByLogin(identifier);
   const passwordOk = await verifyPassword(input.password, user?.passwordHash);
-  if (!user || !passwordOk) throw invalidCredentials(await registerFailure(identifier));
+  if (!user || !passwordOk) throw await registerFailure(identifier);
   assertCanSignIn(user);
   await resetAttempts(identifier);
   return createSession(user, input);
