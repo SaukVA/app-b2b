@@ -219,15 +219,15 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T082 [P] [US4] Test de integración: login web con `persistent: true` → cookie con `Max-Age=2592000`; con `persistent: false` → cookie sin `Max-Age`/`Expires`; `expiresAt` de la sesión acorde a cada caso en `apps/server/src/modules/auth/auth.routes.test.ts`
-- [ ] T083 [P] [US4] Tests de `ipc/auth.ts`: `setRefreshToken(t, true)` cifra con `safeStorage` en `session.bin`; `setRefreshToken(t, false)` lo deja solo en memoria y borra `session.bin`; `getRefreshToken` prioriza la memoria en `apps/desktop/src/ipc/auth.test.ts`
+- [X] T082 [P] [US4] Test de integración: login web con `persistent: true` → cookie con `Max-Age=2592000`; con `persistent: false` → cookie sin `Max-Age`/`Expires`; `expiresAt` de la sesión acorde a cada caso en `apps/server/src/modules/auth/auth.routes.test.ts`
+- [X] T083 [P] [US4] Tests de `ipc/auth.ts`: `setRefreshToken(t, true)` cifra con `safeStorage` en `session.bin`; `setRefreshToken(t, false)` lo deja solo en memoria y borra `session.bin`; `getRefreshToken` prioriza la memoria en `apps/desktop/src/ipc/auth.test.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T084 [US4] Fijar `expiresAt` en `createSession` según `persistent` (30 días absolutos frente a 30 min de inactividad) y `Max-Age` de la cookie en `authController` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`
-- [ ] T085 [US4] Implementar handlers `auth:get-refresh`, `auth:set-refresh` y `auth:clear-refresh` con `safeStorage` y `userData/session.bin` según contracts/desktop-bridge.md en `apps/desktop/src/ipc/auth.ts`
-- [ ] T086 [US4] Exponer `getRefreshToken`, `setRefreshToken` y `clearRefreshToken` en `window.desktop` con `contextBridge` en `apps/desktop/src/preload.ts`
-- [ ] T087 [US4] En el cliente de escritorio: enviar `client: 'desktop'`, guardar el refresh token con `setRefreshToken(token, persistent)` tras el login y el refresh, y mandarlo en el cuerpo de `refreshRequest()` en `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/features/auth/authApi.ts`
+- [X] T084 [US4] Fijar `expiresAt` en `createSession` según `persistent` (30 días absolutos frente a 30 min de inactividad) y `Max-Age` de la cookie en `authController` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`
+- [X] T085 [US4] Implementar handlers `auth:get-refresh`, `auth:set-refresh` y `auth:clear-refresh` con `safeStorage` y `userData/session.bin` según contracts/desktop-bridge.md en `apps/desktop/src/ipc/auth.ts`
+- [X] T086 [US4] Exponer `getRefreshToken`, `setRefreshToken` y `clearRefreshToken` en `window.desktop` con `contextBridge` en `apps/desktop/src/preload.ts`
+- [X] T087 [US4] En el cliente de escritorio: enviar `client: 'desktop'`, guardar el refresh token con `setRefreshToken(token, persistent)` tras el login y el refresh, y mandarlo en el cuerpo de `refreshRequest()` en `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/features/auth/authApi.ts`
 
 **Checkpoint**: quickstart §3, escenarios 6–7, y §4, escenarios 4–5.
 

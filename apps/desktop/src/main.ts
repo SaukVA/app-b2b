@@ -1,7 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { app, BrowserWindow, net, protocol } from 'electron';
+import { app, BrowserWindow, ipcMain, net, protocol, safeStorage } from 'electron';
+import { createRefreshTokenStore, registerAuthIpc } from './ipc/auth';
+import { readConfig } from './ipc/config';
 
 // En producción el cliente se sirve desde app://. (origen admitido por CORS_ORIGINS).
 const APP_SCHEME = 'app';
@@ -25,6 +27,13 @@ function registerAppProtocol(): void {
   });
 }
 
+/** Handlers de window.desktop. server:get-url se adelanta de la fase 9 para que el puente esté completo. */
+function registerIpc(): void {
+  const userDataDir = app.getPath('userData');
+  registerAuthIpc(ipcMain, createRefreshTokenStore({ userDataDir, encryptor: safeStorage }));
+  ipcMain.handle('server:get-url', () => readConfig(userDataDir).serverUrl);
+}
+
 function createWindow(): void {
   const window = new BrowserWindow({
     width: 1280,
@@ -41,6 +50,7 @@ function createWindow(): void {
 
 app.whenReady().then(() => {
   registerAppProtocol();
+  registerIpc();
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

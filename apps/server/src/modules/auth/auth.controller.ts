@@ -45,14 +45,12 @@ export const authController = {
   async refresh(req: Request, res: Response): Promise<void> {
     const body = req.body as RefreshInput;
     const cookieToken = (req.cookies as Record<string, string | undefined>)[REFRESH_COOKIE];
-    const { refreshToken, persistent, client, ...session } = await refresh(
-      body.refreshToken ?? cookieToken,
-    );
+    const { refreshToken, client, ...session } = await refresh(body.refreshToken ?? cookieToken);
     if (client === 'desktop') {
       sendSuccess<LoginResponse>(res, { ...session, refreshToken });
       return;
     }
-    res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions(persistent));
+    res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions(session.persistent));
     sendSuccess<LoginResponse>(res, session);
   },
 

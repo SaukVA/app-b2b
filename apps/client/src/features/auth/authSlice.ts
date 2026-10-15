@@ -21,11 +21,29 @@ export type LoginCredentials = Omit<LoginRequest, 'client'>;
 
 const initialState: AuthState = { user: null, accessToken: null, status: 'idle', error: null };
 
+/**
+ * En escritorio el refresh token lo guarda el proceso principal (memoria o session.bin cifrado) y no
+ * pasa a la store; en web viene en la cookie y la respuesta no lo trae.
+ */
+async function keepRefreshToken(
+  response: LoginResponse,
+  persistent: boolean,
+): Promise<LoginResponse> {
+  const { refreshToken, ...rest } = response;
+  const bridge = getDesktopBridge();
+  if (bridge && refreshToken) await bridge.setRefreshToken(refreshToken, persistent);
+  return rest;
+}
+
 export const login = createAsyncThunk<LoginResponse, LoginCredentials, { rejectValue: string }>(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      return await loginRequest({ ...credentials, client: isDesktop() ? 'desktop' : 'web' });
+      const response = await loginRequest({
+        ...credentials,
+        client: isDesktop() ? 'desktop' : 'web',
+      });
+      return await keepRefreshToken(response, credentials.persistent);
     } catch (err) {
       return rejectWithValue(toAuthErrorMessage(err));
     }
@@ -48,7 +66,8 @@ export const refreshSession = createAsyncThunk<LoginResponse, void, { rejectValu
   'auth/refreshSession',
   async (_, { rejectWithValue }) => {
     try {
-      return await refreshRequest();
+      const response = await refreshRequest();
+      return await keepRefreshToken(response, response.persistent ?? false);
     } catch (err) {
       return rejectWithValue(toAuthErrorMessage(err));
     }

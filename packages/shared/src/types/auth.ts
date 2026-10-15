@@ -22,5 +22,7 @@ export interface LoginResponse {
   accessToken: string;
   /** Solo con client = 'desktop'; en web va en la cookie httpOnly. */
   refreshToken?: string;
+  /** Solo en /auth/refresh: el escritorio lo necesita para decidir si guarda el token rotado en disco. */
+  persistent?: boolean;
   user: AuthUser;
 }

@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-15T12:03:49Z",
+  "updated_at": "2026-10-15T12:16:34Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -713,7 +713,7 @@
           "key": "AB2B-13",
           "id": "T082",
           "summary": "T082: Test de integración: login web con `persistent: true` → cookie con `Max-Age=2592000`; con `persistent: false` → cookie sin `Max-Age`/`Expires`; `expiresAt` de la sesión acorde a cada caso en `apps/server/src/modules/auth/auth.routes.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-13"
         },
@@ -721,7 +721,7 @@
           "key": "AB2B-19",
           "id": "T083",
           "summary": "T083: Tests de `ipc/auth.ts`: `setRefreshToken(t, true)` cifra con `safeStorage` en `session.bin`; `setRefreshToken(t, false)` lo deja solo en memoria y borra `session.bin`; `getRefreshToken` prioriza la memoria en `apps/desktop/src/ipc/auth.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-19"
         },
@@ -729,7 +729,7 @@
           "key": "AB2B-23",
           "id": "T084",
           "summary": "T084: Fijar `expiresAt` en `createSession` según `persistent` (30 días absolutos frente a 30 min de inactividad) y `Max-Age` de la cookie en `authController` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controlle…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-23"
         },
@@ -737,7 +737,7 @@
           "key": "AB2B-27",
           "id": "T085",
           "summary": "T085: Implementar handlers `auth:get-refresh`, `auth:set-refresh` y `auth:clear-refresh` con `safeStorage` y `userData/session.bin` según contracts/desktop-bridge.md en `apps/desktop/src/ipc/auth.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-27"
         },
@@ -745,7 +745,7 @@
           "key": "AB2B-32",
           "id": "T086",
           "summary": "T086: Exponer `getRefreshToken`, `setRefreshToken` y `clearRefreshToken` en `window.desktop` con `contextBridge` en `apps/desktop/src/preload.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-32"
         },
@@ -753,7 +753,7 @@
           "key": "AB2B-37",
           "id": "T087",
           "summary": "T087: En el cliente de escritorio: enviar `client: 'desktop'`, guardar el refresh token con `setRefreshToken(token, persistent)` tras el login y el refresh, y mandarlo en el cuerpo de `refreshRequest()` en `apps/client/src/features/auth/authSlice.ts` y `…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-37"
         }

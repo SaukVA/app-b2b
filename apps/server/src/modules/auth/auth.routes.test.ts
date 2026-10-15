@@ -166,6 +166,7 @@ describe('POST /api/auth/refresh · web', () => {
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({
       accessToken: expect.any(String),
+      persistent: false,
       user: expect.objectContaining({ login: 'ana@empresa.es' }),
     });
     const newCookie = refreshCookie(res);
@@ -209,6 +210,13 @@ describe('POST /api/auth/refresh · escritorio', () => {
     expect(res.body.data.refreshToken).toEqual(expect.any(String));
     expect(res.body.data.refreshToken).not.toBe(body.data.refreshToken);
     expect(refreshCookie(res)).toBe('');
+  });
+
+  it('200: indica si la sesión es persistente para guardar el token en el equipo', async () => {
+    await createUser();
+    const { body } = await postLogin({ client: 'desktop', persistent: true });
+    const res = await postRefresh().send({ refreshToken: body.data.refreshToken });
+    expect(res.body.data.persistent).toBe(true);
   });
 
   it('400 VALIDATION_ERROR si refreshToken no es un texto', async () => {
@@ -292,5 +300,31 @@ describe('POST /api/auth/logout', () => {
     const res = await postLogout();
     expect(res.status).toBe(401);
     expect(res.body.error.code).toBe('AUTH_UNAUTHENTICATED');
+  });
+});
+
+describe('Mantener la sesión · caducidad', () => {
+  const MINUTE_MS = 60 * 1000;
+
+  async function expiresInMs(persistent: boolean): Promise<number> {
+    await createUser();
+    const before = Date.now();
+    const res = await postLogin({ persistent });
+    expect(res.status).toBe(200);
+    const session = await SessionModel.findOne();
+    return session!.expiresAt.getTime() - before;
+  }
+
+  it('con la casilla: la sesión caduca a los 30 días', async () => {
+    const ms = await expiresInMs(true);
+    expect(ms).toBeGreaterThanOrEqual(30 * 24 * 60 * MINUTE_MS);
+    expect(ms).toBeLessThan(30 * 24 * 60 * MINUTE_MS + MINUTE_MS);
+  });
+
+  it('sin la casilla: caduca a los 30 min de inactividad y la cookie no tiene Max-Age ni Expires', async () => {
+    const ms = await expiresInMs(false);
+    expect(ms).toBeGreaterThanOrEqual(30 * MINUTE_MS);
+    expect(ms).toBeLessThan(31 * MINUTE_MS);
+    expect(refreshCookie(await postLogin({}))).not.toMatch(/Max-Age|Expires/);
   });
 });

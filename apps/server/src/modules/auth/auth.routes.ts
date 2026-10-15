@@ -48,6 +48,9 @@ export const authRouter = Router();
  *       properties:
  *         accessToken: { type: string, description: JWT de 15 min }
  *         refreshToken: { type: string, description: Solo con client=desktop }
+ *         persistent:
+ *           type: boolean
+ *           description: Solo en /auth/refresh. Si la sesión es persistente ("Mantener la sesión").
  *         user: { $ref: '#/components/schemas/AuthUser' }
  */
 
