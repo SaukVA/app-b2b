@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-14T12:05:09Z",
-  "updated_at": "2026-10-15T10:10:09Z",
+  "updated_at": "2026-10-15T11:44:12Z",
   "spec": "001-user-login",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -595,7 +595,7 @@
           "key": "AB2B-48",
           "id": "T069",
           "summary": "T069: Tests unitarios de `refresh()`: rota el hash; un refresh token ya rotado revoca la sesión (reutilización); sesión no persistente con `lastActivityAt` > 30 min → `AUTH_SESSION_EXPIRED`; persistente con `createdAt` > 30 días → `AUTH_SESSION_EXPIRED`…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-48"
         },
@@ -603,7 +603,7 @@
           "key": "AB2B-53",
           "id": "T070",
           "summary": "T070: Test de integración de `POST /api/auth/refresh` con cookie (web) y con cuerpo (desktop) y de que `requireAuth` actualiza `lastActivityAt` como mucho una vez por minuto en `apps/server/src/modules/auth/auth.routes.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-53"
         },
@@ -611,7 +611,7 @@
           "key": "AB2B-58",
           "id": "T071",
           "summary": "T071: Test del interceptor de respuesta: ante 401 hace un único refresh, encola las peticiones concurrentes y las reintenta; si el refresh falla, limpia la sesión y redirige a `/login` con `from` en `apps/client/src/utils/httpClient.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-58"
         },
@@ -619,7 +619,7 @@
           "key": "AB2B-63",
           "id": "T072",
           "summary": "T072: Implementar `touchSession(session)` (actualiza `lastActivityAt` y, si no es persistente, `expiresAt = lastActivityAt + 30 min`, como mucho una vez por minuto) y usarla en `requireAuth` en `apps/server/src/modules/auth/auth.service.ts` y `apps/serve…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-63"
         },
@@ -627,7 +627,7 @@
           "key": "AB2B-70",
           "id": "T073",
           "summary": "T073: Implementar `refresh(token)` en el servicio (buscar por hash, validar caducidad, detectar reutilización, rotar y emitir un access nuevo) y `authController.refresh` (lee la cookie o `body.refreshToken` según el cliente y reescribe la cookie o devuel…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-70"
         },
@@ -635,7 +635,7 @@
           "key": "AB2B-74",
           "id": "T074",
           "summary": "T074: Crear `POST /api/auth/refresh` con su `@openapi` y su esquema zod opcional `{ refreshToken?: string }` en `apps/server/src/modules/auth/auth.routes.ts` y `apps/server/src/modules/auth/auth.validation.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-74"
         },
@@ -643,7 +643,7 @@
           "key": "AB2B-79",
           "id": "T075",
           "summary": "T075: Implementar `refreshRequest()` en `authApi.ts`, el thunk `refreshSession` y la restauración de sesión al arrancar (`refreshSession` + `loadMe` antes de pintar rutas protegidas) en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/feature…",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-79"
         },
@@ -651,7 +651,7 @@
           "key": "AB2B-84",
           "id": "T076",
           "summary": "T076: Implementar el interceptor de respuesta con refresh único y cola en `apps/client/src/utils/httpClient.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-84"
         }

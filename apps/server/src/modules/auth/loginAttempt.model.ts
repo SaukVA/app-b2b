@@ -22,4 +22,8 @@ const loginAttemptSchema = new Schema<LoginAttemptFields>(
 
 loginAttemptSchema.index({ updatedAt: 1 }, { expireAfterSeconds: ONE_DAY_SEC });
 
-export const LoginAttemptModel = model<LoginAttemptFields>('LoginAttempt', loginAttemptSchema, 'loginAttempts');
+export const LoginAttemptModel = model<LoginAttemptFields>(
+  'LoginAttempt',
+  loginAttemptSchema,
+  'loginAttempts',
+);

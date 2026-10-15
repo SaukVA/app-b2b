@@ -21,14 +21,24 @@ function loginAsAdmin() {
 
 async function insertRealUser() {
   const passwordHash = await hashPassword('secreto123');
-  await UserModel.create({ login: 'ana@empresa.es', name: 'Ana', passwordHash, role: 'Comercial', status: 'Activo' });
+  await UserModel.create({
+    login: 'ana@empresa.es',
+    name: 'Ana',
+    passwordHash,
+    role: 'Comercial',
+    status: 'Activo',
+  });
 }
 
 describe('Cuenta inicial "admin"', () => {
   it('200 con admin/admin en una base de datos vacía', async () => {
     const res = await loginAsAdmin();
     expect(res.status).toBe(200);
-    expect(res.body.data.user).toMatchObject({ login: 'admin', role: 'Administrador', isBootstrap: true });
+    expect(res.body.data.user).toMatchObject({
+      login: 'admin',
+      role: 'Administrador',
+      isBootstrap: true,
+    });
   });
 
   it('401 AUTH_INVALID_CREDENTIALS en cuanto existe un usuario real', async () => {
@@ -41,7 +51,9 @@ describe('Cuenta inicial "admin"', () => {
   it('401 AUTH_SESSION_EXPIRED en GET /me con la sesión abierta de admin', async () => {
     const { body } = await loginAsAdmin();
     await insertRealUser();
-    const res = await request(app()).get('/api/auth/me').set('Authorization', `Bearer ${body.data.accessToken}`);
+    const res = await request(app())
+      .get('/api/auth/me')
+      .set('Authorization', `Bearer ${body.data.accessToken}`);
     expect(res.status).toBe(401);
     expect(res.body.error.code).toBe('AUTH_SESSION_EXPIRED');
     await expect(UserModel.exists({ isBootstrap: true })).resolves.toBeNull();

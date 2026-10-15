@@ -9,6 +9,22 @@ export async function loginRequest(body: LoginRequest): Promise<LoginResponse> {
   return data.data;
 }
 
+let pendingRefresh: Promise<LoginResponse> | null = null;
+
+/**
+ * En web el refresh token viaja en la cookie httpOnly. Solo un refresh a la vez: dos con el mismo token
+ * (p. ej. el doble efecto de StrictMode) contarían como reutilización y revocarían la sesión.
+ */
+export function refreshRequest(): Promise<LoginResponse> {
+  pendingRefresh ??= httpClient
+    .post<ApiSuccess<LoginResponse>>('/auth/refresh', {})
+    .then(({ data }) => data.data)
+    .finally(() => {
+      pendingRefresh = null;
+    });
+  return pendingRefresh;
+}
+
 export async function fetchMe(): Promise<AuthUser> {
   const { data } = await httpClient.get<ApiSuccess<AuthUser>>('/auth/me');
   return data.data;

@@ -34,7 +34,10 @@ export async function retireBootstrapIfNeeded(): Promise<boolean> {
   if ((await countRealUsers()) === 0) return false;
   const bootstrap = await UserModel.findOne({ isBootstrap: true });
   if (!bootstrap) return false;
-  await SessionModel.updateMany({ userId: bootstrap._id, revokedAt: null }, { revokedAt: new Date() });
+  await SessionModel.updateMany(
+    { userId: bootstrap._id, revokedAt: null },
+    { revokedAt: new Date() },
+  );
   await UserModel.deleteOne({ _id: bootstrap._id });
   return true;
 }

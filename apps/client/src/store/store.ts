@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import { authReducer } from '../features/auth/authSlice';
-import { setAccessTokenGetter } from '../utils/httpClient';
+import { authReducer, refreshSession } from '../features/auth/authSlice';
+import { setAccessTokenGetter, setRefreshHandler } from '../utils/httpClient';
 
 // Cada dominio registra aquí su slice (features/<dominio>/<dominio>Slice.ts).
 const rootReducer = combineReducers({
@@ -15,10 +15,14 @@ export function setupStore(preloadedState?: Partial<RootState>) {
   return configureStore({ reducer: rootReducer, preloadedState });
 }
 
-export const store = setupStore();
+/** httpClient no importa la store (evita el ciclo store → slice → api → httpClient → store): se le inyecta. */
+export function connectHttpClient(target: AppStore): void {
+  setAccessTokenGetter(() => target.getState().auth.accessToken);
+  setRefreshHandler(async () => (await target.dispatch(refreshSession()).unwrap()).accessToken);
+}
 
-// httpClient no importa la store (evita el ciclo store → slice → api → httpClient → store).
-setAccessTokenGetter(() => store.getState().auth.accessToken);
+export const store = setupStore();
+connectHttpClient(store);
 
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];

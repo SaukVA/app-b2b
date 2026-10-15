@@ -1,7 +1,11 @@
 import { hashPassword, verifyPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { UserModel } from '../users/user.model';
-import { countRealUsers, ensureBootstrapAccount, retireBootstrapIfNeeded } from './bootstrap.service';
+import {
+  countRealUsers,
+  ensureBootstrapAccount,
+  retireBootstrapIfNeeded,
+} from './bootstrap.service';
 import { SessionModel } from './session.model';
 
 setTestEnv();
@@ -12,7 +16,13 @@ afterAll(stopTestDb);
 
 async function createRealUser() {
   const passwordHash = await hashPassword('secreto123');
-  return UserModel.create({ login: 'ana@empresa.es', name: 'Ana', passwordHash, role: 'Comercial', status: 'Activo' });
+  return UserModel.create({
+    login: 'ana@empresa.es',
+    name: 'Ana',
+    passwordHash,
+    role: 'Comercial',
+    status: 'Activo',
+  });
 }
 
 function findBootstrap() {
@@ -36,7 +46,12 @@ describe('ensureBootstrapAccount', () => {
   it('crea la cuenta inicial "admin" si no hay usuarios', async () => {
     await ensureBootstrapAccount();
     const admin = await findBootstrap();
-    expect(admin).toMatchObject({ login: 'admin', role: 'Administrador', status: 'Activo', isBootstrap: true });
+    expect(admin).toMatchObject({
+      login: 'admin',
+      role: 'Administrador',
+      status: 'Activo',
+      isBootstrap: true,
+    });
     await expect(verifyPassword('admin', admin?.passwordHash)).resolves.toBe(true);
   });
 

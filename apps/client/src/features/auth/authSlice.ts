@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { AuthUser, LoginRequest, LoginResponse } from '@app/shared';
 import { isDesktop } from '../../utils/desktop';
-import { fetchMe, loginRequest, toAuthErrorMessage } from './authApi';
+import { fetchMe, loginRequest, refreshRequest, toAuthErrorMessage } from './authApi';
 
 export interface AuthState {
   user: AuthUser | null;
@@ -37,6 +37,18 @@ export const loadMe = createAsyncThunk<AuthUser, void, { rejectValue: string }>(
   },
 );
 
+/** Renueva el access token con el refresh token (al arrancar y cuando caduca, research R8). */
+export const refreshSession = createAsyncThunk<LoginResponse, void, { rejectValue: string }>(
+  'auth/refreshSession',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await refreshRequest();
+    } catch (err) {
+      return rejectWithValue(toAuthErrorMessage(err));
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -55,6 +67,15 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ?? null;
+      })
+      .addCase(refreshSession.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
+      })
+      // Sin sesión válida: RequireAuth redirige a /login conservando la ruta de origen.
+      .addCase(refreshSession.rejected, (state) => {
+        state.user = null;
+        state.accessToken = null;
       })
       .addCase(loadMe.fulfilled, (state, action) => {
         state.user = action.payload;

@@ -19,7 +19,7 @@ import { UserModel, type UserDocument } from '../users/user.model';
 import type { LoginInput } from './auth.validation';
 import { retireBootstrapIfNeeded } from './bootstrap.service';
 import { LoginAttemptModel } from './loginAttempt.model';
-import { SessionModel, type SessionDocument } from './session.model';
+import { SessionModel, type SessionDocument, type SessionFields } from './session.model';
 
 export interface IssuedSession {
   accessToken: string;
@@ -38,11 +38,19 @@ const DAY_MS = 24 * 60 * MINUTE_MS;
 
 function invalidCredentials(remaining: number): AppError {
   const attempts = remaining === 1 ? 'Te queda 1 intento.' : `Te quedan ${remaining} intentos.`;
-  return new AppError('AUTH_INVALID_CREDENTIALS', 401, `Email o contraseña incorrectos. ${attempts}`);
+  return new AppError(
+    'AUTH_INVALID_CREDENTIALS',
+    401,
+    `Email o contraseña incorrectos. ${attempts}`,
+  );
 }
 
 function sessionExpired(): AppError {
-  return new AppError('AUTH_SESSION_EXPIRED', 401, 'Tu sesión ha caducado. Vuelve a iniciar sesión.');
+  return new AppError(
+    'AUTH_SESSION_EXPIRED',
+    401,
+    'Tu sesión ha caducado. Vuelve a iniciar sesión.',
+  );
 }
 
 export function findUserByLogin(login: string): Promise<UserDocument | null> {
@@ -56,7 +64,9 @@ export async function registerFailure(identifier: string): Promise<number> {
     [
       {
         $set: {
-          failedCount: { $min: [{ $add: [{ $ifNull: ['$failedCount', 0] }, 1] }, MAX_FAILED_ATTEMPTS] },
+          failedCount: {
+            $min: [{ $add: [{ $ifNull: ['$failedCount', 0] }, 1] }, MAX_FAILED_ATTEMPTS],
+          },
           lockedUntil: { $ifNull: ['$lockedUntil', null] },
           updatedAt: '$$NOW',
         },
@@ -74,7 +84,11 @@ export async function resetAttempts(identifier: string): Promise<void> {
 /** Solo se llama con la contraseña correcta: no revela el estado a quien no la conoce (research R5). */
 export function assertCanSignIn(user: UserDocument): void {
   if (user.status === 'Bloqueado') {
-    throw new AppError('AUTH_ACCOUNT_BLOCKED', 403, 'Tu cuenta está bloqueada. Contacta con un administrador.');
+    throw new AppError(
+      'AUTH_ACCOUNT_BLOCKED',
+      403,
+      'Tu cuenta está bloqueada. Contacta con un administrador.',
+    );
   }
   if (user.status === 'Invitado') {
     throw new AppError(
@@ -122,19 +136,95 @@ export async function login(input: LoginInput): Promise<IssuedSession> {
   return createSession(user, input);
 }
 
-function isSessionActive(session: SessionDocument | null, userId: string): session is SessionDocument {
+function isSessionActive(
+  session: SessionDocument | null,
+  userId: string,
+): session is SessionDocument {
   if (!session || session.revokedAt) return false;
   return session.expiresAt > new Date() && session.userId.toString() === userId;
+}
+
+/** El usuario de una sesión válida sigue existiendo, está Activo y no es una cuenta inicial ya retirada. */
+async function loadSessionUser(userId: string): Promise<UserDocument> {
+  const user = await UserModel.findById(userId);
+  if (!user || user.status !== 'Activo') throw sessionExpired();
+  if (user.isBootstrap && (await retireBootstrapIfNeeded())) throw sessionExpired();
+  return user;
+}
+
+/** Sin "Mantener la sesión", cada actividad alarga la caducidad 30 min; la persistente no se alarga (R3). */
+function activityUpdate(persistent: boolean, now: Date): Partial<SessionFields> {
+  if (persistent) return { lastActivityAt: now };
+  return { lastActivityAt: now, expiresAt: sessionExpiry(false, now) };
+}
+
+/** Registra actividad como mucho una vez por minuto para no escribir en cada petición (R3). */
+export async function touchSession(session: SessionDocument, now = new Date()): Promise<void> {
+  if (now.getTime() - session.lastActivityAt.getTime() < MINUTE_MS) return;
+  await SessionModel.updateOne({ _id: session._id }, activityUpdate(session.persistent, now));
 }
 
 /** Comprueba en cada petición que la sesión y el usuario siguen siendo válidos (research R1). */
 export async function resolveAuthContext(payload: AccessTokenPayload): Promise<AuthContext> {
   const session = await SessionModel.findById(payload.sid);
   if (!isSessionActive(session, payload.sub)) throw sessionExpired();
-  const user = await UserModel.findById(payload.sub);
-  if (!user || user.status !== 'Activo') throw sessionExpired();
-  if (user.isBootstrap && (await retireBootstrapIfNeeded())) throw sessionExpired();
+  const user = await loadSessionUser(payload.sub);
+  await touchSession(session);
   return { userId: user.id, sessionId: session.id, role: user.role };
+}
+
+export interface RefreshedSession extends IssuedSession {
+  persistent: boolean;
+  client: ClientKind;
+}
+
+/** Un refresh token ya rotado que vuelve a llegar indica robo: se revoca su sesión. */
+async function revokeReusedSession(tokenHash: string): Promise<void> {
+  await SessionModel.updateOne(
+    { previousRefreshTokenHash: tokenHash, revokedAt: null },
+    { revokedAt: new Date() },
+  );
+}
+
+/** Rotación atómica: si otro refresh ganó la carrera con el mismo token, no se encuentra y cuenta como reutilización. */
+async function rotateSession(
+  session: SessionDocument,
+  tokenHash: string,
+): Promise<{ session: SessionDocument; refreshToken: string }> {
+  const refreshToken = createRefreshToken();
+  const rotated = await SessionModel.findOneAndUpdate(
+    { _id: session._id, refreshTokenHash: tokenHash },
+    {
+      refreshTokenHash: hashToken(refreshToken),
+      previousRefreshTokenHash: tokenHash,
+      ...activityUpdate(session.persistent, new Date()),
+    },
+    { new: true },
+  );
+  if (!rotated) throw sessionExpired();
+  return { session: rotated, refreshToken };
+}
+
+/** Valida el refresh token, lo rota y emite un access token nuevo (research R1 y R3). */
+export async function refresh(token: string | undefined): Promise<RefreshedSession> {
+  if (!token) throw sessionExpired();
+  const tokenHash = hashToken(token);
+  const current = await SessionModel.findOne({ refreshTokenHash: tokenHash });
+  if (!current) {
+    await revokeReusedSession(tokenHash);
+    throw sessionExpired();
+  }
+  if (!isSessionActive(current, current.userId.toString())) throw sessionExpired();
+  const user = await loadSessionUser(current.userId.toString());
+  const { session, refreshToken } = await rotateSession(current, tokenHash);
+  const accessToken = signAccessToken({ sub: user.id, sid: session.id, role: user.role });
+  return {
+    accessToken,
+    refreshToken,
+    user: toAuthUser(user),
+    persistent: session.persistent,
+    client: session.client,
+  };
 }
 
 export async function getCurrentUser(userId: string): Promise<AuthUser> {

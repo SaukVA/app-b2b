@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { requireAuth } from '../../middlewares/requireAuth';
 import { validate } from '../../middlewares/validate';
 import { authController } from './auth.controller';
-import { loginSchema } from './auth.validation';
+import { loginSchema, refreshSchema } from './auth.validation';
 
 export const authRouter = Router();
 
@@ -103,6 +103,42 @@ export const authRouter = Router();
  *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
  */
 authRouter.post('/login', validate({ body: loginSchema }), authController.login);
+
+/**
+ * @openapi
+ * /auth/refresh:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Rota el refresh token y emite un nuevo access token
+ *     security: []
+ *     requestBody:
+ *       description: Solo escritorio. En web el token se lee de la cookie `refreshToken`.
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken: { type: string }
+ *     responses:
+ *       '200':
+ *         description: Tokens renovados (nuevo refresh en la cookie o en el cuerpo, según el cliente)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/LoginResponse' }
+ *       '400': { $ref: '#/components/responses/ValidationError' }
+ *       '401':
+ *         description: AUTH_SESSION_EXPIRED (caducada, revocada, reutilizada o usuario no activo)
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ */
+authRouter.post('/refresh', validate({ body: refreshSchema }), authController.refresh);
 
 /**
  * @openapi

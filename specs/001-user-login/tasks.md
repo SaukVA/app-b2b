@@ -174,17 +174,17 @@ contraseña; simular 31 min de inactividad y comprobar que se pide.
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T069 [P] [US2] Tests unitarios de `refresh()`: rota el hash; un refresh token ya rotado revoca la sesión (reutilización); sesión no persistente con `lastActivityAt` > 30 min → `AUTH_SESSION_EXPIRED`; persistente con `createdAt` > 30 días → `AUTH_SESSION_EXPIRED` en `apps/server/src/modules/auth/auth.service.test.ts`
-- [ ] T070 [P] [US2] Test de integración de `POST /api/auth/refresh` con cookie (web) y con cuerpo (desktop) y de que `requireAuth` actualiza `lastActivityAt` como mucho una vez por minuto en `apps/server/src/modules/auth/auth.routes.test.ts`
-- [ ] T071 [P] [US2] Test del interceptor de respuesta: ante 401 hace un único refresh, encola las peticiones concurrentes y las reintenta; si el refresh falla, limpia la sesión y redirige a `/login` con `from` en `apps/client/src/utils/httpClient.test.ts`
+- [X] T069 [P] [US2] Tests unitarios de `refresh()`: rota el hash; un refresh token ya rotado revoca la sesión (reutilización); sesión no persistente con `lastActivityAt` > 30 min → `AUTH_SESSION_EXPIRED`; persistente con `createdAt` > 30 días → `AUTH_SESSION_EXPIRED` en `apps/server/src/modules/auth/auth.service.test.ts`
+- [X] T070 [P] [US2] Test de integración de `POST /api/auth/refresh` con cookie (web) y con cuerpo (desktop) y de que `requireAuth` actualiza `lastActivityAt` como mucho una vez por minuto en `apps/server/src/modules/auth/auth.routes.test.ts`
+- [X] T071 [P] [US2] Test del interceptor de respuesta: ante 401 hace un único refresh, encola las peticiones concurrentes y las reintenta; si el refresh falla, limpia la sesión y redirige a `/login` con `from` en `apps/client/src/utils/httpClient.test.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T072 [US2] Implementar `touchSession(session)` (actualiza `lastActivityAt` y, si no es persistente, `expiresAt = lastActivityAt + 30 min`, como mucho una vez por minuto) y usarla en `requireAuth` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/middlewares/requireAuth.ts`
-- [ ] T073 [US2] Implementar `refresh(token)` en el servicio (buscar por hash, validar caducidad, detectar reutilización, rotar y emitir un access nuevo) y `authController.refresh` (lee la cookie o `body.refreshToken` según el cliente y reescribe la cookie o devuelve el token) en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`
-- [ ] T074 [US2] Crear `POST /api/auth/refresh` con su `@openapi` y su esquema zod opcional `{ refreshToken?: string }` en `apps/server/src/modules/auth/auth.routes.ts` y `apps/server/src/modules/auth/auth.validation.ts`
-- [ ] T075 [US2] Implementar `refreshRequest()` en `authApi.ts`, el thunk `refreshSession` y la restauración de sesión al arrancar (`refreshSession` + `loadMe` antes de pintar rutas protegidas) en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/App.tsx`
-- [ ] T076 [US2] Implementar el interceptor de respuesta con refresh único y cola en `apps/client/src/utils/httpClient.ts`
+- [X] T072 [US2] Implementar `touchSession(session)` (actualiza `lastActivityAt` y, si no es persistente, `expiresAt = lastActivityAt + 30 min`, como mucho una vez por minuto) y usarla en `requireAuth` en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/middlewares/requireAuth.ts`
+- [X] T073 [US2] Implementar `refresh(token)` en el servicio (buscar por hash, validar caducidad, detectar reutilización, rotar y emitir un access nuevo) y `authController.refresh` (lee la cookie o `body.refreshToken` según el cliente y reescribe la cookie o devuelve el token) en `apps/server/src/modules/auth/auth.service.ts` y `apps/server/src/modules/auth/auth.controller.ts`
+- [X] T074 [US2] Crear `POST /api/auth/refresh` con su `@openapi` y su esquema zod opcional `{ refreshToken?: string }` en `apps/server/src/modules/auth/auth.routes.ts` y `apps/server/src/modules/auth/auth.validation.ts`
+- [X] T075 [US2] Implementar `refreshRequest()` en `authApi.ts`, el thunk `refreshSession` y la restauración de sesión al arrancar (`refreshSession` + `loadMe` antes de pintar rutas protegidas) en `apps/client/src/features/auth/authApi.ts`, `apps/client/src/features/auth/authSlice.ts` y `apps/client/src/App.tsx`
+- [X] T076 [US2] Implementar el interceptor de respuesta con refresh único y cola en `apps/client/src/utils/httpClient.ts`
 
 **Checkpoint**: la sesión se renueva sola durante la actividad y caduca por inactividad (quickstart §3, escenario 4).
 

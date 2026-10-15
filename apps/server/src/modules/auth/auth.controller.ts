@@ -1,8 +1,13 @@
 import type { CookieOptions, Request, Response } from 'express';
-import { PERSISTENT_SESSION_DAYS, type ApiSuccess, type AuthUser, type LoginResponse } from '@app/shared';
+import {
+  PERSISTENT_SESSION_DAYS,
+  type ApiSuccess,
+  type AuthUser,
+  type LoginResponse,
+} from '@app/shared';
 import { getEnv } from '../../config/env';
-import { getCurrentUser, login } from './auth.service';
-import type { LoginInput } from './auth.validation';
+import { getCurrentUser, login, refresh } from './auth.service';
+import type { LoginInput, RefreshInput } from './auth.validation';
 
 export const REFRESH_COOKIE = 'refreshToken';
 
@@ -33,6 +38,21 @@ export const authController = {
       return;
     }
     res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions(input.persistent));
+    sendSuccess<LoginResponse>(res, session);
+  },
+
+  /** Web: token en la cookie y se reescribe; escritorio: va y vuelve en el cuerpo (research R2). */
+  async refresh(req: Request, res: Response): Promise<void> {
+    const body = req.body as RefreshInput;
+    const cookieToken = (req.cookies as Record<string, string | undefined>)[REFRESH_COOKIE];
+    const { refreshToken, persistent, client, ...session } = await refresh(
+      body.refreshToken ?? cookieToken,
+    );
+    if (client === 'desktop') {
+      sendSuccess<LoginResponse>(res, { ...session, refreshToken });
+      return;
+    }
+    res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions(persistent));
     sendSuccess<LoginResponse>(res, session);
   },
 

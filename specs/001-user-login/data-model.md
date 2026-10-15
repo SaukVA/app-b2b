@@ -41,6 +41,7 @@ Solo `Activo` puede iniciar sesión (FR-004).
 | `_id` | ObjectId | Es el `sid` del access token. |
 | `userId` | ObjectId → User | Índice. |
 | `refreshTokenHash` | string | SHA-256 del refresh token vigente. Índice único. |
+| `previousRefreshTokenHash` | string \| null | Hash del refresh token anterior a la última rotación. Índice. Si llega en un refresh, es reutilización y la sesión se revoca. |
 | `persistent` | boolean | "Mantener la sesión iniciada en este equipo". |
 | `client` | `"web"` \| `"desktop"` | |
 | `createdAt` | Date | |
