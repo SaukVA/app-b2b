@@ -6,11 +6,13 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "npm run build && electron .",
-    "build": "npm run build --workspace=@app/shared && tsc -p tsconfig.build.json",
-    "package": "npm run build && electron-builder",
+    "build": "npm run build --workspace=@app/shared && npm run build --workspace=@app/server && tsc -p tsconfig.build.json",
+    "build:renderer": "npm run build --workspace=@app/client && node -e \"const fs=require('node:fs');fs.rmSync('renderer',{recursive:true,force:true});fs.cpSync('../client/dist','renderer',{recursive:true})\"",
+    "package": "npm run build && npm run build:renderer && electron-builder",
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
+    "@app/server": "*",
     "@app/shared": "*"
   },
   "devDependencies": {
@@ -20,6 +22,11 @@
   "build": {
     "appId": "es.mayorista.app-b2b",
     "productName": "Venta a mayoristas",
+    "electronVersion": "34.5.8",
+    "npmRebuild": false,
+    "win": {
+      "signAndEditExecutable": false
+    },
     "directories": {
       "output": "release"
     },

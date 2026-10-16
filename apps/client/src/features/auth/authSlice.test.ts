@@ -3,7 +3,7 @@ import type { AuthUser, DesktopBridge, LoginResponse } from '@app/shared';
 import { setupStore } from '../../store/store';
 import { httpClient } from '../../utils/httpClient';
 import { loginRequest, logoutRequest, refreshRequest } from './authApi';
-import { login, logout, refreshSession } from './authSlice';
+import { login, logout, refreshSession, sessionCleared } from './authSlice';
 
 jest.mock('./authApi', () => ({
   ...jest.requireActual('./authApi'),
@@ -134,5 +134,19 @@ describe('refreshRequest', () => {
     const adapter = captureRequests();
     await realRefreshRequest();
     expect(JSON.parse(adapter.mock.calls[0][0].data as string)).toEqual({});
+  });
+});
+
+describe('sessionCleared', () => {
+  it('deja la sesión en su estado inicial sin llamar al servidor', () => {
+    const store = loggedInStore();
+    store.dispatch(sessionCleared());
+    expect(store.getState().auth).toEqual({
+      user: null,
+      accessToken: null,
+      status: 'idle',
+      error: null,
+    });
+    expect(mockedLogout).not.toHaveBeenCalled();
   });
 });

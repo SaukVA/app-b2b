@@ -1,0 +1,53 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.column {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Cabecera de pantalla cerrada por la regla de 2 px en tinta (docs/design/README.md). */
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--ink);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-screen-title);
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font: var(--text-body);
+  color: var(--ink2);
+}
+
+/* Objetivo de 44 px de alto sin mover la maqueta (padding compensado con margen negativo). */
+.back {
+  align-self: flex-start;
+  display: inline-block;
+  padding: 13px 0;
+  margin: -13px 0;
+  font: 500 14px/1.4 var(--font-sans);
+  color: var(--accent);
+}
+
+/* Un solo punto de corte a 760 px, como el resto de pantallas. */
+@media (max-width: 760px) {
+  .page {
+    padding: 16px 16px 32px;
+  }
+}

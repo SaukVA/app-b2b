@@ -5,11 +5,19 @@ import swaggerUi from 'swagger-ui-express';
 import { getEnv } from './config/env';
 import { buildSwaggerSpec } from './docs/swagger';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler';
+import { requireDatabaseReady } from './middlewares/requireDatabaseReady';
 import { authRouter } from './modules/auth/auth.routes';
 import { healthRouter } from './modules/health/health.routes';
 
-/** Construye la app Express sin levantar el servidor (lo usan server.ts y los tests). */
-export function buildApp(): Express {
+export interface BuildAppOptions {
+  /** Monta la UI de Swagger en /api-docs (por defecto sí; el backend embebido no la monta, research R3). */
+  docs?: boolean;
+  /** Solo el backend embebido: mientras devuelva false, /api (salvo /health) responde 503. */
+  isDatabaseReady?: () => boolean;
+}
+
+/** Construye la app Express sin levantar el servidor (lo usan server.ts, embedded.ts y los tests). */
+export function buildApp(options: BuildAppOptions = {}): Express {
   const env = getEnv();
   const app = express();
   app.disable('x-powered-by');
@@ -18,8 +26,11 @@ export function buildApp(): Express {
   app.use(cors({ origin: env.CORS_ORIGINS, credentials: true }));
 
   app.use('/api/health', healthRouter);
+  if (options.isDatabaseReady) app.use('/api', requireDatabaseReady(options.isDatabaseReady));
   app.use('/api/auth', authRouter);
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(buildSwaggerSpec()));
+  if (options.docs !== false) {
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(buildSwaggerSpec()));
+  }
 
   app.use(notFoundHandler);
   app.use(errorHandler);

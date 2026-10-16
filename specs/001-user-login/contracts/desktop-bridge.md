@@ -1,3 +1,5 @@
+> **Sustituido por [specs/002-desktop-local-backend/contracts/desktop-bridge.md](../../002-desktop-local-backend/contracts/desktop-bridge.md).**
+
 # Contrato: puente de escritorio (`window.desktop`)
 
 Lo expone `apps/desktop/src/preload.ts` mediante `contextBridge.exposeInMainWorld('desktop', …)` y lo

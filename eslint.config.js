@@ -9,6 +9,7 @@ module.exports = tseslint.config(
       '**/build/**',
       '**/release/**',
       '**/coverage/**',
+      'apps/desktop/renderer/**',
       '**/*.min.js',
     ],
   },

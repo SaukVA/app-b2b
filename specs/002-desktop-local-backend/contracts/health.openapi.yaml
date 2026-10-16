@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: App B2B · Health (002-desktop-local-backend)
+  version: 1.1.0
+  description: >
+    GET /health añade el estado de la base de datos. Lo usa el proceso principal de escritorio para el
+    indicador del login (FR-005). Cambio compatible: la web puede ignorar el campo nuevo.
+servers:
+  - url: /api
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Estado del servidor y de su conexión con la base de datos
+      security: []
+      responses:
+        '200':
+          description: >
+            El servidor responde. `database` indica si la conexión con la base de datos está activa
+            (`readyState` conectado y `ping` correcto en menos de 2 s).
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        required: [status, database]
+                        properties:
+                          status: { type: string, enum: [ok] }
+                          database: { type: string, enum: [connected, disconnected] }
+components:
+  schemas:
+    SuccessEnvelope:
+      type: object
+      required: [success, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        data: {}
+    ErrorEnvelope:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, enum: [false] }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: Nuevo en 002 → DATABASE_UNAVAILABLE (503) en cualquier ruta sin conexión con la base de datos.
+            message: { type: string }

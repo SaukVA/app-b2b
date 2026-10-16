@@ -1,0 +1,1172 @@
+{
+  "created_at": "2026-10-16T10:37:49Z",
+  "updated_at": "2026-10-16T15:26:55Z",
+  "spec": "002-desktop-local-backend",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-115",
+    "summary": "Escritorio con backend local y base de datos configurable",
+    "url": "https://sauk.atlassian.net/browse/AB2B-115"
+  },
+  "stories": [
+    {
+      "key": "AB2B-116",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-116",
+      "tasks": [
+        {
+          "key": "AB2B-122",
+          "id": "T001",
+          "summary": "T001: Añadir @app/server a apps/desktop/package.json, compilar el servidor en el build del escritorio y ejecutar npm install",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-122"
+        },
+        {
+          "key": "AB2B-123",
+          "id": "T002",
+          "summary": "T002: Crear docs/adr/0002-desktop-embedded-backend.md con las decisiones R1–R6 y R12 de research.md",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-123"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-117",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-117",
+      "tasks": [
+        {
+          "key": "AB2B-142",
+          "id": "T003",
+          "summary": "T003: Escribir tests de parseMongoUri en packages/shared/src/utils/mongoUri.test.ts",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-142"
+        },
+        {
+          "key": "AB2B-144",
+          "id": "T004",
+          "summary": "T004: Crear packages/shared/src/constants/database.ts con códigos, longitud máxima y mensajes de error de base de datos",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-144"
+        },
+        {
+          "key": "AB2B-145",
+          "id": "T005",
+          "summary": "T005: Reescribir packages/shared/src/types/desktop.ts con DesktopBridge v2 y los tipos de base de datos",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-145"
+        },
+        {
+          "key": "AB2B-146",
+          "id": "T006",
+          "summary": "T006: Implementar parseMongoUri en packages/shared/src/utils/mongoUri.ts y exportarlo desde packages/shared/src/index.ts",
+          "status": "completed",
+          "depends_on": [
+            "T003",
+            "T004",
+            "T005"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-146"
+        },
+        {
+          "key": "AB2B-147",
+          "id": "T007",
+          "summary": "T007: Escribir apps/server/src/config/env.test.ts (PORT=0 válido, HOST y MONGODB_URI opcionales)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-147"
+        },
+        {
+          "key": "AB2B-148",
+          "id": "T008",
+          "summary": "T008: Escribir apps/server/src/embeddedRuntime.test.ts (ready antes de conectar, reintentos cada 5 s, cuenta admin tras conectar)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-148"
+        },
+        {
+          "key": "AB2B-165",
+          "id": "T009",
+          "summary": "T009: Modificar apps/server/src/config/env.ts: PORT ≥ 0, HOST y MONGODB_URI opcionales",
+          "status": "completed",
+          "depends_on": [
+            "T007"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-165"
+        },
+        {
+          "key": "AB2B-167",
+          "id": "T010",
+          "summary": "T010: Modificar apps/server/src/server.ts: exigir MONGODB_URI en la web y escuchar en HOST cuando esté definido",
+          "status": "completed",
+          "depends_on": [
+            "T009"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-167"
+        },
+        {
+          "key": "AB2B-169",
+          "id": "T011",
+          "summary": "T011: Modificar apps/server/src/config/database.ts: opciones de conexión y EMBEDDED_CONNECTION_OPTIONS",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-169"
+        },
+        {
+          "key": "AB2B-171",
+          "id": "T012",
+          "summary": "T012: Modificar apps/server/src/app.ts: buildApp({ docs }) monta /api-docs solo si docs !== false",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-171"
+        },
+        {
+          "key": "AB2B-173",
+          "id": "T013",
+          "summary": "T013: Crear apps/server/src/embeddedRuntime.ts con startEmbedded(deps): listen, ready, conexión con reintentos y cuenta inicial",
+          "status": "completed",
+          "depends_on": [
+            "T008",
+            "T009",
+            "T011",
+            "T012"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-173"
+        },
+        {
+          "key": "AB2B-175",
+          "id": "T014",
+          "summary": "T014: Crear apps/server/src/embedded.ts (entrada del proceso hijo) conectando process.parentPort con startEmbedded",
+          "status": "completed",
+          "depends_on": [
+            "T013"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-175"
+        },
+        {
+          "key": "AB2B-129",
+          "id": "T015",
+          "summary": "T015: Escribir tests de backendProcess (entorno del hijo, getUrl, restart, relanzamientos, stop) en apps/desktop/src/backend/backendProcess.test.ts",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-129"
+        },
+        {
+          "key": "AB2B-131",
+          "id": "T016",
+          "summary": "T016: Escribir tests del almacén cifrado de base de datos y del handler database:get en apps/desktop/src/ipc/database.test.ts",
+          "status": "completed",
+          "depends_on": [
+            "T005",
+            "T006"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-131"
+        },
+        {
+          "key": "AB2B-133",
+          "id": "T017",
+          "summary": "T017: Crear createBackendProcess (start, restart, stop, getUrl) en apps/desktop/src/backend/backendProcess.ts",
+          "status": "completed",
+          "depends_on": [
+            "T015"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-133"
+        },
+        {
+          "key": "AB2B-135",
+          "id": "T018",
+          "summary": "T018: Crear almacén cifrado, toSummary, assertUriArg, DATABASE_CHANNELS y registerDatabaseIpc (database:get) en apps/desktop/src/ipc/database.ts",
+          "status": "completed",
+          "depends_on": [
+            "T016",
+            "T006",
+            "T004"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-135"
+        },
+        {
+          "key": "AB2B-136",
+          "id": "T019",
+          "summary": "T019: Arrancar el backend embebido y registrar backend:get-url y la IPC de base de datos en apps/desktop/src/main.ts",
+          "status": "completed",
+          "depends_on": [
+            "T017",
+            "T018",
+            "T014",
+            "T001"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-136"
+        },
+        {
+          "key": "AB2B-159",
+          "id": "T020",
+          "summary": "T020: Eliminar apps/desktop/src/ipc/server.ts, server.test.ts y config.ts (sustituidos por 002, research R13)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-159"
+        },
+        {
+          "key": "AB2B-160",
+          "id": "T021",
+          "summary": "T021: Reescribir apps/desktop/src/preload.ts con el puente window.desktop v2 (backend:get-url y canales database:*)",
+          "status": "completed",
+          "depends_on": [
+            "T005"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-160"
+        },
+        {
+          "key": "AB2B-161",
+          "id": "T022",
+          "summary": "T022: Renombrar ServerStatus.test.tsx a apps/client/src/components/ConnectionStatus.test.tsx y reescribirlo para las nuevas props y estados",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-161"
+        },
+        {
+          "key": "AB2B-162",
+          "id": "T023",
+          "summary": "T023: Escribir apps/client/src/features/database/databaseSlice.test.ts (estado inicial y thunk loadDatabaseSummary)",
+          "status": "completed",
+          "depends_on": [
+            "T005"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-162"
+        },
+        {
+          "key": "AB2B-163",
+          "id": "T024",
+          "summary": "T024: Renombrar ServerStatus.tsx/.module.css a apps/client/src/components/ConnectionStatus.tsx/.module.css con las nuevas props y estilo unconfigured",
+          "status": "completed",
+          "depends_on": [
+            "T022"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-163"
+        },
+        {
+          "key": "AB2B-176",
+          "id": "T025",
+          "summary": "T025: Crear apps/client/src/features/database/databaseApi.ts con getDatabaseSummary() sobre el puente",
+          "status": "completed",
+          "depends_on": [
+            "T005"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-176"
+        },
+        {
+          "key": "AB2B-177",
+          "id": "T026",
+          "summary": "T026: Crear apps/client/src/features/database/databaseSlice.ts con loadDatabaseSummary y registrarlo en apps/client/src/store/store.ts",
+          "status": "completed",
+          "depends_on": [
+            "T023",
+            "T025"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-177"
+        },
+        {
+          "key": "AB2B-178",
+          "id": "T027",
+          "summary": "T027: LoginPage.tsx lee la base de datos del slice y pinta ConnectionStatus; exportar DATABASE_SETTINGS_PATH y adaptar LoginPage.test.tsx al puente v2",
+          "status": "completed",
+          "depends_on": [
+            "T024",
+            "T026"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-178"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-118",
+      "summary": "Phase 3: User Story 1 - Conectar el escritorio a una base de datos local o remota (Priority: P1) 🎯 MVP",
+      "url": "https://sauk.atlassian.net/browse/AB2B-118",
+      "tasks": [
+        {
+          "key": "AB2B-125",
+          "id": "T028",
+          "summary": "T028: Tests de testConnection y classifyConnectionError en apps/server/src/config/database.test.ts",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-125"
+        },
+        {
+          "key": "AB2B-127",
+          "id": "T029",
+          "summary": "T029: Ampliar embeddedRuntime.test.ts con el mensaje test-connection → test-result",
+          "status": "completed",
+          "depends_on": [
+            "T008",
+            "T013"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-127"
+        },
+        {
+          "key": "AB2B-130",
+          "id": "T030",
+          "summary": "T030: Ampliar backendProcess.test.ts con testConnection(uri) y límite de 10 s",
+          "status": "completed",
+          "depends_on": [
+            "T015",
+            "T017"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-130"
+        },
+        {
+          "key": "AB2B-132",
+          "id": "T031",
+          "summary": "T031: Ampliar ipc/database.test.ts con los handlers database:test y database:save",
+          "status": "completed",
+          "depends_on": [
+            "T016",
+            "T018"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-132"
+        },
+        {
+          "key": "AB2B-134",
+          "id": "T032",
+          "summary": "T032: Ampliar databaseSlice.test.ts con los thunks testDatabase y saveDatabase",
+          "status": "completed",
+          "depends_on": [
+            "T023",
+            "T026"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-134"
+        },
+        {
+          "key": "AB2B-152",
+          "id": "T033",
+          "summary": "T033: Tests de DatabaseForm en apps/client/src/features/database/components/DatabaseForm.test.tsx",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-152"
+        },
+        {
+          "key": "AB2B-154",
+          "id": "T034",
+          "summary": "T034: Tests de DatabaseSettingsPage en apps/client/src/pages/DatabaseSettingsPage.test.tsx",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-154"
+        },
+        {
+          "key": "AB2B-156",
+          "id": "T035",
+          "summary": "T035: Implementar testConnection y classifyConnectionError en apps/server/src/config/database.ts",
+          "status": "completed",
+          "depends_on": [
+            "T028"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-156"
+        },
+        {
+          "key": "AB2B-157",
+          "id": "T036",
+          "summary": "T036: Manejar test-connection en onMessage de apps/server/src/embeddedRuntime.ts",
+          "status": "completed",
+          "depends_on": [
+            "T029",
+            "T035"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-157"
+        },
+        {
+          "key": "AB2B-158",
+          "id": "T037",
+          "summary": "T037: Añadir testConnection(uri) a apps/desktop/src/backend/backendProcess.ts",
+          "status": "completed",
+          "depends_on": [
+            "T030",
+            "T036"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-158"
+        },
+        {
+          "key": "AB2B-182",
+          "id": "T038",
+          "summary": "T038: Handlers database:test y database:save en apps/desktop/src/ipc/database.ts y cableado en main.ts",
+          "status": "completed",
+          "depends_on": [
+            "T031",
+            "T037"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-182"
+        },
+        {
+          "key": "AB2B-184",
+          "id": "T039",
+          "summary": "T039: testDatabase y saveDatabase en databaseApi.ts y thunks en databaseSlice.ts",
+          "status": "completed",
+          "depends_on": [
+            "T032"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-184"
+        },
+        {
+          "key": "AB2B-185",
+          "id": "T040",
+          "summary": "T040: Crear DatabaseForm.tsx y DatabaseForm.module.css en apps/client/src/features/database/components/",
+          "status": "completed",
+          "depends_on": [
+            "T033"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-185"
+        },
+        {
+          "key": "AB2B-187",
+          "id": "T041",
+          "summary": "T041: Crear apps/client/src/pages/DatabaseSettingsPage.tsx",
+          "status": "completed",
+          "depends_on": [
+            "T034",
+            "T039",
+            "T040"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-187"
+        },
+        {
+          "key": "AB2B-188",
+          "id": "T042",
+          "summary": "T042: Ruta /ajustes/base-de-datos en AppRouter.tsx y eliminar ServerSettingsPlaceholder",
+          "status": "completed",
+          "depends_on": [
+            "T041"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-188"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-119",
+      "summary": "Phase 4: User Story 2 - Ver a qué base de datos está conectado el escritorio (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-119",
+      "tasks": [
+        {
+          "key": "AB2B-137",
+          "id": "T043",
+          "summary": "T043: Ampliar health.test.ts: data.database connected/disconnected y status 'ok'",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-137"
+        },
+        {
+          "key": "AB2B-138",
+          "id": "T044",
+          "summary": "T044: Escribir errorHandler.test.ts: errores de conexión de Mongoose/driver → 503 DATABASE_UNAVAILABLE",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-138"
+        },
+        {
+          "key": "AB2B-139",
+          "id": "T045",
+          "summary": "T045: Ampliar auth.routes.test.ts: login sin base de datos → 503 y sin LoginAttempt registrado (FR-018)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-139"
+        },
+        {
+          "key": "AB2B-140",
+          "id": "T046",
+          "summary": "T046: Ampliar ipc/database.test.ts: database:status (unconfigured, health del backend, disconnected a los 5 s)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-140"
+        },
+        {
+          "key": "AB2B-141",
+          "id": "T047",
+          "summary": "T047: Ampliar databaseSlice.test.ts con checkDatabaseStatus (checking → valor; fallo → disconnected)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-141"
+        },
+        {
+          "key": "AB2B-143",
+          "id": "T048",
+          "summary": "T048: Ampliar LoginPage.test.tsx: Conectado/Sin conexión, solo host, sin sondeo, nada en web",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-143"
+        },
+        {
+          "key": "AB2B-164",
+          "id": "T049",
+          "summary": "T049: Ampliar LoginForm.test.tsx: 503 DATABASE_UNAVAILABLE muestra error de conexión y no marca campos",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-164"
+        },
+        {
+          "key": "AB2B-166",
+          "id": "T050",
+          "summary": "T050: health.routes.ts: campo database (readyState + ping < 2 s) y bloque @openapi según contracts/health.openapi.yaml",
+          "status": "completed",
+          "depends_on": [
+            "T043"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-166"
+        },
+        {
+          "key": "AB2B-168",
+          "id": "T051",
+          "summary": "T051: errorHandler.ts: isDatabaseConnectionError → AppError DATABASE_UNAVAILABLE 503 y documentarlo en swagger.ts",
+          "status": "completed",
+          "depends_on": [
+            "T044",
+            "T045"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-168"
+        },
+        {
+          "key": "AB2B-170",
+          "id": "T052",
+          "summary": "T052: Handler database:status en ipc/database.ts (fetch inyectado, AbortSignal.timeout(5000))",
+          "status": "completed",
+          "depends_on": [
+            "T046"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-170"
+        },
+        {
+          "key": "AB2B-172",
+          "id": "T053",
+          "summary": "T053: getDatabaseStatus + thunk checkDatabaseStatus y despacharlo al montar LoginPage (connected → ok, disconnected → down)",
+          "status": "completed",
+          "depends_on": [
+            "T047",
+            "T048"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-172"
+        },
+        {
+          "key": "AB2B-174",
+          "id": "T054",
+          "summary": "T054: authApi.ts: tratar DATABASE_UNAVAILABLE como error de conexión (sin marcar campos)",
+          "status": "completed",
+          "depends_on": [
+            "T049"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-174"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-120",
+      "summary": "Phase 5: User Story 3 - Cambiar de base de datos sin perder la seguridad (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-120",
+      "tasks": [
+        {
+          "key": "AB2B-124",
+          "id": "T055",
+          "summary": "T055: Tests de database:save en apps/desktop/src/ipc/database.test.ts: borra el refresh token, nada en claro en disco y sin cifrado solo en memoria",
+          "status": "completed",
+          "depends_on": [
+            "T038"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-124"
+        },
+        {
+          "key": "AB2B-126",
+          "id": "T056",
+          "summary": "T056: Tests en DatabaseForm.test.tsx: cadena actual enmascarada y aviso cuando persisted es false",
+          "status": "completed",
+          "depends_on": [
+            "T040"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-126"
+        },
+        {
+          "key": "AB2B-128",
+          "id": "T057",
+          "summary": "T057: Test en DatabaseSettingsPage.test.tsx: tras guardar con ok se limpia la sesión del cliente antes de navegar a /login",
+          "status": "completed",
+          "depends_on": [
+            "T041"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-128"
+        },
+        {
+          "key": "AB2B-149",
+          "id": "T058",
+          "summary": "T058: database:save borra el refresh token del equipo antes de reiniciar el backend (apps/desktop/src/ipc/database.ts y main.ts)",
+          "status": "completed",
+          "depends_on": [
+            "T055",
+            "T038"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-149"
+        },
+        {
+          "key": "AB2B-150",
+          "id": "T059",
+          "summary": "T059: Al completarse saveDatabase con ok, limpiar la sesión local de authSlice desde databaseSlice.ts",
+          "status": "completed",
+          "depends_on": [
+            "T057",
+            "T039"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-150"
+        },
+        {
+          "key": "AB2B-151",
+          "id": "T060",
+          "summary": "T060: DatabaseForm.tsx muestra la cadena actual enmascarada y el aviso cuando persisted es false",
+          "status": "completed",
+          "depends_on": [
+            "T056",
+            "T040"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-151"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-121",
+      "summary": "Phase 6: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-121",
+      "tasks": [
+        {
+          "key": "AB2B-153",
+          "id": "T061",
+          "summary": "T061: Marcar US6 y SC-004 de specs/001-user-login/spec.md como sustituidos por 002 y anotar el contrato del puente de 001",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-153"
+        },
+        {
+          "key": "AB2B-155",
+          "id": "T062",
+          "summary": "T062: Actualizar CLAUDE.md: el escritorio arranca su propio backend local y se conecta directamente a MongoDB",
+          "status": "completed",
+          "depends_on": [
+            "T002"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-155"
+        },
+        {
+          "key": "AB2B-179",
+          "id": "T063",
+          "summary": "T063: Comprobar con npm run lint que las funciones nuevas cumplen ≤40 líneas efectivas y anidamiento ≤2, y extraer helpers donde haga falta",
+          "status": "completed",
+          "depends_on": [
+            "T042",
+            "T054",
+            "T060"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-179"
+        },
+        {
+          "key": "AB2B-180",
+          "id": "T064",
+          "summary": "T064: Comprobar que /api-docs coincide con contracts/health.openapi.yaml y documenta DATABASE_UNAVAILABLE",
+          "status": "completed",
+          "depends_on": [
+            "T050",
+            "T051"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-180"
+        },
+        {
+          "key": "AB2B-181",
+          "id": "T065",
+          "summary": "T065: Revisar la accesibilidad de DatabaseSettingsPage y del indicador del login a 390 px y 1440 px según docs/design/README.md",
+          "status": "completed",
+          "depends_on": [
+            "T041",
+            "T053"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-181"
+        },
+        {
+          "key": "AB2B-183",
+          "id": "T066",
+          "summary": "T066: Empaquetar con npm run package --workspace=apps/desktop, instalar y repetir los escenarios 1–3 de quickstart.md sin apps/server en marcha",
+          "status": "completed",
+          "depends_on": [
+            "T001",
+            "T019",
+            "T042"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-183"
+        },
+        {
+          "key": "AB2B-186",
+          "id": "T067",
+          "summary": "T067: Ejecutar npm run lint y npm test --workspaces en verde y validar manualmente quickstart.md completo",
+          "status": "completed",
+          "depends_on": [
+            "T061",
+            "T062",
+            "T063",
+            "T064",
+            "T065",
+            "T066"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-186"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-116",
+      "to": "AB2B-117"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-117",
+      "to": "AB2B-118"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-117",
+      "to": "AB2B-119"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-118",
+      "to": "AB2B-120"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-118",
+      "to": "AB2B-121"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-119",
+      "to": "AB2B-121"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-120",
+      "to": "AB2B-121"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-182",
+      "to": "AB2B-124"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-185",
+      "to": "AB2B-126"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-187",
+      "to": "AB2B-128"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-124",
+      "to": "AB2B-149"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-182",
+      "to": "AB2B-149"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-128",
+      "to": "AB2B-150"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-184",
+      "to": "AB2B-150"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-126",
+      "to": "AB2B-151"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-185",
+      "to": "AB2B-151"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-123",
+      "to": "AB2B-155"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-188",
+      "to": "AB2B-179"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-174",
+      "to": "AB2B-179"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-151",
+      "to": "AB2B-179"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-166",
+      "to": "AB2B-180"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-168",
+      "to": "AB2B-180"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-187",
+      "to": "AB2B-181"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-172",
+      "to": "AB2B-181"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-122",
+      "to": "AB2B-183"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-136",
+      "to": "AB2B-183"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-188",
+      "to": "AB2B-183"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-153",
+      "to": "AB2B-186"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-155",
+      "to": "AB2B-186"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-179",
+      "to": "AB2B-186"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-180",
+      "to": "AB2B-186"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-181",
+      "to": "AB2B-186"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-183",
+      "to": "AB2B-186"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-142",
+      "to": "AB2B-146"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-144",
+      "to": "AB2B-146"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-145",
+      "to": "AB2B-146"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-147",
+      "to": "AB2B-165"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-165",
+      "to": "AB2B-167"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-148",
+      "to": "AB2B-173"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-165",
+      "to": "AB2B-173"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-169",
+      "to": "AB2B-173"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-171",
+      "to": "AB2B-173"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-173",
+      "to": "AB2B-175"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-145",
+      "to": "AB2B-131"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-146",
+      "to": "AB2B-131"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-129",
+      "to": "AB2B-133"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-131",
+      "to": "AB2B-135"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-146",
+      "to": "AB2B-135"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-144",
+      "to": "AB2B-135"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-133",
+      "to": "AB2B-136"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-135",
+      "to": "AB2B-136"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-175",
+      "to": "AB2B-136"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-122",
+      "to": "AB2B-136"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-145",
+      "to": "AB2B-160"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-145",
+      "to": "AB2B-162"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-161",
+      "to": "AB2B-163"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-145",
+      "to": "AB2B-176"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-162",
+      "to": "AB2B-177"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-176",
+      "to": "AB2B-177"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-163",
+      "to": "AB2B-178"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-177",
+      "to": "AB2B-178"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-148",
+      "to": "AB2B-127"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-173",
+      "to": "AB2B-127"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-129",
+      "to": "AB2B-130"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-133",
+      "to": "AB2B-130"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-131",
+      "to": "AB2B-132"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-135",
+      "to": "AB2B-132"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-162",
+      "to": "AB2B-134"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-177",
+      "to": "AB2B-134"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-125",
+      "to": "AB2B-156"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-127",
+      "to": "AB2B-157"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-156",
+      "to": "AB2B-157"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-130",
+      "to": "AB2B-158"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-157",
+      "to": "AB2B-158"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-132",
+      "to": "AB2B-182"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-158",
+      "to": "AB2B-182"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-134",
+      "to": "AB2B-184"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-152",
+      "to": "AB2B-185"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-154",
+      "to": "AB2B-187"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-184",
+      "to": "AB2B-187"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-185",
+      "to": "AB2B-187"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-187",
+      "to": "AB2B-188"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-137",
+      "to": "AB2B-166"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-138",
+      "to": "AB2B-168"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-139",
+      "to": "AB2B-168"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-140",
+      "to": "AB2B-170"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-141",
+      "to": "AB2B-172"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-143",
+      "to": "AB2B-172"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-164",
+      "to": "AB2B-174"
+    }
+  ],
+  "summary": {
+    "total_stories": 6,
+    "total_tasks": 67,
+    "completed_tasks": 60,
+    "pending_tasks": 7
+  }
+}

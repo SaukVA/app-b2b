@@ -18,7 +18,14 @@ const envelopeSchemas = {
       error: {
         type: 'object',
         required: ['code', 'message'],
-        properties: { code: { type: 'string' }, message: { type: 'string' } },
+        properties: {
+          code: {
+            type: 'string',
+            description:
+              'Código del error. DATABASE_UNAVAILABLE (503) en cualquier ruta sin conexión con la base de datos.',
+          },
+          message: { type: 'string' },
+        },
       },
     },
   },

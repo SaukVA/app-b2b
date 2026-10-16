@@ -1,4 +1,12 @@
-import type { ApiError, ApiSuccess, AuthUser, LoginRequest, LoginResponse } from '@app/shared';
+import {
+  DATABASE_ERROR_CODES,
+  DATABASE_MESSAGES,
+  type ApiError,
+  type ApiSuccess,
+  type AuthUser,
+  type LoginRequest,
+  type LoginResponse,
+} from '@app/shared';
 import { getDesktopBridge } from '../../utils/desktop';
 import { httpClient } from '../../utils/httpClient';
 
@@ -41,9 +49,23 @@ export async function fetchMe(): Promise<AuthUser> {
   return data.data;
 }
 
-/** Mensaje del envelope de error; si no hubo respuesta del servidor, error de conexión (FR-017). */
+/** Errores de conexión: no dicen nada de las credenciales, así que no marcan los campos (002 FR-018). */
+const CONNECTION_MESSAGES = new Set<string>([
+  CONNECTION_ERROR_MESSAGE,
+  DATABASE_MESSAGES.unavailable,
+]);
+
+export function isConnectionErrorMessage(message: string | null): boolean {
+  return message !== null && CONNECTION_MESSAGES.has(message);
+}
+
+/**
+ * Mensaje del envelope de error; sin respuesta del servidor, error de conexión (FR-017). Sin base de datos
+ * (503 DATABASE_UNAVAILABLE, escritorio) también es de conexión, con su propio mensaje.
+ */
 export function toAuthErrorMessage(err: unknown): string {
   const body = (err as { response?: { data?: Partial<ApiError> } } | null)?.response?.data;
-  if (body?.success === false && body.error) return body.error.message;
-  return CONNECTION_ERROR_MESSAGE;
+  if (body?.success !== false || !body.error) return CONNECTION_ERROR_MESSAGE;
+  if (body.error.code === DATABASE_ERROR_CODES.unavailable) return DATABASE_MESSAGES.unavailable;
+  return body.error.message;
 }

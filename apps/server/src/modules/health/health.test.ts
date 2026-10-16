@@ -11,10 +11,10 @@ afterEach(clearTestDb);
 afterAll(stopTestDb);
 
 describe('GET /api/health', () => {
-  it('responde 200 con el envelope de éxito', async () => {
+  it('responde 200 con el envelope de éxito y database connected (FR-005)', async () => {
     const res = await request(buildApp()).get('/api/health');
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ success: true, data: { status: 'ok' } });
+    expect(res.body).toEqual({ success: true, data: { status: 'ok', database: 'connected' } });
   });
 });
 

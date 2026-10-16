@@ -5,9 +5,15 @@ import { z } from 'zod';
 // .env vive en la raíz del monorepo (src/config y dist/config están a la misma profundidad).
 dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
 
+// PORT=0 y HOST los usa el backend embebido en escritorio (research R2/R3). MONGODB_URI es opcional porque
+// el escritorio arranca sin base de datos configurada; vacía equivale a ausente. server.ts (web) la exige.
 const envSchema = z.object({
-  PORT: z.coerce.number().int().positive(),
-  MONGODB_URI: z.string().min(1),
+  PORT: z.coerce.number().int().nonnegative(),
+  HOST: z.string().min(1).optional(),
+  MONGODB_URI: z
+    .string()
+    .optional()
+    .transform((value) => value || undefined),
   JWT_ACCESS_SECRET: z.string().min(32),
   CORS_ORIGINS: z
     .string()
@@ -30,4 +36,9 @@ export function getEnv(): Env {
   }
   cached = result.data;
   return cached;
+}
+
+/** Solo para tests: obliga a validar de nuevo process.env en la siguiente llamada a getEnv(). */
+export function resetEnvCache(): void {
+  cached = null;
 }
