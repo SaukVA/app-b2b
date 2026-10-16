@@ -1,0 +1,55 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font: 600 14px/1 var(--font-sans);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.md {
+  min-height: var(--control-height);
+}
+
+.lg {
+  min-height: var(--control-height-login);
+  font-size: 15px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.secondary {
+  background: var(--surface);
+  border-color: var(--control);
+  color: var(--ink);
+}
+
+.tertiary {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--ink2);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

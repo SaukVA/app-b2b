@@ -1,0 +1,123 @@
+/* Tokens del sistema visual «Albarán» (docs/design/README.md). */
+
+:root {
+  /* Color · tema claro (por defecto) */
+  --bg: #f3f4f1;
+  --surface: #ffffff;
+  --surface2: #eef0ec;
+  --border: #d9dcd5;
+  --border-row: #e4e6e1;
+  --control: #c5c9c1;
+  --ink: #16191d;
+  --ink2: #4a5058;
+  --ink3: #6b717a;
+  --disabled: #9aa1a9;
+  --nav: #16191d;
+  --nav-active: #262b31;
+  --nav-text: #c9cdd2;
+  --nav-icon-active: #f08a5d;
+  --accent: #b4430f;
+  --accent-hover: #8a320a;
+  --on-accent: #ffffff;
+  --accent-soft: #fbede5;
+
+  /* Sellos de estado (fondo / texto) */
+  --stamp-draft-bg: #eef0ec;
+  --stamp-draft-fg: #4a5058;
+  --stamp-pending-bg: #fdf3d7;
+  --stamp-pending-fg: #7a5300;
+  --stamp-served-bg: #e3ecfa;
+  --stamp-served-fg: #1e4c9a;
+  --stamp-ok-bg: #e2f1e8;
+  --stamp-ok-fg: #1f6b3f;
+  --stamp-partial-bg: #f1e6f7;
+  --stamp-partial-fg: #6a2c8a;
+  --stamp-error-bg: #fbe4e1;
+  --stamp-error-fg: #a12a1c;
+  --danger: #a12a1c;
+
+  /* Tipografía */
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --text-display: 600 48px/1.05 var(--font-sans);
+  --text-screen-title: 600 28px/1.2 var(--font-sans);
+  --text-panel-title: 600 22px/1.25 var(--font-sans);
+  --text-section: 600 18px/1.3 var(--font-sans);
+  --text-body: 400 14px/1.5 var(--font-sans);
+  --text-label: 500 12px/1.3 var(--font-sans);
+  --text-table-head: 600 11px/1.3 var(--font-sans);
+  --text-figure: 500 14px/1.4 var(--font-mono);
+  --tracking-caps: 0.06em;
+
+  /* Espaciado (escala base 4) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Radios */
+  --radius-stamp: 4px;
+  --radius-control: 6px;
+  --radius-card: 8px;
+  --radius-panel: 10px;
+
+  /* Tamaños */
+  --control-height: 44px;
+  --control-height-login: 48px;
+  --nav-width: 232px;
+  --breakpoint-mobile: 760px; /* referencia: las media/container queries no admiten var() */
+
+  color-scheme: light;
+}
+
+/* Tema oscuro: seleccionado explícitamente o «Según el sistema». */
+:root[data-theme='dark'] {
+  --bg: #111417;
+  --surface: #1a1e23;
+  --surface2: #23282e;
+  --border: #2f353c;
+  --control: #3a4148;
+  --ink: #e8eae6;
+  --ink2: #b3b9c0;
+  --ink3: #949ba3;
+  --nav: #0b0d0f;
+  --nav-active: #23282e;
+  --accent: #e8794a;
+  --on-accent: #16191d;
+  --accent-soft: #3a2419;
+  --stamp-pending-bg: #3a3014;
+  --stamp-pending-fg: #e8c66a;
+  --stamp-ok-bg: #1b3326;
+  --stamp-ok-fg: #7fd3a0;
+  --stamp-error-bg: #3a1d1a;
+  --stamp-error-fg: #f09a8e;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    --bg: #111417;
+    --surface: #1a1e23;
+    --surface2: #23282e;
+    --border: #2f353c;
+    --control: #3a4148;
+    --ink: #e8eae6;
+    --ink2: #b3b9c0;
+    --ink3: #949ba3;
+    --nav: #0b0d0f;
+    --nav-active: #23282e;
+    --accent: #e8794a;
+    --on-accent: #16191d;
+    --accent-soft: #3a2419;
+    --stamp-pending-bg: #3a3014;
+    --stamp-pending-fg: #e8c66a;
+    --stamp-ok-bg: #1b3326;
+    --stamp-ok-fg: #7fd3a0;
+    --stamp-error-bg: #3a1d1a;
+    --stamp-error-fg: #f09a8e;
+    color-scheme: dark;
+  }
+}

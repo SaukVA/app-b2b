@@ -31,9 +31,9 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | Node.js | 22.x LTS (≥22.12.0) | Runtime, fijado en `engines` del `package.json` raíz |
 | npm | 10.x (bundlado con Node 22) | Gestor de paquetes y workspaces |
 | TypeScript | 5.7.x | Tipado en los 3 apps y en `packages/shared` |
-| ESLint | 9.x (flat config) + `typescript-eslint` 8.x | Linting |
+| ESLint | 9.x (flat config) + `@eslint/js` 9.x + `typescript-eslint` 8.x | Linting |
 | Prettier | 3.4.x | Formateo |
-| Jest | 30.x + `ts-jest` 29.2.x | Tests unitarios e integración en todos los workspaces |
+| Jest | 30.x + `ts-jest` 29.4.x | Tests unitarios e integración en todos los workspaces (`ts-jest` ≥29.4 es la primera versión compatible con Jest 30) |
 | concurrently | 9.x | Levantar client+server+desktop en paralelo en dev |
 
 ### `apps/server` (Express + MongoDB)
@@ -41,7 +41,7 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | Librería | Versión | Uso |
 |---|---|---|
 | Express | 5.1.x | Framework HTTP |
-| Mongoose | 8.9.x | ODM sobre MongoDB |
+| Mongoose | 8.24.x | ODM sobre MongoDB |
 | MongoDB Server | 8.0.x (Community) | Base de datos (local vía Docker en dev) |
 | zod | 3.24.x | Validación de payloads de entrada |
 | jsonwebtoken | 9.0.x | Autenticación con access/refresh token |
@@ -49,6 +49,9 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | swagger-jsdoc | 6.2.x | Genera el spec OpenAPI desde comentarios JSDoc en las rutas |
 | swagger-ui-express | 5.0.x | Sirve la UI de Swagger en `/api-docs` |
 | dotenv | 16.x | Carga de variables de entorno |
+| cookie-parser | 1.4.x | Lee la cookie `httpOnly` del refresh token en la web (ADR/plan 001-user-login, R2) |
+| cors | 2.8.x | Permite las peticiones del cliente de escritorio (origen `app://`) y del cliente en dev |
+| tsx | 4.x | Ejecuta el servidor TypeScript en modo watch (`npm run dev`) |
 | supertest | 7.0.x | Tests de integración sobre los endpoints Express |
 | mongodb-memory-server | 10.x | MongoDB en memoria para tests, sin depender de una instancia real |
 
@@ -58,10 +61,14 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 |---|---|---|
 | React / React DOM | 19.0.x | UI |
 | Vite | 6.0.x | Dev server y build |
-| React Router | 7.1.x | Enrutado |
+| React Router | 7.18.x | Enrutado |
 | Redux Toolkit | 2.5.x | Estado global (productos, clientes, proveedores, ventas, cobros) |
 | React Redux | 9.2.x | Bindings de Redux con React |
-| axios | 1.7.x | Cliente HTTP contra `apps/server` |
+| axios | 1.20.x | Cliente HTTP contra `apps/server` |
+| @vitejs/plugin-react | 4.x | Plugin de React para Vite (JSX, Fast Refresh) |
+| @testing-library/react + @testing-library/dom | 16.x / 10.x | Tests de componentes centrados en accesibilidad |
+| @testing-library/user-event | 14.x | Simular la interacción del usuario en los tests de componentes |
+| jest-environment-jsdom | 30.x | Entorno DOM para Jest en `apps/client` |
 
 ### `apps/desktop` (Electron)
 
@@ -198,6 +205,11 @@ El diseño de la interfaz («Albarán») está documentado en `docs/design/`:
 - Antes de crear archivos nuevos, MUST anunciarlo y esperar OK.
 - Antes de instalar dependencias nuevas, MUST justificar la necesidad y esperar OK.
 - Al terminar un cambio, SHOULD indicar cómo verificarlo (comando o test concreto).
+- Al lanzar `/speckit-implement`, antes de escribir código MUST pasar a **"En curso"** en Jira la fase
+  (Tarea) y las subtareas que se van a implementar en esa ejecución, usando las claves de
+  `specs/<feature>/jira-mapping.json` (proyecto y `cloud_id` en `.specify/extensions/jira/jira-config.yml`).
+  Las que ya estén en "En curso" o "Listo" no se tocan. Al terminar, las completadas pasan a **"Listo"**
+  con `/speckit-jira-sync-status`.
 
 ## Comandos Habituales
 

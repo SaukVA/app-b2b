@@ -1,0 +1,222 @@
+openapi: 3.0.3
+info:
+  title: App B2B · Autenticación
+  version: 1.0.0
+  description: >
+    Contrato de la API de autenticación (feature 001-user-login). En la implementación cada ruta lleva
+    su bloque JSDoc @openapi equivalente y se sirve en /api-docs.
+servers:
+  - url: /api
+tags:
+  - name: Auth
+  - name: Health
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Estado del servidor (usado por el indicador de servidor en escritorio)
+      security: []
+      responses:
+        '200':
+          description: Servidor accesible
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        required: [status]
+                        properties:
+                          status: { type: string, enum: [ok] }
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Inicia sesión con email (o "admin") y contraseña
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+      responses:
+        '200':
+          description: >
+            Sesión creada. En web el refresh token se envía en la cookie httpOnly `refreshToken`
+            (Path=/api/auth); en escritorio va en el cuerpo.
+          headers:
+            Set-Cookie:
+              description: Solo con client=web.
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/LoginResponse' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401':
+          description: >
+            AUTH_INVALID_CREDENTIALS. El mensaje incluye los intentos restantes y es idéntico tanto si
+            el email existe como si no.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+              example:
+                success: false
+                error: { code: AUTH_INVALID_CREDENTIALS, message: 'Email o contraseña incorrectos. Te quedan 3 intentos.' }
+        '403':
+          description: AUTH_ACCOUNT_BLOCKED | AUTH_INVITATION_PENDING (solo con contraseña correcta)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+        '423':
+          description: AUTH_ACCOUNT_LOCKED. El mensaje indica la hora a partir de la que se puede reintentar.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Rota el refresh token y emite un nuevo access token
+      security: []
+      requestBody:
+        description: Solo escritorio. En web el token se lee de la cookie `refreshToken`.
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken: { type: string }
+      responses:
+        '200':
+          description: Tokens renovados (nuevo refresh en la cookie o en el cuerpo, según el cliente)
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/LoginResponse' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401':
+          description: AUTH_SESSION_EXPIRED (caducada, revocada, reutilizada o usuario no activo)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Revoca la sesión actual y borra la cookie
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Sesión cerrada
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { type: 'null' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Usuario de la sesión actual y sus permisos
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Usuario autenticado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/AuthUser' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  responses:
+    ValidationError:
+      description: VALIDATION_ERROR (payload no válido según el esquema zod)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    Unauthenticated:
+      description: AUTH_UNAUTHENTICATED | AUTH_SESSION_EXPIRED
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  schemas:
+    SuccessEnvelope:
+      type: object
+      required: [success, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        data: {}
+    ErrorEnvelope:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, enum: [false] }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: >
+                Códigos que devuelven las rutas /auth/*. En /api-docs el envelope es común a toda la API,
+                así que allí `code` es un texto libre (otros módulos añaden sus propios códigos).
+              enum:
+                - VALIDATION_ERROR
+                - AUTH_INVALID_CREDENTIALS
+                - AUTH_ACCOUNT_LOCKED
+                - AUTH_ACCOUNT_BLOCKED
+                - AUTH_INVITATION_PENDING
+                - AUTH_UNAUTHENTICATED
+                - AUTH_SESSION_EXPIRED
+                - AUTH_FORBIDDEN
+            message: { type: string }
+    LoginRequest:
+      type: object
+      required: [login, password, persistent, client]
+      properties:
+        login:
+          type: string
+          description: Email (se normaliza a minúsculas y sin espacios) o "admin" para la cuenta inicial.
+          example: comercial@empresa.es
+        password: { type: string, minLength: 1 }
+        persistent: { type: boolean, description: Mantener la sesión iniciada en este equipo }
+        client: { type: string, enum: [web, desktop] }
+    AuthUser:
+      type: object
+      required: [id, login, name, role, isBootstrap, homeScreen]
+      properties:
+        id: { type: string }
+        login: { type: string }
+        name: { type: string }
+        role: { type: string, enum: [Administrador, Comercial, Almacén, Administración] }
+        isBootstrap: { type: boolean }
+        homeScreen: { type: string, nullable: true, enum: [panel, ventas, productos] }
+    LoginResponse:
+      type: object
+      required: [accessToken, user]
+      properties:
+        accessToken: { type: string, description: JWT de 15 min }
+        refreshToken: { type: string, description: Solo con client=desktop }
+        persistent:
+          type: boolean
+          description: Solo en /auth/refresh. Si la sesión es persistente ("Mantener la sesión").
+        user: { $ref: '#/components/schemas/AuthUser' }
