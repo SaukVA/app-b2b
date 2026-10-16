@@ -112,13 +112,36 @@ async function askHealth(deps: DatabaseIpcDeps): Promise<DatabaseState> {
   }
 }
 
-/** Estado real (FR-005): sin configuración no se pregunta; si no hay respuesta en 5 s, disconnected. */
+/** Pausa entre preguntas a /api/health mientras el backend todavía no ha conectado. */
+export const STATUS_RETRY_MS = 500;
+
+/**
+ * Tras guardar, el backend reiniciado escucha antes de conectar con la base de datos: se vuelve a preguntar
+ * hasta que responda connected o hasta que se cancele (bug login-db-status-offline).
+ */
+async function waitForConnected(
+  deps: DatabaseIpcDeps,
+  attempt: { cancelled: boolean },
+): Promise<DatabaseState> {
+  while (!attempt.cancelled) {
+    if ((await askHealth(deps)) === 'connected') return 'connected';
+    await new Promise((resolve) => setTimeout(resolve, STATUS_RETRY_MS));
+  }
+  return 'disconnected';
+}
+
+/** Estado real (FR-005): sin configuración no se pregunta; si no está connected en 5 s, disconnected. */
 async function databaseStatus(deps: DatabaseIpcDeps): Promise<{ state: DatabaseState }> {
   if (!deps.store.read()) return { state: 'unconfigured' };
-  const timeout = new Promise<DatabaseState>((resolve) =>
-    setTimeout(() => resolve('disconnected'), STATUS_TIMEOUT_MS),
-  );
-  return { state: await Promise.race([askHealth(deps), timeout]) };
+  const attempt = { cancelled: false };
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<DatabaseState>((resolve) => {
+    timer = setTimeout(() => resolve('disconnected'), STATUS_TIMEOUT_MS);
+  });
+  const state = await Promise.race([waitForConnected(deps, attempt), timeout]);
+  attempt.cancelled = true;
+  clearTimeout(timer);
+  return { state };
 }
 
 /** Valida formato y TLS sin conectar: ningún error de esta fase llega al backend (FR-010, FR-016). */

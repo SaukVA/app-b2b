@@ -5,6 +5,8 @@ import type { IpcMain } from 'electron';
 import { createRefreshTokenStore, type Encryptor } from './auth';
 import {
   DATABASE_CHANNELS,
+  STATUS_RETRY_MS,
+  STATUS_TIMEOUT_MS,
   assertUriArg,
   createDatabaseStore,
   registerDatabaseIpc,
@@ -202,35 +204,20 @@ describe('registerDatabaseIpc · database:status (US2, FR-005)', () => {
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
-  it.each(['connected', 'disconnected'])(
-    'devuelve el database de /health: %s',
-    async (database) => {
-      const { store, invoke, fetchImpl } = setupIpc(healthFetch(database));
-      store.write(URI);
-      await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: database });
-      expect(fetchImpl).toHaveBeenCalledWith(
-        'http://127.0.0.1:51234/api/health',
-        expect.anything(),
-      );
-    },
-  );
-
-  it.each([
-    ['la respuesta no es OK', healthFetch('connected', false)],
-    ['fetch falla', jest.fn().mockRejectedValue(new Error('ECONNREFUSED'))],
-  ])('si %s responde disconnected', async (_case, fetchImpl) => {
-    const { store, invoke } = setupIpc(fetchImpl);
+  it('devuelve connected si /health responde connected', async () => {
+    const { store, invoke, fetchImpl } = setupIpc(healthFetch('connected'));
     store.write(URI);
-    await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: 'disconnected' });
-  });
-
-  it('si el backend no está listo responde disconnected', async () => {
-    const { store, backend, invoke } = setupIpc();
-    backend.getUrl.mockRejectedValue(new Error('El backend local no ha arrancado a tiempo'));
-    store.write(URI);
-    await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: 'disconnected' });
+    await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: 'connected' });
+    expect(fetchImpl).toHaveBeenCalledWith('http://127.0.0.1:51234/api/health', expect.anything());
   });
 });
+
+/** Pide el estado y avanza el reloj falso hasta el tiempo máximo de 5 s. */
+async function statusAfterTimeout(invoke: (channel: string) => unknown) {
+  const status = invoke(DATABASE_CHANNELS.status) as Promise<unknown>;
+  await jest.advanceTimersByTimeAsync(STATUS_TIMEOUT_MS);
+  return status;
+}
 
 describe('registerDatabaseIpc · database:status con tiempo máximo', () => {
   beforeEach(() => jest.useFakeTimers());
@@ -239,8 +226,56 @@ describe('registerDatabaseIpc · database:status con tiempo máximo', () => {
   it('sin respuesta en 5 s responde disconnected', async () => {
     const { store, invoke } = setupIpc(jest.fn(() => new Promise(() => {})));
     store.write(URI);
+    await expect(statusAfterTimeout(invoke)).resolves.toEqual({ state: 'disconnected' });
+  });
+
+  it.each([
+    ['/health responde disconnected', healthFetch('disconnected')],
+    ['la respuesta no es OK', healthFetch('connected', false)],
+    ['fetch falla', jest.fn().mockRejectedValue(new Error('ECONNREFUSED'))],
+  ])('si %s durante 5 s responde disconnected', async (_case, fetchImpl) => {
+    const { store, invoke } = setupIpc(fetchImpl);
+    store.write(URI);
+    await expect(statusAfterTimeout(invoke)).resolves.toEqual({ state: 'disconnected' });
+  });
+
+  it('si el backend no está listo responde disconnected', async () => {
+    const { store, backend, invoke } = setupIpc();
+    backend.getUrl.mockRejectedValue(new Error('El backend local no ha arrancado a tiempo'));
+    store.write(URI);
+    await expect(statusAfterTimeout(invoke)).resolves.toEqual({ state: 'disconnected' });
+  });
+});
+
+describe('registerDatabaseIpc · database:status tras reiniciar el backend (login-db-status-offline)', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  it('tras reiniciar, sigue preguntando hasta que la base de datos conecta (login-db-status-offline)', async () => {
+    const connecting = healthFetch('disconnected');
+    const fetchImpl = jest
+      .fn()
+      .mockImplementationOnce(connecting)
+      .mockImplementationOnce(connecting)
+      .mockImplementation(healthFetch('connected'));
+    const { store, invoke } = setupIpc(fetchImpl);
+    store.write(URI);
     const status = invoke(DATABASE_CHANNELS.status) as Promise<unknown>;
-    await jest.advanceTimersByTimeAsync(5000);
+    await jest.advanceTimersByTimeAsync(2 * STATUS_RETRY_MS);
+    await expect(status).resolves.toEqual({ state: 'connected' });
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+  });
+
+  it('con la base de datos inaccesible no se da por perdida antes de 5 s', async () => {
+    const { store, invoke } = setupIpc(healthFetch('disconnected'));
+    store.write(URI);
+    let settled = false;
+    const status = (invoke(DATABASE_CHANNELS.status) as Promise<unknown>).finally(() => {
+      settled = true;
+    });
+    await jest.advanceTimersByTimeAsync(STATUS_TIMEOUT_MS - 1);
+    expect(settled).toBe(false);
+    await jest.advanceTimersByTimeAsync(1);
     await expect(status).resolves.toEqual({ state: 'disconnected' });
   });
 });
