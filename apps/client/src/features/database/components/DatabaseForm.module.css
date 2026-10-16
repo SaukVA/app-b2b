@@ -1,0 +1,55 @@
+/* Panel «Conexión a la base de datos» del tablero Ajustes › Base de datos (modo «MongoDB directo»). */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-section);
+  color: var(--ink);
+}
+
+.subtitle {
+  font: var(--text-body);
+  color: var(--ink2);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 20px;
+}
+
+/* La cadena se escribe en monoespaciada, como en el tablero. */
+.uri {
+  font: 500 14px/1.4 var(--font-mono);
+}
+
+.help {
+  margin-bottom: var(--space-2);
+  font: 400 12px/1.4 var(--font-sans);
+  color: var(--ink3);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) 20px;
+  border-top: 1px solid var(--border);
+}

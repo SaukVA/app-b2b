@@ -16,4 +16,10 @@ export const DATABASE_MESSAGES = {
   uriInvalidPrefix: 'La cadena de conexión no es válida: ',
   tlsRequired: 'Las bases de datos remotas exigen conexión cifrada (tls=true o mongodb+srv).',
   unavailable: 'No se puede conectar con la base de datos.',
+  /** Resultado de «Probar conexión» (research R10). */
+  unreachable: 'La base de datos no responde. Comprueba el servidor y la red.',
+  authFailed: 'El usuario o la contraseña de la base de datos no son correctos.',
 } as const;
+
+/** Tiempo máximo de «Probar conexión» (FR-009). */
+export const DATABASE_TEST_TIMEOUT_MS = 10_000;

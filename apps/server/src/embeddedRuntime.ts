@@ -1,4 +1,4 @@
-import type { BackendToMainMessage } from '@app/shared';
+import type { BackendToMainMessage, DatabaseTestResult, MainToBackendMessage } from '@app/shared';
 import type { Env } from './config/env';
 
 // Ciclo de vida del backend embebido en escritorio (contracts/embedded-backend.md). Las dependencias se
@@ -18,7 +18,11 @@ export interface EmbeddedDeps {
   listen(host: string, port: number): Promise<number>;
   connect(uri: string): Promise<void>;
   ensureBootstrap(): Promise<void>;
+  /** Tras la primera conexión y la cuenta inicial (aunque esta falle): las rutas dejan de responder 503. */
+  onDatabaseReady(): void;
   parentPort: ParentPortLike;
+  /** «Probar conexión» con una conexión temporal (research R10). */
+  testConnection(uri: string): Promise<DatabaseTestResult>;
   log(message: string): void;
 }
 
@@ -35,7 +39,8 @@ function connectWithRetry(deps: EmbeddedDeps, uri: string): void {
     () =>
       deps
         .ensureBootstrap()
-        .catch((err) => deps.log(`No se pudo crear la cuenta inicial (${errorName(err)})`)),
+        .catch((err) => deps.log(`No se pudo crear la cuenta inicial (${errorName(err)})`))
+        .finally(() => deps.onDatabaseReady()),
     (err) => {
       deps.log(
         `Sin conexión con la base de datos (${errorName(err)}); reintento en ${CONNECT_RETRY_MS / 1000} s`,
@@ -45,8 +50,27 @@ function connectWithRetry(deps: EmbeddedDeps, uri: string): void {
   );
 }
 
+function isTestConnection(message: unknown): message is MainToBackendMessage {
+  const candidate = message as Partial<Record<keyof MainToBackendMessage, unknown>> | null;
+  return (
+    typeof candidate === 'object' &&
+    candidate?.type === 'test-connection' &&
+    typeof candidate.id === 'string' &&
+    typeof candidate.uri === 'string'
+  );
+}
+
+/** Mensajes del proceso principal; los que no cumplen el contrato se ignoran. */
+function handleMessage(deps: EmbeddedDeps, message: unknown): void {
+  if (!isTestConnection(message)) return;
+  void deps.testConnection(message.uri).then((result) => {
+    deps.parentPort.postMessage({ type: 'test-result', id: message.id, result });
+  });
+}
+
 export async function startEmbedded(deps: EmbeddedDeps): Promise<void> {
   const port = await deps.listen(deps.env.HOST ?? DEFAULT_HOST, deps.env.PORT);
+  deps.parentPort.on('message', (event) => handleMessage(deps, event.data));
   deps.parentPort.postMessage({ type: 'ready', port });
   if (deps.env.MONGODB_URI) connectWithRetry(deps, deps.env.MONGODB_URI);
 }

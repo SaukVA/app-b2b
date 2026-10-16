@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T10:37:49Z",
-  "updated_at": "2026-10-16T10:54:08Z",
+  "updated_at": "2026-10-16T11:12:16Z",
   "spec": "002-desktop-local-backend",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -293,7 +293,7 @@
           "key": "AB2B-125",
           "id": "T028",
           "summary": "T028: Tests de testConnection y classifyConnectionError en apps/server/src/config/database.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-125"
         },
@@ -301,7 +301,7 @@
           "key": "AB2B-127",
           "id": "T029",
           "summary": "T029: Ampliar embeddedRuntime.test.ts con el mensaje test-connection → test-result",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T008",
             "T013"
@@ -312,7 +312,7 @@
           "key": "AB2B-130",
           "id": "T030",
           "summary": "T030: Ampliar backendProcess.test.ts con testConnection(uri) y límite de 10 s",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T015",
             "T017"
@@ -323,7 +323,7 @@
           "key": "AB2B-132",
           "id": "T031",
           "summary": "T031: Ampliar ipc/database.test.ts con los handlers database:test y database:save",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T016",
             "T018"
@@ -334,7 +334,7 @@
           "key": "AB2B-134",
           "id": "T032",
           "summary": "T032: Ampliar databaseSlice.test.ts con los thunks testDatabase y saveDatabase",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T023",
             "T026"
@@ -345,7 +345,7 @@
           "key": "AB2B-152",
           "id": "T033",
           "summary": "T033: Tests de DatabaseForm en apps/client/src/features/database/components/DatabaseForm.test.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-152"
         },
@@ -353,7 +353,7 @@
           "key": "AB2B-154",
           "id": "T034",
           "summary": "T034: Tests de DatabaseSettingsPage en apps/client/src/pages/DatabaseSettingsPage.test.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-154"
         },
@@ -361,7 +361,7 @@
           "key": "AB2B-156",
           "id": "T035",
           "summary": "T035: Implementar testConnection y classifyConnectionError en apps/server/src/config/database.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T028"
           ],
@@ -371,7 +371,7 @@
           "key": "AB2B-157",
           "id": "T036",
           "summary": "T036: Manejar test-connection en onMessage de apps/server/src/embeddedRuntime.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T029",
             "T035"
@@ -382,7 +382,7 @@
           "key": "AB2B-158",
           "id": "T037",
           "summary": "T037: Añadir testConnection(uri) a apps/desktop/src/backend/backendProcess.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T030",
             "T036"
@@ -393,7 +393,7 @@
           "key": "AB2B-182",
           "id": "T038",
           "summary": "T038: Handlers database:test y database:save en apps/desktop/src/ipc/database.ts y cableado en main.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T031",
             "T037"
@@ -404,7 +404,7 @@
           "key": "AB2B-184",
           "id": "T039",
           "summary": "T039: testDatabase y saveDatabase en databaseApi.ts y thunks en databaseSlice.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T032"
           ],
@@ -414,7 +414,7 @@
           "key": "AB2B-185",
           "id": "T040",
           "summary": "T040: Crear DatabaseForm.tsx y DatabaseForm.module.css en apps/client/src/features/database/components/",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T033"
           ],
@@ -424,7 +424,7 @@
           "key": "AB2B-187",
           "id": "T041",
           "summary": "T041: Crear apps/client/src/pages/DatabaseSettingsPage.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T034",
             "T039",
@@ -436,7 +436,7 @@
           "key": "AB2B-188",
           "id": "T042",
           "summary": "T042: Ruta /ajustes/base-de-datos en AppRouter.tsx y eliminar ServerSettingsPlaceholder",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T041"
           ],
@@ -1166,7 +1166,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 67,
-    "completed_tasks": 27,
-    "pending_tasks": 40
+    "completed_tasks": 42,
+    "pending_tasks": 25
   }
 }

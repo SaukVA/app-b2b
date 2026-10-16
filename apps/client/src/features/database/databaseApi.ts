@@ -1,4 +1,9 @@
-import type { DesktopBridge, DatabaseSummary } from '@app/shared';
+import type {
+  DatabaseSaveResult,
+  DatabaseSummary,
+  DatabaseTestResult,
+  DesktopBridge,
+} from '@app/shared';
 import { getDesktopBridge } from '../../utils/desktop';
 
 // La base de datos del escritorio se gestiona en el proceso principal: estas funciones llaman al puente
@@ -12,4 +17,12 @@ function requireBridge(): DesktopBridge {
 
 export function getDatabaseSummary(): Promise<DatabaseSummary> {
   return requireBridge().getDatabase();
+}
+
+export function testDatabase(uri: string): Promise<DatabaseTestResult> {
+  return requireBridge().testDatabase(uri);
+}
+
+export function saveDatabase(uri: string): Promise<DatabaseSaveResult> {
+  return requireBridge().saveDatabase(uri);
 }

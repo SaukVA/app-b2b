@@ -1,7 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { IpcMain } from 'electron';
-import { DATABASE_URI_MAX_LENGTH, parseMongoUri, type DatabaseSummary } from '@app/shared';
+import {
+  DATABASE_URI_MAX_LENGTH,
+  parseMongoUri,
+  type DatabaseSaveResult,
+  type DatabaseSummary,
+  type DatabaseTestResult,
+} from '@app/shared';
+import type { BackendProcess } from '../backend/backendProcess';
 import type { Encryptor } from './auth';
 
 // Base de datos configurada en el equipo (research R7, R9; data-model.md «DatabaseConfig»): la cadena de
@@ -82,9 +89,34 @@ export function assertUriArg(value: unknown): asserts value is string {
 
 export interface DatabaseIpcDeps {
   store: DatabaseStore;
+  backend: Pick<BackendProcess, 'testConnection' | 'restart'>;
+}
+
+/** Valida formato y TLS sin conectar: ningún error de esta fase llega al backend (FR-010, FR-016). */
+function validate(uri: string): DatabaseTestResult {
+  const parsed = parseMongoUri(uri);
+  return parsed.ok ? { ok: true } : { ok: false, code: parsed.code, message: parsed.message };
+}
+
+async function testDatabase(deps: DatabaseIpcDeps, uri: unknown): Promise<DatabaseTestResult> {
+  assertUriArg(uri);
+  const validation = validate(uri);
+  return validation.ok ? deps.backend.testConnection(uri) : validation;
+}
+
+/** Se guarda aunque la base de datos no responda ahora: puede ser una caída temporal (spec, Edge Cases). */
+async function saveDatabase(deps: DatabaseIpcDeps, uri: unknown): Promise<DatabaseSaveResult> {
+  assertUriArg(uri);
+  const validation = validate(uri);
+  if (!validation.ok) return validation;
+  deps.store.write(uri);
+  deps.backend.restart();
+  return { ok: true, summary: toSummary(uri, deps.store.isPersistent()) };
 }
 
 export function registerDatabaseIpc(ipcMain: IpcMain, deps: DatabaseIpcDeps): void {
   const { store } = deps;
   ipcMain.handle(DATABASE_CHANNELS.get, () => toSummary(store.read(), store.isPersistent()));
+  ipcMain.handle(DATABASE_CHANNELS.test, (_event, uri: unknown) => testDatabase(deps, uri));
+  ipcMain.handle(DATABASE_CHANNELS.save, (_event, uri: unknown) => saveDatabase(deps, uri));
 }

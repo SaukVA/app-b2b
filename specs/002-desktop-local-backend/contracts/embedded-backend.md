@@ -49,3 +49,7 @@ Cualquier ruta que necesite la base de datos sin conexión responde:
 ```
 
 con status `503`. Aplica también a la web: hoy esos errores acaban en `500 INTERNAL_ERROR`.
+
+En el backend embebido, además, todas las rutas de `/api` salvo `/health` responden este mismo 503 hasta que
+termina la primera conexión y la creación de la cuenta inicial (`ensureBootstrapAccount`). Así un login en ese
+intervalo es un error de conexión y no un intento fallido con «admin» todavía sin crear (FR-018, US1-4).

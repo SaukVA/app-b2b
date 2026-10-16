@@ -56,7 +56,7 @@ function startBackendAndIpc(): BackendProcess {
   const databaseStore = createDatabaseStore({ userDataDir, encryptor: safeStorage });
   const backend = createBackend(() => databaseStore.read());
   registerAuthIpc(ipcMain, createRefreshTokenStore({ userDataDir, encryptor: safeStorage }));
-  registerDatabaseIpc(ipcMain, { store: databaseStore });
+  registerDatabaseIpc(ipcMain, { store: databaseStore, backend });
   ipcMain.handle(BACKEND_CHANNELS.getUrl, () => backend.getUrl());
   backend.start();
   return backend;

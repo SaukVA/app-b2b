@@ -170,3 +170,42 @@ describe('createBackendProcess · caídas', () => {
     expect(children).toHaveLength(1 + MAX_CONSECUTIVE_RESTARTS + 2);
   });
 });
+
+describe('createBackendProcess · testConnection (US1, research R10)', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  const URI = 'mongodb://localhost:27017/otra';
+  const sentTests = (child: FakeChild) => child.sent as { type: string; id: string; uri: string }[];
+
+  it('envía test-connection con un id único y resuelve con el test-result de ese id', async () => {
+    const { backend, last } = setup();
+    backend.start();
+    const first = backend.testConnection(URI);
+    const second = backend.testConnection(URI);
+    const [a, b] = sentTests(last());
+    expect(a).toMatchObject({ type: 'test-connection', uri: URI });
+    expect(a.id).not.toBe(b.id);
+    last().emit('message', { type: 'test-result', id: b.id, result: { ok: true } });
+    const failed = { ok: false, code: 'DATABASE_AUTH_FAILED', message: 'x' };
+    last().emit('message', { type: 'test-result', id: a.id, result: failed });
+    await expect(first).resolves.toEqual(failed);
+    await expect(second).resolves.toEqual({ ok: true });
+  });
+
+  it(`sin respuesta en ${READY_TIMEOUT_MS / 1000} s resuelve DATABASE_UNREACHABLE`, async () => {
+    const { backend } = setup();
+    backend.start();
+    const result = backend.testConnection(URI);
+    jest.advanceTimersByTime(READY_TIMEOUT_MS);
+    await expect(result).resolves.toMatchObject({ ok: false, code: 'DATABASE_UNREACHABLE' });
+  });
+
+  it('sin backend en marcha resuelve DATABASE_UNREACHABLE sin esperar', async () => {
+    const { backend } = setup();
+    await expect(backend.testConnection(URI)).resolves.toMatchObject({
+      ok: false,
+      code: 'DATABASE_UNREACHABLE',
+    });
+  });
+});

@@ -3,7 +3,7 @@ import type { AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
 import { LogoutButton } from '../features/auth/components/LogoutButton';
 import { DATABASE_SETTINGS_PATH, LoginPage } from '../pages/LoginPage';
-import { ServerSettingsPlaceholder } from '../pages/ServerSettingsPlaceholder';
+import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
 import { useAppSelector } from '../store/store';
 import { isDesktop } from '../utils/desktop';
 import { APP_MODULES, resolveHomeRoute } from './homeRoute';
@@ -40,9 +40,8 @@ const moduleRoutes = APP_MODULES.map((module) => ({
 }));
 
 // Pública y solo en escritorio (002 FR-007/FR-008): en web la ruta cae en la protegida /ajustes.
-// Provisional hasta T042, que la sustituye por DatabaseSettingsPage.
 const desktopRoutes = isDesktop()
-  ? [{ path: DATABASE_SETTINGS_PATH.slice(1), element: <ServerSettingsPlaceholder /> }]
+  ? [{ path: DATABASE_SETTINGS_PATH.slice(1), element: <DatabaseSettingsPage /> }]
   : [];
 
 const router = createBrowserRouter([

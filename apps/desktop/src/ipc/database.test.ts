@@ -109,9 +109,73 @@ describe('registerDatabaseIpc · database:get', () => {
     const store = createDatabaseStore({ userDataDir, encryptor: fakeEncryptor() });
     store.write(URI);
     const { ipcMain, invoke } = fakeIpcMain();
-    registerDatabaseIpc(ipcMain, { store });
+    registerDatabaseIpc(ipcMain, { store, backend: fakeBackend() });
     const summary = await invoke(DATABASE_CHANNELS.get);
     expect(summary).toMatchObject({ configured: true, host: 'db.ejemplo.net:27017' });
     expect(JSON.stringify(summary)).not.toContain('s3cr3t');
+  });
+});
+
+/** Backend falso: testConnection y restart controlables. */
+function fakeBackend() {
+  return {
+    testConnection: jest.fn().mockResolvedValue({ ok: true }),
+    restart: jest.fn(),
+  };
+}
+
+function setupIpc() {
+  const store = createDatabaseStore({ userDataDir, encryptor: fakeEncryptor() });
+  const backend = fakeBackend();
+  const { ipcMain, invoke } = fakeIpcMain();
+  registerDatabaseIpc(ipcMain, { store, backend });
+  return { store, backend, invoke };
+}
+
+const REMOTE_NO_TLS = 'mongodb://ana:s3cr3t@db.ejemplo.net:27017/ventas';
+
+describe('registerDatabaseIpc · database:test (US1)', () => {
+  it.each([
+    ['formato no válido', 'postgres://localhost/db', 'DATABASE_URI_INVALID'],
+    ['remota sin TLS', REMOTE_NO_TLS, 'DATABASE_TLS_REQUIRED'],
+  ])('con %s responde %s sin llamar al backend ni guardar', async (_case, uri, code) => {
+    const { store, backend, invoke } = setupIpc();
+    await expect(invoke(DATABASE_CHANNELS.test, uri)).resolves.toMatchObject({ ok: false, code });
+    expect(backend.testConnection).not.toHaveBeenCalled();
+    expect(store.read()).toBeNull();
+  });
+
+  it('con una cadena válida delega en el backend y no guarda nada (FR-009)', async () => {
+    const { store, backend, invoke } = setupIpc();
+    const failed = { ok: false, code: 'DATABASE_UNREACHABLE', message: 'x' };
+    backend.testConnection.mockResolvedValue(failed);
+    await expect(invoke(DATABASE_CHANNELS.test, URI)).resolves.toEqual(failed);
+    expect(backend.testConnection).toHaveBeenCalledWith(URI);
+    expect(store.read()).toBeNull();
+  });
+});
+
+describe('registerDatabaseIpc · database:save (US1)', () => {
+  it('guarda, reinicia el backend y devuelve el resumen sin conectar antes', async () => {
+    const { store, backend, invoke } = setupIpc();
+    const result = await invoke(DATABASE_CHANNELS.save, URI);
+    expect(result).toEqual({ ok: true, summary: toSummary(URI, true) });
+    expect(store.read()).toBe(URI);
+    expect(backend.restart).toHaveBeenCalledTimes(1);
+    expect(backend.testConnection).not.toHaveBeenCalled();
+  });
+
+  it('con una cadena no válida no guarda ni reinicia', async () => {
+    const { store, backend, invoke } = setupIpc();
+    const result = await invoke(DATABASE_CHANNELS.save, REMOTE_NO_TLS);
+    expect(result).toMatchObject({ ok: false, code: 'DATABASE_TLS_REQUIRED' });
+    expect(store.read()).toBeNull();
+    expect(backend.restart).not.toHaveBeenCalled();
+  });
+
+  it.each([42, '', 'x'.repeat(2049)])('test y save lanzan con un argumento %p', async (value) => {
+    const { invoke } = setupIpc();
+    await expect(async () => invoke(DATABASE_CHANNELS.test, value)).rejects.toThrow();
+    await expect(async () => invoke(DATABASE_CHANNELS.save, value)).rejects.toThrow();
   });
 });
