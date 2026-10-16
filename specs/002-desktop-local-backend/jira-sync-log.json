@@ -129,5 +129,20 @@
       "AB2B-181"
     ],
     "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-16T15:26:55Z",
+    "spec": "002-desktop-local-backend",
+    "project": "AB2B",
+    "epic": "AB2B-115",
+    "total_tasks": 67,
+    "completed_tasks": 67,
+    "completion_pct": 100,
+    "updated_issues": [
+      "AB2B-183",
+      "AB2B-186",
+      "AB2B-121"
+    ],
+    "skipped_issues": []
   }
 ]
