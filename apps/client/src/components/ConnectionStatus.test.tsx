@@ -1,46 +1,49 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { ServerStatus, type ServerStatusProps } from './ServerStatus';
+import { ConnectionStatus, type ConnectionStatusProps } from './ConnectionStatus';
 
-function renderStatus(props: Partial<ServerStatusProps> = {}) {
+function renderStatus(props: Partial<ConnectionStatusProps> = {}) {
   render(
     <MemoryRouter>
-      <ServerStatus
-        url="http://erp.empresa.local/api"
-        reachable
-        settingsHref="/ajustes/servidor"
+      <ConnectionStatus
+        label="Base de datos"
+        value="db.ejemplo.net:27017"
+        state="ok"
+        linkText="Cambiar base de datos"
+        href="/ajustes/base-de-datos"
         {...props}
       />
     </MemoryRouter>,
   );
 }
 
-describe('ServerStatus', () => {
-  it('muestra la dirección del servidor en monoespaciada', () => {
+describe('ConnectionStatus', () => {
+  it('muestra la etiqueta y el valor en monoespaciada', () => {
     renderStatus();
-    const url = screen.getByText('http://erp.empresa.local/api');
-    expect(url.tagName).toBe('CODE');
+    expect(screen.getByText(/Base de datos/)).toBeTruthy();
+    expect(screen.getByText('db.ejemplo.net:27017').tagName).toBe('CODE');
   });
 
-  it('expresa el estado como texto, no solo con el color', () => {
-    renderStatus({ reachable: true });
-    expect(screen.getByText('Conectado')).toBeTruthy();
+  it.each([
+    ['checking', 'Comprobando…'],
+    ['ok', 'Conectado'],
+    ['down', 'Sin conexión'],
+    ['unconfigured', 'Sin configurar'],
+  ] as const)('el estado %s se expresa como texto: «%s»', (state, text) => {
+    renderStatus({ state });
+    expect(screen.getByRole('status').textContent).toBe(text);
   });
 
-  it('sin conexión lo dice en texto', () => {
-    renderStatus({ reachable: false });
-    expect(screen.getByText('Sin conexión')).toBeTruthy();
+  it('sin valor no pinta el código vacío', () => {
+    renderStatus({ value: null, state: 'unconfigured' });
+    expect(screen.queryByRole('code')).toBeNull();
+    expect(document.querySelector('code')).toBeNull();
   });
 
-  it('mientras se comprueba muestra "Comprobando…"', () => {
-    renderStatus({ reachable: null });
-    expect(screen.getByText('Comprobando…')).toBeTruthy();
-  });
-
-  it('enlaza a "Cambiar servidor"', () => {
-    renderStatus();
-    expect(screen.getByRole('link', { name: 'Cambiar servidor' }).getAttribute('href')).toBe(
-      '/ajustes/servidor',
-    );
+  it('el enlace usa linkText y href', () => {
+    renderStatus({ linkText: 'Configurar base de datos' });
+    expect(
+      screen.getByRole('link', { name: 'Configurar base de datos' }).getAttribute('href'),
+    ).toBe('/ajustes/base-de-datos');
   });
 });

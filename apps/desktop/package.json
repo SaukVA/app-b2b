@@ -6,11 +6,12 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "npm run build && electron .",
-    "build": "npm run build --workspace=@app/shared && tsc -p tsconfig.build.json",
+    "build": "npm run build --workspace=@app/shared && npm run build --workspace=@app/server && tsc -p tsconfig.build.json",
     "package": "npm run build && electron-builder",
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
+    "@app/server": "*",
     "@app/shared": "*"
   },
   "devDependencies": {

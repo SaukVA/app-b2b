@@ -1,9 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { app, BrowserWindow, ipcMain, net, protocol, safeStorage } from 'electron';
+import { app, BrowserWindow, ipcMain, net, protocol, safeStorage, utilityProcess } from 'electron';
+import {
+  BACKEND_CHANNELS,
+  createBackendProcess,
+  type BackendProcess,
+} from './backend/backendProcess';
 import { createRefreshTokenStore, registerAuthIpc } from './ipc/auth';
-import { registerServerIpc } from './ipc/server';
+import { createDatabaseStore, registerDatabaseIpc } from './ipc/database';
 
 // En producción el cliente se sirve desde app://. (origen admitido por CORS_ORIGINS).
 const APP_SCHEME = 'app';
@@ -28,11 +33,33 @@ function registerAppProtocol(): void {
   });
 }
 
-/** Handlers de window.desktop (contracts/desktop-bridge.md). */
-function registerIpc(): void {
+/** La configuración de servidor de 001 US6 (config.json) ya no se usa: el escritorio no tiene modo API (R13). */
+function removeLegacyConfig(userDataDir: string): void {
+  fs.rmSync(path.join(userDataDir, 'config.json'), { force: true });
+}
+
+/** Backend local con la base de datos configurada (research R1–R3). */
+function createBackend(getUri: () => string | null): BackendProcess {
+  return createBackendProcess({
+    fork: (entryPath, env) =>
+      utilityProcess.fork(entryPath, [], { env, serviceName: 'app-b2b-backend', stdio: 'inherit' }),
+    entryPath: require.resolve('@app/server/dist/embedded.js'),
+    getUri,
+    devClientUrl: app.isPackaged ? undefined : DEV_SERVER_URL,
+  });
+}
+
+/** Arranca el backend y registra los handlers de window.desktop (contracts/desktop-bridge.md). */
+function startBackendAndIpc(): BackendProcess {
   const userDataDir = app.getPath('userData');
+  removeLegacyConfig(userDataDir);
+  const databaseStore = createDatabaseStore({ userDataDir, encryptor: safeStorage });
+  const backend = createBackend(() => databaseStore.read());
   registerAuthIpc(ipcMain, createRefreshTokenStore({ userDataDir, encryptor: safeStorage }));
-  registerServerIpc(ipcMain, { userDataDir });
+  registerDatabaseIpc(ipcMain, { store: databaseStore });
+  ipcMain.handle(BACKEND_CHANNELS.getUrl, () => backend.getUrl());
+  backend.start();
+  return backend;
 }
 
 function createWindow(): void {
@@ -51,7 +78,8 @@ function createWindow(): void {
 
 app.whenReady().then(() => {
   registerAppProtocol();
-  registerIpc();
+  const backend = startBackendAndIpc();
+  app.on('before-quit', () => backend.stop());
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

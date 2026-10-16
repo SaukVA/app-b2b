@@ -6,6 +6,9 @@ El proceso principal de Electron (`apps/desktop/src/backend/backendProcess.ts`) 
 
 ## Entorno del proceso hijo
 
+El hijo hereda el entorno del proceso principal y estas variables lo sobrescriben: en Windows, sin las
+variables del sistema (`SystemRoot`…) el hijo no puede abrir sockets y `listen` falla con `UNKNOWN`.
+
 | Variable | Valor | Notas |
 |---|---|---|
 | `PORT` | `0` | El sistema asigna un puerto libre. |
@@ -13,7 +16,7 @@ El proceso principal de Electron (`apps/desktop/src/backend/backendProcess.ts`) 
 | `NODE_ENV` | `production` | |
 | `CORS_ORIGINS` | `app://.` y, en desarrollo, la URL del cliente Vite | |
 | `JWT_ACCESS_SECRET` | 48 bytes aleatorios en base64url, nuevos en cada arranque | Ver research R3 y R6. |
-| `MONGODB_URI` | Cadena descifrada | Ausente si no hay base de datos configurada. |
+| `MONGODB_URI` | Cadena descifrada | Vacía si no hay base de datos configurada (vacía y no ausente: así `dotenv` no carga la del `.env` de desarrollo). |
 
 ## Mensajes (proceso hijo → proceso principal)
 
