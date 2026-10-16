@@ -68,5 +68,30 @@
       "AB2B-118"
     ],
     "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-16T11:30:46Z",
+    "spec": "002-desktop-local-backend",
+    "project": "AB2B",
+    "epic": "AB2B-115",
+    "total_tasks": 67,
+    "completed_tasks": 54,
+    "completion_pct": 80,
+    "updated_issues": [
+      "AB2B-137",
+      "AB2B-138",
+      "AB2B-139",
+      "AB2B-140",
+      "AB2B-141",
+      "AB2B-143",
+      "AB2B-164",
+      "AB2B-166",
+      "AB2B-168",
+      "AB2B-170",
+      "AB2B-172",
+      "AB2B-174",
+      "AB2B-119"
+    ],
+    "skipped_issues": []
   }
 ]

@@ -5,6 +5,7 @@ import {
   DATABASE_URI_MAX_LENGTH,
   parseMongoUri,
   type DatabaseSaveResult,
+  type DatabaseState,
   type DatabaseSummary,
   type DatabaseTestResult,
 } from '@app/shared';
@@ -89,7 +90,33 @@ export function assertUriArg(value: unknown): asserts value is string {
 
 export interface DatabaseIpcDeps {
   store: DatabaseStore;
-  backend: Pick<BackendProcess, 'testConnection' | 'restart'>;
+  backend: Pick<BackendProcess, 'testConnection' | 'restart' | 'getUrl'>;
+  /** Se inyecta para probarlo sin red; por defecto, fetch global. */
+  fetchImpl?: typeof fetch;
+}
+
+/** Tiempo máximo para conocer el estado de la base de datos (plan, Performance Goals). */
+export const STATUS_TIMEOUT_MS = 5000;
+
+/** Lo que dice /api/health del backend local; cualquier fallo es «Sin conexión». */
+async function askHealth(deps: DatabaseIpcDeps): Promise<DatabaseState> {
+  try {
+    const response = await (deps.fetchImpl ?? fetch)(`${await deps.backend.getUrl()}/health`, {});
+    if (!response.ok) return 'disconnected';
+    const body = (await response.json()) as { data?: { database?: unknown } };
+    return body.data?.database === 'connected' ? 'connected' : 'disconnected';
+  } catch {
+    return 'disconnected';
+  }
+}
+
+/** Estado real (FR-005): sin configuración no se pregunta; si no hay respuesta en 5 s, disconnected. */
+async function databaseStatus(deps: DatabaseIpcDeps): Promise<{ state: DatabaseState }> {
+  if (!deps.store.read()) return { state: 'unconfigured' };
+  const timeout = new Promise<DatabaseState>((resolve) =>
+    setTimeout(() => resolve('disconnected'), STATUS_TIMEOUT_MS),
+  );
+  return { state: await Promise.race([askHealth(deps), timeout]) };
 }
 
 /** Valida formato y TLS sin conectar: ningún error de esta fase llega al backend (FR-010, FR-016). */
@@ -117,6 +144,7 @@ async function saveDatabase(deps: DatabaseIpcDeps, uri: unknown): Promise<Databa
 export function registerDatabaseIpc(ipcMain: IpcMain, deps: DatabaseIpcDeps): void {
   const { store } = deps;
   ipcMain.handle(DATABASE_CHANNELS.get, () => toSummary(store.read(), store.isPersistent()));
+  ipcMain.handle(DATABASE_CHANNELS.status, () => databaseStatus(deps));
   ipcMain.handle(DATABASE_CHANNELS.test, (_event, uri: unknown) => testDatabase(deps, uri));
   ipcMain.handle(DATABASE_CHANNELS.save, (_event, uri: unknown) => saveDatabase(deps, uri));
 }

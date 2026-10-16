@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T10:37:49Z",
-  "updated_at": "2026-10-16T11:12:16Z",
+  "updated_at": "2026-10-16T11:30:46Z",
   "spec": "002-desktop-local-backend",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -453,7 +453,7 @@
           "key": "AB2B-137",
           "id": "T043",
           "summary": "T043: Ampliar health.test.ts: data.database connected/disconnected y status 'ok'",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-137"
         },
@@ -461,7 +461,7 @@
           "key": "AB2B-138",
           "id": "T044",
           "summary": "T044: Escribir errorHandler.test.ts: errores de conexión de Mongoose/driver → 503 DATABASE_UNAVAILABLE",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-138"
         },
@@ -469,7 +469,7 @@
           "key": "AB2B-139",
           "id": "T045",
           "summary": "T045: Ampliar auth.routes.test.ts: login sin base de datos → 503 y sin LoginAttempt registrado (FR-018)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-139"
         },
@@ -477,7 +477,7 @@
           "key": "AB2B-140",
           "id": "T046",
           "summary": "T046: Ampliar ipc/database.test.ts: database:status (unconfigured, health del backend, disconnected a los 5 s)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-140"
         },
@@ -485,7 +485,7 @@
           "key": "AB2B-141",
           "id": "T047",
           "summary": "T047: Ampliar databaseSlice.test.ts con checkDatabaseStatus (checking → valor; fallo → disconnected)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-141"
         },
@@ -493,7 +493,7 @@
           "key": "AB2B-143",
           "id": "T048",
           "summary": "T048: Ampliar LoginPage.test.tsx: Conectado/Sin conexión, solo host, sin sondeo, nada en web",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-143"
         },
@@ -501,7 +501,7 @@
           "key": "AB2B-164",
           "id": "T049",
           "summary": "T049: Ampliar LoginForm.test.tsx: 503 DATABASE_UNAVAILABLE muestra error de conexión y no marca campos",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-164"
         },
@@ -509,7 +509,7 @@
           "key": "AB2B-166",
           "id": "T050",
           "summary": "T050: health.routes.ts: campo database (readyState + ping < 2 s) y bloque @openapi según contracts/health.openapi.yaml",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T043"
           ],
@@ -519,7 +519,7 @@
           "key": "AB2B-168",
           "id": "T051",
           "summary": "T051: errorHandler.ts: isDatabaseConnectionError → AppError DATABASE_UNAVAILABLE 503 y documentarlo en swagger.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T044",
             "T045"
@@ -530,7 +530,7 @@
           "key": "AB2B-170",
           "id": "T052",
           "summary": "T052: Handler database:status en ipc/database.ts (fetch inyectado, AbortSignal.timeout(5000))",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T046"
           ],
@@ -540,7 +540,7 @@
           "key": "AB2B-172",
           "id": "T053",
           "summary": "T053: getDatabaseStatus + thunk checkDatabaseStatus y despacharlo al montar LoginPage (connected → ok, disconnected → down)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T047",
             "T048"
@@ -551,7 +551,7 @@
           "key": "AB2B-174",
           "id": "T054",
           "summary": "T054: authApi.ts: tratar DATABASE_UNAVAILABLE como error de conexión (sin marcar campos)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T049"
           ],
@@ -1166,7 +1166,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 67,
-    "completed_tasks": 42,
-    "pending_tasks": 25
+    "completed_tasks": 54,
+    "pending_tasks": 13
   }
 }

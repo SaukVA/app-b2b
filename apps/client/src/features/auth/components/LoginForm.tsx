@@ -5,7 +5,7 @@ import { Checkbox } from '../../../components/Checkbox';
 import { PasswordField } from '../../../components/PasswordField';
 import { TextField } from '../../../components/TextField';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { CONNECTION_ERROR_MESSAGE } from '../authApi';
+import { isConnectionErrorMessage } from '../authApi';
 import { selectAuthError, selectAuthStatus } from '../authSelectors';
 import { login } from '../authSlice';
 import styles from './LoginForm.module.css';
@@ -98,7 +98,7 @@ function LoginFields({ form, invalid }: { form: LoginFormState; invalid: boolean
 export function LoginForm() {
   const form = useLoginForm();
   const serverError = useAppSelector(selectAuthError);
-  const credentialsInvalid = Boolean(serverError) && serverError !== CONNECTION_ERROR_MESSAGE;
+  const credentialsInvalid = Boolean(serverError) && !isConnectionErrorMessage(serverError);
   return (
     <form className={styles.form} onSubmit={form.submit} noValidate>
       <LoginHeader />

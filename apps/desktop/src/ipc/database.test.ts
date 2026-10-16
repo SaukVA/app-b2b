@@ -121,15 +121,24 @@ function fakeBackend() {
   return {
     testConnection: jest.fn().mockResolvedValue({ ok: true }),
     restart: jest.fn(),
+    getUrl: jest.fn().mockResolvedValue('http://127.0.0.1:51234/api'),
   };
 }
 
-function setupIpc() {
+/** fetch falso que responde /health con el estado indicado. */
+function healthFetch(database: string, ok = true) {
+  return jest.fn().mockResolvedValue({
+    ok,
+    json: async () => ({ success: true, data: { status: 'ok', database } }),
+  });
+}
+
+function setupIpc(fetchImpl: jest.Mock = healthFetch('connected')) {
   const store = createDatabaseStore({ userDataDir, encryptor: fakeEncryptor() });
   const backend = fakeBackend();
   const { ipcMain, invoke } = fakeIpcMain();
-  registerDatabaseIpc(ipcMain, { store, backend });
-  return { store, backend, invoke };
+  registerDatabaseIpc(ipcMain, { store, backend, fetchImpl: fetchImpl as unknown as typeof fetch });
+  return { store, backend, invoke, fetchImpl };
 }
 
 const REMOTE_NO_TLS = 'mongodb://ana:s3cr3t@db.ejemplo.net:27017/ventas';
@@ -177,5 +186,55 @@ describe('registerDatabaseIpc · database:save (US1)', () => {
     const { invoke } = setupIpc();
     await expect(async () => invoke(DATABASE_CHANNELS.test, value)).rejects.toThrow();
     await expect(async () => invoke(DATABASE_CHANNELS.save, value)).rejects.toThrow();
+  });
+});
+
+describe('registerDatabaseIpc · database:status (US2, FR-005)', () => {
+  it('sin configuración responde unconfigured sin preguntar al backend', async () => {
+    const { invoke, fetchImpl } = setupIpc();
+    await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: 'unconfigured' });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it.each(['connected', 'disconnected'])(
+    'devuelve el database de /health: %s',
+    async (database) => {
+      const { store, invoke, fetchImpl } = setupIpc(healthFetch(database));
+      store.write(URI);
+      await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: database });
+      expect(fetchImpl).toHaveBeenCalledWith(
+        'http://127.0.0.1:51234/api/health',
+        expect.anything(),
+      );
+    },
+  );
+
+  it.each([
+    ['la respuesta no es OK', healthFetch('connected', false)],
+    ['fetch falla', jest.fn().mockRejectedValue(new Error('ECONNREFUSED'))],
+  ])('si %s responde disconnected', async (_case, fetchImpl) => {
+    const { store, invoke } = setupIpc(fetchImpl);
+    store.write(URI);
+    await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: 'disconnected' });
+  });
+
+  it('si el backend no está listo responde disconnected', async () => {
+    const { store, backend, invoke } = setupIpc();
+    backend.getUrl.mockRejectedValue(new Error('El backend local no ha arrancado a tiempo'));
+    store.write(URI);
+    await expect(invoke(DATABASE_CHANNELS.status)).resolves.toEqual({ state: 'disconnected' });
+  });
+});
+
+describe('registerDatabaseIpc · database:status con tiempo máximo', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  it('sin respuesta en 5 s responde disconnected', async () => {
+    const { store, invoke } = setupIpc(jest.fn(() => new Promise(() => {})));
+    store.write(URI);
+    const status = invoke(DATABASE_CHANNELS.status) as Promise<unknown>;
+    await jest.advanceTimersByTimeAsync(5000);
+    await expect(status).resolves.toEqual({ state: 'disconnected' });
   });
 });

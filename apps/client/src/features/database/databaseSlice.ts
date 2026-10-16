@@ -39,6 +39,14 @@ export const loadDatabaseSummary = createAsyncThunk(
   databaseApi.getDatabaseSummary,
 );
 
+/** Estado real de la base de datos; si el puente falla, se muestra «Sin conexión» (FR-005). */
+export const checkDatabaseStatus = createAsyncThunk<DatabaseState>('database/checkStatus', () =>
+  databaseApi
+    .getDatabaseStatus()
+    .then(({ state }) => state)
+    .catch((): DatabaseState => 'disconnected'),
+);
+
 export const testDatabase = createAsyncThunk<DatabaseTestResult, string>('database/test', (uri) =>
   databaseApi.testDatabase(uri).catch(() => BRIDGE_FAILURE),
 );
@@ -61,6 +69,12 @@ const databaseSlice = createSlice({
       .addCase(loadDatabaseSummary.fulfilled, (state, action) => {
         state.summary = action.payload;
         if (!action.payload.configured) state.state = 'unconfigured';
+      })
+      .addCase(checkDatabaseStatus.pending, (state) => {
+        state.state = 'checking';
+      })
+      .addCase(checkDatabaseStatus.fulfilled, (state, action) => {
+        state.state = action.payload;
       })
       .addCase(testDatabase.pending, (state) => {
         state.test = { status: 'running', result: null };

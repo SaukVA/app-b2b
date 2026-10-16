@@ -4,7 +4,11 @@ import { ConnectionStatus, type ConnectionState } from '../components/Connection
 import { selectIsAuthenticated, selectUser } from '../features/auth/authSelectors';
 import { LoginForm } from '../features/auth/components/LoginForm';
 import { LoginHero } from '../features/auth/components/LoginHero';
-import { loadDatabaseSummary, type DatabaseSliceState } from '../features/database/databaseSlice';
+import {
+  checkDatabaseStatus,
+  loadDatabaseSummary,
+  type DatabaseSliceState,
+} from '../features/database/databaseSlice';
 import { resolveHomeRoute } from '../routes/homeRoute';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { isDesktop } from '../utils/desktop';
@@ -25,7 +29,9 @@ function DatabaseIndicator() {
   const dispatch = useAppDispatch();
   const { summary, state } = useAppSelector((root) => root.database);
   useEffect(() => {
+    // Una vez al abrir el login (y al volver de guardar, que lo monta de nuevo); nunca periódicamente.
     void dispatch(loadDatabaseSummary());
+    void dispatch(checkDatabaseStatus());
   }, [dispatch]);
   if (!summary) return null;
   return (

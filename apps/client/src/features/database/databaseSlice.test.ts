@@ -5,7 +5,12 @@ import type {
   DesktopBridge,
 } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { loadDatabaseSummary, saveDatabase, testDatabase } from './databaseSlice';
+import {
+  checkDatabaseStatus,
+  loadDatabaseSummary,
+  saveDatabase,
+  testDatabase,
+} from './databaseSlice';
 
 const CONFIGURED: DatabaseSummary = {
   configured: true,
@@ -115,5 +120,32 @@ describe('databaseSlice · saveDatabase', () => {
     expect(store.getState().database.saving).toBe(false);
     expect(store.getState().database.summary).toBeNull();
     expect(store.getState().database.test).toEqual({ status: 'done', result });
+  });
+});
+
+describe('databaseSlice · checkDatabaseStatus (FR-005)', () => {
+  it('pasa por checking y termina en el estado que da el puente', async () => {
+    const pending = deferred<{ state: 'connected' | 'disconnected' }>();
+    mockBridge({ getDatabaseStatus: jest.fn().mockReturnValue(pending.promise) });
+    const store = setupStore();
+    const action = store.dispatch(checkDatabaseStatus());
+    expect(store.getState().database.state).toBe('checking');
+    pending.resolve({ state: 'connected' });
+    await action;
+    expect(store.getState().database.state).toBe('connected');
+  });
+
+  it('refleja disconnected', async () => {
+    mockBridge({ getDatabaseStatus: jest.fn().mockResolvedValue({ state: 'disconnected' }) });
+    const store = setupStore();
+    await store.dispatch(checkDatabaseStatus());
+    expect(store.getState().database.state).toBe('disconnected');
+  });
+
+  it('si el puente falla, el estado es disconnected', async () => {
+    mockBridge({ getDatabaseStatus: jest.fn().mockRejectedValue(new Error('sin backend')) });
+    const store = setupStore();
+    await store.dispatch(checkDatabaseStatus());
+    expect(store.getState().database.state).toBe('disconnected');
   });
 });

@@ -145,3 +145,38 @@ describe('LoginForm · bloqueo y errores de conexión', () => {
     expect(fieldsInvalid()).toEqual([null, null]);
   });
 });
+
+describe('LoginForm · base de datos no disponible (002 FR-018)', () => {
+  const unavailable = {
+    response: {
+      status: 503,
+      data: {
+        success: false,
+        error: {
+          code: 'DATABASE_UNAVAILABLE',
+          message: 'No se puede conectar con la base de datos.',
+        },
+      },
+    },
+  };
+
+  it('muestra un error de conexión distinto del de credenciales', async () => {
+    mockedLogin.mockRejectedValue(unavailable);
+    renderForm();
+    await fillAndSubmit();
+    const text = (await screen.findByRole('alert')).textContent ?? '';
+    expect(text).toContain('No se puede conectar con la base de datos');
+    expect(text).not.toMatch(/incorrect/i);
+  });
+
+  it('no marca los campos como erróneos', async () => {
+    mockedLogin.mockRejectedValue(unavailable);
+    renderForm();
+    await fillAndSubmit();
+    await screen.findByRole('alert');
+    const invalid = [screen.getByLabelText('Email'), screen.getByLabelText('Contraseña')].map(
+      (field) => field.getAttribute('aria-invalid'),
+    );
+    expect(invalid).toEqual([null, null]);
+  });
+});

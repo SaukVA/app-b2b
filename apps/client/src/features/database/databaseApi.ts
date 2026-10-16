@@ -1,5 +1,6 @@
 import type {
   DatabaseSaveResult,
+  DatabaseState,
   DatabaseSummary,
   DatabaseTestResult,
   DesktopBridge,
@@ -25,4 +26,8 @@ export function testDatabase(uri: string): Promise<DatabaseTestResult> {
 
 export function saveDatabase(uri: string): Promise<DatabaseSaveResult> {
   return requireBridge().saveDatabase(uri);
+}
+
+export function getDatabaseStatus(): Promise<{ state: DatabaseState }> {
+  return requireBridge().getDatabaseStatus();
 }
