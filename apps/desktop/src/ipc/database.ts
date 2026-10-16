@@ -10,7 +10,7 @@ import {
   type DatabaseTestResult,
 } from '@app/shared';
 import type { BackendProcess } from '../backend/backendProcess';
-import type { Encryptor } from './auth';
+import type { Encryptor, RefreshTokenStore } from './auth';
 
 // Base de datos configurada en el equipo (research R7, R9; data-model.md «DatabaseConfig»): la cadena de
 // conexión se guarda cifrada con safeStorage en userData/database.bin y nunca sale hacia el renderer.
@@ -91,6 +91,8 @@ export function assertUriArg(value: unknown): asserts value is string {
 export interface DatabaseIpcDeps {
   store: DatabaseStore;
   backend: Pick<BackendProcess, 'testConnection' | 'restart' | 'getUrl'>;
+  /** Refresh token del equipo (001 R2): se borra al cambiar de base de datos (FR-012, research R6). */
+  sessionStore: Pick<RefreshTokenStore, 'clear'>;
   /** Se inyecta para probarlo sin red; por defecto, fetch global. */
   fetchImpl?: typeof fetch;
 }
@@ -137,6 +139,8 @@ async function saveDatabase(deps: DatabaseIpcDeps, uri: unknown): Promise<Databa
   const validation = validate(uri);
   if (!validation.ok) return validation;
   deps.store.write(uri);
+  // Antes de reiniciar: ninguna sesión de la base de datos anterior sobrevive al cambio (FR-012).
+  deps.sessionStore.clear();
   deps.backend.restart();
   return { ok: true, summary: toSummary(uri, deps.store.isPersistent()) };
 }

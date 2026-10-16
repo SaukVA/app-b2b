@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import type { IpcMain } from 'electron';
-import type { Encryptor } from './auth';
+import { createRefreshTokenStore, type Encryptor } from './auth';
 import {
   DATABASE_CHANNELS,
   assertUriArg,
@@ -109,7 +109,11 @@ describe('registerDatabaseIpc · database:get', () => {
     const store = createDatabaseStore({ userDataDir, encryptor: fakeEncryptor() });
     store.write(URI);
     const { ipcMain, invoke } = fakeIpcMain();
-    registerDatabaseIpc(ipcMain, { store, backend: fakeBackend() });
+    registerDatabaseIpc(ipcMain, {
+      store,
+      backend: fakeBackend(),
+      sessionStore: createRefreshTokenStore({ userDataDir, encryptor: fakeEncryptor() }),
+    });
     const summary = await invoke(DATABASE_CHANNELS.get);
     expect(summary).toMatchObject({ configured: true, host: 'db.ejemplo.net:27017' });
     expect(JSON.stringify(summary)).not.toContain('s3cr3t');
@@ -136,9 +140,11 @@ function healthFetch(database: string, ok = true) {
 function setupIpc(fetchImpl: jest.Mock = healthFetch('connected')) {
   const store = createDatabaseStore({ userDataDir, encryptor: fakeEncryptor() });
   const backend = fakeBackend();
+  const sessionStore = createRefreshTokenStore({ userDataDir, encryptor: fakeEncryptor() });
   const { ipcMain, invoke } = fakeIpcMain();
-  registerDatabaseIpc(ipcMain, { store, backend, fetchImpl: fetchImpl as unknown as typeof fetch });
-  return { store, backend, invoke, fetchImpl };
+  const deps = { store, backend, sessionStore, fetchImpl: fetchImpl as unknown as typeof fetch };
+  registerDatabaseIpc(ipcMain, deps);
+  return { store, backend, sessionStore, invoke, fetchImpl };
 }
 
 const REMOTE_NO_TLS = 'mongodb://ana:s3cr3t@db.ejemplo.net:27017/ventas';
@@ -236,5 +242,63 @@ describe('registerDatabaseIpc · database:status con tiempo máximo', () => {
     const status = invoke(DATABASE_CHANNELS.status) as Promise<unknown>;
     await jest.advanceTimersByTimeAsync(5000);
     await expect(status).resolves.toEqual({ state: 'disconnected' });
+  });
+});
+
+describe('registerDatabaseIpc · cambiar de base de datos invalida la sesión (US3, FR-012)', () => {
+  it('borra el refresh token del equipo antes de reiniciar el backend', async () => {
+    const { backend, sessionStore, invoke } = setupIpc();
+    sessionStore.set('token-anterior', true);
+    const order: string[] = [];
+    jest.spyOn(sessionStore, 'clear').mockImplementation(() => order.push('clear'));
+    backend.restart.mockImplementation(() => order.push('restart'));
+    await invoke(DATABASE_CHANNELS.save, URI);
+    expect(order).toEqual(['clear', 'restart']);
+  });
+
+  it('tras guardar no queda sesión ni en memoria ni en session.bin', async () => {
+    const { sessionStore, invoke } = setupIpc();
+    sessionStore.set('token-anterior', true);
+    expect(fs.existsSync(path.join(userDataDir, 'session.bin'))).toBe(true);
+    await invoke(DATABASE_CHANNELS.save, URI);
+    expect(sessionStore.get()).toBeNull();
+    expect(fs.existsSync(path.join(userDataDir, 'session.bin'))).toBe(false);
+  });
+
+  it('una cadena no válida no toca la sesión', async () => {
+    const { sessionStore, invoke } = setupIpc();
+    sessionStore.set('token-anterior', true);
+    await invoke(DATABASE_CHANNELS.save, REMOTE_NO_TLS);
+    expect(sessionStore.get()).toBe('token-anterior');
+  });
+});
+
+describe('registerDatabaseIpc · credenciales protegidas (US3, FR-013/FR-014/FR-017)', () => {
+  it('database.bin no contiene ni la cadena ni la contraseña en claro', async () => {
+    const { invoke } = setupIpc();
+    await invoke(DATABASE_CHANNELS.save, URI);
+    const bytes = fs.readFileSync(path.join(userDataDir, 'database.bin')).toString('utf8');
+    expect(bytes).not.toContain('s3cr3t');
+    expect(bytes).not.toContain('db.ejemplo.net');
+  });
+
+  it('database:get devuelve la cadena enmascarada, nunca la contraseña', async () => {
+    const { invoke } = setupIpc();
+    await invoke(DATABASE_CHANNELS.save, URI);
+    const summary = (await invoke(DATABASE_CHANNELS.get)) as { maskedUri: string };
+    expect(summary.maskedUri).toContain('••••••••');
+    expect(JSON.stringify(summary)).not.toContain('s3cr3t');
+  });
+
+  it('sin cifrado disponible no escribe database.bin y el resumen trae persisted false', async () => {
+    const store = createDatabaseStore({ userDataDir, encryptor: fakeEncryptor(false) });
+    const sessionStore = createRefreshTokenStore({ userDataDir, encryptor: fakeEncryptor(false) });
+    const { ipcMain, invoke } = fakeIpcMain();
+    registerDatabaseIpc(ipcMain, { store, backend: fakeBackend(), sessionStore });
+    const result = (await invoke(DATABASE_CHANNELS.save, URI)) as {
+      summary: { persisted: boolean };
+    };
+    expect(result.summary.persisted).toBe(false);
+    expect(fs.existsSync(path.join(userDataDir, 'database.bin'))).toBe(false);
   });
 });

@@ -170,15 +170,15 @@ contraseña en `userData` (quickstart escenarios 6, 7 y 10).
 
 ### Tests for User Story 3 ⚠️ (escribir primero, deben fallar)
 
-- [ ] T055 [P] [US3] Ampliar `apps/desktop/src/ipc/database.test.ts`: `database:save` llama a `refreshTokenStore.clear()` (memoria y `session.bin`) antes de `backend.restart()`; los bytes de `database.bin` no contienen ni la cadena ni la contraseña; sin cifrado disponible no se crea `database.bin` y el resumen trae `persisted: false`; `database:get` devuelve `maskedUri` con `••••••••` y nunca la contraseña
-- [ ] T056 [P] [US3] Ampliar `apps/client/src/features/database/components/DatabaseForm.test.tsx`: con `summary` configurado muestra «Actual: <maskedUri>» con la contraseña oculta y el campo vacío; con `persisted: false` muestra el aviso «La configuración solo durará mientras la aplicación siga abierta.»
-- [ ] T057 [P] [US3] Ampliar `apps/client/src/pages/DatabaseSettingsPage.test.tsx`: tras guardar con `ok` se limpia la sesión del cliente (`auth` sin usuario ni access token) antes de navegar a `/login`
+- [X] T055 [P] [US3] Ampliar `apps/desktop/src/ipc/database.test.ts`: `database:save` llama a `refreshTokenStore.clear()` (memoria y `session.bin`) antes de `backend.restart()`; los bytes de `database.bin` no contienen ni la cadena ni la contraseña; sin cifrado disponible no se crea `database.bin` y el resumen trae `persisted: false`; `database:get` devuelve `maskedUri` con `••••••••` y nunca la contraseña
+- [X] T056 [P] [US3] Ampliar `apps/client/src/features/database/components/DatabaseForm.test.tsx`: con `summary` configurado muestra «Actual: <maskedUri>» con la contraseña oculta y el campo vacío; con `persisted: false` muestra el aviso «La configuración solo durará mientras la aplicación siga abierta.»
+- [X] T057 [P] [US3] Ampliar `apps/client/src/pages/DatabaseSettingsPage.test.tsx`: tras guardar con `ok` se limpia la sesión del cliente (`auth` sin usuario ni access token) antes de navegar a `/login`
 
 ### Implementation for User Story 3
 
-- [ ] T058 [US3] En `apps/desktop/src/ipc/database.ts` inyectar el almacén de refresh token y llamar a `clear()` en `database:save` antes de reiniciar el backend; pasarlo desde `apps/desktop/src/main.ts`, hasta que T055 pase
-- [ ] T059 [US3] En `apps/client/src/features/database/databaseSlice.ts`, al completarse `saveDatabase` con `ok`, despachar la acción de `apps/client/src/features/auth/authSlice.ts` que limpia la sesión local (reutilizar la del logout; si no existe una síncrona, añadir `sessionCleared`), hasta que T057 pase
-- [ ] T060 [US3] En `apps/client/src/features/database/components/DatabaseForm.tsx` mostrar la cadena actual enmascarada (`summary.maskedUri`) como texto de solo lectura y el `Alert` de aviso cuando `persisted` es `false`, hasta que T056 pase
+- [X] T058 [US3] En `apps/desktop/src/ipc/database.ts` inyectar el almacén de refresh token y llamar a `clear()` en `database:save` antes de reiniciar el backend; pasarlo desde `apps/desktop/src/main.ts`, hasta que T055 pase
+- [X] T059 [US3] En `apps/client/src/features/database/databaseSlice.ts`, al completarse `saveDatabase` con `ok`, despachar la acción de `apps/client/src/features/auth/authSlice.ts` que limpia la sesión local (reutilizar la del logout; si no existe una síncrona, añadir `sessionCleared`), hasta que T057 pase
+- [X] T060 [US3] En `apps/client/src/features/database/components/DatabaseForm.tsx` mostrar la cadena actual enmascarada (`summary.maskedUri`) como texto de solo lectura y el `Alert` de aviso cuando `persisted` es `false`, hasta que T056 pase
 
 **Checkpoint**: quickstart escenarios 6, 7 y 10 pasan; US1 y US2 siguen funcionando.
 

@@ -7,6 +7,7 @@ import {
   type DatabaseSummary,
   type DatabaseTestResult,
 } from '@app/shared';
+import { sessionCleared } from '../auth/authSlice';
 import * as databaseApi from './databaseApi';
 
 // Estado de la base de datos del escritorio (data-model.md, «Estado en el cliente»).
@@ -51,8 +52,17 @@ export const testDatabase = createAsyncThunk<DatabaseTestResult, string>('databa
   databaseApi.testDatabase(uri).catch(() => BRIDGE_FAILURE),
 );
 
-export const saveDatabase = createAsyncThunk<DatabaseSaveResult, string>('database/save', (uri) =>
-  databaseApi.saveDatabase(uri).catch(() => BRIDGE_FAILURE),
+/**
+ * Al guardar otra base de datos, las sesiones anteriores dejan de valer (FR-012): el proceso principal borra
+ * el refresh token y aquí se limpia la sesión local antes de volver al login.
+ */
+export const saveDatabase = createAsyncThunk<DatabaseSaveResult, string>(
+  'database/save',
+  async (uri, { dispatch }) => {
+    const result = await databaseApi.saveDatabase(uri).catch(() => BRIDGE_FAILURE);
+    if (result.ok) dispatch(sessionCleared());
+    return result;
+  },
 );
 
 const databaseSlice = createSlice({

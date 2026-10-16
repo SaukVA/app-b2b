@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { DatabaseForm } from '../features/database/components/DatabaseForm';
-import { saveDatabase, testCleared, testDatabase } from '../features/database/databaseSlice';
+import {
+  loadDatabaseSummary,
+  saveDatabase,
+  testCleared,
+  testDatabase,
+} from '../features/database/databaseSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import styles from './DatabaseSettingsPage.module.css';
 
@@ -12,11 +17,17 @@ import styles from './DatabaseSettingsPage.module.css';
 export function DatabaseSettingsPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { test, saving } = useAppSelector((root) => root.database);
+  const { test, saving, summary } = useAppSelector((root) => root.database);
+  const summaryLoaded = summary !== null;
 
   useEffect(() => {
     dispatch(testCleared());
   }, [dispatch]);
+
+  // La cadena actual (enmascarada) se muestra aunque se llegue aquí sin pasar por el login.
+  useEffect(() => {
+    if (!summaryLoaded) void dispatch(loadDatabaseSummary());
+  }, [dispatch, summaryLoaded]);
 
   const save = async (uri: string) => {
     const result = await dispatch(saveDatabase(uri)).unwrap();
@@ -35,6 +46,7 @@ export function DatabaseSettingsPage() {
         <DatabaseForm
           test={test}
           saving={saving}
+          summary={summary}
           onTest={(uri) => void dispatch(testDatabase(uri))}
           onSave={(uri) => void save(uri)}
         />

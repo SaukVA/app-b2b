@@ -79,3 +79,46 @@ describe('DatabaseForm · estados', () => {
     expect(field().getAttribute('aria-invalid')).toBe('true');
   });
 });
+
+const MASKED = 'mongodb://ana:••••••••@db.ejemplo.net:27017/ventas?tls=true';
+const configured = (persisted = true) => ({
+  configured: true,
+  host: 'db.ejemplo.net:27017',
+  maskedUri: MASKED,
+  persisted,
+});
+
+describe('DatabaseForm · configuración actual (US3, FR-013)', () => {
+  it('muestra la cadena actual con la contraseña oculta y el campo vacío', () => {
+    renderForm({ summary: configured() });
+    expect(screen.getByText(MASKED)).toBeTruthy();
+    expect(screen.getByText(/Actual:/)).toBeTruthy();
+    expect(field().value).toBe('');
+    expect(document.body.textContent).not.toContain('s3cr3t');
+  });
+
+  it('sin base de datos configurada no muestra «Actual»', () => {
+    renderForm({ summary: { configured: false, host: null, maskedUri: null, persisted: true } });
+    expect(screen.queryByText(/Actual:/)).toBeNull();
+  });
+
+  it('sin resumen todavía no muestra «Actual» ni el aviso', () => {
+    renderForm({ summary: null });
+    expect(screen.queryByText(/Actual:/)).toBeNull();
+    expect(screen.queryByText(/solo durará/)).toBeNull();
+  });
+});
+
+describe('DatabaseForm · sin cifrado del sistema (US3, FR-017)', () => {
+  it('con persisted false avisa de que la configuración solo dura con la app abierta', () => {
+    renderForm({ summary: configured(false) });
+    expect(
+      screen.getByText('La configuración solo durará mientras la aplicación siga abierta.'),
+    ).toBeTruthy();
+  });
+
+  it('con persisted true no muestra el aviso', () => {
+    renderForm({ summary: configured(true) });
+    expect(screen.queryByText(/solo durará/)).toBeNull();
+  });
+});

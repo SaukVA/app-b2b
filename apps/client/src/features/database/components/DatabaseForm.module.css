@@ -53,3 +53,15 @@
   padding: var(--space-4) 20px;
   border-top: 1px solid var(--border);
 }
+
+.current {
+  margin: 0;
+  font: 400 13px/1.4 var(--font-sans);
+  color: var(--ink2);
+}
+
+.currentUri {
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+  color: var(--ink);
+}

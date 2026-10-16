@@ -87,7 +87,10 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    /** Limpia la sesión local sin llamar al servidor (p. ej. al cambiar de base de datos, FR-012). */
+    sessionCleared: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -119,4 +122,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { sessionCleared } = authSlice.actions;
 export const authReducer = authSlice.reducer;

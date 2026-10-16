@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T10:37:49Z",
-  "updated_at": "2026-10-16T11:30:46Z",
+  "updated_at": "2026-10-16T11:49:52Z",
   "spec": "002-desktop-local-backend",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -568,7 +568,7 @@
           "key": "AB2B-124",
           "id": "T055",
           "summary": "T055: Tests de database:save en apps/desktop/src/ipc/database.test.ts: borra el refresh token, nada en claro en disco y sin cifrado solo en memoria",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T038"
           ],
@@ -578,7 +578,7 @@
           "key": "AB2B-126",
           "id": "T056",
           "summary": "T056: Tests en DatabaseForm.test.tsx: cadena actual enmascarada y aviso cuando persisted es false",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T040"
           ],
@@ -588,7 +588,7 @@
           "key": "AB2B-128",
           "id": "T057",
           "summary": "T057: Test en DatabaseSettingsPage.test.tsx: tras guardar con ok se limpia la sesión del cliente antes de navegar a /login",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T041"
           ],
@@ -598,7 +598,7 @@
           "key": "AB2B-149",
           "id": "T058",
           "summary": "T058: database:save borra el refresh token del equipo antes de reiniciar el backend (apps/desktop/src/ipc/database.ts y main.ts)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T055",
             "T038"
@@ -609,7 +609,7 @@
           "key": "AB2B-150",
           "id": "T059",
           "summary": "T059: Al completarse saveDatabase con ok, limpiar la sesión local de authSlice desde databaseSlice.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T057",
             "T039"
@@ -620,7 +620,7 @@
           "key": "AB2B-151",
           "id": "T060",
           "summary": "T060: DatabaseForm.tsx muestra la cadena actual enmascarada y el aviso cuando persisted es false",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T056",
             "T040"
@@ -1166,7 +1166,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 67,
-    "completed_tasks": 54,
-    "pending_tasks": 13
+    "completed_tasks": 60,
+    "pending_tasks": 7
   }
 }
