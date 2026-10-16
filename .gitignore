@@ -7,6 +7,8 @@ build/
 out/
 release/
 coverage/
+# Build de apps/client copiado para empaquetar el escritorio
+apps/desktop/renderer/
 
 # Entorno (usar .env.example como plantilla)
 .env
