@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useId, useState, type FormEvent } from 'react';
 import { Alert } from '../../../components/Alert';
 import { Button } from '../../../components/Button';
 import { TextField } from '../../../components/TextField';
@@ -73,6 +73,8 @@ function PanelActions({ disabled, onTest }: { disabled: boolean; onTest(): void 
  */
 export function DatabaseForm({ test, saving, onTest, onSave, summary }: DatabaseFormProps) {
   const [uri, setUri] = useState('');
+  // El formato y la exigencia de TLS se leen junto al campo con lector de pantalla.
+  const helpId = useId();
   const busy = saving || test.status === 'running';
   const disabled = busy || uri.trim() === '';
   const submit = (event: FormEvent) => {
@@ -93,8 +95,11 @@ export function DatabaseForm({ test, saving, onTest, onSave, summary }: Database
           autoComplete="off"
           spellCheck={false}
           invalid={test.result?.ok === false}
+          aria-describedby={helpId}
         />
-        <span className={styles.help}>{URI_HELP}</span>
+        <span id={helpId} className={styles.help}>
+          {URI_HELP}
+        </span>
         <TestResult result={test.result} />
       </div>
       <PanelActions disabled={disabled} onTest={() => onTest(uri)} />

@@ -16,7 +16,7 @@ Aplicación de **venta a mayoristas** (B2B). Gestiona el ciclo completo de venta
 
 Se distribuye en dos formas:
 1. **Web** (React + Express + MongoDB) para uso remoto/multiusuario.
-2. **Escritorio** (Electron, empaquetando el mismo frontend React) para el puesto del almacén/tienda, pudiendo operar contra el mismo backend.
+2. **Escritorio** (Electron, empaquetando el mismo frontend React) para el puesto del almacén/tienda. Arranca su propio backend local (el mismo `apps/server`, embebido) y se conecta directamente a MongoDB, local o remoto con TLS, según la base de datos configurada en el propio escritorio (spec 002-desktop-local-backend, ADR 0002).
 
 La API REST la consumen ambos frontends (web y Electron) y se documenta con **Swagger** para que sirva de contrato entre backend y frontend.
 
@@ -74,7 +74,7 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 
 | Librería | Versión | Uso |
 |---|---|---|
-| Electron | 34.x | Shell de escritorio, empaqueta `apps/client` |
+| Electron | 34.x | Shell de escritorio, empaqueta `apps/client` y `apps/server` (backend local en un `utilityProcess`) |
 | electron-builder | 25.x | Generación de instaladores (Windows/Mac/Linux) |
 
 > **Nota de versiones**: estas son las versiones de referencia en el momento de crear el proyecto. El `package-lock.json` de cada workspace es la fuente de verdad una vez instaladas las dependencias; actualiza esta tabla si se hace un bump deliberado de versión mayor.

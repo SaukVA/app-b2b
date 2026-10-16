@@ -186,11 +186,11 @@ contraseña en `userData` (quickstart escenarios 6, 7 y 10).
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T061 [P] Marcar en `specs/001-user-login/spec.md` la US6 y el SC-004 como sustituidos por 002-desktop-local-backend (FR-018 ya lo está) y añadir al inicio de `specs/001-user-login/contracts/desktop-bridge.md` la nota «Sustituido por specs/002-desktop-local-backend/contracts/desktop-bridge.md»
-- [ ] T062 [P] Actualizar `CLAUDE.md`: en Contexto, el escritorio arranca su propio backend local y se conecta directamente a MongoDB (local o remoto con TLS); en la tabla de `apps/desktop`, el uso de Electron (empaqueta `apps/client` y `apps/server`)
-- [ ] T063 [P] Comprobar con `npm run lint` que todas las funciones nuevas cumplen ≤40 líneas efectivas y anidamiento ≤2, y extraer helpers donde haga falta
-- [ ] T064 [P] Comprobar que `/api-docs` (backend web) coincide con `specs/002-desktop-local-backend/contracts/health.openapi.yaml` y documenta `DATABASE_UNAVAILABLE`
-- [ ] T065 [P] Revisar la accesibilidad de `apps/client/src/pages/DatabaseSettingsPage.tsx` y del indicador del login a 390 px y 1440 px según `docs/design/README.md` (etiquetas, foco visible, objetivos de 44 px, contraste 4.5:1, estado en texto)
+- [X] T061 [P] Marcar en `specs/001-user-login/spec.md` la US6 y el SC-004 como sustituidos por 002-desktop-local-backend (FR-018 ya lo está) y añadir al inicio de `specs/001-user-login/contracts/desktop-bridge.md` la nota «Sustituido por specs/002-desktop-local-backend/contracts/desktop-bridge.md»
+- [X] T062 [P] Actualizar `CLAUDE.md`: en Contexto, el escritorio arranca su propio backend local y se conecta directamente a MongoDB (local o remoto con TLS); en la tabla de `apps/desktop`, el uso de Electron (empaqueta `apps/client` y `apps/server`)
+- [X] T063 [P] Comprobar con `npm run lint` que todas las funciones nuevas cumplen ≤40 líneas efectivas y anidamiento ≤2, y extraer helpers donde haga falta
+- [X] T064 [P] Comprobar que `/api-docs` (backend web) coincide con `specs/002-desktop-local-backend/contracts/health.openapi.yaml` y documenta `DATABASE_UNAVAILABLE`
+- [X] T065 [P] Revisar la accesibilidad de `apps/client/src/pages/DatabaseSettingsPage.tsx` y del indicador del login a 390 px y 1440 px según `docs/design/README.md` (etiquetas, foco visible, objetivos de 44 px, contraste 4.5:1, estado en texto)
 - [ ] T066 Ejecutar `npm run package --workspace=apps/desktop`, instalar el resultado y repetir los escenarios 1–3 de quickstart.md sin `apps/server` en marcha (research R12); si el backend no arranca empaquetado, parar y proponer el ADR de esbuild
 - [ ] T067 Ejecutar `npm run lint` y `npm test --workspaces` en verde y validar manualmente quickstart.md completo
 

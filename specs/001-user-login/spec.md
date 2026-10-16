@@ -336,8 +336,9 @@ usuario real (directamente en datos, mientras no exista el módulo de usuarios) 
 - **SC-002**: El 100 % de las peticiones de datos de negocio sin sesión válida se rechazan sin devolver datos.
 - **SC-003**: Tras el número máximo de intentos fallidos, el 100 % de los intentos siguientes se rechazan,
   aunque la contraseña sea correcta, hasta que expire el bloqueo.
-- **SC-004**: En la versión web nunca aparece el indicador de servidor ni el enlace "Cambiar servidor"; en
-  escritorio aparecen siempre en la pantalla de inicio de sesión.
+- **SC-004** — **Sustituido** por [002-desktop-local-backend](../002-desktop-local-backend/spec.md): en
+  escritorio el indicador pasa a ser de base de datos. En la versión web nunca aparece el indicador de servidor
+  ni el enlace "Cambiar servidor"; en escritorio aparecen siempre en la pantalla de inicio de sesión.
 - **SC-005**: Un usuario que trabaja de forma continuada durante una jornada de 8 horas no tiene que volver a
   introducir la contraseña.
 - **SC-006**: Al menos el 95 % de los usuarios completan el inicio de sesión al primer intento con sus
