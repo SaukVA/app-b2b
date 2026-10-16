@@ -1,0 +1,44 @@
+[
+  {
+    "synced_at": "2026-10-16T10:54:08Z",
+    "spec": "002-desktop-local-backend",
+    "project": "AB2B",
+    "epic": "AB2B-115",
+    "total_tasks": 67,
+    "completed_tasks": 27,
+    "completion_pct": 40,
+    "updated_issues": [
+      "AB2B-142",
+      "AB2B-144",
+      "AB2B-145",
+      "AB2B-146",
+      "AB2B-147",
+      "AB2B-148",
+      "AB2B-165",
+      "AB2B-167",
+      "AB2B-169",
+      "AB2B-171",
+      "AB2B-173",
+      "AB2B-175",
+      "AB2B-129",
+      "AB2B-131",
+      "AB2B-133",
+      "AB2B-135",
+      "AB2B-136",
+      "AB2B-159",
+      "AB2B-160",
+      "AB2B-161",
+      "AB2B-162",
+      "AB2B-163",
+      "AB2B-176",
+      "AB2B-177",
+      "AB2B-178",
+      "AB2B-117"
+    ],
+    "skipped_issues": [
+      "AB2B-122",
+      "AB2B-123",
+      "AB2B-116"
+    ]
+  }
+]
