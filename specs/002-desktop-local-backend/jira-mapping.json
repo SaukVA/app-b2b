@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T10:37:49Z",
-  "updated_at": "2026-10-16T11:49:52Z",
+  "updated_at": "2026-10-16T15:17:09Z",
   "spec": "002-desktop-local-backend",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -638,7 +638,7 @@
           "key": "AB2B-153",
           "id": "T061",
           "summary": "T061: Marcar US6 y SC-004 de specs/001-user-login/spec.md como sustituidos por 002 y anotar el contrato del puente de 001",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-153"
         },
@@ -646,7 +646,7 @@
           "key": "AB2B-155",
           "id": "T062",
           "summary": "T062: Actualizar CLAUDE.md: el escritorio arranca su propio backend local y se conecta directamente a MongoDB",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T002"
           ],
@@ -656,7 +656,7 @@
           "key": "AB2B-179",
           "id": "T063",
           "summary": "T063: Comprobar con npm run lint que las funciones nuevas cumplen ≤40 líneas efectivas y anidamiento ≤2, y extraer helpers donde haga falta",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T042",
             "T054",
@@ -668,7 +668,7 @@
           "key": "AB2B-180",
           "id": "T064",
           "summary": "T064: Comprobar que /api-docs coincide con contracts/health.openapi.yaml y documenta DATABASE_UNAVAILABLE",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T050",
             "T051"
@@ -679,7 +679,7 @@
           "key": "AB2B-181",
           "id": "T065",
           "summary": "T065: Revisar la accesibilidad de DatabaseSettingsPage y del indicador del login a 390 px y 1440 px según docs/design/README.md",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T041",
             "T053"
