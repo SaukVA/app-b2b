@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T17:15:51Z",
-  "updated_at": "2026-10-16T17:15:51Z",
+  "updated_at": "2026-10-19T10:40:59Z",
   "spec": "003-user-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -320,6 +320,24 @@
           "url": "https://sauk.atlassian.net/browse/AB2B-262"
         },
         {
+          "key": "AB2B-281",
+          "id": "T033a",
+          "summary": "T033a: Crear componente genérico IconButton con estilos y test",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-281"
+        },
+        {
+          "key": "AB2B-282",
+          "id": "T033b",
+          "summary": "T033b: Crear componente genérico Menu (menú de acciones accesible) con estilos y test",
+          "status": "pending",
+          "depends_on": [
+            "T033a"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-282"
+        },
+        {
           "key": "AB2B-263",
           "id": "T034",
           "summary": "T034: Crear rolesApi.ts, rolesSlice.ts (thunk loadRoles) con test y registrar roles en la store",
@@ -559,7 +577,9 @@
           "summary": "T058: Crear UsersTable.tsx con Table/tarjetas, StatusStamp y menú de acciones accesible por fila",
           "status": "pending",
           "depends_on": [
-            "T055"
+            "T055",
+            "T033a",
+            "T033b"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-275"
         },
@@ -1045,12 +1065,27 @@
       "type": "Blocks",
       "from": "AB2B-266",
       "to": "AB2B-267"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-281",
+      "to": "AB2B-282"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-281",
+      "to": "AB2B-275"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-282",
+      "to": "AB2B-275"
     }
   ],
   "summary": {
     "total_stories": 9,
-    "total_tasks": 82,
+    "total_tasks": 84,
     "completed_tasks": 0,
-    "pending_tasks": 82
+    "pending_tasks": 84
   }
 }

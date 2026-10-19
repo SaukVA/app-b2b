@@ -227,11 +227,12 @@ directamente en la base de datos y se comprueba que la pestaña y los permisos a
 
 **Acceso a la pestaña**
 
-- **FR-001**: Solo los usuarios con rol Administrador activo y la cuenta inicial "admin" (mientras exista) MUST
-  poder ver y usar Ajustes › Usuarios, tanto en la web como en el escritorio.
-- **FR-002**: El sistema MUST rechazar cualquier operación de gestión de usuarios (consulta, alta, cambio de rol,
-  bloqueo, desbloqueo, restablecimiento) solicitada por un usuario sin rol Administrador, aunque se intente fuera
-  de la interfaz.
+- **FR-001**: Solo los usuarios activos cuyo rol tenga "editar" (E) en el módulo Ajustes de la matriz
+  (inicialmente solo Administrador) y la cuenta inicial "admin" (mientras exista) MUST poder ver y usar
+  Ajustes › Usuarios, tanto en la web como en el escritorio.
+- **FR-002**: El sistema MUST rechazar cualquier operación de gestión de usuarios (consulta, alta, edición de
+  nombre o email, cambio de rol, bloqueo, desbloqueo, restablecimiento y consulta de roles) solicitada por un
+  usuario sin ese permiso, aunque se intente fuera de la interfaz.
 
 **Primer Administrador**
 
@@ -309,8 +310,8 @@ directamente en la base de datos y se comprueba que la pestaña y los permisos a
   Ajustes) y no se guardan como datos. Si un rol guardado no tiene valor para un módulo, MUST tratarse como "sin
   acceso".
 - **FR-027**: El rol Administrador MUST existir siempre y tener "editar" en todos los módulos; las reglas de esta
-  spec que nombran al Administrador (primer usuario, último Administrador activo, acceso a la pestaña) se refieren
-  a ese rol.
+  spec que nombran al Administrador (primer usuario y último Administrador activo) se refieren a ese rol. El
+  acceso a la pestaña se rige por FR-001.
 - **FR-028**: Un cambio de la matriz o de los roles hecho en la base de datos MUST aplicarse a las sesiones
   abiertas en un máximo de 15 minutos, como un cambio de rol (FR-014).
 
@@ -355,7 +356,7 @@ directamente en la base de datos y se comprueba que la pestaña y los permisos a
   del usuario afectado en un máximo de 15 minutos.
 - **SC-004**: En ningún momento existe una situación sin al menos un Administrador activo (0 casos en las pruebas
   de bloqueo y degradación, incluidas las concurrentes).
-- **SC-005**: El 100 % de los intentos de gestión de usuarios por roles distintos de Administrador se rechazan.
+- **SC-005**: El 100 % de los intentos de gestión de usuarios por roles sin "editar" en Ajustes se rechazan.
 - **SC-006**: No pueden existir dos usuarios cuyos emails solo se diferencien en mayúsculas o espacios.
 - **SC-007**: La matriz mostrada coincide en todas sus celdas con los permisos que la aplicación aplica a cada
   rol, y en una instalación nueva coincide con los valores iniciales de FR-020.

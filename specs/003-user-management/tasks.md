@@ -241,6 +241,14 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
   - estilo del grupo de pestañas del tablero de Ajustes (fondo `surface2`, radio 8, pestaña activa en
     `surface`);
   - objetivos de 44 px.
+- [ ] T033a [P] `apps/client/src/components/IconButton.tsx` + `IconButton.module.css` + `IconButton.test.tsx`:
+  - botón de solo icono con `aria-label` obligatorio, objetivo de 44 px y foco visible;
+  - reenvía `ref` y props ARIA (`aria-haspopup`, `aria-expanded`);
+  - el test comprueba el nombre accesible y el clic.
+- [ ] T033b [P] `apps/client/src/components/Menu.tsx` + `Menu.module.css` + `Menu.test.tsx`:
+  - recibe un disparador (`IconButton`) e `items: { label, onSelect, tone? }[]`;
+  - `role="menu"` y `menuitem`, flechas, Escape (cierra y devuelve el foco) y clic fuera;
+  - el test cubre la apertura, la navegación con teclado y Escape.
 
 ### Client: base de Ajustes, roles y usuarios
 
@@ -249,11 +257,14 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
 - [ ] T036 Crear `apps/client/src/pages/SettingsPage.tsx` (+ `.module.css`) y `UsersSettingsPage.tsx` (por ahora solo el encabezado) y actualizar `apps/client/src/routes/AppRouter.tsx`:
   - `SettingsPage` es el layout de Ajustes: título «Ajustes», subtítulo del tablero, `Tabs` y `<Outlet />`;
   - solo muestra la pestaña Usuarios si `selectCan('ajustes', 'edit')`;
-  - en el router, `ajustes` deja de ser `ModulePlaceholder` y pasa a ser `RequireAuth module="ajustes"` →
-    `SettingsPage`, con:
-    - `index`: redirección a `usuarios`;
+  - en el router, `ajustes` deja de ser `ModulePlaceholder` y pasa a ser `RequireAuth` (solo sesión, sin
+    `module`) → `SettingsPage`, con:
+    - `index`: redirección a la primera pestaña permitida; si no hay ninguna, `SettingsPage` muestra
+      «No hay ajustes disponibles para tu rol.» (hasta que 004 añada Apariencia);
     - hija `usuarios`: `RequireAuth module="ajustes" level="edit"` → `UsersSettingsPage`;
   - la ruta pública de escritorio `/ajustes/base-de-datos` de 002 no se toca.
+  Añadir `apps/client/src/pages/SettingsPage.test.tsx`: un Administrador ve la pestaña Usuarios y un
+  Comercial abre Ajustes sin verla (US3 AS3).
 
 **Checkpoint**: la app compila, los permisos salen de `roles` en todas partes, `GET /api/roles` funciona y
 `/ajustes/usuarios` se abre solo para Administradores.
@@ -413,8 +424,7 @@ correctamente; un Comercial no ve la pestaña (quickstart §3.4–3.5).
   Añadir el handler `list` y `GET /` con su `@openapi` en `user.controller.ts` y `user.routes.ts` (hace pasar T054).
 - [ ] T057 [P] [US3] Añadir `fetchUsers()` a `apps/client/src/features/users/usersApi.ts` y el thunk `loadUsers` a `usersSlice.ts`, con los estados `loading` y `failed` y su mensaje. Cubrirlo en `usersSlice.test.ts`.
 - [ ] T058 [US3] Crear `apps/client/src/features/users/components/UsersTable.tsx` (+ `.module.css`) componiendo `Table` (con tarjetas en móvil), `StatusStamp` y un menú de acciones por fila:
-  - el menú es un botón de icono de 44 px con `aria-haspopup="menu"` y `aria-expanded`, y `role="menu"` con
-    `menuitem`;
+  - el menú compone `IconButton` (T033a) y `Menu` (T033b); `UsersTable` solo decide qué acciones mostrar;
   - las acciones se reciben por props: `onEdit`, `onResetPassword`, `onBlock` y `onUnblock`;
   - en esta fase solo se cablea `onEdit`;
   - hace pasar T055.
@@ -447,10 +457,12 @@ Administrador, autobloqueo y concurrencia).
     entrada `block`, y su login posterior → `AUTH_ACCOUNT_BLOCKED`;
   - **desbloqueo**: estado `Activo`, entrada `unblock`, y entra con su contraseña de siempre;
   - **autobloqueo**: `USER_SELF_BLOCK` 409;
-  - **último Administrador por bloqueo**: bloquear al único Administrador activo desde la cuenta inicial →
-    `USER_LAST_ADMIN`;
+  - **último Administrador por bloqueo**: con un único Administrador activo A y un usuario X cuyo rol de
+    prueba (insertado en `roles`) tiene `ajustes: edit`, X bloquea a A → `USER_LAST_ADMIN` 409 y A sigue
+    `Activo`;
   - **concurrencia** (FR-016): con dos Administradores, `Promise.all` de dos bloqueos cruzados → como mucho
-    uno tiene éxito y después hay al menos un Administrador activo.
+    uno tiene éxito, después hay al menos un Administrador activo y no queda ninguna entrada de auditoría de
+    la acción rechazada.
 - [ ] T061 [P] [US4] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
   - `PATCH /api/users/:id/status` → 200 y 400 con `status: 'Invitado'`;
   - `PATCH /api/users/:id` con `role` → 200;
@@ -469,9 +481,12 @@ Administrador, autobloqueo y concurrencia).
 - [ ] T063 [US4] Implementar en `apps/server/src/modules/users/user.service.ts` el helper `applyWithAdminGuard(id, update)` (research R2):
   - aplica el cambio con `findOneAndUpdate({ new: false })`;
   - si el usuario era un Administrador activo, cuenta `{ isBootstrap: false, status: 'Activo', role: { $in: adminRoleKeys } }`;
-  - si da 0, restaura los valores anteriores y lanza `USER_LAST_ADMIN` 409 («Debe quedar al menos un
-    Administrador activo.»);
+  - si da 0, compensa con `updateOne({ _id: id, ...update }, { $set: valoresAnteriores })` (solo restaura
+    si el documento conserva los valores que puso esta llamada) y lanza `USER_LAST_ADMIN` 409 («Debe quedar
+    al menos un Administrador activo.»);
   - ≤20 líneas, con subhelpers.
+  Orden en `setUserStatus` y en `updateUser`: guarda → `revokeUserSessions` (solo al bloquear) →
+  `recordAudit`. Una acción compensada no revoca sesiones ni se audita.
   Ampliar `updateUser` para `role` (`assertRoleExists` y guard) e implementar `setUserStatus(id, status, actor)`, que llama a `assertNotSelf` (`USER_SELF_BLOCK` 409, «No puedes bloquearte a ti mismo.»), al guard, a `revokeUserSessions` al bloquear y a `recordAudit('block' | 'unblock')`. Hace pasar T060.
 - [ ] T064 [US4] Añadir el handler `setStatus` y `PATCH /:id/status` con `validate({ params: userIdParams, body: updateStatusSchema })` y su `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts`. Actualizar el `@openapi` de `PATCH /:id` con el 409 `USER_LAST_ADMIN` (hace pasar T061).
 - [ ] T065 [P] [US4] Añadir `setUserStatus(id, status)` a `apps/client/src/features/users/usersApi.ts` y el thunk `setUserStatus` a `usersSlice.ts`. Si `updateUser` cambia el rol del usuario actual, despachar `loadMe()` de `authSlice`. Cubrirlo en `usersSlice.test.ts`.
@@ -623,7 +638,7 @@ Setup → Foundational → US1 → US2 → US3 ─┬─► US4
 T004 types/user · T005 types/role + auth · T006 constants/users
 # Servidor y cliente en paralelo:
 T008 role.service.test · T009 role.model · T010 role.defaults · T013 auth.service.test · T014 tokens · T015 user.model
-T027 fixtures cliente · T029 Select · T030 Table · T031 StatusStamp · T032 Dialog · T033 Tabs · T034 roles slice · T035 users slice
+T027 fixtures cliente · T029 Select · T030 Table · T031 StatusStamp · T032 Dialog · T033 Tabs · T033a IconButton · T033b Menu · T034 roles slice · T035 users slice
 ```
 
 ## Parallel Example: User Story 1

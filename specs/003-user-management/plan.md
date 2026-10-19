@@ -37,7 +37,8 @@ pantalla. Enfoque técnico:
   - `features/users/` y `features/roles/` (slice + API con thunks).
   - `homeRoute`, `RequireAuth` y `selectCan` pasan a usar `user.permissions`.
   - Layout de Ajustes con pestañas.
-  - 5 componentes genéricos nuevos de «Albarán» (`Select`, `Table`, `StatusStamp`, `Dialog`, `Tabs`).
+  - 7 componentes genéricos nuevos de «Albarán» (`Select`, `Table`, `StatusStamp`, `Dialog`, `Tabs`,
+    `IconButton`, `Menu`).
 
 ## Technical Context
 
@@ -70,7 +71,7 @@ en menos de 500 ms; el hash bcrypt (~150 ms) es lo más lento.
 - Funciones de 40 líneas efectivas como máximo; controladores y servicios cortos (constitución IV).
 
 **Scale/Scope**: decenas de usuarios y pocos roles, así que el listado no necesita búsqueda ni paginación y
-no hace falta caché de roles. 6 endpoints (5 de usuarios y 1 de roles), 1 pestaña con 3 diálogos y 5
+no hace falta caché de roles. 6 endpoints (5 de usuarios y 1 de roles), 1 pestaña con 3 diálogos y 7
 componentes genéricos. Además, se adaptan las piezas de 001 que leían la matriz fija.
 
 ## Constitution Check
@@ -83,10 +84,10 @@ componentes genéricos. Además, se adaptan las piezas de 001 que leían la matr
 | II | Contrato API primero | [contracts/users-api.openapi.yaml](contracts/users-api.openapi.yaml) → bloques `@openapi` en `user.routes.ts`; envelope; `AppError` con códigos `USER_*`; se actualiza el `@openapi` de `/auth/login` (sin `AUTH_INVITATION_PENDING`) | ✅ |
 | III | Validación en el borde | `user.validation.ts` (body y params) con `validate()` en cada ruta | ✅ |
 | IV | Funciones cortas y capas | routes → controller → service → model. Helpers pequeños con nombre (`assertNotSelf`, `applyWithAdminGuard`, `revokeUserSessions`, `recordAudit`, `toUserSummary`); controlador sin Mongoose; DTO `UserSummary` | ✅ |
-| V | Cambios mínimos | Se reutilizan `requirePermission`, `retireBootstrapIfNeeded`, `hashPassword`, `resetAttempts` y la comprobación por petición. Guardar roles y matriz en la base de datos (decisión del usuario) obliga a tocar piezas de 001: `roles.ts`, `auth.service.ts`, `user.mapper.ts`, `requirePermission.ts`, `homeRoute.ts`, `RequireAuth.tsx`, `authSelectors.ts` y sus tests, más el arranque (`server.ts`, `embeddedRuntime.ts`). Es el mínimo para que haya una sola fuente de verdad (ver Complexity Tracking) | ⚠️ justificado |
+| V | Cambios mínimos | Se reutilizan `requirePermission`, `retireBootstrapIfNeeded`, `hashPassword`, `resetAttempts` y la comprobación por petición. Guardar roles y matriz en la base de datos (decisión del usuario) obliga a tocar piezas de 001: `roles.ts`, `auth.service.ts`, `user.mapper.ts`, `requirePermission.ts`, `homeRoute.ts`, `RequireAuth.tsx`, `authSelectors.ts` y sus tests, más el arranque (`server.ts`, `embeddedRuntime.ts`). Es el mínimo para que haya una sola fuente de verdad (ver Complexity Tracking). No es una refactorización: es el cambio funcional que exigen FR-020, FR-021 y FR-028, aprobado por el usuario en la aclaración del 2026-10-16. Para facilitar la revisión, la fase 2 (T001–T036) se entrega en un PR propio antes de las historias | ⚠️ justificado |
 | VI | Tipos compartidos | `Role` (clave), `UserStatus`, `AppModule`/`APP_MODULES`, `PermissionSet`, `RoleSummary`, `AuthUser` ampliado, `UserSummary`, `CreateUserRequest`/`Response`, `UpdateUserRequest`, `UpdateUserStatusRequest`, `ResetUserPasswordRequest` y `USER_ERROR_CODES` en `packages/shared`; `can()` sigue siendo la única función de comprobación | ✅ |
 | VII | Testing obligatorio | `user.service.test.ts` (reglas: primer Administrador, último Administrador, autobloqueo, revocación y auditoría), `user.routes.test.ts` (supertest + mongodb-memory-server, 403 por rol, 409, 404), tests de los 5 componentes genéricos y de `usersSlice` | ✅ |
-| VIII | Componentes reutilizables | `Select`, `Table` (+ tarjetas en móvil), `StatusStamp`, `Dialog` y `Tabs` en `components/`, con tokens de `docs/design/README.md`; los componentes de `features/users/components` solo los componen | ✅ |
+| VIII | Componentes reutilizables | `Select`, `Table` (+ tarjetas en móvil), `StatusStamp`, `Dialog`, `Tabs`, `IconButton` y `Menu` en `components/`, con tokens de `docs/design/README.md`; los componentes de `features/users/components` solo los componen | ✅ |
 | — | Dependencias nuevas | Ninguna | ✅ |
 | — | ADR | ADR 0003 "Roles y matriz de permisos en base de datos": cambia dónde vive una definición central que usan todas las features (R11) | ✅ previsto |
 | — | Diseño | Lienzo de Ajustes › Usuarios actualizado el 2026-10-16 (alta directa, sin invitaciones, menú por fila, diálogos, primer Administrador, matriz por roles) junto con `docs/design/` (R9) | ✅ hecho |
@@ -149,7 +150,7 @@ apps/server/src/
 
 apps/client/src/
 ├── components/                   # nuevos, cada uno .tsx + .module.css + .test.tsx
-│   ├── Select, Table, StatusStamp, Dialog, Tabs
+│   ├── Select, Table, StatusStamp, Dialog, Tabs, IconButton, Menu
 ├── features/users/
 │   ├── usersApi.ts, usersSlice.ts, usersSlice.test.ts
 │   └── components/
