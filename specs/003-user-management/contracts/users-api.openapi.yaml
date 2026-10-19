@@ -176,7 +176,7 @@ paths:
                   - $ref: '#/components/schemas/SuccessEnvelope'
                   - type: object
                     properties:
-                      data: { type: 'null' }
+                      data: { nullable: true, enum: [null] }
         '400': { $ref: '#/components/responses/ValidationError' }
         '401': { $ref: '#/components/responses/Unauthenticated' }
         '403': { $ref: '#/components/responses/Forbidden' }
