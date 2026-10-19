@@ -220,7 +220,7 @@ userRouter.patch(
  *                 - type: object
  *                   properties:
  *                     data: { $ref: '#/components/schemas/UserSummary' }
- *       '400': { $ref: '#/components/responses/ValidationOrRoleError' }
+ *       '400': { $ref: '#/components/responses/ValidationError' }
  *       '401': { $ref: '#/components/responses/Unauthenticated' }
  *       '403': { $ref: '#/components/responses/Forbidden' }
  *       '404': { $ref: '#/components/responses/UserNotFound' }
@@ -263,12 +263,8 @@ userRouter.patch(
  *                 - $ref: '#/components/schemas/SuccessEnvelope'
  *                 - type: object
  *                   properties:
- *                     data: { type: 'null' }
- *       '400':
- *         description: VALIDATION_ERROR (contraseña de menos de 8 caracteres)
- *         content:
- *           application/json:
- *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *                     data: { nullable: true, enum: [null] }
+ *       '400': { $ref: '#/components/responses/ValidationError' }
  *       '401': { $ref: '#/components/responses/Unauthenticated' }
  *       '403': { $ref: '#/components/responses/Forbidden' }
  *       '404': { $ref: '#/components/responses/UserNotFound' }
