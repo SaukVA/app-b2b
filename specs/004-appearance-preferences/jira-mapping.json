@@ -1,0 +1,509 @@
+{
+  "created_at": "2026-10-19T15:46:04Z",
+  "updated_at": "2026-10-19T15:46:04Z",
+  "spec": "004-appearance-preferences",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-283",
+    "summary": "Preferencias personales (Ajustes › Apariencia)",
+    "url": "https://sauk.atlassian.net/browse/AB2B-283"
+  },
+  "stories": [
+    {
+      "key": "AB2B-284",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-284",
+      "tasks": [
+        {
+          "key": "AB2B-291",
+          "id": "T001",
+          "summary": "T001: Crear `packages/shared/src/types/preferences.ts` con los tipos de data-model.md",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-291"
+        },
+        {
+          "key": "AB2B-292",
+          "id": "T002",
+          "summary": "T002: Ampliar `HomeScreen` en `packages/shared/src/types/user.ts` a",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-292"
+        },
+        {
+          "key": "AB2B-293",
+          "id": "T003",
+          "summary": "T003: Crear `packages/shared/src/constants/preferences.ts` con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-293"
+        },
+        {
+          "key": "AB2B-294",
+          "id": "T004",
+          "summary": "T004: Cambiar `AuthUser` en `packages/shared/src/types/auth.ts`: quitar `homeScreen` y añadir",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-294"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-285",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-285",
+      "tasks": [
+        {
+          "key": "AB2B-295",
+          "id": "T005",
+          "summary": "T005: Crear `apps/server/src/modules/preferences/preferences.service.test.ts` (mongodb-memory-server, sin",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-295"
+        },
+        {
+          "key": "AB2B-296",
+          "id": "T006",
+          "summary": "T006: Crear `apps/server/src/modules/preferences/preferences.routes.test.ts` (supertest +",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-296"
+        },
+        {
+          "key": "AB2B-297",
+          "id": "T007",
+          "summary": "T007: Crear `apps/client/src/features/preferences/preferencesSlice.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-297"
+        },
+        {
+          "key": "AB2B-298",
+          "id": "T008",
+          "summary": "T008: Crear `apps/client/src/features/preferences/useApplyAppearance.test.ts` (renderHook con store",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-298"
+        },
+        {
+          "key": "AB2B-299",
+          "id": "T009",
+          "summary": "T009: Crear `apps/client/src/components/OptionGroup.test.tsx` (research R11)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-299"
+        },
+        {
+          "key": "AB2B-300",
+          "id": "T010",
+          "summary": "T010: Actualizar `apps/client/src/pages/SettingsPage.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-300"
+        },
+        {
+          "key": "AB2B-301",
+          "id": "T011",
+          "summary": "T011: Actualizar `apps/server/src/modules/users/user.model.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-301"
+        },
+        {
+          "key": "AB2B-302",
+          "id": "T012",
+          "summary": "T012: Crear `apps/server/src/modules/preferences/preferences.mapper.ts` con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-302"
+        },
+        {
+          "key": "AB2B-303",
+          "id": "T013",
+          "summary": "T013: Crear `apps/server/src/modules/preferences/preferences.validation.ts`: `updatePreferencesBody`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-303"
+        },
+        {
+          "key": "AB2B-304",
+          "id": "T014",
+          "summary": "T014: Crear `apps/server/src/modules/preferences/preferences.service.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-304"
+        },
+        {
+          "key": "AB2B-305",
+          "id": "T015",
+          "summary": "T015: Crear `apps/server/src/modules/preferences/preferences.controller.ts` (`update`: lee `req.auth`,",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-305"
+        },
+        {
+          "key": "AB2B-306",
+          "id": "T016",
+          "summary": "T016: Actualizar el bloque `@openapi` de `AuthUser` en `apps/server/src/modules/auth/auth.routes.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-306"
+        },
+        {
+          "key": "AB2B-307",
+          "id": "T017",
+          "summary": "T017: Crear `apps/client/src/features/preferences/preferencesApi.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-307"
+        },
+        {
+          "key": "AB2B-308",
+          "id": "T018",
+          "summary": "T018: Crear `apps/client/src/features/preferences/preferencesSlice.ts` con el estado de data-model.md",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-308"
+        },
+        {
+          "key": "AB2B-309",
+          "id": "T019",
+          "summary": "T019: En `apps/client/src/App.tsx`, `SessionRestore` despacha `sessionRestored(user)` con el usuario de",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-309"
+        },
+        {
+          "key": "AB2B-310",
+          "id": "T020",
+          "summary": "T020: Crear `apps/client/src/features/preferences/useApplyAppearance.ts`: con `useLayoutEffect` (antes",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-310"
+        },
+        {
+          "key": "AB2B-311",
+          "id": "T021",
+          "summary": "T021: Crear `apps/client/src/components/OptionGroup.tsx` (+ `.module.css`) según T009 y el tablero",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-311"
+        },
+        {
+          "key": "AB2B-312",
+          "id": "T022",
+          "summary": "T022: Crear `apps/client/src/pages/AppearanceSettingsPage.tsx` (+ `.module.css`) con un panel \"Apariencia\"",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-312"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-286",
+      "summary": "Phase 3: User Story 1 - Elegir el tema (Priority: P1) 🎯 MVP",
+      "url": "https://sauk.atlassian.net/browse/AB2B-286",
+      "tasks": [
+        {
+          "key": "AB2B-313",
+          "id": "T023",
+          "summary": "T023: Crear `apps/client/src/features/preferences/components/AppearanceForm.test.tsx` (bloque",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-313"
+        },
+        {
+          "key": "AB2B-314",
+          "id": "T024",
+          "summary": "T024: Crear `e2e/appearance.spec.ts` (Playwright, con el servidor E2E de ADR 0004)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-314"
+        },
+        {
+          "key": "AB2B-315",
+          "id": "T025",
+          "summary": "T025: Añadir a `apps/client/index.html`, dentro de `<head>` y antes de los `<link>`, un script inline",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-315"
+        },
+        {
+          "key": "AB2B-316",
+          "id": "T026",
+          "summary": "T026: Crear `apps/client/src/features/preferences/components/AppearanceForm.tsx` (+ `.module.css`)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-316"
+        },
+        {
+          "key": "AB2B-317",
+          "id": "T027",
+          "summary": "T027: Garantizar que no destella al entrar, sin código condicional: la navegación tras el login la",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-317"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-287",
+      "summary": "Phase 4: User Story 2 - Elegir la pantalla de inicio (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-287",
+      "tasks": [
+        {
+          "key": "AB2B-318",
+          "id": "T028",
+          "summary": "T028: Ampliar `apps/server/src/modules/preferences/preferences.routes.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-318"
+        },
+        {
+          "key": "AB2B-319",
+          "id": "T029",
+          "summary": "T029: Crear `apps/client/src/routes/homeRoute.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-319"
+        },
+        {
+          "key": "AB2B-320",
+          "id": "T030",
+          "summary": "T030: Ampliar `apps/client/src/routes/RequireAuth.test.tsx`: un usuario cuyo rol solo tiene",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-320"
+        },
+        {
+          "key": "AB2B-321",
+          "id": "T031",
+          "summary": "T031: Ampliar `apps/client/src/features/preferences/components/AppearanceForm.test.tsx` (bloque",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-321"
+        },
+        {
+          "key": "AB2B-322",
+          "id": "T032",
+          "summary": "T032: Actualizar `apps/client/src/routes/homeRoute.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-322"
+        },
+        {
+          "key": "AB2B-323",
+          "id": "T033",
+          "summary": "T033: En `apps/server/src/modules/preferences/preferences.service.ts`, antes de guardar, si",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-323"
+        },
+        {
+          "key": "AB2B-324",
+          "id": "T034",
+          "summary": "T034: Añadir a `AppearanceForm.tsx` el bloque \"Pantalla de inicio\" con el `Select` de 003",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-324"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-288",
+      "summary": "Phase 5: User Story 3 - Elegir el formato de importes (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-288",
+      "tasks": [
+        {
+          "key": "AB2B-325",
+          "id": "T035",
+          "summary": "T035: Crear `apps/client/src/utils/money.test.ts` con los ejemplos de quickstart §4",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-325"
+        },
+        {
+          "key": "AB2B-326",
+          "id": "T036",
+          "summary": "T036: Crear los tests de los componentes genéricos, que reciben el formato por prop (constitución",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-326"
+        },
+        {
+          "key": "AB2B-327",
+          "id": "T037",
+          "summary": "T037: Ampliar `AppearanceForm.test.tsx` (bloque Formato de importes): opciones \"1.248,50 €\" y",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-327"
+        },
+        {
+          "key": "AB2B-328",
+          "id": "T038",
+          "summary": "T038: Crear `apps/client/src/utils/money.ts` (research R8)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-328"
+        },
+        {
+          "key": "AB2B-329",
+          "id": "T039",
+          "summary": "T039: Crear",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-329"
+        },
+        {
+          "key": "AB2B-330",
+          "id": "T040",
+          "summary": "T040: Añadir a `AppearanceForm.tsx` el bloque \"Formato de importes\" con el `Select` (fuente IBM",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-330"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-289",
+      "summary": "Phase 6: User Story 4 - Elegir la densidad de tablas (Priority: P3)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-289",
+      "tasks": [
+        {
+          "key": "AB2B-331",
+          "id": "T041",
+          "summary": "T041: Ampliar `AppearanceForm.test.tsx` (bloque Densidad): `OptionGroup variant=\"buttons\"` con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-331"
+        },
+        {
+          "key": "AB2B-332",
+          "id": "T042",
+          "summary": "T042: E2E de densidad sin retirar la cuenta inicial: los E2E comparten servidor y base de datos",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-332"
+        },
+        {
+          "key": "AB2B-333",
+          "id": "T043",
+          "summary": "T043: En `apps/client/src/components/Table.module.css`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-333"
+        },
+        {
+          "key": "AB2B-334",
+          "id": "T044",
+          "summary": "T044: Añadir a `AppearanceForm.tsx` el bloque \"Densidad de tablas\" con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-334"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-290",
+      "summary": "Phase 7: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-290",
+      "tasks": [
+        {
+          "key": "AB2B-335",
+          "id": "T045",
+          "summary": "T045: Actualizar `docs/design/README.md`, línea del formato de importes: sustituir",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-335"
+        },
+        {
+          "key": "AB2B-336",
+          "id": "T046",
+          "summary": "T046: Comprobar que `/api-docs` coincide con `contracts/preferences-api.openapi.yaml` (`PATCH",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-336"
+        },
+        {
+          "key": "AB2B-337",
+          "id": "T047",
+          "summary": "T047: Añadir a la sección Convenciones de `CLAUDE.md`: \"MUST mostrar los importes con `<UserMoney>` y",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-337"
+        },
+        {
+          "key": "AB2B-338",
+          "id": "T048",
+          "summary": "T048: Revisar la accesibilidad de `/ajustes/apariencia` a 390 px y 1440 px, en claro y en oscuro, con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-338"
+        },
+        {
+          "key": "AB2B-339",
+          "id": "T049",
+          "summary": "T049: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-339"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-284",
+      "to": "AB2B-285"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-285",
+      "to": "AB2B-286"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-285",
+      "to": "AB2B-287"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-285",
+      "to": "AB2B-288"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-285",
+      "to": "AB2B-289"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-286",
+      "to": "AB2B-290"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-287",
+      "to": "AB2B-290"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-288",
+      "to": "AB2B-290"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-289",
+      "to": "AB2B-290"
+    }
+  ],
+  "summary": {
+    "total_stories": 7,
+    "total_tasks": 49,
+    "completed_tasks": 0,
+    "pending_tasks": 49
+  }
+}
