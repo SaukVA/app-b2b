@@ -45,7 +45,7 @@ US1 → US2 → US3 → US4 → US5 → US6.
 
 **Purpose**: registrar la decisión de arquitectura antes de tocar código
 
-- [ ] T001 Crear `docs/adr/0003-roles-permissions-in-database.md` con el formato de `docs/adr/0001-http-client-axios-thunks.md`, registrando research R11:
+- [X] T001 Crear `docs/adr/0003-roles-permissions-in-database.md` con el formato de `docs/adr/0001-http-client-axios-thunks.md`, registrando research R11:
   - colección `roles` con `key`, `name`, `isAdmin`, `order` y `permissions`;
   - las claves iniciales son los nombres actuales, así que no hace falta migración;
   - siembra idempotente con `$setOnInsert` y `edit` forzado en el rol `isAdmin`;
