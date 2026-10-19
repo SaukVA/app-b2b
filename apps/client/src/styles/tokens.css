@@ -39,6 +39,9 @@
   --notice-fg: #6b4900;
   --notice-border: #e9cf8a;
   --danger: #a12a1c;
+  /* Acción destructiva («Bloquear»): docs/design/README.md › Estados. */
+  --danger-action: #a12a1c;
+  --on-danger-action: #ffffff;
 
   /* Tipografía */
   --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
@@ -101,6 +104,8 @@
   --notice-bg: #3a3014;
   --notice-fg: #e8c66a;
   --notice-border: #5c4a1c;
+  --danger-action: #f09a8e;
+  --on-danger-action: #16191d;
   color-scheme: dark;
 }
 
@@ -128,6 +133,8 @@
     --notice-bg: #3a3014;
     --notice-fg: #e8c66a;
     --notice-border: #5c4a1c;
+    --danger-action: #f09a8e;
+    --on-danger-action: #16191d;
     color-scheme: dark;
   }
 }

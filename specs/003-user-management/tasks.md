@@ -448,7 +448,7 @@ Administrador, autobloqueo y concurrencia).
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T060 [P] [US4] Ampliar `apps/server/src/modules/users/user.service.test.ts`:
+- [X] T060 [P] [US4] Ampliar `apps/server/src/modules/users/user.service.test.ts`:
   - **cambio de rol**: `updateUser` con `role` existente → cambia, deja entrada `update` con
     `{ field: 'role' }` y no revoca sesiones; rol inexistente → `USER_ROLE_NOT_FOUND`;
   - **último Administrador por cambio de rol**: degradar al único Administrador activo →
@@ -463,13 +463,13 @@ Administrador, autobloqueo y concurrencia).
   - **concurrencia** (FR-016): con dos Administradores, `Promise.all` de dos bloqueos cruzados → como mucho
     uno tiene éxito, después hay al menos un Administrador activo y no queda ninguna entrada de auditoría de
     la acción rechazada.
-- [ ] T061 [P] [US4] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
+- [X] T061 [P] [US4] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
   - `PATCH /api/users/:id/status` → 200 y 400 con `status: 'Invitado'`;
   - `PATCH /api/users/:id` con `role` → 200;
   - 409 `USER_SELF_BLOCK` y 409 `USER_LAST_ADMIN`;
   - el access token del usuario bloqueado → 401 en la petición siguiente;
   - tras cambiar su rol a Almacén, `GET /api/auth/me` del afectado devuelve los `permissions` de Almacén.
-- [ ] T062 [P] [US4] Ampliar `apps/client/src/features/users/components/UsersTable.test.tsx` y `UsersSettingsPage.test.tsx`:
+- [X] T062 [P] [US4] Ampliar `apps/client/src/features/users/components/UsersTable.test.tsx` y `UsersSettingsPage.test.tsx`:
   - «Bloquear» no aparece en la fila propia y «Desbloquear» solo en las bloqueadas;
   - «Bloquear» abre la confirmación «¿Bloquear a {nombre}?» y solo despacha al confirmar;
   - un cambio de rol pide confirmación;
@@ -478,7 +478,7 @@ Administrador, autobloqueo y concurrencia).
 
 ### Implementation for User Story 4
 
-- [ ] T063 [US4] Implementar en `apps/server/src/modules/users/user.service.ts` el helper `applyWithAdminGuard(id, update)` (research R2):
+- [X] T063 [US4] Implementar en `apps/server/src/modules/users/user.service.ts` el helper `applyWithAdminGuard(id, update)` (research R2):
   - aplica el cambio con `findOneAndUpdate({ new: false })`;
   - si el usuario era un Administrador activo, cuenta `{ isBootstrap: false, status: 'Activo', role: { $in: adminRoleKeys } }`;
   - si da 0, compensa con `updateOne({ _id: id, ...update }, { $set: valoresAnteriores })` (solo restaura
@@ -488,9 +488,9 @@ Administrador, autobloqueo y concurrencia).
   Orden en `setUserStatus` y en `updateUser`: guarda → `revokeUserSessions` (solo al bloquear) →
   `recordAudit`. Una acción compensada no revoca sesiones ni se audita.
   Ampliar `updateUser` para `role` (`assertRoleExists` y guard) e implementar `setUserStatus(id, status, actor)`, que llama a `assertNotSelf` (`USER_SELF_BLOCK` 409, «No puedes bloquearte a ti mismo.»), al guard, a `revokeUserSessions` al bloquear y a `recordAudit('block' | 'unblock')`. Hace pasar T060.
-- [ ] T064 [US4] Añadir el handler `setStatus` y `PATCH /:id/status` con `validate({ params: userIdParams, body: updateStatusSchema })` y su `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts`. Actualizar el `@openapi` de `PATCH /:id` con el 409 `USER_LAST_ADMIN` (hace pasar T061).
-- [ ] T065 [P] [US4] Añadir `setUserStatus(id, status)` a `apps/client/src/features/users/usersApi.ts` y el thunk `setUserStatus` a `usersSlice.ts`. Si `updateUser` cambia el rol del usuario actual, despachar `loadMe()` de `authSlice`. Cubrirlo en `usersSlice.test.ts`.
-- [ ] T066 [US4] Cablear `onBlock` y `onUnblock` en `apps/client/src/features/users/components/UsersTable.tsx` y `apps/client/src/pages/UsersSettingsPage.tsx`:
+- [X] T064 [US4] Añadir el handler `setStatus` y `PATCH /:id/status` con `validate({ params: userIdParams, body: updateStatusSchema })` y su `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts`. Actualizar el `@openapi` de `PATCH /:id` con el 409 `USER_LAST_ADMIN` (hace pasar T061).
+- [X] T065 [P] [US4] Añadir `setUserStatus(id, status)` a `apps/client/src/features/users/usersApi.ts` y el thunk `setUserStatus` a `usersSlice.ts`. Si `updateUser` cambia el rol del usuario actual, despachar `loadMe()` de `authSlice`. Cubrirlo en `usersSlice.test.ts`.
+- [X] T066 [US4] Cablear `onBlock` y `onUnblock` en `apps/client/src/features/users/components/UsersTable.tsx` y `apps/client/src/pages/UsersSettingsPage.tsx`:
   - **bloqueo**: `Dialog` de confirmación con el texto del tablero y el botón «Bloquear» en tono de
     peligro;
   - **desbloqueo**: directo;

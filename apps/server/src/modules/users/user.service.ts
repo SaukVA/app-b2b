@@ -1,14 +1,24 @@
-import { USER_ERROR_CODES, type CreateUserResponse, type UserSummary } from '@app/shared';
+import {
+  USER_ERROR_CODES,
+  type CreateUserResponse,
+  type UserStatus,
+  type UserSummary,
+} from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { hashPassword } from '../../utils/password';
 import { countRealUsers, retireBootstrapIfNeeded } from '../auth/bootstrap.service';
 import { SessionModel } from '../auth/session.model';
 import type { RoleDocument } from '../roles/role.model';
-import { findRole, listRoles } from '../roles/role.service';
+import { findAdminRoleKeys, findRole, listRoles } from '../roles/role.service';
 import { toUserSummary } from './user.mapper';
 import { UserModel, type UserDocument } from './user.model';
 import type { CreateUserInput, UpdateUserInput } from './user.validation';
-import { UserAuditModel, type UserAuditAction, type UserAuditChange } from './userAudit.model';
+import {
+  UserAuditModel,
+  type UserAuditAction,
+  type UserAuditChange,
+  type UserAuditField,
+} from './userAudit.model';
 
 /** Quien hace o recibe una acción de gestión, con su login en ese momento (para el registro). */
 export interface UserRef {
@@ -106,43 +116,78 @@ export async function createUser(
   return { user: toUserSummary(user, role.name), bootstrapRetired };
 }
 
-/** Provisional hasta US4: el cambio de rol necesita la regla del último Administrador (FR-016). */
-function assertNoRoleChange(user: UserDocument, input: UpdateUserInput): void {
-  if (input.role === undefined || input.role === user.role) return;
-  throw new AppError('VALIDATION_ERROR', 400, 'El cambio de rol todavía no está disponible.');
-}
+type UserField = 'login' | 'name' | 'role' | 'status';
+type UserUpdate = Partial<Record<UserField, string>>;
+type ChangeInput = Partial<Record<UserAuditField, string>>;
+
+const FIELD_OF: Record<UserAuditField, UserField> = {
+  email: 'login',
+  name: 'name',
+  role: 'role',
+  status: 'status',
+};
 
 /** Solo los campos que cambian, en el orden del registro (FR-025). */
-function collectChanges(user: UserDocument, input: UpdateUserInput): UserAuditChange[] {
-  const changes: UserAuditChange[] = [];
-  if (input.email !== undefined && input.email !== user.login) {
-    changes.push({ field: 'email', from: user.login, to: input.email });
-  }
-  if (input.name !== undefined && input.name !== user.name) {
-    changes.push({ field: 'name', from: user.name, to: input.name });
-  }
-  return changes;
+function collectChanges(user: UserDocument, input: ChangeInput): UserAuditChange[] {
+  const candidates: Array<[UserAuditField, string, string | undefined]> = [
+    ['email', user.login, input.email],
+    ['name', user.name, input.name],
+    ['role', user.role, input.role],
+    ['status', user.status, input.status],
+  ];
+  return candidates
+    .filter(([, from, to]) => to !== undefined && to !== from)
+    .map(([field, from, to]) => ({ field, from, to: to ?? null }));
 }
 
-function toUpdateSet(changes: UserAuditChange[]): Partial<Record<'login' | 'name', string>> {
-  const set: Partial<Record<'login' | 'name', string>> = {};
-  for (const change of changes) set[change.field === 'email' ? 'login' : 'name'] = change.to ?? '';
-  return set;
+function toUpdate(changes: UserAuditChange[]): UserUpdate {
+  return Object.fromEntries(changes.map((change) => [FIELD_OF[change.field], change.to]));
 }
 
-/** Guarda los cambios; el índice único de `login` resuelve el email repetido (research R3). */
-async function applyChanges(id: string, changes: UserAuditChange[]): Promise<UserDocument> {
+/** Los valores que tenía el documento en los campos que toca `update` (para compensar). */
+function previousValues(before: UserDocument, update: UserUpdate): UserUpdate {
+  const fields = Object.keys(update) as UserField[];
+  return Object.fromEntries(fields.map((field) => [field, before.get(field) as string]));
+}
+
+/** Guarda el cambio y devuelve el documento anterior; un email repetido es USER_EMAIL_TAKEN (R3). */
+async function saveUpdate(id: string, update: UserUpdate): Promise<UserDocument> {
   try {
-    const updated = await UserModel.findOneAndUpdate(
+    const before = await UserModel.findOneAndUpdate(
       { _id: id, isBootstrap: false },
-      { $set: toUpdateSet(changes) },
-      { new: true },
+      { $set: update },
+      { new: false },
     );
-    if (!updated) throw new AppError(USER_ERROR_CODES.notFound, 404, 'El usuario no existe.');
-    return updated;
+    if (!before) throw new AppError(USER_ERROR_CODES.notFound, 404, 'El usuario no existe.');
+    return before;
   } catch (err) {
     throw toEmailTakenError(err);
   }
+}
+
+function countActiveAdmins(adminKeys: string[]): Promise<number> {
+  return UserModel.countDocuments({
+    isBootstrap: false,
+    status: 'Activo',
+    role: { $in: adminKeys },
+  }).exec();
+}
+
+/**
+ * Aplica el cambio y, si deja la aplicación sin Administrador activo, lo deshace (research R2).
+ * La compensación filtra por los valores nuevos: no pisa un cambio posterior de otra petición.
+ */
+async function applyWithAdminGuard(id: string, update: UserUpdate): Promise<UserDocument> {
+  const adminKeys = await findAdminRoleKeys();
+  const before = await saveUpdate(id, update);
+  const wasActiveAdmin = before.status === 'Activo' && adminKeys.includes(before.role);
+  if (!wasActiveAdmin || (await countActiveAdmins(adminKeys)) > 0) return before.set(update);
+  await UserModel.updateOne({ _id: id, ...update }, { $set: previousValues(before, update) });
+  throw new AppError(
+    USER_ERROR_CODES.lastAdmin,
+    409,
+    'Debe quedar al menos un Administrador activo.',
+  );
 }
 
 async function roleNameOf(key: string): Promise<string> {
@@ -163,17 +208,52 @@ export async function listUsers(): Promise<UserSummary[]> {
   return users.map((user) => toUserSummary(user, roleNames.get(user.role) ?? user.role));
 }
 
-/** Corrige nombre y email (FR-024). No cierra sus sesiones: el `sub` del token no cambia. */
+/** Guarda → revoca sesiones (solo al bloquear) → registra. Una acción compensada no hace nada más. */
+async function applyAndRecord(
+  user: UserDocument,
+  changes: UserAuditChange[],
+  action: UserAuditAction,
+  actor: UserRef,
+): Promise<UserSummary> {
+  if (changes.length === 0) return toUserSummary(user, await roleNameOf(user.role));
+  const updated = await applyWithAdminGuard(user.id as string, toUpdate(changes));
+  if (action === 'block') await revokeUserSessions(user.id as string);
+  await recordAudit({
+    action,
+    actor,
+    target: { id: user.id as string, login: updated.login },
+    changes,
+  });
+  return toUserSummary(updated, await roleNameOf(updated.role));
+}
+
+/**
+ * Corrige nombre, email y rol (FR-013, FR-024). No cierra sus sesiones: el rol nuevo se lee de `roles`
+ * en la siguiente petición (FR-028).
+ */
 export async function updateUser(
   id: string,
   input: UpdateUserInput,
   actor: UserRef,
 ): Promise<UserSummary> {
   const user = await findRealUserOrThrow(id);
-  assertNoRoleChange(user, input);
-  const changes = collectChanges(user, input);
-  if (changes.length === 0) return toUserSummary(user, await roleNameOf(user.role));
-  const updated = await applyChanges(id, changes);
-  await recordAudit({ action: 'update', actor, target: { id, login: updated.login }, changes });
-  return toUserSummary(updated, await roleNameOf(updated.role));
+  if (input.role !== undefined) await assertRoleExists(input.role);
+  return applyAndRecord(user, collectChanges(user, input), 'update', actor);
+}
+
+function assertNotSelf(id: string, actor: UserRef): void {
+  if (id !== actor.id) return;
+  throw new AppError(USER_ERROR_CODES.selfBlock, 409, 'No puedes bloquearte a ti mismo.');
+}
+
+/** Bloquea (revoca todas sus sesiones) o desbloquea; nunca deja la aplicación sin Administrador. */
+export async function setUserStatus(
+  id: string,
+  status: UserStatus,
+  actor: UserRef,
+): Promise<UserSummary> {
+  if (status === 'Bloqueado') assertNotSelf(id, actor);
+  const user = await findRealUserOrThrow(id);
+  const action = status === 'Bloqueado' ? 'block' : 'unblock';
+  return applyAndRecord(user, collectChanges(user, { status }), action, actor);
 }

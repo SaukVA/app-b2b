@@ -1,11 +1,20 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit';
 import type {
+  AuthUser,
   CreateUserRequest,
   CreateUserResponse,
   UpdateUserRequest,
+  UserStatus,
   UserSummary,
 } from '@app/shared';
-import { createUserRequest, fetchUsers, toUsersErrorMessage, updateUserRequest } from './usersApi';
+import { loadMe } from '../auth/authSlice';
+import {
+  createUserRequest,
+  fetchUsers,
+  setUserStatusRequest,
+  toUsersErrorMessage,
+  updateUserRequest,
+} from './usersApi';
 
 export interface UsersState {
   items: UserSummary[];
@@ -45,13 +54,31 @@ export const createUser = createAsyncThunk<
   }
 });
 
+/**
+ * Si cambia el rol del usuario actual, se recarga su sesión al momento (research R1): sus permisos
+ * (y si puede seguir en Ajustes) dependen del rol nuevo.
+ */
 export const updateUser = createAsyncThunk<
   UserSummary,
   { id: string; body: UpdateUserRequest },
-  { rejectValue: string }
->('users/update', async ({ id, body }, { rejectWithValue }) => {
+  { rejectValue: string; state: { auth: { user: AuthUser | null } } }
+>('users/update', async ({ id, body }, { dispatch, getState, rejectWithValue }) => {
   try {
-    return await updateUserRequest(id, body);
+    const user = await updateUserRequest(id, body);
+    if (body.role !== undefined && getState().auth.user?.id === id) await dispatch(loadMe());
+    return user;
+  } catch (err) {
+    return rejectWithValue(toUsersErrorMessage(err));
+  }
+});
+
+export const setUserStatus = createAsyncThunk<
+  UserSummary,
+  { id: string; status: UserStatus },
+  { rejectValue: string }
+>('users/setStatus', async ({ id, status }, { rejectWithValue }) => {
+  try {
+    return await setUserStatusRequest(id, status);
   } catch (err) {
     return rejectWithValue(toUsersErrorMessage(err));
   }
@@ -61,7 +88,7 @@ function replaceItem(items: UserSummary[], user: UserSummary): UserSummary[] {
   return items.map((item) => (item.id === user.id ? user : item)).sort(byName);
 }
 
-// Los thunks setUserStatus y resetUserPassword llegan con US4 y US5.
+// El thunk resetUserPassword llega con US5.
 const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -80,27 +107,23 @@ const usersSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload ?? null;
       })
-      .addCase(createUser.pending, (state) => {
-        state.saving = true;
-        state.error = null;
-      })
       .addCase(createUser.fulfilled, (state, action) => {
         state.saving = false;
         state.items = [...state.items, action.payload.user].sort(byName);
-      })
-      .addCase(createUser.rejected, (state, action) => {
-        state.saving = false;
-        state.error = action.payload ?? null;
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.saving = true;
-        state.error = null;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.saving = false;
         state.items = replaceItem(state.items, action.payload);
       })
-      .addCase(updateUser.rejected, (state, action) => {
+      .addCase(setUserStatus.fulfilled, (state, action) => {
+        state.items = replaceItem(state.items, action.payload);
+      })
+      // Alta y edición comparten `saving` (evita envíos duplicados) y el mensaje de error.
+      .addMatcher(isPending(createUser, updateUser), (state) => {
+        state.saving = true;
+        state.error = null;
+      })
+      .addMatcher(isRejected(createUser, updateUser), (state, action) => {
         state.saving = false;
         state.error = action.payload ?? null;
       });

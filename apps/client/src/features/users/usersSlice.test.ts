@@ -1,13 +1,19 @@
-import type { CreateUserRequest, UserSummary } from '@app/shared';
+import type { AuthUser, CreateUserRequest, UserSummary } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { createUserRequest, fetchUsers, updateUserRequest } from './usersApi';
-import { createUser, loadUsers, updateUser } from './usersSlice';
+import { fetchMe } from '../auth/authApi';
+import { createUserRequest, fetchUsers, setUserStatusRequest, updateUserRequest } from './usersApi';
+import { createUser, loadUsers, setUserStatus, updateUser } from './usersSlice';
 
 jest.mock('./usersApi', () => ({
   ...jest.requireActual('./usersApi'),
   createUserRequest: jest.fn(),
   updateUserRequest: jest.fn(),
   fetchUsers: jest.fn(),
+  setUserStatusRequest: jest.fn(),
+}));
+jest.mock('../auth/authApi', () => ({
+  ...jest.requireActual('../auth/authApi'),
+  fetchMe: jest.fn(),
 }));
 
 const mockedCreate = jest.mocked(createUserRequest);
@@ -161,5 +167,41 @@ describe('usersSlice · loadUsers (US3)', () => {
       status: 'failed',
       error: 'No tienes permiso para realizar esta acción.',
     });
+  });
+});
+
+describe('usersSlice · setUserStatus (US4)', () => {
+  it('sustituye el usuario con su estado nuevo', async () => {
+    jest.mocked(setUserStatusRequest).mockResolvedValue({ ...summary('Bea'), status: 'Bloqueado' });
+    const store = setupStore({
+      users: { items: [summary('Bea')], status: 'succeeded', error: null, saving: false },
+    });
+    await store.dispatch(setUserStatus({ id: 'Bea', status: 'Bloqueado' }));
+    expect(setUserStatusRequest).toHaveBeenCalledWith('Bea', 'Bloqueado');
+    expect(store.getState().users.items[0].status).toBe('Bloqueado');
+  });
+});
+
+describe('usersSlice · cambio de rol propio (US4, research R1)', () => {
+  const ME = { id: 'Bea', login: 'bea@empresa.es', name: 'Bea', role: 'Comercial' } as AuthUser;
+
+  function storeWithMe() {
+    return setupStore({ auth: { user: ME, accessToken: 'jwt', status: 'succeeded', error: null } });
+  }
+
+  beforeEach(() => jest.mocked(fetchMe).mockReset().mockResolvedValue(ME));
+
+  it('si cambia el rol del usuario actual, recarga su sesión (loadMe)', async () => {
+    mockedUpdate.mockResolvedValue({ ...summary('Bea'), role: 'Almacén' });
+    await storeWithMe().dispatch(updateUser({ id: 'Bea', body: { role: 'Almacén' } }));
+    expect(fetchMe).toHaveBeenCalledTimes(1);
+  });
+
+  it('no recarga la sesión si el cambio es de otro usuario o no toca el rol', async () => {
+    mockedUpdate.mockResolvedValue(summary('Bea'));
+    const store = storeWithMe();
+    await store.dispatch(updateUser({ id: 'Carlos', body: { role: 'Almacén' } }));
+    await store.dispatch(updateUser({ id: 'Bea', body: { name: 'Beatriz' } }));
+    expect(fetchMe).not.toHaveBeenCalled();
   });
 });

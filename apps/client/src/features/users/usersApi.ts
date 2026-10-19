@@ -3,6 +3,7 @@ import type {
   CreateUserRequest,
   CreateUserResponse,
   UpdateUserRequest,
+  UserStatus,
   UserSummary,
 } from '@app/shared';
 import { httpClient } from '../../utils/httpClient';
@@ -31,5 +32,13 @@ export async function createUserRequest(body: CreateUserRequest): Promise<Create
 /** Corrige nombre, email y/o rol (PATCH /users/:id); las sesiones del usuario no se cierran. */
 export async function updateUserRequest(id: string, body: UpdateUserRequest): Promise<UserSummary> {
   const { data } = await httpClient.patch<ApiSuccess<UserSummary>>(`/users/${id}`, body);
+  return data.data;
+}
+
+/** Bloquea (revoca sus sesiones) o desbloquea (PATCH /users/:id/status). */
+export async function setUserStatusRequest(id: string, status: UserStatus): Promise<UserSummary> {
+  const { data } = await httpClient.patch<ApiSuccess<UserSummary>>(`/users/${id}/status`, {
+    status,
+  });
   return data.data;
 }

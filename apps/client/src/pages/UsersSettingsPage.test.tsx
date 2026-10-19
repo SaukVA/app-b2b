@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import type { AuthUser, RoleSummary, UserSummary } from '@app/shared';
 import { fetchRoles } from '../features/roles/rolesApi';
-import { fetchUsers, updateUserRequest } from '../features/users/usersApi';
+import { fetchUsers, setUserStatusRequest, updateUserRequest } from '../features/users/usersApi';
 import { setupStore } from '../store/store';
 import { UsersSettingsPage } from './UsersSettingsPage';
 
@@ -13,6 +13,7 @@ jest.mock('../features/users/usersApi', () => ({
   ...jest.requireActual('../features/users/usersApi'),
   fetchUsers: jest.fn(),
   updateUserRequest: jest.fn(),
+  setUserStatusRequest: jest.fn(),
 }));
 
 const ALL_EDIT = {
@@ -37,9 +38,10 @@ const ADMIN: AuthUser = {
 
 const ROLES: RoleSummary[] = [
   { key: 'Administrador', name: 'Administrador', isAdmin: true, order: 1, permissions: ALL_EDIT },
+  { key: 'Comercial', name: 'Comercial', isAdmin: false, order: 2, permissions: ALL_EDIT },
 ];
 
-function summary(id: string, name: string): UserSummary {
+function summary(id: string, name: string, patch: Partial<UserSummary> = {}): UserSummary {
   return {
     id,
     name,
@@ -48,10 +50,19 @@ function summary(id: string, name: string): UserSummary {
     roleName: 'Administrador',
     status: 'Activo',
     lastLoginAt: null,
+    ...patch,
   };
 }
 
-const USERS = [summary('ana', 'Ana Pérez'), summary('bea', 'Bea Gómez')];
+const USERS = [
+  summary('ana', 'Ana Pérez'),
+  summary('bea', 'Bea Gómez'),
+  summary('carlos', 'Carlos Ruiz', { status: 'Bloqueado' }),
+];
+
+function envelopeError(code: string, message: string) {
+  return { response: { data: { success: false, error: { code, message } } } };
+}
 
 function renderPage() {
   const store = setupStore({
@@ -70,6 +81,7 @@ beforeEach(() => {
   jest.mocked(fetchRoles).mockResolvedValue(ROLES);
   jest.mocked(fetchUsers).mockResolvedValue(USERS);
   jest.mocked(updateUserRequest).mockReset();
+  jest.mocked(setUserStatusRequest).mockReset();
 });
 
 describe('UsersSettingsPage · listado (US3)', () => {
@@ -77,7 +89,7 @@ describe('UsersSettingsPage · listado (US3)', () => {
     renderPage();
     const table = within(await screen.findByRole('table', { name: 'Usuarios' }));
     expect(table.getByText('Bea Gómez')).toBeTruthy();
-    expect(screen.getByText('2 usuarios')).toBeTruthy();
+    expect(screen.getByText('3 usuarios')).toBeTruthy();
   });
 
   it('si falla la carga muestra el error', async () => {
@@ -130,5 +142,78 @@ describe('UsersSettingsPage · edición (US3, FR-024)', () => {
     await user.type(dialog.getByLabelText('Email'), 'ana@empresa.es');
     await user.click(dialog.getByRole('button', { name: 'Guardar cambios' }));
     expect(dialog.getByRole('alert').textContent).toContain('Ya existe un usuario con ese email.');
+  });
+});
+
+async function openMenuItem(user: ReturnType<typeof userEvent.setup>, name: string, item: string) {
+  renderPage();
+  const table = within(await screen.findByRole('table', { name: 'Usuarios' }));
+  await user.click(table.getByRole('button', { name: `Opciones de ${name}` }));
+  await user.click(screen.getByRole('menuitem', { name: item }));
+}
+
+describe('UsersSettingsPage · bloquear y desbloquear (US4)', () => {
+  it('«Bloquear» pide confirmación y solo bloquea al confirmar', async () => {
+    const user = userEvent.setup();
+    jest.mocked(setUserStatusRequest).mockResolvedValue({ ...USERS[1], status: 'Bloqueado' });
+    await openMenuItem(user, 'Bea Gómez', 'Bloquear');
+    const dialog = within(screen.getByRole('dialog', { name: '¿Bloquear a Bea Gómez?' }));
+    expect(setUserStatusRequest).not.toHaveBeenCalled();
+    await user.click(dialog.getByRole('button', { name: 'Bloquear' }));
+    expect(setUserStatusRequest).toHaveBeenCalledWith('bea', 'Bloqueado');
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('cancelar la confirmación no bloquea', async () => {
+    const user = userEvent.setup();
+    await openMenuItem(user, 'Bea Gómez', 'Bloquear');
+    await user.click(screen.getByRole('button', { name: 'Cancelar' }));
+    expect(setUserStatusRequest).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('«Desbloquear» es directo', async () => {
+    const user = userEvent.setup();
+    jest.mocked(setUserStatusRequest).mockResolvedValue({ ...USERS[2], status: 'Activo' });
+    await openMenuItem(user, 'Carlos Ruiz', 'Desbloquear');
+    expect(setUserStatusRequest).toHaveBeenCalledWith('carlos', 'Activo');
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('un USER_LAST_ADMIN al bloquear se muestra dentro del diálogo', async () => {
+    const user = userEvent.setup();
+    const message = 'Debe quedar al menos un Administrador activo.';
+    jest.mocked(setUserStatusRequest).mockRejectedValue(envelopeError('USER_LAST_ADMIN', message));
+    await openMenuItem(user, 'Bea Gómez', 'Bloquear');
+    const dialog = within(screen.getByRole('dialog'));
+    await user.click(dialog.getByRole('button', { name: 'Bloquear' }));
+    expect(dialog.getByRole('alert').textContent).toContain(message);
+  });
+});
+
+describe('UsersSettingsPage · cambio de rol (US4)', () => {
+  it('pide confirmación antes de cambiar el rol', async () => {
+    const user = userEvent.setup();
+    jest.mocked(updateUserRequest).mockResolvedValue({ ...USERS[1], role: 'Comercial' });
+    const dialog = await openEditBea(user);
+    expect(dialog.getByText(/se aplica a sus sesiones abiertas en 15 minutos/)).toBeTruthy();
+    await user.selectOptions(dialog.getByRole('combobox', { name: 'Rol' }), 'Comercial');
+    await user.click(dialog.getByRole('button', { name: 'Guardar cambios' }));
+    expect(dialog.getByText('¿Cambiar el rol de Bea Gómez a Comercial?')).toBeTruthy();
+    expect(updateUserRequest).not.toHaveBeenCalled();
+    await user.click(dialog.getByRole('button', { name: 'Cambiar rol' }));
+    expect(updateUserRequest).toHaveBeenCalledWith('bea', { role: 'Comercial' });
+  });
+
+  it('un USER_LAST_ADMIN se muestra en un Alert dentro del diálogo', async () => {
+    const user = userEvent.setup();
+    const message = 'Debe quedar al menos un Administrador activo.';
+    jest.mocked(updateUserRequest).mockRejectedValue(envelopeError('USER_LAST_ADMIN', message));
+    const dialog = await openEditBea(user);
+    await user.selectOptions(dialog.getByRole('combobox', { name: 'Rol' }), 'Comercial');
+    await user.click(dialog.getByRole('button', { name: 'Guardar cambios' }));
+    await user.click(dialog.getByRole('button', { name: 'Cambiar rol' }));
+    expect(dialog.getByRole('alert').textContent).toContain(message);
+    expect(screen.getByRole('dialog', { name: 'Editar usuario' })).toBeTruthy();
   });
 });

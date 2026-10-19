@@ -7,7 +7,7 @@ import { SessionModel } from '../auth/session.model';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from './user.model';
 import { RoleModel } from '../roles/role.model';
-import { createUser, listUsers, updateUser, type UserRef } from './user.service';
+import { createUser, listUsers, setUserStatus, updateUser, type UserRef } from './user.service';
 import { UserAuditModel } from './userAudit.model';
 
 setTestEnv();
@@ -216,14 +216,6 @@ describe('updateUser · casos límite (US2)', () => {
       status: 404,
     });
   });
-
-  it('el cambio de rol todavía no se aplica → VALIDATION_ERROR 400 (llega con US4)', async () => {
-    const { actor, user } = await realAdminAndComercial();
-    await expect(updateUser(user.id, { role: 'Almacén' }, actor)).rejects.toMatchObject({
-      code: 'VALIDATION_ERROR',
-      status: 400,
-    });
-  });
 });
 
 describe('listUsers (US3, FR-011)', () => {
@@ -264,5 +256,112 @@ describe('listUsers (US3, FR-011)', () => {
     expect(users.find((user) => user.email === 'carlos@empresa.es')?.lastLoginAt).toBeNull();
     const beaLogin = users.find((user) => user.email === 'bea@empresa.es')?.lastLoginAt;
     expect(beaLogin).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+  });
+});
+
+function activeAdmins() {
+  return UserModel.countDocuments({ isBootstrap: false, status: 'Activo', role: 'Administrador' });
+}
+
+describe('updateUser · cambio de rol (US4)', () => {
+  it('cambia el rol, lo registra y no cierra sus sesiones', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    const session = await openSessionFor(user.id);
+    const updated = await updateUser(user.id, { role: 'Almacén' }, actor);
+    expect(updated).toMatchObject({ role: 'Almacén', roleName: 'Almacén' });
+    const entry = await UserAuditModel.findOne({ action: 'update' }).lean().orFail();
+    expect(entry.changes).toEqual([{ field: 'role', from: 'Comercial', to: 'Almacén' }]);
+    expect((await SessionModel.findById(session.id).orFail()).revokedAt).toBeNull();
+  });
+
+  it('con un rol inexistente → USER_ROLE_NOT_FOUND 400', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await expect(updateUser(user.id, { role: 'Inexistente' }, actor)).rejects.toMatchObject({
+      code: USER_ERROR_CODES.roleNotFound,
+      status: 400,
+    });
+  });
+
+  it('degradar al único Administrador activo → USER_LAST_ADMIN 409 y el rol no cambia', async () => {
+    const actor = await realAdmin();
+    await expect(updateUser(actor.id, { role: 'Comercial' }, actor)).rejects.toMatchObject({
+      code: USER_ERROR_CODES.lastAdmin,
+      status: 409,
+    });
+    expect((await UserModel.findById(actor.id).orFail()).role).toBe('Administrador');
+    expect(await UserAuditModel.countDocuments({ action: 'update' })).toBe(0);
+  });
+});
+
+describe('setUserStatus · bloqueo y desbloqueo (US4)', () => {
+  it('bloquear cambia el estado, revoca sus sesiones, lo registra y ya no entra', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    const session = await openSessionFor(user.id);
+    const updated = await setUserStatus(user.id, 'Bloqueado', actor);
+    expect(updated.status).toBe('Bloqueado');
+    expect((await SessionModel.findById(session.id).orFail()).revokedAt).toBeInstanceOf(Date);
+    const entry = await UserAuditModel.findOne({ action: 'block' }).lean().orFail();
+    expect(entry.changes).toEqual([{ field: 'status', from: 'Activo', to: 'Bloqueado' }]);
+    await expect(signIn('bea@empresa.es')).rejects.toMatchObject({ code: 'AUTH_ACCOUNT_BLOCKED' });
+  });
+
+  it('desbloquear lo deja Activo, lo registra y entra con su contraseña de siempre', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await setUserStatus(user.id, 'Bloqueado', actor);
+    const updated = await setUserStatus(user.id, 'Activo', actor);
+    expect(updated.status).toBe('Activo');
+    expect(await UserAuditModel.countDocuments({ action: 'unblock' })).toBe(1);
+    await expect(signIn('bea@empresa.es')).resolves.toMatchObject({
+      user: { login: 'bea@empresa.es' },
+    });
+  });
+
+  it('bloquear a alguien ya bloqueado no registra nada nuevo', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await setUserStatus(user.id, 'Bloqueado', actor);
+    await setUserStatus(user.id, 'Bloqueado', actor);
+    expect(await UserAuditModel.countDocuments({ action: 'block' })).toBe(1);
+  });
+
+  it('bloquearse a uno mismo → USER_SELF_BLOCK 409', async () => {
+    const actor = await realAdmin();
+    await expect(setUserStatus(actor.id, 'Bloqueado', actor)).rejects.toMatchObject({
+      code: USER_ERROR_CODES.selfBlock,
+      status: 409,
+    });
+  });
+});
+
+describe('setUserStatus · último Administrador (US4, FR-016)', () => {
+  it('un usuario con permiso de Ajustes no puede bloquear al único Administrador activo', async () => {
+    const admin = await realAdmin();
+    await RoleModel.create({
+      key: 'Supervisor',
+      name: 'Supervisor',
+      isAdmin: false,
+      order: 5,
+      permissions: { ajustes: 'edit' },
+    });
+    const { user } = await createUser(newUserInput('sup@empresa.es', 'Supervisor'), admin);
+    const supervisor = { id: user.id, login: user.email };
+    await expect(setUserStatus(admin.id, 'Bloqueado', supervisor)).rejects.toMatchObject({
+      code: USER_ERROR_CODES.lastAdmin,
+      status: 409,
+    });
+    expect((await UserModel.findById(admin.id).orFail()).status).toBe('Activo');
+  });
+
+  it('dos bloqueos cruzados a la vez: como mucho uno sale bien y queda un Administrador', async () => {
+    const a = await realAdmin();
+    const { user } = await createUser(newUserInput('bea@empresa.es', 'Administrador'), a);
+    const b = { id: user.id, login: user.email };
+    const results = await Promise.allSettled([
+      setUserStatus(b.id, 'Bloqueado', a),
+      setUserStatus(a.id, 'Bloqueado', b),
+    ]);
+    const succeeded = results.filter((result) => result.status === 'fulfilled').length;
+    expect(succeeded).toBeLessThanOrEqual(1);
+    expect(await activeAdmins()).toBeGreaterThanOrEqual(1);
+    expect(await UserAuditModel.countDocuments({ action: 'block' })).toBe(succeeded);
   });
 });

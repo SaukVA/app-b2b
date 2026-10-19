@@ -198,3 +198,62 @@ describe('GET /api/users (US3)', () => {
     expect(res.body.error.code).toBe('AUTH_FORBIDDEN');
   });
 });
+
+function patchStatus(id: string, status: string, token: string) {
+  return authed('patch', `/api/users/${id}/status`, token).send({ status });
+}
+
+async function getJson(url: string, token: string) {
+  return request(app()).get(url).set('Authorization', `Bearer ${token}`);
+}
+
+describe('PATCH /api/users/:id/status (US4)', () => {
+  it('200 al bloquear y el token del bloqueado deja de valer', async () => {
+    const admin = await adminToken();
+    const comercial = await comercialToken(admin);
+    const bea = (await getJson('/api/users', admin)).body.data[1];
+    const res = await patchStatus(bea.id, 'Bloqueado', admin);
+    expect(res.status).toBe(200);
+    expect(res.body.data).toMatchObject({ email: 'bea@empresa.es', status: 'Bloqueado' });
+    expect((await getJson('/api/auth/me', comercial)).status).toBe(401);
+  });
+
+  it('400 VALIDATION_ERROR con status Invitado', async () => {
+    const admin = await adminToken();
+    const { body } = await newUser(admin);
+    const res = await patchStatus(body.data.user.id, 'Invitado', admin);
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('409 USER_SELF_BLOCK al bloquearse a uno mismo', async () => {
+    const admin = await adminToken();
+    const me = await getJson('/api/auth/me', admin);
+    const res = await patchStatus(me.body.data.id, 'Bloqueado', admin);
+    expect(res.status).toBe(409);
+    expect(res.body.error.code).toBe('USER_SELF_BLOCK');
+  });
+});
+
+describe('PATCH /api/users/:id con rol (US4)', () => {
+  it('200 y el afectado recibe en /auth/me los permisos de Almacén', async () => {
+    const admin = await adminToken();
+    const comercial = await comercialToken(admin);
+    const bea = (await getJson('/api/users', admin)).body.data[1];
+    const res = await authed('patch', `/api/users/${bea.id}`, admin).send({ role: 'Almacén' });
+    expect(res.status).toBe(200);
+    expect(res.body.data).toMatchObject({ role: 'Almacén', roleName: 'Almacén' });
+    const me = await getJson('/api/auth/me', comercial);
+    expect(me.body.data.permissions).toMatchObject({ productos: 'edit', clientes: 'none' });
+  });
+
+  it('409 USER_LAST_ADMIN al degradar al único Administrador', async () => {
+    const admin = await adminToken();
+    const me = await getJson('/api/auth/me', admin);
+    const res = await authed('patch', `/api/users/${me.body.data.id}`, admin).send({
+      role: 'Comercial',
+    });
+    expect(res.status).toBe(409);
+    expect(res.body.error.code).toBe('USER_LAST_ADMIN');
+  });
+});

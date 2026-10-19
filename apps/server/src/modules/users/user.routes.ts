@@ -3,7 +3,12 @@ import { requireAuth } from '../../middlewares/requireAuth';
 import { requirePermission } from '../../middlewares/requirePermission';
 import { validate } from '../../middlewares/validate';
 import { userController } from './user.controller';
-import { createUserSchema, updateUserSchema, userIdParams } from './user.validation';
+import {
+  createUserSchema,
+  updateStatusSchema,
+  updateUserSchema,
+  userIdParams,
+} from './user.validation';
 
 export const userRouter = Router();
 
@@ -69,6 +74,11 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
  *       properties:
  *         user: { $ref: '#/components/schemas/UserSummary' }
  *         bootstrapRetired: { type: boolean }
+ *     UpdateUserStatusRequest:
+ *       type: object
+ *       required: [status]
+ *       properties:
+ *         status: { $ref: '#/components/schemas/UserStatus' }
  *     UpdateUserRequest:
  *       type: object
  *       minProperties: 1
@@ -144,7 +154,7 @@ userRouter.post('/', validate({ body: createUserSchema }), userController.create
  *     - $ref: '#/components/parameters/UserId'
  *   patch:
  *     tags: [Users]
- *     summary: Edita nombre y/o email (el cambio de rol llega con US4; hasta entonces, 400)
+ *     summary: Edita nombre, email y/o rol
  *     security: [{ bearerAuth: [] }]
  *     requestBody:
  *       required: true
@@ -167,7 +177,7 @@ userRouter.post('/', validate({ body: createUserSchema }), userController.create
  *       '403': { $ref: '#/components/responses/Forbidden' }
  *       '404': { $ref: '#/components/responses/UserNotFound' }
  *       '409':
- *         description: USER_EMAIL_TAKEN (el email ya lo usa otro usuario)
+ *         description: USER_EMAIL_TAKEN | USER_LAST_ADMIN (el cambio de rol dejaría sin Administrador activo)
  *         content:
  *           application/json:
  *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
@@ -176,4 +186,46 @@ userRouter.patch(
   '/:id',
   validate({ params: userIdParams, body: updateUserSchema }),
   userController.update,
+);
+
+/**
+ * @openapi
+ * /users/{id}/status:
+ *   parameters:
+ *     - $ref: '#/components/parameters/UserId'
+ *   patch:
+ *     tags: [Users]
+ *     summary: Bloquea o desbloquea un usuario
+ *     description: Al bloquear se revocan todas las sesiones del usuario.
+ *     security: [{ bearerAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/UpdateUserStatusRequest' }
+ *     responses:
+ *       '200':
+ *         description: Estado actualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/UserSummary' }
+ *       '400': { $ref: '#/components/responses/ValidationOrRoleError' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403': { $ref: '#/components/responses/Forbidden' }
+ *       '404': { $ref: '#/components/responses/UserNotFound' }
+ *       '409':
+ *         description: USER_SELF_BLOCK | USER_LAST_ADMIN
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ */
+userRouter.patch(
+  '/:id/status',
+  validate({ params: userIdParams, body: updateStatusSchema }),
+  userController.setStatus,
 );

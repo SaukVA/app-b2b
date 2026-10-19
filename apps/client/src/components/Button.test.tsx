@@ -17,6 +17,11 @@ describe('Button', () => {
     expect(screen.getByRole('button').className).toContain('secondary');
   });
 
+  it('la variante danger es la de las acciones destructivas (p. ej. «Bloquear»)', () => {
+    render(<Button variant="danger">Bloquear</Button>);
+    expect(screen.getByRole('button', { name: 'Bloquear' }).className).toContain('danger');
+  });
+
   it('no dispara el clic si está deshabilitado', async () => {
     const onClick = jest.fn();
     render(

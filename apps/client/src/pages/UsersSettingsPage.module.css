@@ -60,3 +60,26 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Confirmación del cambio de rol dentro de «Editar usuario». */
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--notice-border);
+  border-radius: var(--radius-control);
+  background: var(--notice-bg);
+  color: var(--notice-fg);
+}
+
+.confirmText {
+  margin: 0;
+  font-weight: 600;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}

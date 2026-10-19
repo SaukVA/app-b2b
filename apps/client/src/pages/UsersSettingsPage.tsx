@@ -16,7 +16,7 @@ import { sessionCleared } from '../features/auth/authSlice';
 import { loadRoles } from '../features/roles/rolesSlice';
 import { UserForm, type UserFormOutcome } from '../features/users/components/UserForm';
 import { UsersTable } from '../features/users/components/UsersTable';
-import { createUser, loadUsers, updateUser } from '../features/users/usersSlice';
+import { createUser, loadUsers, setUserStatus, updateUser } from '../features/users/usersSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getDesktopBridge } from '../utils/desktop';
 import styles from './UsersSettingsPage.module.css';
@@ -124,23 +124,79 @@ function NewUserSection() {
   );
 }
 
-/** «Editar usuario»: nombre, email y rol; el error se queda dentro del diálogo (FR-024). */
-function EditUserDialog({ user, onClose }: { user: UserSummary; onClose: () => void }) {
+const ROLE_CHANGE_NOTICE =
+  'Un cambio de rol se aplica a sus sesiones abiertas en 15 minutos como máximo.';
+const BLOCK_NOTICE =
+  'No podrá iniciar sesión y sus sesiones abiertas se cerrarán. Podrás desbloquearlo más tarde; seguirá con la misma contraseña.';
+
+type PendingRoleChange = { body: UpdateUserRequest; resolve: (outcome: UserFormOutcome) => void };
+
+/** Guarda la edición; el error se queda dentro del diálogo (FR-024). */
+function useSaveUser(user: UserSummary, onSaved: () => void) {
   const dispatch = useAppDispatch();
-  const roles = useAppSelector((state) => state.roles.items);
   const [error, setError] = useState<string | null>(null);
-  const submit = async (body: UpdateUserRequest): Promise<UserFormOutcome> => {
+  const save = async (body: UpdateUserRequest): Promise<UserFormOutcome> => {
     const result = await dispatch(updateUser({ id: user.id, body }));
     if (updateUser.fulfilled.match(result)) {
-      onClose();
+      onSaved();
       return 'saved';
     }
     setError(result.payload ?? null);
     return failureOutcome(result.payload);
   };
+  return { save, error };
+}
+
+/**
+ * Un cambio de rol se confirma antes de guardar (US4 escenario 7). El formulario sigue montado y
+ * esperando: al confirmar se guarda y al no cambiar se conserva lo escrito.
+ */
+function useRoleChangeConfirmation(save: (body: UpdateUserRequest) => Promise<UserFormOutcome>) {
+  const [pending, setPending] = useState<PendingRoleChange | null>(null);
+  const submit = (body: UpdateUserRequest): Promise<UserFormOutcome> => {
+    if (body.role === undefined) return save(body);
+    return new Promise((resolve) => setPending({ body, resolve }));
+  };
+  const settle = async (confirmed: boolean) => {
+    if (!pending) return;
+    setPending(null);
+    pending.resolve(confirmed ? await save(pending.body) : 'error');
+  };
+  return { submit, pending, confirm: () => settle(true), cancel: () => settle(false) };
+}
+
+function RoleChangeConfirmation(props: {
+  userName: string;
+  roleName: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div className={styles.confirm}>
+      <p className={styles.confirmText}>
+        ¿Cambiar el rol de {props.userName} a {props.roleName}?
+      </p>
+      <div className={styles.confirmActions}>
+        <Button variant="secondary" onClick={props.onCancel}>
+          No cambiar
+        </Button>
+        <Button onClick={props.onConfirm}>Cambiar rol</Button>
+      </div>
+    </div>
+  );
+}
+
+/** «Editar usuario»: nombre, email y rol, con confirmación del cambio de rol (FR-013, FR-024). */
+function EditUserDialog({ user, onClose }: { user: UserSummary; onClose: () => void }) {
+  const roles = useAppSelector((state) => state.roles.items);
+  const { save, error } = useSaveUser(user, onClose);
+  const roleChange = useRoleChangeConfirmation(save);
+  const pendingRole = roleChange.pending?.body.role ?? '';
+  const newRoleName = roles.find((role) => role.key === pendingRole)?.name ?? pendingRole;
   return (
     <Dialog
       title="Editar usuario"
+      description={ROLE_CHANGE_NOTICE}
       onClose={onClose}
       actions={
         <Button variant="secondary" onClick={onClose}>
@@ -148,7 +204,54 @@ function EditUserDialog({ user, onClose }: { user: UserSummary; onClose: () => v
         </Button>
       }
     >
-      <UserForm mode="edit" user={user} roles={roles} onSubmit={submit} error={error} />
+      <UserForm mode="edit" user={user} roles={roles} onSubmit={roleChange.submit} error={error} />
+      {roleChange.pending && (
+        <RoleChangeConfirmation
+          userName={user.name}
+          roleName={newRoleName}
+          onConfirm={() => void roleChange.confirm()}
+          onCancel={() => void roleChange.cancel()}
+        />
+      )}
+    </Dialog>
+  );
+}
+
+function useBlockUser(user: UserSummary, onBlocked: () => void) {
+  const dispatch = useAppDispatch();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const block = async () => {
+    setPending(true);
+    const result = await dispatch(setUserStatus({ id: user.id, status: 'Bloqueado' }));
+    setPending(false);
+    if (setUserStatus.fulfilled.match(result)) onBlocked();
+    else setError(result.payload ?? null);
+  };
+  return { block, error, pending };
+}
+
+/** «¿Bloquear a X?»: sus sesiones se cierran al confirmar (FR-014); el error se queda en el diálogo. */
+function BlockUserDialog({ user, onClose }: { user: UserSummary; onClose: () => void }) {
+  const { block, error, pending } = useBlockUser(user, onClose);
+  const actions = (
+    <>
+      <Button variant="secondary" onClick={onClose}>
+        Cancelar
+      </Button>
+      <Button variant="danger" disabled={pending} aria-busy={pending} onClick={() => void block()}>
+        Bloquear
+      </Button>
+    </>
+  );
+  return (
+    <Dialog
+      title={`¿Bloquear a ${user.name}?`}
+      description={BLOCK_NOTICE}
+      onClose={onClose}
+      actions={actions}
+    >
+      {error && <Alert>{error}</Alert>}
     </Dialog>
   );
 }
@@ -157,25 +260,50 @@ function usersCount(count: number): string {
   return count === 1 ? '1 usuario' : `${count} usuarios`;
 }
 
-function UsersListBody({ onEdit }: { onEdit: (user: UserSummary) => void }) {
+interface RowActions {
+  onEdit: (user: UserSummary) => void;
+  onBlock: (user: UserSummary) => void;
+  onUnblock: (user: UserSummary) => void;
+}
+
+function UsersListBody(actions: RowActions) {
   const { items, status, error } = useAppSelector((state) => state.users);
   const currentUserId = useAppSelector(selectUser)?.id ?? null;
   if (status === 'failed') return <Alert>{error}</Alert>;
   if (status === 'loading' && items.length === 0) {
     return <p className={styles.empty}>Cargando usuarios…</p>;
   }
-  return <UsersTable users={items} currentUserId={currentUserId} onEdit={onEdit} />;
+  return <UsersTable users={items} currentUserId={currentUserId} {...actions} />;
 }
 
-/** Listado con acciones por fila (FR-011, FR-012); la edición se abre en un diálogo. */
+/** El desbloqueo es directo; si falla, el error sale encima del listado. */
+function useUnblock() {
+  const dispatch = useAppDispatch();
+  const [error, setError] = useState<string | null>(null);
+  const unblock = async (user: UserSummary) => {
+    const result = await dispatch(setUserStatus({ id: user.id, status: 'Activo' }));
+    setError(setUserStatus.fulfilled.match(result) ? null : (result.payload ?? null));
+  };
+  return { unblock, error };
+}
+
+/** Listado con acciones por fila (FR-011, FR-012); editar y bloquear se abren en un diálogo. */
 function UsersListSection() {
   const count = useAppSelector((state) => state.users.items.length);
   const [editing, setEditing] = useState<UserSummary | null>(null);
+  const [blocking, setBlocking] = useState<UserSummary | null>(null);
+  const { unblock, error } = useUnblock();
   return (
     <section aria-labelledby="users-list-title" className={styles.panel}>
       <SectionHeader id="users-list-title" title="Usuarios" aside={usersCount(count)} />
-      <UsersListBody onEdit={setEditing} />
+      {error && <Alert>{error}</Alert>}
+      <UsersListBody
+        onEdit={setEditing}
+        onBlock={setBlocking}
+        onUnblock={(user) => void unblock(user)}
+      />
       {editing && <EditUserDialog user={editing} onClose={() => setEditing(null)} />}
+      {blocking && <BlockUserDialog user={blocking} onClose={() => setBlocking(null)} />}
     </section>
   );
 }
@@ -195,7 +323,7 @@ function UsersManagement() {
   );
 }
 
-/** Ajustes › Usuarios. Los diálogos de bloqueo y contraseña y la matriz llegan con US4–US6. */
+/** Ajustes › Usuarios. El restablecimiento de contraseña y la matriz llegan con US5 y US6. */
 export function UsersSettingsPage() {
   const user = useAppSelector(selectUser);
   return (

@@ -29,7 +29,9 @@ const USERS = [
   user('carlos', 'Carlos Ruiz', { roleName: 'Comercial senior' }),
 ];
 
-function renderTable(handlers: Partial<Record<'onEdit' | 'onResetPassword', jest.Mock>> = {}) {
+type Handler = 'onEdit' | 'onResetPassword' | 'onBlock' | 'onUnblock';
+
+function renderTable(handlers: Partial<Record<Handler, jest.Mock>> = {}) {
   render(<UsersTable users={USERS} currentUserId="ana" now={NOW} {...handlers} />);
   return within(screen.getByRole('table', { name: 'Usuarios' }));
 }
@@ -97,5 +99,26 @@ describe('UsersTable · menú de opciones (US3)', () => {
     expect(screen.getAllByRole('menuitem').map((item) => item.textContent)).toEqual([
       'Editar nombre, email o rol',
     ]);
+  });
+});
+
+describe('UsersTable · bloquear y desbloquear (US4)', () => {
+  async function itemsFor(name: string) {
+    const userEv = userEvent.setup();
+    const table = renderTable({ onEdit: jest.fn(), onBlock: jest.fn(), onUnblock: jest.fn() });
+    await userEv.click(table.getByRole('button', { name: `Opciones de ${name}` }));
+    return screen.getAllByRole('menuitem').map((item) => item.textContent);
+  }
+
+  it('«Bloquear» no aparece en la fila propia', async () => {
+    expect(await itemsFor('Ana Pérez')).toEqual(['Editar nombre, email o rol']);
+  });
+
+  it('un usuario Activo se puede bloquear y no desbloquear', async () => {
+    expect(await itemsFor('Carlos Ruiz')).toEqual(['Editar nombre, email o rol', 'Bloquear']);
+  });
+
+  it('«Desbloquear» solo aparece en las filas bloqueadas', async () => {
+    expect(await itemsFor('Bea Gómez')).toEqual(['Editar nombre, email o rol', 'Desbloquear']);
   });
 });
