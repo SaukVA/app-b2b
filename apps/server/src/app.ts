@@ -8,6 +8,8 @@ import { errorHandler, notFoundHandler } from './middlewares/errorHandler';
 import { requireDatabaseReady } from './middlewares/requireDatabaseReady';
 import { authRouter } from './modules/auth/auth.routes';
 import { healthRouter } from './modules/health/health.routes';
+import { roleRouter } from './modules/roles/role.routes';
+import { userRouter } from './modules/users/user.routes';
 
 export interface BuildAppOptions {
   /** Monta la UI de Swagger en /api-docs (por defecto sí; el backend embebido no la monta, research R3). */
@@ -28,6 +30,8 @@ export function buildApp(options: BuildAppOptions = {}): Express {
   app.use('/api/health', healthRouter);
   if (options.isDatabaseReady) app.use('/api', requireDatabaseReady(options.isDatabaseReady));
   app.use('/api/auth', authRouter);
+  app.use('/api/roles', roleRouter);
+  app.use('/api/users', userRouter);
   if (options.docs !== false) {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(buildSwaggerSpec()));
   }

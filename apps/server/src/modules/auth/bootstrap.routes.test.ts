@@ -2,13 +2,17 @@ import request from 'supertest';
 import { buildApp } from '../../app';
 import { hashPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
+import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
 import { ensureBootstrapAccount } from './bootstrap.service';
 
 setTestEnv();
 
 beforeAll(startTestDb);
-beforeEach(ensureBootstrapAccount);
+beforeEach(async () => {
+  await ensureDefaultRoles();
+  await ensureBootstrapAccount();
+});
 afterEach(clearTestDb);
 afterAll(stopTestDb);
 
@@ -37,8 +41,10 @@ describe('Cuenta inicial "admin"', () => {
     expect(res.body.data.user).toMatchObject({
       login: 'admin',
       role: 'Administrador',
+      roleName: 'Administrador',
       isBootstrap: true,
     });
+    expect(Object.values(res.body.data.user.permissions)).toEqual(Array(6).fill('edit'));
   });
 
   it('401 AUTH_INVALID_CREDENTIALS en cuanto existe un usuario real', async () => {

@@ -66,36 +66,36 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
 
 ### Shared
 
-- [ ] T002 [P] Reescribir `packages/shared/src/constants/roles.test.ts` para la nueva firma `can(permissions, module, level)`:
+- [X] T002 [P] Reescribir `packages/shared/src/constants/roles.test.ts` para la nueva firma `can(permissions, module, level)`:
   - `edit` incluye `view`;
   - `view` no incluye `edit`;
   - un módulo ausente en el `PermissionSet` cuenta como `none`;
   - `APP_MODULES` es exactamente `['ventas','clientes','productos','proveedores','cobros','ajustes']`;
   - `ADMIN_ROLE_KEY === 'Administrador'`.
-- [ ] T003 Reescribir `packages/shared/src/constants/roles.ts`:
+- [X] T003 Reescribir `packages/shared/src/constants/roles.ts`:
   - exporta `APP_MODULES` (`as const`), `AppModule` (derivado de `APP_MODULES`), `PermissionLevel`
     (`'edit' | 'view' | 'none'`), `PermissionSet` (`Readonly<Partial<Record<AppModule, PermissionLevel>>>`),
     `ADMIN_ROLE_KEY = 'Administrador'` y `can(permissions, module, level)`;
   - **elimina** `ROLES` y `PERMISSIONS` (research R11);
   - hace pasar T002.
-- [ ] T004 [P] Actualizar `packages/shared/src/types/user.ts` según data-model.md:
+- [X] T004 [P] Actualizar `packages/shared/src/types/user.ts` según data-model.md:
   - `Role = string` (clave de un documento de `roles`);
   - `UserStatus = 'Activo' | 'Bloqueado'`;
   - `UserSummary` (`id`, `name`, `email`, `role`, `roleName`, `status`, `lastLoginAt: string | null` en ISO
     8601);
   - `CreateUserRequest`, `CreateUserResponse` (`user`, `bootstrapRetired: boolean`), `UpdateUserRequest`
     (`name?`, `email?`, `role?`), `UpdateUserStatusRequest` y `ResetUserPasswordRequest`.
-- [ ] T005 [P] Crear `packages/shared/src/types/role.ts` con `RoleSummary` (`key`, `name`, `isAdmin`, `order`, `permissions: Record<AppModule, PermissionLevel>`, siempre completo). Ampliar `AuthUser` en `packages/shared/src/types/auth.ts` con `roleName: string` y `permissions: Record<AppModule, PermissionLevel>`.
-- [ ] T006 [P] Crear `packages/shared/src/constants/users.ts` con `USER_NAME_MAX_LENGTH = 100` y `USER_ERROR_CODES`:
+- [X] T005 [P] Crear `packages/shared/src/types/role.ts` con `RoleSummary` (`key`, `name`, `isAdmin`, `order`, `permissions: Record<AppModule, PermissionLevel>`, siempre completo). Ampliar `AuthUser` en `packages/shared/src/types/auth.ts` con `roleName: string` y `permissions: Record<AppModule, PermissionLevel>`.
+- [X] T006 [P] Crear `packages/shared/src/constants/users.ts` con `USER_NAME_MAX_LENGTH = 100` y `USER_ERROR_CODES`:
   - `notFound: 'USER_NOT_FOUND'`, `emailTaken: 'USER_EMAIL_TAKEN'`;
   - `firstMustBeAdmin: 'USER_FIRST_MUST_BE_ADMIN'`, `lastAdmin: 'USER_LAST_ADMIN'`;
   - `selfBlock: 'USER_SELF_BLOCK'`, `roleNotFound: 'USER_ROLE_NOT_FOUND'`;
   - el objeto lleva `as const`.
-- [ ] T007 Actualizar `packages/shared/src/index.ts` para exportar los tipos y constantes nuevos de T003–T006 y quitar `ROLES` y `PERMISSIONS`. Ejecutar `npm run build --workspace=@app/shared`.
+- [X] T007 Actualizar `packages/shared/src/index.ts` para exportar los tipos y constantes nuevos de T003–T006 y quitar `ROLES` y `PERMISSIONS`. Ejecutar `npm run build --workspace=@app/shared`.
 
 ### Server: roles en base de datos
 
-- [ ] T008 [P] Escribir `apps/server/src/modules/roles/role.service.test.ts` (mongodb-memory-server):
+- [X] T008 [P] Escribir `apps/server/src/modules/roles/role.service.test.ts` (mongodb-memory-server):
   - **siembra en base vacía**: `ensureDefaultRoles()` crea los 4 roles con los valores de data-model.md;
   - **idempotencia**: una segunda llamada no duplica nada;
   - **sin sobrescribir**: un cambio guardado (por ejemplo `Almacén.permissions.clientes = 'view'`) se
@@ -103,7 +103,7 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
   - **rol `isAdmin`**: con `ajustes: 'none'` vuelve a `edit` en todos los módulos;
   - **`listRoles()`**: devuelve `RoleSummary[]` ordenado por `order` con los módulos ausentes como `'none'`;
   - **`findRole(key)`**: devuelve `null` si no existe.
-- [ ] T009 [P] Crear `apps/server/src/modules/roles/role.model.ts` (colección `roles`):
+- [X] T009 [P] Crear `apps/server/src/modules/roles/role.model.ts` (colección `roles`):
   - `key` (string, required, unique, trim);
   - `name` (string, required);
   - `isAdmin` (boolean, default false);
@@ -111,8 +111,8 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
   - `permissions`: subdocumento sin `_id` con un campo opcional por cada `APP_MODULES` y enum
     `['edit','view','none']`;
   - timestamps.
-- [ ] T010 [P] Crear `apps/server/src/modules/roles/role.defaults.ts` con `DEFAULT_ROLES` (los 4 roles de data-model.md: Administrador `isAdmin` `order` 1 con todo `edit`; Comercial 2 `ventas: edit, clientes: edit, productos: view, proveedores: none, cobros: view, ajustes: none`; Almacén 3 `ventas: view, clientes: none, productos: edit, proveedores: view, cobros: none, ajustes: none`; Administración 4 `ventas: view, clientes: view, productos: view, proveedores: edit, cobros: edit, ajustes: none`)
-- [ ] T011 Crear `apps/server/src/modules/roles/role.mapper.ts` y `apps/server/src/modules/roles/role.service.ts` (hacer pasar T008):
+- [X] T010 [P] Crear `apps/server/src/modules/roles/role.defaults.ts` con `DEFAULT_ROLES` (los 4 roles de data-model.md: Administrador `isAdmin` `order` 1 con todo `edit`; Comercial 2 `ventas: edit, clientes: edit, productos: view, proveedores: none, cobros: view, ajustes: none`; Almacén 3 `ventas: view, clientes: none, productos: edit, proveedores: view, cobros: none, ajustes: none`; Administración 4 `ventas: view, clientes: view, productos: view, proveedores: edit, cobros: edit, ajustes: none`)
+- [X] T011 Crear `apps/server/src/modules/roles/role.mapper.ts` y `apps/server/src/modules/roles/role.service.ts` (hacer pasar T008):
   - `role.mapper.ts` contiene `toPermissionSet(doc | null)`, que devuelve un conjunto completo con los
     ausentes como `none` (y todo `none` si `doc` es `null`), y `toRoleSummary(doc)`;
   - `role.service.ts` contiene:
@@ -121,57 +121,57 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
     - `listRoles()`;
     - `findRole(key)`;
     - `findAdminRoleKeys()`.
-- [ ] T012 Llamar a `ensureDefaultRoles()` antes de `ensureBootstrapAccount()`:
+- [X] T012 Llamar a `ensureDefaultRoles()` antes de `ensureBootstrapAccount()`:
   - en `apps/server/src/server.ts`;
   - en `apps/server/src/embedded.ts`, donde `ensureBootstrap` pasa a ser una función que ejecuta las dos
     en orden.
 
 ### Server: adaptar autenticación de 001
 
-- [ ] T013 [P] Actualizar `apps/server/src/modules/auth/auth.service.test.ts`:
+- [X] T013 [P] Actualizar `apps/server/src/modules/auth/auth.service.test.ts`:
   - **quitar** el caso de `Invitado` / `AUTH_INVITATION_PENDING`;
   - **añadir**: `resolveAuthContext` devuelve `permissions` leídos del documento del rol;
   - **añadir**: tras cambiar `permissions` en `roles`, la siguiente llamada ya devuelve el valor nuevo
     (FR-028);
   - **añadir**: un usuario con clave de rol inexistente obtiene todos los módulos en `none`;
   - **añadir**: `login`, `refresh` y `getCurrentUser` devuelven un `AuthUser` con `roleName` y `permissions`.
-- [ ] T014 [P] Cambiar en `apps/server/src/utils/tokens.ts` la validación del `role` del payload: de `ROLES.includes(...)` a «string no vacío». Ajustar `apps/server/src/utils/tokens.test.ts`.
-- [ ] T015 [P] Actualizar `apps/server/src/modules/users/user.model.ts`:
+- [X] T014 [P] Cambiar en `apps/server/src/utils/tokens.ts` la validación del `role` del payload: de `ROLES.includes(...)` a «string no vacío». Ajustar `apps/server/src/utils/tokens.test.ts`.
+- [X] T015 [P] Actualizar `apps/server/src/modules/users/user.model.ts`:
   - `status`: enum `['Activo', 'Bloqueado']` (sin `Invitado`, research R5);
   - `role`: `{ type: String, required: true, trim: true }` sin enum (research R11);
   - quitar el import de `ROLES`.
-- [ ] T016 Cambiar `toAuthUser` en `apps/server/src/modules/users/user.mapper.ts` a `toAuthUser(doc, role: RoleDocument | null)`, que devuelve `roleName` (`role?.name ?? doc.role`) y `permissions` (`toPermissionSet(role)`).
-- [ ] T017 Actualizar `apps/server/src/modules/auth/auth.service.ts` (hacer pasar T013):
+- [X] T016 Cambiar `toAuthUser` en `apps/server/src/modules/users/user.mapper.ts` a `toAuthUser(doc, role: RoleDocument | null)`, que devuelve `roleName` (`role?.name ?? doc.role`) y `permissions` (`toPermissionSet(role)`).
+- [X] T017 Actualizar `apps/server/src/modules/auth/auth.service.ts` (hacer pasar T013):
   - quitar la rama `Invitado` de `assertCanSignIn`;
   - añadir `permissions: PermissionSet` a `AuthContext`;
   - en `resolveAuthContext`, cargar el rol con `findRole(user.role)` y rellenar `permissions`;
   - en `createSession`, `refresh` y `getCurrentUser`, cargar el rol y pasarlo a `toAuthUser`;
   - cada función queda en ≤40 líneas efectivas (extraer `loadRoleFor(user)` si hace falta).
-- [ ] T018 Cambiar `apps/server/src/middlewares/requirePermission.ts` para que use `can(req.auth.permissions, module, level)`.
-- [ ] T019 Actualizar el bloque `@openapi` de `apps/server/src/modules/auth/auth.routes.ts`:
+- [X] T018 Cambiar `apps/server/src/middlewares/requirePermission.ts` para que use `can(req.auth.permissions, module, level)`.
+- [X] T019 Actualizar el bloque `@openapi` de `apps/server/src/modules/auth/auth.routes.ts`:
   - `AuthUser.role` pasa a ser un string sin enum;
   - `AuthUser` añade `roleName` y `permissions` (objeto con los 6 módulos y enum `edit|view|none`);
   - se quita `AUTH_INVITATION_PENDING` de la respuesta 403 de `/auth/login`.
-- [ ] T020 Ajustar `apps/server/src/modules/auth/auth.routes.test.ts` y `apps/server/src/modules/auth/bootstrap.routes.test.ts`:
+- [X] T020 Ajustar `apps/server/src/modules/auth/auth.routes.test.ts` y `apps/server/src/modules/auth/bootstrap.routes.test.ts`:
   - sembrar roles con `ensureDefaultRoles()` en `beforeEach`;
   - comprobar la forma nueva de `AuthUser` en `/auth/login`, `/auth/refresh` y `/auth/me`;
   - eliminar cualquier aserción sobre `Invitado`.
 
 ### Server: esqueleto de los módulos users y roles
 
-- [ ] T021 [P] Escribir `apps/server/src/modules/roles/role.routes.test.ts` (supertest + mongodb-memory-server):
+- [X] T021 [P] Escribir `apps/server/src/modules/roles/role.routes.test.ts` (supertest + mongodb-memory-server):
   - `GET /api/roles` con un Administrador → 200, con los 4 `RoleSummary` en orden y `permissions` completos;
   - con un Comercial → 403 `AUTH_FORBIDDEN`;
   - sin token → 401.
-- [ ] T022 Crear `apps/server/src/modules/roles/role.controller.ts` (`list`, que envuelve `listRoles()` en el envelope) y `apps/server/src/modules/roles/role.routes.ts` con `GET /` protegido por `requireAuth` + `requirePermission('ajustes', 'edit')` y su bloque `@openapi` (copiado de contracts/users-api.openapi.yaml: `/roles`, `RoleSummary`, `PermissionSet`, `PermissionLevel`). Montarlo en `apps/server/src/app.ts` en `/api/roles` (hace pasar T021).
-- [ ] T023 [P] Crear `apps/server/src/modules/users/userAudit.model.ts` (colección `userAuditEntries`):
+- [X] T022 Crear `apps/server/src/modules/roles/role.controller.ts` (`list`, que envuelve `listRoles()` en el envelope) y `apps/server/src/modules/roles/role.routes.ts` con `GET /` protegido por `requireAuth` + `requirePermission('ajustes', 'edit')` y su bloque `@openapi` (copiado de contracts/users-api.openapi.yaml: `/roles`, `RoleSummary`, `PermissionSet`, `PermissionLevel`). Montarlo en `apps/server/src/app.ts` en `/api/roles` (hace pasar T021).
+- [X] T023 [P] Crear `apps/server/src/modules/users/userAudit.model.ts` (colección `userAuditEntries`):
   - `action`: enum `['create','update','block','unblock','resetPassword']`;
   - `actorId` (ObjectId) y `actorLogin` (string);
   - `targetId` (ObjectId) y `targetLogin` (string);
   - `changes`: `[{ field: enum ['name','email','role','status'], from, to }]`, por defecto `[]`;
   - `createdAt` con `timestamps: { createdAt: true, updatedAt: false }`;
   - índices `{ targetId: 1, createdAt: -1 }` y `{ createdAt: -1 }`.
-- [ ] T024 [P] Crear `apps/server/src/modules/users/user.validation.ts` con zod (data-model.md › Validación):
+- [X] T024 [P] Crear `apps/server/src/modules/users/user.validation.ts` con zod (data-model.md › Validación):
   - campos base:
     - `name`: `string().trim().min(1).max(USER_NAME_MAX_LENGTH)`;
     - `email`: `string().trim().toLowerCase().email()`;
@@ -185,7 +185,7 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
     - `updateStatusSchema`;
     - `resetPasswordSchema`;
   - los tipos inferidos se exportan.
-- [ ] T025 Crear los helpers comunes en `apps/server/src/modules/users/user.service.ts` (cada uno ≤20 líneas):
+- [X] T025 Crear los helpers comunes en `apps/server/src/modules/users/user.service.ts` (cada uno ≤20 líneas):
   - `findRealUserOrThrow(id)`: si no existe o `isBootstrap`, `USER_NOT_FOUND` 404;
   - `assertRoleExists(key)`: si no existe, devuelve el rol o lanza `USER_ROLE_NOT_FOUND` 400;
   - `isAdminRoleKey(key)`;
@@ -193,7 +193,7 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
   - `recordAudit({ action, actor, target, changes })`;
   - `revokeUserSessions(userId)`: `SessionModel.updateMany` con `revokedAt`.
   Añadir también `toUserSummary(doc, roleName)` en `apps/server/src/modules/users/user.mapper.ts`, con `email` = `doc.login` y `lastLoginAt` en ISO o `null`.
-- [ ] T026 Crear `apps/server/src/modules/users/user.controller.ts` (vacío por ahora, con el helper `sendSuccess`) y `apps/server/src/modules/users/user.routes.ts`:
+- [X] T026 Crear `apps/server/src/modules/users/user.controller.ts` (vacío por ahora, con el helper `sendSuccess`) y `apps/server/src/modules/users/user.routes.ts`:
   - el router aplica `requireAuth` + `requirePermission('ajustes', 'edit')` a todas sus rutas;
   - lleva el bloque `@openapi` de componentes compartidos de contracts/users-api.openapi.yaml (`Role`,
     `UserStatus`, `UserSummary`, `Forbidden`, `UserNotFound`, `ValidationOrRoleError`, `UserId`);
@@ -201,60 +201,60 @@ esqueleto de los módulos `users` y `roles`, componentes genéricos y layout de 
 
 ### Client: adaptar permisos de 001
 
-- [ ] T027 [P] Actualizar los fixtures de `AuthUser` (con `roleName` y `permissions`) en:
+- [X] T027 [P] Actualizar los fixtures de `AuthUser` (con `roleName` y `permissions`) en:
   - `apps/client/src/routes/RequireAuth.test.tsx`;
   - `apps/client/src/features/auth/authSlice.test.ts`;
   - `apps/client/src/features/auth/components/LoginForm.test.tsx`;
   - `apps/client/src/features/auth/components/LogoutButton.test.tsx`;
   - y cualquier otro test que construya un usuario.
   Añadir a `RequireAuth.test.tsx` el caso «permiso concedido por `permissions` aunque el rol sea desconocido».
-- [ ] T028 Cambiar `apps/client/src/routes/homeRoute.ts` (importar `APP_MODULES` de `@app/shared` en lugar de definirlo y usar `can(user.permissions, …)`), `apps/client/src/routes/RequireAuth.tsx` (añadir la prop opcional `level` con valor por defecto `'view'` y usar `can(user.permissions, module, level)`) y `selectCan` en `apps/client/src/features/auth/authSelectors.ts` (usar `user.permissions`). Hace pasar T027.
+- [X] T028 Cambiar `apps/client/src/routes/homeRoute.ts` (importar `APP_MODULES` de `@app/shared` en lugar de definirlo y usar `can(user.permissions, …)`), `apps/client/src/routes/RequireAuth.tsx` (añadir la prop opcional `level` con valor por defecto `'view'` y usar `can(user.permissions, module, level)`) y `selectCan` en `apps/client/src/features/auth/authSelectors.ts` (usar `user.permissions`). Hace pasar T027.
 
 ### Client: componentes genéricos «Albarán» (test primero en cada uno)
 
-- [ ] T029 [P] `apps/client/src/components/Select.tsx` + `Select.module.css` + `Select.test.tsx`:
+- [X] T029 [P] `apps/client/src/components/Select.tsx` + `Select.module.css` + `Select.test.tsx`:
   - etiqueta con el estilo «Etiqueta» enlazada por `htmlFor`;
   - `options: { value, label }[]`;
   - `error` con `aria-invalid` y `aria-describedby`, como `TextField`;
   - alto 44 px y tokens de `docs/design/README.md`.
-- [ ] T030 [P] `apps/client/src/components/Table.tsx` + `Table.module.css` + `Table.test.tsx`:
+- [X] T030 [P] `apps/client/src/components/Table.tsx` + `Table.module.css` + `Table.test.tsx`:
   - recibe `columns` (`key`, `header`, `align?`, `render`), `rows`, `getRowKey`, `caption` (accesible) y
     `renderCard` (variante móvil);
   - en escritorio pinta `<table>` dentro de un contenedor con `overflow-x: auto`, cabecera en `surface2` y
     filas separadas por `borderRow`;
   - por debajo de 760 px pinta `article` por fila mediante container query;
   - el test comprueba cabeceras, filas y que la variante de tarjetas existe en el DOM.
-- [ ] T031 [P] `apps/client/src/components/StatusStamp.tsx` + `StatusStamp.module.css` + `StatusStamp.test.tsx`:
+- [X] T031 [P] `apps/client/src/components/StatusStamp.tsx` + `StatusStamp.module.css` + `StatusStamp.test.tsx`:
   - sello de estado con texto siempre visible en IBM Plex Mono, mayúsculas y marcador cuadrado;
   - `tone: 'ok' | 'danger' | 'warning' | 'neutral'`, con colores de `docs/design/README.md` (Activo
     `okBg`/`okFg`, Bloqueado `#FBE4E1`/`#A12A1C` y sus variantes oscuras).
-- [ ] T032 [P] `apps/client/src/components/Dialog.tsx` + `Dialog.module.css` + `Dialog.test.tsx`:
+- [X] T032 [P] `apps/client/src/components/Dialog.tsx` + `Dialog.module.css` + `Dialog.test.tsx`:
   - modal con `role="dialog"`, `aria-modal="true"` y `aria-labelledby` del título;
   - foco inicial en el primer control, foco atrapado y Escape para cerrar;
   - al cerrar, devuelve el foco al disparador;
   - recibe `title`, `description?`, `children`, `actions` y `onClose`;
   - fondo `rgba(22,25,29,0.55)`, ancho máximo 480 px y radio 10;
   - el test cubre la accesibilidad, Escape y el retorno de foco.
-- [ ] T033 [P] `apps/client/src/components/Tabs.tsx` + `Tabs.module.css` + `Tabs.test.tsx`:
+- [X] T033 [P] `apps/client/src/components/Tabs.tsx` + `Tabs.module.css` + `Tabs.test.tsx`:
   - pestañas de navegación (`<nav>` con enlaces de React Router y `aria-current="page"`) recibidas por props
     (`{ to, label }[]`);
   - estilo del grupo de pestañas del tablero de Ajustes (fondo `surface2`, radio 8, pestaña activa en
     `surface`);
   - objetivos de 44 px.
-- [ ] T033a [P] `apps/client/src/components/IconButton.tsx` + `IconButton.module.css` + `IconButton.test.tsx`:
+- [X] T033a [P] `apps/client/src/components/IconButton.tsx` + `IconButton.module.css` + `IconButton.test.tsx`:
   - botón de solo icono con `aria-label` obligatorio, objetivo de 44 px y foco visible;
   - reenvía `ref` y props ARIA (`aria-haspopup`, `aria-expanded`);
   - el test comprueba el nombre accesible y el clic.
-- [ ] T033b [P] `apps/client/src/components/Menu.tsx` + `Menu.module.css` + `Menu.test.tsx`:
+- [X] T033b [P] `apps/client/src/components/Menu.tsx` + `Menu.module.css` + `Menu.test.tsx`:
   - recibe un disparador (`IconButton`) e `items: { label, onSelect, tone? }[]`;
   - `role="menu"` y `menuitem`, flechas, Escape (cierra y devuelve el foco) y clic fuera;
   - el test cubre la apertura, la navegación con teclado y Escape.
 
 ### Client: base de Ajustes, roles y usuarios
 
-- [ ] T034 [P] Crear `apps/client/src/features/roles/rolesApi.ts` (`fetchRoles()` → `RoleSummary[]` desde `GET /roles`) y `apps/client/src/features/roles/rolesSlice.ts`, con el estado `{ items, status, error }` y el thunk `loadRoles`, junto a `rolesSlice.test.ts` (estados `pending`, `fulfilled` y `rejected`, con el mensaje del envelope). Registrar `roles` en `apps/client/src/store/store.ts`.
-- [ ] T035 [P] Crear `apps/client/src/features/users/usersApi.ts` vacío (con el helper `toUsersErrorMessage(err)` que extrae `error.message` del envelope o devuelve el mensaje de conexión de `authApi`) y `apps/client/src/features/users/usersSlice.ts` con el estado `{ items: UserSummary[], status, error, saving }`. Registrar `users` en `apps/client/src/store/store.ts`.
-- [ ] T036 Crear `apps/client/src/pages/SettingsPage.tsx` (+ `.module.css`) y `UsersSettingsPage.tsx` (por ahora solo el encabezado) y actualizar `apps/client/src/routes/AppRouter.tsx`:
+- [X] T034 [P] Crear `apps/client/src/features/roles/rolesApi.ts` (`fetchRoles()` → `RoleSummary[]` desde `GET /roles`) y `apps/client/src/features/roles/rolesSlice.ts`, con el estado `{ items, status, error }` y el thunk `loadRoles`, junto a `rolesSlice.test.ts` (estados `pending`, `fulfilled` y `rejected`, con el mensaje del envelope). Registrar `roles` en `apps/client/src/store/store.ts`.
+- [X] T035 [P] Crear `apps/client/src/features/users/usersApi.ts` vacío (con el helper `toUsersErrorMessage(err)` que extrae `error.message` del envelope o devuelve el mensaje de conexión de `authApi`) y `apps/client/src/features/users/usersSlice.ts` con el estado `{ items: UserSummary[], status, error, saving }`. Registrar `users` en `apps/client/src/store/store.ts`.
+- [X] T036 Crear `apps/client/src/pages/SettingsPage.tsx` (+ `.module.css`) y `UsersSettingsPage.tsx` (por ahora solo el encabezado) y actualizar `apps/client/src/routes/AppRouter.tsx`:
   - `SettingsPage` es el layout de Ajustes: título «Ajustes», subtítulo del tablero, `Tabs` y `<Outlet />`;
   - solo muestra la pestaña Usuarios si `selectCan('ajustes', 'edit')`;
   - en el router, `ajustes` deja de ser `ModulePlaceholder` y pasa a ser `RequireAuth` (solo sesión, sin

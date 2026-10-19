@@ -1,5 +1,5 @@
 import { model, Schema, type HydratedDocument } from 'mongoose';
-import { ROLES, type HomeScreen, type UserStatus, type Role } from '@app/shared';
+import type { HomeScreen, UserStatus, Role } from '@app/shared';
 
 export interface UserFields {
   login: string;
@@ -17,7 +17,7 @@ export interface UserFields {
 export type UserDocument = HydratedDocument<UserFields>;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const USER_STATUSES: UserStatus[] = ['Activo', 'Invitado', 'Bloqueado'];
+const USER_STATUSES: UserStatus[] = ['Activo', 'Bloqueado'];
 const HOME_SCREENS: HomeScreen[] = ['panel', 'ventas', 'productos'];
 
 /** El login es un email salvo en la cuenta inicial "admin". */
@@ -37,7 +37,8 @@ const userSchema = new Schema<UserFields>(
     },
     name: { type: String, default: '' },
     passwordHash: { type: String, required: true, select: false },
-    role: { type: String, enum: ROLES, required: true },
+    // Clave de un documento de `roles`; su existencia la comprueba el servicio (ADR 0003).
+    role: { type: String, required: true, trim: true },
     status: { type: String, enum: USER_STATUSES, required: true },
     isBootstrap: { type: Boolean, default: false, index: true },
     homeScreen: { type: String, enum: [...HOME_SCREENS, null], default: null },

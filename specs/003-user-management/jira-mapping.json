@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T17:15:51Z",
-  "updated_at": "2026-10-19T10:45:28Z",
+  "updated_at": "2026-10-19T11:23:46Z",
   "spec": "003-user-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -35,7 +35,7 @@
           "key": "AB2B-203",
           "id": "T002",
           "summary": "T002: Reescribir tests de roles.ts para la nueva firma can(permissions, module, level)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-203"
         },
@@ -43,7 +43,7 @@
           "key": "AB2B-204",
           "id": "T003",
           "summary": "T003: Reescribir roles.ts con APP_MODULES, PermissionSet y can(), eliminando ROLES y PERMISSIONS",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T002"
           ],
@@ -53,7 +53,7 @@
           "key": "AB2B-205",
           "id": "T004",
           "summary": "T004: Actualizar tipos compartidos de usuario (Role, UserStatus, UserSummary y DTO de peticiones)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-205"
         },
@@ -61,7 +61,7 @@
           "key": "AB2B-206",
           "id": "T005",
           "summary": "T005: Crear tipo RoleSummary y ampliar AuthUser con roleName y permissions",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-206"
         },
@@ -69,7 +69,7 @@
           "key": "AB2B-207",
           "id": "T006",
           "summary": "T006: Crear constantes de usuarios USER_NAME_MAX_LENGTH y USER_ERROR_CODES",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-207"
         },
@@ -77,7 +77,7 @@
           "key": "AB2B-225",
           "id": "T007",
           "summary": "T007: Exportar los tipos y constantes nuevos desde packages/shared/src/index.ts y recompilar shared",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T003",
             "T004",
@@ -90,7 +90,7 @@
           "key": "AB2B-226",
           "id": "T008",
           "summary": "T008: Escribir tests del servicio de roles (siembra idempotente, rol isAdmin, listRoles, findRole)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-226"
         },
@@ -98,7 +98,7 @@
           "key": "AB2B-227",
           "id": "T009",
           "summary": "T009: Crear el modelo Mongoose de la colección roles",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-227"
         },
@@ -106,7 +106,7 @@
           "key": "AB2B-228",
           "id": "T010",
           "summary": "T010: Crear DEFAULT_ROLES con los 4 roles y su matriz de permisos por defecto",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-228"
         },
@@ -114,7 +114,7 @@
           "key": "AB2B-229",
           "id": "T011",
           "summary": "T011: Crear role.mapper.ts y role.service.ts (siembra, listRoles, findRole, findAdminRoleKeys)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T008"
           ],
@@ -124,7 +124,7 @@
           "key": "AB2B-230",
           "id": "T012",
           "summary": "T012: Sembrar roles con ensureDefaultRoles() antes de ensureBootstrapAccount() en server.ts y embedded.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-230"
         },
@@ -132,7 +132,7 @@
           "key": "AB2B-251",
           "id": "T013",
           "summary": "T013: Actualizar tests de auth.service (sin Invitado, permisos leídos del rol, AuthUser con roleName y permissions)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-251"
         },
@@ -140,7 +140,7 @@
           "key": "AB2B-254",
           "id": "T014",
           "summary": "T014: Validar el role del payload del token como string no vacío en lugar de ROLES.includes",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-254"
         },
@@ -148,7 +148,7 @@
           "key": "AB2B-255",
           "id": "T015",
           "summary": "T015: Actualizar user.model.ts (status sin Invitado, role string sin enum)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-255"
         },
@@ -156,7 +156,7 @@
           "key": "AB2B-257",
           "id": "T016",
           "summary": "T016: Cambiar toAuthUser para recibir el rol y devolver roleName y permissions",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-257"
         },
@@ -164,7 +164,7 @@
           "key": "AB2B-258",
           "id": "T017",
           "summary": "T017: Actualizar auth.service.ts para cargar el rol y propagar permissions (sin rama Invitado)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T013"
           ],
@@ -174,7 +174,7 @@
           "key": "AB2B-259",
           "id": "T018",
           "summary": "T018: Hacer que requirePermission use can(req.auth.permissions, module, level)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-259"
         },
@@ -182,7 +182,7 @@
           "key": "AB2B-260",
           "id": "T019",
           "summary": "T019: Actualizar el bloque @openapi de auth.routes.ts (AuthUser con roleName y permissions, sin AUTH_INVITATION_PENDING)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-260"
         },
@@ -190,7 +190,7 @@
           "key": "AB2B-202",
           "id": "T020",
           "summary": "T020: Ajustar tests de rutas de auth y bootstrap a roles sembrados y nuevo AuthUser",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T011",
             "T017"
@@ -201,7 +201,7 @@
           "key": "AB2B-219",
           "id": "T021",
           "summary": "T021: Escribir tests de integración de GET /api/roles (role.routes.test.ts)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T011"
           ],
@@ -211,7 +211,7 @@
           "key": "AB2B-220",
           "id": "T022",
           "summary": "T022: Crear controlador y rutas de roles (GET /api/roles) con @openapi y montarlo en app.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T021",
             "T011"
@@ -222,7 +222,7 @@
           "key": "AB2B-221",
           "id": "T023",
           "summary": "T023: Crear modelo userAudit.model.ts (colección userAuditEntries)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-221"
         },
@@ -230,7 +230,7 @@
           "key": "AB2B-222",
           "id": "T024",
           "summary": "T024: Crear esquemas zod de usuarios en user.validation.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T006"
           ],
@@ -240,7 +240,7 @@
           "key": "AB2B-223",
           "id": "T025",
           "summary": "T025: Crear helpers comunes de user.service.ts y toUserSummary en user.mapper.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T006",
             "T011",
@@ -252,7 +252,7 @@
           "key": "AB2B-224",
           "id": "T026",
           "summary": "T026: Crear esqueleto de user.controller.ts y user.routes.ts montado en /api/users",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T018"
           ],
@@ -262,7 +262,7 @@
           "key": "AB2B-236",
           "id": "T027",
           "summary": "T027: Actualizar fixtures de AuthUser en tests del cliente y añadir caso de permisos en RequireAuth",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T005"
           ],
@@ -272,7 +272,7 @@
           "key": "AB2B-237",
           "id": "T028",
           "summary": "T028: Usar user.permissions en homeRoute, RequireAuth (prop level) y selectCan del cliente",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T027",
             "T003"
@@ -283,7 +283,7 @@
           "key": "AB2B-238",
           "id": "T029",
           "summary": "T029: Crear componente genérico Select «Albarán» con estilos y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-238"
         },
@@ -291,7 +291,7 @@
           "key": "AB2B-239",
           "id": "T030",
           "summary": "T030: Crear componente genérico Table con variante de tarjetas en móvil y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-239"
         },
@@ -299,7 +299,7 @@
           "key": "AB2B-240",
           "id": "T031",
           "summary": "T031: Crear componente genérico StatusStamp (sello de estado) con estilos y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-240"
         },
@@ -307,7 +307,7 @@
           "key": "AB2B-261",
           "id": "T032",
           "summary": "T032: Crear componente genérico Dialog (modal accesible con foco atrapado) y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-261"
         },
@@ -315,7 +315,7 @@
           "key": "AB2B-262",
           "id": "T033",
           "summary": "T033: Crear componente genérico Tabs (pestañas de navegación) con estilos y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-262"
         },
@@ -323,7 +323,7 @@
           "key": "AB2B-281",
           "id": "T033a",
           "summary": "T033a: Crear componente genérico IconButton con estilos y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-281"
         },
@@ -331,7 +331,7 @@
           "key": "AB2B-282",
           "id": "T033b",
           "summary": "T033b: Crear componente genérico Menu (menú de acciones accesible) con estilos y test",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T033a"
           ],
@@ -341,7 +341,7 @@
           "key": "AB2B-263",
           "id": "T034",
           "summary": "T034: Crear rolesApi.ts, rolesSlice.ts (thunk loadRoles) con test y registrar roles en la store",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T005"
           ],
@@ -351,7 +351,7 @@
           "key": "AB2B-264",
           "id": "T035",
           "summary": "T035: Crear usersApi.ts (toUsersErrorMessage) y usersSlice.ts y registrar users en la store",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T004"
           ],
@@ -361,7 +361,7 @@
           "key": "AB2B-265",
           "id": "T036",
           "summary": "T036: Crear layout SettingsPage, UsersSettingsPage y rutas /ajustes y /ajustes/usuarios en AppRouter",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T028",
             "T033"
@@ -1085,7 +1085,7 @@
   "summary": {
     "total_stories": 9,
     "total_tasks": 84,
-    "completed_tasks": 1,
-    "pending_tasks": 83
+    "completed_tasks": 38,
+    "pending_tasks": 46
   }
 }
