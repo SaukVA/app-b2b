@@ -1,14 +1,16 @@
 import type { CreateUserRequest, UserSummary } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { createUserRequest } from './usersApi';
-import { createUser } from './usersSlice';
+import { createUserRequest, updateUserRequest } from './usersApi';
+import { createUser, updateUser } from './usersSlice';
 
 jest.mock('./usersApi', () => ({
   ...jest.requireActual('./usersApi'),
   createUserRequest: jest.fn(),
+  updateUserRequest: jest.fn(),
 }));
 
 const mockedCreate = jest.mocked(createUserRequest);
+const mockedUpdate = jest.mocked(updateUserRequest);
 
 function summary(name: string): UserSummary {
   return {
@@ -81,6 +83,41 @@ describe('usersSlice · resultado de createUser', () => {
     });
     const store = setupStore();
     await store.dispatch(createUser(BODY));
+    expect(store.getState().users).toMatchObject({
+      saving: false,
+      error: 'Ya existe un usuario con ese email.',
+    });
+  });
+});
+
+describe('usersSlice · updateUser (US2)', () => {
+  it('sustituye el usuario en items y reordena por nombre', async () => {
+    mockedUpdate.mockResolvedValue({ ...summary('Bea'), id: 'Álvaro', name: 'Zoe' });
+    const store = setupStore({
+      users: {
+        items: [summary('Álvaro'), summary('Carlos')],
+        status: 'succeeded',
+        error: null,
+        saving: false,
+      },
+    });
+    await store.dispatch(updateUser({ id: 'Álvaro', body: { name: 'Zoe' } }));
+    expect(mockedUpdate).toHaveBeenCalledWith('Álvaro', { name: 'Zoe' });
+    expect(store.getState().users.items.map((user) => user.name)).toEqual(['Carlos', 'Zoe']);
+    expect(store.getState().users.saving).toBe(false);
+  });
+
+  it('rejected: guarda el mensaje del envelope de error', async () => {
+    mockedUpdate.mockRejectedValue({
+      response: {
+        data: {
+          success: false,
+          error: { code: 'USER_EMAIL_TAKEN', message: 'Ya existe un usuario con ese email.' },
+        },
+      },
+    });
+    const store = setupStore();
+    await store.dispatch(updateUser({ id: 'x', body: { email: 'ana@empresa.es' } }));
     expect(store.getState().users).toMatchObject({
       saving: false,
       error: 'Ya existe un usuario con ese email.',

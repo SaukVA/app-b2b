@@ -1,4 +1,10 @@
-import type { ApiSuccess, CreateUserRequest, CreateUserResponse } from '@app/shared';
+import type {
+  ApiSuccess,
+  CreateUserRequest,
+  CreateUserResponse,
+  UpdateUserRequest,
+  UserSummary,
+} from '@app/shared';
 import { httpClient } from '../../utils/httpClient';
 import { toAuthErrorMessage } from '../auth/authApi';
 
@@ -13,5 +19,11 @@ export function toUsersErrorMessage(err: unknown): string {
 /** Alta directa (POST /users). Con el primer Administrador, `bootstrapRetired` es true. */
 export async function createUserRequest(body: CreateUserRequest): Promise<CreateUserResponse> {
   const { data } = await httpClient.post<ApiSuccess<CreateUserResponse>>('/users', body);
+  return data.data;
+}
+
+/** Corrige nombre, email y/o rol (PATCH /users/:id); las sesiones del usuario no se cierran. */
+export async function updateUserRequest(id: string, body: UpdateUserRequest): Promise<UserSummary> {
+  const { data } = await httpClient.patch<ApiSuccess<UserSummary>>(`/users/${id}`, body);
   return data.data;
 }

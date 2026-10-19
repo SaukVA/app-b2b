@@ -3,7 +3,7 @@ import { requireAuth } from '../../middlewares/requireAuth';
 import { requirePermission } from '../../middlewares/requirePermission';
 import { validate } from '../../middlewares/validate';
 import { userController } from './user.controller';
-import { createUserSchema } from './user.validation';
+import { createUserSchema, updateUserSchema, userIdParams } from './user.validation';
 
 export const userRouter = Router();
 
@@ -69,6 +69,13 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
  *       properties:
  *         user: { $ref: '#/components/schemas/UserSummary' }
  *         bootstrapRetired: { type: boolean }
+ *     UpdateUserRequest:
+ *       type: object
+ *       minProperties: 1
+ *       properties:
+ *         name: { type: string, minLength: 1, maxLength: 100 }
+ *         email: { type: string, format: email }
+ *         role: { $ref: '#/components/schemas/Role' }
  */
 
 /**
@@ -109,3 +116,44 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
  *               error: { code: USER_EMAIL_TAKEN, message: 'Ya existe un usuario con ese email.' }
  */
 userRouter.post('/', validate({ body: createUserSchema }), userController.create);
+
+/**
+ * @openapi
+ * /users/{id}:
+ *   parameters:
+ *     - $ref: '#/components/parameters/UserId'
+ *   patch:
+ *     tags: [Users]
+ *     summary: Edita nombre y/o email (el cambio de rol llega con US4; hasta entonces, 400)
+ *     security: [{ bearerAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/UpdateUserRequest' }
+ *     responses:
+ *       '200':
+ *         description: Usuario actualizado. Las sesiones abiertas no se cierran.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/UserSummary' }
+ *       '400': { $ref: '#/components/responses/ValidationOrRoleError' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403': { $ref: '#/components/responses/Forbidden' }
+ *       '404': { $ref: '#/components/responses/UserNotFound' }
+ *       '409':
+ *         description: USER_EMAIL_TAKEN (el email ya lo usa otro usuario)
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ */
+userRouter.patch(
+  '/:id',
+  validate({ params: userIdParams, body: updateUserSchema }),
+  userController.update,
+);

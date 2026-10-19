@@ -349,7 +349,7 @@ distinguir mayúsculas; corregir el email y entrar con el nuevo (quickstart §3.
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T046 [P] [US2] Ampliar `apps/server/src/modules/users/user.service.test.ts`:
+- [X] T046 [P] [US2] Ampliar `apps/server/src/modules/users/user.service.test.ts`:
   - **alta con usuarios reales**: con cualquier rol existente → `Activo` y `bootstrapRetired: false`;
   - **errores de alta**:
     - `role: 'Inexistente'` → `USER_ROLE_NOT_FOUND` 400;
@@ -361,13 +361,13 @@ distinguir mayúsculas; corregir el email y entrar con el nuevo (quickstart §3.
     - email ya usado por otro → 409;
     - no revoca sesiones;
     - el email anterior ya no inicia sesión y el nuevo sí.
-- [ ] T047 [P] [US2] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
+- [X] T047 [P] [US2] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
   - `POST /api/users` → 201 con el `UserSummary` (`roleName` incluido) y 400 `VALIDATION_ERROR` con
     contraseña de 7 caracteres, email sin formato o nombre vacío o de 101 caracteres;
   - `PATCH /api/users/:id` con `{ email }` → 200, `{}` → 400 e id inexistente → 404 `USER_NOT_FOUND`;
   - `PATCH /api/users/:id` con el id de la cuenta inicial → 404;
   - Comercial → 403 en `POST` y `PATCH`.
-- [ ] T048 [P] [US2] Ampliar `apps/client/src/features/users/components/UserForm.test.tsx`:
+- [X] T048 [P] [US2] Ampliar `apps/client/src/features/users/components/UserForm.test.tsx`:
   - **modo alta normal**: el `Select` muestra los roles recibidos y el envío incluye el rol elegido;
   - **modo edición**: precarga nombre y email, no muestra el campo de contraseña y envía solo los campos
     cambiados;
@@ -375,14 +375,14 @@ distinguir mayúsculas; corregir el email y entrar con el nuevo (quickstart §3.
 
 ### Implementation for User Story 2
 
-- [ ] T049 [US2] Implementar `updateUser(id, input, actor)` en `apps/server/src/modules/users/user.service.ts` para `name` y `email` (el `role` llega en US4):
+- [X] T049 [US2] Implementar `updateUser(id, input, actor)` en `apps/server/src/modules/users/user.service.ts` para `name` y `email` (el `role` llega en US4):
   - pasos: `findRealUserOrThrow`, calcular `changes` solo con los campos que cambian, `findOneAndUpdate`
     (convirtiendo E11000), `recordAudit('update')` si hay cambios;
   - devuelve `UserSummary` (hace pasar T046).
-- [ ] T050 [US2] Añadir el handler `update` y `PATCH /:id` con `validate({ params: userIdParams, body: updateUserSchema })` y su bloque `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts` (hace pasar T047).
-- [ ] T051 [P] [US2] Añadir `updateUser(id, body)` a `apps/client/src/features/users/usersApi.ts` y el thunk `updateUser` a `apps/client/src/features/users/usersSlice.ts`, que sustituye el elemento en `items`. Cubrirlo en `usersSlice.test.ts`.
-- [ ] T052 [US2] Ampliar `apps/client/src/features/users/components/UserForm.tsx` con el modo edición (nombre, email y rol) y las opciones de rol desde `RoleSummary[]`. Hace pasar T048.
-- [ ] T053 [US2] Completar `apps/client/src/pages/UsersSettingsPage.tsx` con la sección «Nuevo usuario» del tablero, con el subtítulo «Queda Activo y puede entrar en cuanto lo guardes. Comunícale la contraseña por tu cuenta: la aplicación no envía correos.»:
+- [X] T050 [US2] Añadir el handler `update` y `PATCH /:id` con `validate({ params: userIdParams, body: updateUserSchema })` y su bloque `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts` (hace pasar T047).
+- [X] T051 [P] [US2] Añadir `updateUser(id, body)` a `apps/client/src/features/users/usersApi.ts` y el thunk `updateUser` a `apps/client/src/features/users/usersSlice.ts`, que sustituye el elemento en `items`. Cubrirlo en `usersSlice.test.ts`.
+- [X] T052 [US2] Ampliar `apps/client/src/features/users/components/UserForm.tsx` con el modo edición (nombre, email y rol) y las opciones de rol desde `RoleSummary[]`. Hace pasar T048.
+- [X] T053 [US2] Completar `apps/client/src/pages/UsersSettingsPage.tsx` con la sección «Nuevo usuario» del tablero, con el subtítulo «Queda Activo y puede entrar en cuanto lo guardes. Comunícale la contraseña por tu cuenta: la aplicación no envía correos.»:
   - al montar despacha `loadRoles`;
   - `UserForm` en modo alta;
   - tras crear, limpia el formulario salvo el rol;

@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { CreateUserRequest, CreateUserResponse, UserSummary } from '@app/shared';
-import { createUserRequest, toUsersErrorMessage } from './usersApi';
+import type {
+  CreateUserRequest,
+  CreateUserResponse,
+  UpdateUserRequest,
+  UserSummary,
+} from '@app/shared';
+import { createUserRequest, toUsersErrorMessage, updateUserRequest } from './usersApi';
 
 export interface UsersState {
   items: UserSummary[];
@@ -29,7 +34,23 @@ export const createUser = createAsyncThunk<
   }
 });
 
-// Los thunks updateUser, loadUsers, setUserStatus y resetUserPassword llegan con cada historia.
+export const updateUser = createAsyncThunk<
+  UserSummary,
+  { id: string; body: UpdateUserRequest },
+  { rejectValue: string }
+>('users/update', async ({ id, body }, { rejectWithValue }) => {
+  try {
+    return await updateUserRequest(id, body);
+  } catch (err) {
+    return rejectWithValue(toUsersErrorMessage(err));
+  }
+});
+
+function replaceItem(items: UserSummary[], user: UserSummary): UserSummary[] {
+  return items.map((item) => (item.id === user.id ? user : item)).sort(byName);
+}
+
+// Los thunks loadUsers, setUserStatus y resetUserPassword llegan con cada historia.
 const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -45,6 +66,18 @@ const usersSlice = createSlice({
         state.items = [...state.items, action.payload.user].sort(byName);
       })
       .addCase(createUser.rejected, (state, action) => {
+        state.saving = false;
+        state.error = action.payload ?? null;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.saving = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.saving = false;
+        state.items = replaceItem(state.items, action.payload);
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.saving = false;
         state.error = action.payload ?? null;
       });

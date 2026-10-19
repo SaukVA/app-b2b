@@ -1,4 +1,4 @@
-import { USER_ERROR_CODES, type CreateUserResponse } from '@app/shared';
+import { USER_ERROR_CODES, type CreateUserResponse, type UserSummary } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { hashPassword } from '../../utils/password';
 import { countRealUsers, retireBootstrapIfNeeded } from '../auth/bootstrap.service';
@@ -7,7 +7,7 @@ import type { RoleDocument } from '../roles/role.model';
 import { findRole } from '../roles/role.service';
 import { toUserSummary } from './user.mapper';
 import { UserModel, type UserDocument } from './user.model';
-import type { CreateUserInput } from './user.validation';
+import type { CreateUserInput, UpdateUserInput } from './user.validation';
 import { UserAuditModel, type UserAuditAction, type UserAuditChange } from './userAudit.model';
 
 /** Quien hace o recibe una acción de gestión, con su login en ese momento (para el registro). */
@@ -97,4 +97,62 @@ export async function createUser(input: CreateUserInput, actor: UserRef): Promis
   const bootstrapRetired = await retireBootstrapIfNeeded();
   await recordAudit({ action: 'create', actor, target: { id: user.id as string, login: user.login } });
   return { user: toUserSummary(user, role.name), bootstrapRetired };
+}
+
+/** Provisional hasta US4: el cambio de rol necesita la regla del último Administrador (FR-016). */
+function assertNoRoleChange(user: UserDocument, input: UpdateUserInput): void {
+  if (input.role === undefined || input.role === user.role) return;
+  throw new AppError('VALIDATION_ERROR', 400, 'El cambio de rol todavía no está disponible.');
+}
+
+/** Solo los campos que cambian, en el orden del registro (FR-025). */
+function collectChanges(user: UserDocument, input: UpdateUserInput): UserAuditChange[] {
+  const changes: UserAuditChange[] = [];
+  if (input.email !== undefined && input.email !== user.login) {
+    changes.push({ field: 'email', from: user.login, to: input.email });
+  }
+  if (input.name !== undefined && input.name !== user.name) {
+    changes.push({ field: 'name', from: user.name, to: input.name });
+  }
+  return changes;
+}
+
+function toUpdateSet(changes: UserAuditChange[]): Partial<Record<'login' | 'name', string>> {
+  const set: Partial<Record<'login' | 'name', string>> = {};
+  for (const change of changes) set[change.field === 'email' ? 'login' : 'name'] = change.to ?? '';
+  return set;
+}
+
+/** Guarda los cambios; el índice único de `login` resuelve el email repetido (research R3). */
+async function applyChanges(id: string, changes: UserAuditChange[]): Promise<UserDocument> {
+  try {
+    const updated = await UserModel.findOneAndUpdate(
+      { _id: id, isBootstrap: false },
+      { $set: toUpdateSet(changes) },
+      { new: true },
+    );
+    if (!updated) throw new AppError(USER_ERROR_CODES.notFound, 404, 'El usuario no existe.');
+    return updated;
+  } catch (err) {
+    throw toEmailTakenError(err);
+  }
+}
+
+async function roleNameOf(key: string): Promise<string> {
+  return (await findRole(key))?.name ?? key;
+}
+
+/** Corrige nombre y email (FR-024). No cierra sus sesiones: el `sub` del token no cambia. */
+export async function updateUser(
+  id: string,
+  input: UpdateUserInput,
+  actor: UserRef,
+): Promise<UserSummary> {
+  const user = await findRealUserOrThrow(id);
+  assertNoRoleChange(user, input);
+  const changes = collectChanges(user, input);
+  if (changes.length === 0) return toUserSummary(user, await roleNameOf(user.role));
+  const updated = await applyChanges(id, changes);
+  await recordAudit({ action: 'update', actor, target: { id, login: updated.login }, changes });
+  return toUserSummary(updated, await roleNameOf(updated.role));
 }

@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
-import type { CreateUserResponse } from '@app/shared';
+import type { CreateUserResponse, UserSummary } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { sendSuccess } from '../../utils/sendSuccess';
-import { createUser, type UserRef } from './user.service';
-import type { CreateUserInput } from './user.validation';
+import { createUser, updateUser, type UserRef } from './user.service';
+import type { CreateUserInput, UpdateUserInput, UserIdParams } from './user.validation';
 
 // Controlador HTTP de Ajustes › Usuarios. Los handlers llegan con cada historia (US1–US5); las respuestas
 // usan sendSuccess (utils/sendSuccess.ts) y los errores, AppError.
@@ -18,5 +18,11 @@ export const userController = {
   async create(req: Request, res: Response): Promise<void> {
     const result = await createUser(req.body as CreateUserInput, actorOf(req));
     sendSuccess<CreateUserResponse>(res, result, 201);
+  },
+
+  async update(req: Request, res: Response): Promise<void> {
+    const { id } = req.params as UserIdParams;
+    const user = await updateUser(id, req.body as UpdateUserInput, actorOf(req));
+    sendSuccess<UserSummary>(res, user);
   },
 };
