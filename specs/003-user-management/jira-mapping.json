@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T17:15:51Z",
-  "updated_at": "2026-10-19T11:23:46Z",
+  "updated_at": "2026-10-19T11:48:42Z",
   "spec": "003-user-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -379,7 +379,7 @@
           "key": "AB2B-200",
           "id": "T037",
           "summary": "T037: Tests de servicio createUser para el primer Administrador (user.service.test.ts)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-200"
         },
@@ -387,7 +387,7 @@
           "key": "AB2B-208",
           "id": "T038",
           "summary": "T038: Tests de rutas del primer acceso con supertest (user.routes.test.ts)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-208"
         },
@@ -395,7 +395,7 @@
           "key": "AB2B-209",
           "id": "T039",
           "summary": "T039: Tests de UserForm en modo alta firstAdmin (UserForm.test.tsx)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-209"
         },
@@ -403,7 +403,7 @@
           "key": "AB2B-210",
           "id": "T040",
           "summary": "T040: Implementar createUser(input, actor) con regla del primer Administrador en user.service.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T037"
           ],
@@ -413,7 +413,7 @@
           "key": "AB2B-211",
           "id": "T041",
           "summary": "T041: Handler create y ruta POST /api/users con validación zod y bloque @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T038"
           ],
@@ -423,7 +423,7 @@
           "key": "AB2B-212",
           "id": "T042",
           "summary": "T042: createUser en usersApi.ts y thunk createUser en usersSlice.ts con tests",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-212"
         },
@@ -431,7 +431,7 @@
           "key": "AB2B-231",
           "id": "T043",
           "summary": "T043: Crear UserForm.tsx en modo alta con variante firstAdmin",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T039"
           ],
@@ -441,7 +441,7 @@
           "key": "AB2B-232",
           "id": "T044",
           "summary": "T044: Primer acceso en UsersSettingsPage.tsx: aviso, UserForm firstAdmin y vuelta al login",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-232"
         },
@@ -449,7 +449,7 @@
           "key": "AB2B-233",
           "id": "T045",
           "summary": "T045: Mostrar state.notice en LoginPage.tsx con Alert informativo y cubrirlo en LoginPage.test.tsx",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-233"
         }

@@ -281,20 +281,20 @@ entra y el nuevo usuario sí (quickstart §2).
 
 ### Tests for User Story 1 ⚠️ (escribir primero, deben fallar)
 
-- [ ] T037 [P] [US1] Añadir a `apps/server/src/modules/users/user.service.test.ts` (mongodb-memory-server, roles sembrados) los casos de `createUser` sin usuarios reales:
+- [X] T037 [P] [US1] Añadir a `apps/server/src/modules/users/user.service.test.ts` (mongodb-memory-server, roles sembrados) los casos de `createUser` sin usuarios reales:
   - con `role` distinto del rol `isAdmin` → `USER_FIRST_MUST_BE_ADMIN` 409 y no se crea nada;
   - con Administrador:
     - crea un usuario `Activo` con el email normalizado y la contraseña hasheada;
     - devuelve `bootstrapRetired: true`;
     - la cuenta inicial desaparece y sus sesiones quedan con `revokedAt`;
   - registra en `userAuditEntries` una entrada `create` con `actorLogin: 'admin'` y sin contraseña.
-- [ ] T038 [P] [US1] Crear `apps/server/src/modules/users/user.routes.test.ts` (supertest) con los casos de primer acceso:
+- [X] T038 [P] [US1] Crear `apps/server/src/modules/users/user.routes.test.ts` (supertest) con los casos de primer acceso:
   - login con `admin`/`admin` y `POST /api/users` con rol Comercial → 409 `USER_FIRST_MUST_BE_ADMIN`;
   - con Administrador → 201 y `data.bootstrapRetired === true`;
   - después, el access token de `admin` → 401 en `GET /api/roles`;
   - `POST /api/auth/login` con `admin`/`admin` → 401 `AUTH_INVALID_CREDENTIALS`;
   - el nuevo usuario inicia sesión.
-- [ ] T039 [P] [US1] Crear `apps/client/src/features/users/components/UserForm.test.tsx` en modo alta con `firstAdmin`:
+- [X] T039 [P] [US1] Crear `apps/client/src/features/users/components/UserForm.test.tsx` en modo alta con `firstAdmin`:
   - el rol aparece como campo de solo lectura «Administrador» con la ayuda «El primer usuario tiene que ser
     Administrador.»;
   - el botón dice «Crear Administrador»;
@@ -303,7 +303,7 @@ entra y el nuevo usuario sí (quickstart §2).
 
 ### Implementation for User Story 1
 
-- [ ] T040 [US1] Implementar `createUser(input, actor)` en `apps/server/src/modules/users/user.service.ts` (hace pasar T037):
+- [X] T040 [US1] Implementar `createUser(input, actor)` en `apps/server/src/modules/users/user.service.ts` (hace pasar T037):
   - pasos, con helpers pequeños:
     - `assertRoleExists`;
     - `assertFirstUserIsAdmin` (si `countRealUsers() === 0` y el rol no es `isAdmin`, lanza
@@ -314,26 +314,26 @@ entra y el nuevo usuario sí (quickstart §2).
     - `retireBootstrapIfNeeded()`;
     - `recordAudit('create')`;
   - devuelve `CreateUserResponse`.
-- [ ] T041 [US1] Añadir el handler `create` en `apps/server/src/modules/users/user.controller.ts` (201 con `CreateUserResponse`, `actor` desde `req.auth`) y `POST /` con `validate({ body: createUserSchema })` y su bloque `@openapi` (copiado del contrato) en `apps/server/src/modules/users/user.routes.ts` (hace pasar T038).
-- [ ] T042 [P] [US1] Añadir `createUser(body)` a `apps/client/src/features/users/usersApi.ts` y el thunk `createUser` a `apps/client/src/features/users/usersSlice.ts`:
+- [X] T041 [US1] Añadir el handler `create` en `apps/server/src/modules/users/user.controller.ts` (201 con `CreateUserResponse`, `actor` desde `req.auth`) y `POST /` con `validate({ body: createUserSchema })` y su bloque `@openapi` (copiado del contrato) en `apps/server/src/modules/users/user.routes.ts` (hace pasar T038).
+- [X] T042 [P] [US1] Añadir `createUser(body)` a `apps/client/src/features/users/usersApi.ts` y el thunk `createUser` a `apps/client/src/features/users/usersSlice.ts`:
   - `saving` durante la petición;
   - si va bien, añade `user` a `items` ordenado por nombre;
   - si falla, guarda el mensaje en `error`.
   Ampliar `usersSlice.test.ts` con estos casos.
-- [ ] T043 [US1] Crear `apps/client/src/features/users/components/UserForm.tsx` (+ `.module.css`) en modo alta (hace pasar T039):
+- [X] T043 [US1] Crear `apps/client/src/features/users/components/UserForm.tsx` (+ `.module.css`) en modo alta (hace pasar T039):
   - campos: `TextField` Nombre y Email, `Select` Rol (con las opciones que recibe) y `PasswordField`
     «Contraseña inicial» con la ayuda «Mínimo 8 caracteres. No hace falta cambiarla en el primer acceso.»;
   - variante `firstAdmin`: el rol queda fijo y el botón dice «Crear Administrador»;
   - validación en cliente igual que la de zod;
   - un solo envío aunque se pulse varias veces.
-- [ ] T044 [US1] Completar `apps/client/src/pages/UsersSettingsPage.tsx` para el primer acceso:
+- [X] T044 [US1] Completar `apps/client/src/pages/UsersSettingsPage.tsx` para el primer acceso:
   - si `user.isBootstrap`, muestra el aviso del tablero («Has entrado con la cuenta inicial «admin». Crea
     el primer usuario…», con `Alert` en tono de aviso) y `UserForm` en modo `firstAdmin`, con el texto
     «Todavía no hay usuarios…» en lugar del listado;
   - al crear con `bootstrapRetired`, despacha `sessionCleared()`, borra el refresh token de escritorio
     (`getDesktopBridge()?.clearRefreshToken()`) y navega a `/login` con
     `state.notice = 'Entra con el usuario que acabas de crear.'`.
-- [ ] T045 [US1] Mostrar en `apps/client/src/pages/LoginPage.tsx` el `state.notice` de la navegación con un `Alert` informativo sobre el formulario y cubrirlo en `apps/client/src/pages/LoginPage.test.tsx`.
+- [X] T045 [US1] Mostrar en `apps/client/src/pages/LoginPage.tsx` el `state.notice` de la navegación con un `Alert` informativo sobre el formulario y cubrirlo en `apps/client/src/pages/LoginPage.test.tsx`.
 
 **Checkpoint**: US1 funcional y comprobable por separado (quickstart §2).
 

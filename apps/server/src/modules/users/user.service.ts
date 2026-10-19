@@ -1,9 +1,13 @@
-import { USER_ERROR_CODES } from '@app/shared';
+import { USER_ERROR_CODES, type CreateUserResponse } from '@app/shared';
 import { AppError } from '../../utils/AppError';
+import { hashPassword } from '../../utils/password';
+import { countRealUsers, retireBootstrapIfNeeded } from '../auth/bootstrap.service';
 import { SessionModel } from '../auth/session.model';
 import type { RoleDocument } from '../roles/role.model';
 import { findRole } from '../roles/role.service';
+import { toUserSummary } from './user.mapper';
 import { UserModel, type UserDocument } from './user.model';
+import type { CreateUserInput } from './user.validation';
 import { UserAuditModel, type UserAuditAction, type UserAuditChange } from './userAudit.model';
 
 /** Quien hace o recibe una acción de gestión, con su login en ese momento (para el registro). */
@@ -57,4 +61,40 @@ export async function recordAudit(entry: {
 /** Revoca todas las sesiones activas del usuario: dejan de valer en la siguiente petición (research R1). */
 export async function revokeUserSessions(userId: string): Promise<void> {
   await SessionModel.updateMany({ userId, revokedAt: null }, { revokedAt: new Date() });
+}
+
+/** Sin usuarios reales, el primero tiene que tener el rol de Administrador (FR-003, research R4). */
+async function assertFirstUserIsAdmin(role: RoleDocument): Promise<void> {
+  if (role.isAdmin || (await countRealUsers()) > 0) return;
+  throw new AppError(
+    USER_ERROR_CODES.firstMustBeAdmin,
+    409,
+    'El primer usuario tiene que ser Administrador.',
+  );
+}
+
+async function insertUser(input: CreateUserInput): Promise<UserDocument> {
+  const passwordHash = await hashPassword(input.password);
+  try {
+    return await UserModel.create({
+      login: input.email,
+      name: input.name,
+      passwordHash,
+      role: input.role,
+      status: 'Activo',
+      isBootstrap: false,
+    });
+  } catch (err) {
+    throw toEmailTakenError(err);
+  }
+}
+
+/** Alta directa: el usuario queda Activo. Con el primer usuario real se retira la cuenta inicial (FR-004). */
+export async function createUser(input: CreateUserInput, actor: UserRef): Promise<CreateUserResponse> {
+  const role = await assertRoleExists(input.role);
+  await assertFirstUserIsAdmin(role);
+  const user = await insertUser(input);
+  const bootstrapRetired = await retireBootstrapIfNeeded();
+  await recordAudit({ action: 'create', actor, target: { id: user.id as string, login: user.login } });
+  return { user: toUserSummary(user, role.name), bootstrapRetired };
 }

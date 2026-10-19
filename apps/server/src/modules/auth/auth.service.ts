@@ -36,6 +36,8 @@ export interface IssuedSession {
 export interface AuthContext {
   userId: string;
   sessionId: string;
+  /** Login en el momento de la petición: lo copia el registro de acciones de Ajustes › Usuarios. */
+  login: string;
   role: Role;
   /** Leídos de `roles` en cada petición: un cambio se aplica en la siguiente (FR-028). */
   permissions: PermissionSet;
@@ -209,7 +211,13 @@ export async function resolveAuthContext(payload: AccessTokenPayload): Promise<A
   const user = await loadSessionUser(payload.sub);
   await touchSession(session);
   const permissions = toPermissionSet(await loadRoleFor(user));
-  return { userId: user.id, sessionId: session.id, role: user.role, permissions };
+  return {
+    userId: user.id,
+    sessionId: session.id,
+    login: user.login,
+    role: user.role,
+    permissions,
+  };
 }
 
 export interface RefreshedSession extends IssuedSession {

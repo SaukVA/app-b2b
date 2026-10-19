@@ -12,4 +12,10 @@ describe('Alert', () => {
     expect(screen.getByRole('status').textContent).toContain('Contacta con un administrador.');
     expect(screen.queryByRole('alert')).toBeNull();
   });
+
+  it('la variante warning es una nota que no interrumpe (role="note")', () => {
+    render(<Alert variant="warning">Has entrado con la cuenta inicial.</Alert>);
+    expect(screen.getByRole('note').textContent).toContain('Has entrado con la cuenta inicial.');
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
 });

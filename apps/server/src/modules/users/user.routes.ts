@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/requireAuth';
 import { requirePermission } from '../../middlewares/requirePermission';
+import { validate } from '../../middlewares/validate';
+import { userController } from './user.controller';
+import { createUserSchema } from './user.validation';
 
 export const userRouter = Router();
 
@@ -49,4 +52,60 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
  *           format: date-time
  *           nullable: true
  *           description: null si nunca ha iniciado sesión ("Nunca" en la interfaz)
+ *     CreateUserRequest:
+ *       type: object
+ *       required: [name, email, role, password]
+ *       properties:
+ *         name: { type: string, minLength: 1, maxLength: 100 }
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Se normaliza a minúsculas y sin espacios; único sin distinguir mayúsculas.
+ *         role: { $ref: '#/components/schemas/Role' }
+ *         password: { type: string, minLength: 8 }
+ *     CreateUserResponse:
+ *       type: object
+ *       required: [user, bootstrapRetired]
+ *       properties:
+ *         user: { $ref: '#/components/schemas/UserSummary' }
+ *         bootstrapRetired: { type: boolean }
  */
+
+/**
+ * @openapi
+ * /users:
+ *   post:
+ *     tags: [Users]
+ *     summary: Da de alta un usuario Activo (el primero tiene que ser Administrador)
+ *     security: [{ bearerAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/CreateUserRequest' }
+ *     responses:
+ *       '201':
+ *         description: >
+ *           Usuario creado. Si era el primer usuario real, bootstrapRetired=true: la cuenta inicial se ha
+ *           borrado y sus sesiones (incluida la que hizo la petición) ya no valen.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/CreateUserResponse' }
+ *       '400': { $ref: '#/components/responses/ValidationOrRoleError' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403': { $ref: '#/components/responses/Forbidden' }
+ *       '409':
+ *         description: USER_EMAIL_TAKEN | USER_FIRST_MUST_BE_ADMIN
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *             example:
+ *               success: false
+ *               error: { code: USER_EMAIL_TAKEN, message: 'Ya existe un usuario con ese email.' }
+ */
+userRouter.post('/', validate({ body: createUserSchema }), userController.create);

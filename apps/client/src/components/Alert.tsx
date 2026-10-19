@@ -2,8 +2,11 @@ import type { ReactNode } from 'react';
 import styles from './Alert.module.css';
 
 export interface AlertProps {
-  /** `error` se anuncia de inmediato (role="alert"); `info` de forma educada (role="status"). */
-  variant?: 'error' | 'info';
+  /**
+   * `error` se anuncia de inmediato (role="alert"); `info` de forma educada (role="status");
+   * `warning` es un aviso fijo de la pantalla (role="note"), sin anunciarse.
+   */
+  variant?: 'error' | 'info' | 'warning';
   children: ReactNode;
 }
 
@@ -26,10 +29,16 @@ function AlertIcon() {
   );
 }
 
+const ROLES: Record<NonNullable<AlertProps['variant']>, string> = {
+  error: 'alert',
+  info: 'status',
+  warning: 'note',
+};
+
 export function Alert({ variant = 'error', children }: AlertProps) {
   return (
     <div
-      role={variant === 'error' ? 'alert' : 'status'}
+      role={ROLES[variant]}
       className={`${styles.alert} ${styles[variant]}`}
     >
       <AlertIcon />
