@@ -42,3 +42,8 @@ export async function setUserStatusRequest(id: string, status: UserStatus): Prom
   });
   return data.data;
 }
+
+/** Pone una contraseña nueva (PUT /users/:id/password); cierra todas las sesiones del usuario. */
+export async function resetUserPasswordRequest(id: string, password: string): Promise<void> {
+  await httpClient.put<ApiSuccess<null>>(`/users/${id}/password`, { password });
+}

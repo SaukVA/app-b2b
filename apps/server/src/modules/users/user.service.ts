@@ -6,6 +6,7 @@ import {
 } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { hashPassword } from '../../utils/password';
+import { resetAttempts } from '../auth/auth.service';
 import { countRealUsers, retireBootstrapIfNeeded } from '../auth/bootstrap.service';
 import { SessionModel } from '../auth/session.model';
 import type { RoleDocument } from '../roles/role.model';
@@ -256,4 +257,25 @@ export async function setUserStatus(
   const user = await findRealUserOrThrow(id);
   const action = status === 'Bloqueado' ? 'block' : 'unblock';
   return applyAndRecord(user, collectChanges(user, { status }), action, actor);
+}
+
+/**
+ * Pone una contraseña nueva: cierra todas sus sesiones (también la propia si es uno mismo) y reinicia su
+ * bloqueo temporal (research R1). No cambia el estado: un Bloqueado sigue Bloqueado (FR-019).
+ */
+export async function resetUserPassword(
+  id: string,
+  password: string,
+  actor: UserRef,
+): Promise<void> {
+  const user = await findRealUserOrThrow(id);
+  const passwordHash = await hashPassword(password);
+  await UserModel.updateOne({ _id: user._id }, { passwordHash });
+  await revokeUserSessions(user.id as string);
+  await resetAttempts(user.login);
+  await recordAudit({
+    action: 'resetPassword',
+    actor,
+    target: { id: user.id as string, login: user.login },
+  });
 }

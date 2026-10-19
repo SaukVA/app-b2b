@@ -5,6 +5,7 @@ import { validate } from '../../middlewares/validate';
 import { userController } from './user.controller';
 import {
   createUserSchema,
+  resetPasswordSchema,
   updateStatusSchema,
   updateUserSchema,
   userIdParams,
@@ -79,6 +80,11 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
  *       required: [status]
  *       properties:
  *         status: { $ref: '#/components/schemas/UserStatus' }
+ *     ResetUserPasswordRequest:
+ *       type: object
+ *       required: [password]
+ *       properties:
+ *         password: { type: string, minLength: 8 }
  *     UpdateUserRequest:
  *       type: object
  *       minProperties: 1
@@ -228,4 +234,47 @@ userRouter.patch(
   '/:id/status',
   validate({ params: userIdParams, body: updateStatusSchema }),
   userController.setStatus,
+);
+
+/**
+ * @openapi
+ * /users/{id}/password:
+ *   parameters:
+ *     - $ref: '#/components/parameters/UserId'
+ *   put:
+ *     tags: [Users]
+ *     summary: Restablece la contraseña de un usuario
+ *     description: >
+ *       Revoca todas las sesiones del usuario (también la del Administrador si se restablece a sí mismo) y
+ *       reinicia su bloqueo temporal por intentos fallidos. No cambia el estado Bloqueado.
+ *     security: [{ bearerAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/ResetUserPasswordRequest' }
+ *     responses:
+ *       '200':
+ *         description: Contraseña cambiada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { type: 'null' }
+ *       '400':
+ *         description: VALIDATION_ERROR (contraseña de menos de 8 caracteres)
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403': { $ref: '#/components/responses/Forbidden' }
+ *       '404': { $ref: '#/components/responses/UserNotFound' }
+ */
+userRouter.put(
+  '/:id/password',
+  validate({ params: userIdParams, body: resetPasswordSchema }),
+  userController.resetPassword,
 );

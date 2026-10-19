@@ -2,9 +2,17 @@ import type { Request, Response } from 'express';
 import type { CreateUserResponse, UserSummary } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { sendSuccess } from '../../utils/sendSuccess';
-import { createUser, listUsers, setUserStatus, updateUser, type UserRef } from './user.service';
+import {
+  createUser,
+  listUsers,
+  resetUserPassword,
+  setUserStatus,
+  updateUser,
+  type UserRef,
+} from './user.service';
 import type {
   CreateUserInput,
+  ResetPasswordInput,
   UpdateStatusInput,
   UpdateUserInput,
   UserIdParams,
@@ -39,5 +47,12 @@ export const userController = {
     const { id } = req.params as UserIdParams;
     const { status } = req.body as UpdateStatusInput;
     sendSuccess<UserSummary>(res, await setUserStatus(id, status, actorOf(req)));
+  },
+
+  async resetPassword(req: Request, res: Response): Promise<void> {
+    const { id } = req.params as UserIdParams;
+    const { password } = req.body as ResetPasswordInput;
+    await resetUserPassword(id, password, actorOf(req));
+    sendSuccess<null>(res, null);
   },
 };

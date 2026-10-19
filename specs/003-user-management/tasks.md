@@ -512,7 +512,7 @@ temporal se reinicia.
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T067 [P] [US5] Ampliar `apps/server/src/modules/users/user.service.test.ts`:
+- [X] T067 [P] [US5] Ampliar `apps/server/src/modules/users/user.service.test.ts`:
   - **`resetUserPassword(id, password, actor)`**:
     - la contraseña anterior falla y la nueva funciona;
     - todas sus sesiones quedan con `revokedAt`;
@@ -520,10 +520,10 @@ temporal se reinicia.
     - un `Bloqueado` sigue `Bloqueado`;
     - entrada `resetPassword` con `changes: []` y sin hash ni contraseña en el documento;
   - **autorrestablecimiento**: también revoca la sesión propia.
-- [ ] T068 [P] [US5] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
+- [X] T068 [P] [US5] Ampliar `apps/server/src/modules/users/user.routes.test.ts`:
   - `PUT /api/users/:id/password` → 200 con `data: null` y 400 con 7 caracteres;
   - el access token del afectado → 401 en la petición siguiente.
-- [ ] T069 [P] [US5] Crear `apps/client/src/features/users/components/ResetPasswordDialog.test.tsx`:
+- [X] T069 [P] [US5] Crear `apps/client/src/features/users/components/ResetPasswordDialog.test.tsx`:
   - título «Restablecer contraseña» y texto con el nombre;
   - no envía con menos de 8 caracteres;
   - llama a `onSubmit(password)`;
@@ -531,14 +531,14 @@ temporal se reinicia.
 
 ### Implementation for User Story 5
 
-- [ ] T070 [US5] Implementar `resetUserPassword(id, password, actor)` en `apps/server/src/modules/users/user.service.ts`:
+- [X] T070 [US5] Implementar `resetUserPassword(id, password, actor)` en `apps/server/src/modules/users/user.service.ts`:
   - pasos: `findRealUserOrThrow`, `hashPassword`, `updateOne` de `passwordHash`,
     `revokeUserSessions`, `resetAttempts(user.login)` y `recordAudit('resetPassword')`;
   - no cambia `status` (FR-019);
   - hace pasar T067.
-- [ ] T071 [US5] Añadir el handler `resetPassword` y `PUT /:id/password` con `validate({ params: userIdParams, body: resetPasswordSchema })` y su `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts` (hace pasar T068).
-- [ ] T072 [P] [US5] Añadir `resetUserPassword(id, password)` a `apps/client/src/features/users/usersApi.ts` y el thunk a `usersSlice.ts`. Si el afectado es el usuario actual, despachar `sessionCleared()`, limpiar el refresh token de escritorio y navegar a `/login`.
-- [ ] T073 [US5] Crear `apps/client/src/features/users/components/ResetPasswordDialog.tsx`, que compone `Dialog` y `PasswordField` con la ayuda «Mínimo 8 caracteres.» y el texto del tablero. Cablear `onResetPassword` en `UsersTable.tsx` y `UsersSettingsPage.tsx` (hace pasar T069).
+- [X] T071 [US5] Añadir el handler `resetPassword` y `PUT /:id/password` con `validate({ params: userIdParams, body: resetPasswordSchema })` y su `@openapi` en `apps/server/src/modules/users/user.controller.ts` y `user.routes.ts` (hace pasar T068).
+- [X] T072 [P] [US5] Añadir `resetUserPassword(id, password)` a `apps/client/src/features/users/usersApi.ts` y el thunk a `usersSlice.ts`. Si el afectado es el usuario actual, despachar `sessionCleared()`, limpiar el refresh token de escritorio y navegar a `/login`.
+- [X] T073 [US5] Crear `apps/client/src/features/users/components/ResetPasswordDialog.tsx`, que compone `Dialog` y `PasswordField` con la ayuda «Mínimo 8 caracteres.» y el texto del tablero. Cablear `onResetPassword` en `UsersTable.tsx` y `UsersSettingsPage.tsx` (hace pasar T069).
 
 **Checkpoint**: US5 comprobable por separado (quickstart §5).
 

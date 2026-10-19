@@ -7,10 +7,12 @@ import type {
   UserStatus,
   UserSummary,
 } from '@app/shared';
-import { loadMe } from '../auth/authSlice';
+import { getDesktopBridge } from '../../utils/desktop';
+import { loadMe, sessionCleared } from '../auth/authSlice';
 import {
   createUserRequest,
   fetchUsers,
+  resetUserPasswordRequest,
   setUserStatusRequest,
   toUsersErrorMessage,
   updateUserRequest,
@@ -84,11 +86,31 @@ export const setUserStatus = createAsyncThunk<
   }
 });
 
+/**
+ * Restablece la contraseña (US5). Si el afectado es el usuario actual, el servidor ya ha cerrado su
+ * sesión: se limpia también la local (y el refresh token de escritorio) y `signedOut` avisa a la página
+ * para que lleve al login.
+ */
+export const resetUserPassword = createAsyncThunk<
+  { signedOut: boolean },
+  { id: string; password: string },
+  { rejectValue: string; state: { auth: { user: AuthUser | null } } }
+>('users/resetPassword', async ({ id, password }, { dispatch, getState, rejectWithValue }) => {
+  try {
+    await resetUserPasswordRequest(id, password);
+  } catch (err) {
+    return rejectWithValue(toUsersErrorMessage(err));
+  }
+  if (getState().auth.user?.id !== id) return { signedOut: false };
+  await getDesktopBridge()?.clearRefreshToken();
+  dispatch(sessionCleared());
+  return { signedOut: true };
+});
+
 function replaceItem(items: UserSummary[], user: UserSummary): UserSummary[] {
   return items.map((item) => (item.id === user.id ? user : item)).sort(byName);
 }
 
-// El thunk resetUserPassword llega con US5.
 const usersSlice = createSlice({
   name: 'users',
   initialState,

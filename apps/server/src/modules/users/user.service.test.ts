@@ -7,7 +7,14 @@ import { SessionModel } from '../auth/session.model';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from './user.model';
 import { RoleModel } from '../roles/role.model';
-import { createUser, listUsers, setUserStatus, updateUser, type UserRef } from './user.service';
+import {
+  createUser,
+  listUsers,
+  resetUserPassword,
+  setUserStatus,
+  updateUser,
+  type UserRef,
+} from './user.service';
 import { UserAuditModel } from './userAudit.model';
 
 setTestEnv();
@@ -363,5 +370,88 @@ describe('setUserStatus · último Administrador (US4, FR-016)', () => {
     expect(succeeded).toBeLessThanOrEqual(1);
     expect(await activeAdmins()).toBeGreaterThanOrEqual(1);
     expect(await UserAuditModel.countDocuments({ action: 'block' })).toBe(succeeded);
+  });
+});
+
+const NEW_PASSWORD = 'nuevaClave456';
+
+function signInWith(loginValue: string, password: string) {
+  return login({ login: loginValue, password, persistent: false, client: 'web' });
+}
+
+/** Cinco fallos seguidos: el quinto deja el login bloqueado 15 minutos (bloqueo temporal de 001). */
+async function lockOut(loginValue: string): Promise<void> {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    await signInWith(loginValue, 'incorrecta').catch(() => undefined);
+  }
+  await expect(signInWith(loginValue, PASSWORD)).rejects.toMatchObject({
+    code: 'AUTH_ACCOUNT_LOCKED',
+  });
+}
+
+describe('resetUserPassword · contraseña y sesiones (US5)', () => {
+  it('la contraseña anterior deja de servir y la nueva entra', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await resetUserPassword(user.id, NEW_PASSWORD, actor);
+    await expect(signIn('bea@empresa.es')).rejects.toMatchObject({
+      code: 'AUTH_INVALID_CREDENTIALS',
+    });
+    await expect(signInWith('bea@empresa.es', NEW_PASSWORD)).resolves.toMatchObject({
+      user: { login: 'bea@empresa.es' },
+    });
+  });
+
+  it('revoca todas sus sesiones', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await openSessionFor(user.id);
+    await signIn('bea@empresa.es');
+    await resetUserPassword(user.id, NEW_PASSWORD, actor);
+    const sessions = await SessionModel.find({ userId: user.id }).lean();
+    expect(sessions).toHaveLength(2);
+    expect(sessions.every((session) => session.revokedAt instanceof Date)).toBe(true);
+  });
+
+  it('autorrestablecimiento: también revoca la sesión propia', async () => {
+    const actor = await realAdmin();
+    const session = await openSessionFor(actor.id);
+    await resetUserPassword(actor.id, NEW_PASSWORD, actor);
+    expect((await SessionModel.findById(session.id).orFail()).revokedAt).toBeInstanceOf(Date);
+  });
+});
+
+describe('resetUserPassword · bloqueos y registro (US5, FR-019, FR-022)', () => {
+  it('reinicia el bloqueo temporal: entra al momento con la nueva', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await lockOut('bea@empresa.es');
+    await resetUserPassword(user.id, NEW_PASSWORD, actor);
+    await expect(signInWith('bea@empresa.es', NEW_PASSWORD)).resolves.toMatchObject({
+      user: { login: 'bea@empresa.es' },
+    });
+  });
+
+  it('un usuario Bloqueado sigue Bloqueado', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await setUserStatus(user.id, 'Bloqueado', actor);
+    await resetUserPassword(user.id, NEW_PASSWORD, actor);
+    expect((await UserModel.findById(user.id).orFail()).status).toBe('Bloqueado');
+  });
+
+  it('registra resetPassword con changes vacío y sin contraseña ni hash', async () => {
+    const { actor, user } = await realAdminAndComercial();
+    await resetUserPassword(user.id, NEW_PASSWORD, actor);
+    const entry = await UserAuditModel.findOne({ action: 'resetPassword' }).lean().orFail();
+    expect(entry).toMatchObject({ actorLogin: 'ana@empresa.es', targetLogin: 'bea@empresa.es' });
+    expect(entry.changes).toEqual([]);
+    const serialized = JSON.stringify(entry);
+    expect(serialized).not.toContain(NEW_PASSWORD);
+    expect(serialized).not.toMatch(/\$2[aby]\$/);
+  });
+
+  it('con la cuenta inicial → USER_NOT_FOUND 404', async () => {
+    const actor = await bootstrapActor();
+    await expect(resetUserPassword(actor.id, NEW_PASSWORD, actor)).rejects.toMatchObject({
+      code: USER_ERROR_CODES.notFound,
+      status: 404,
+    });
   });
 });

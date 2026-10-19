@@ -4,7 +4,12 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import type { AuthUser, RoleSummary, UserSummary } from '@app/shared';
 import { fetchRoles } from '../features/roles/rolesApi';
-import { fetchUsers, setUserStatusRequest, updateUserRequest } from '../features/users/usersApi';
+import {
+  fetchUsers,
+  resetUserPasswordRequest,
+  setUserStatusRequest,
+  updateUserRequest,
+} from '../features/users/usersApi';
 import { setupStore } from '../store/store';
 import { UsersSettingsPage } from './UsersSettingsPage';
 
@@ -14,6 +19,7 @@ jest.mock('../features/users/usersApi', () => ({
   fetchUsers: jest.fn(),
   updateUserRequest: jest.fn(),
   setUserStatusRequest: jest.fn(),
+  resetUserPasswordRequest: jest.fn(),
 }));
 
 const ALL_EDIT = {
@@ -82,6 +88,7 @@ beforeEach(() => {
   jest.mocked(fetchUsers).mockResolvedValue(USERS);
   jest.mocked(updateUserRequest).mockReset();
   jest.mocked(setUserStatusRequest).mockReset();
+  jest.mocked(resetUserPasswordRequest).mockReset();
 });
 
 describe('UsersSettingsPage · listado (US3)', () => {
@@ -215,5 +222,31 @@ describe('UsersSettingsPage · cambio de rol (US4)', () => {
     await user.click(dialog.getByRole('button', { name: 'Cambiar rol' }));
     expect(dialog.getByRole('alert').textContent).toContain(message);
     expect(screen.getByRole('dialog', { name: 'Editar usuario' })).toBeTruthy();
+  });
+});
+
+describe('UsersSettingsPage · restablecer contraseña (US5)', () => {
+  it('abre el diálogo desde el menú, envía la contraseña y lo cierra', async () => {
+    const user = userEvent.setup();
+    jest.mocked(resetUserPasswordRequest).mockResolvedValue(undefined);
+    await openMenuItem(user, 'Bea Gómez', 'Restablecer contraseña');
+    const dialog = within(screen.getByRole('dialog', { name: 'Restablecer contraseña' }));
+    await user.type(dialog.getByLabelText('Contraseña nueva'), 'nuevaClave456');
+    await user.click(dialog.getByRole('button', { name: 'Restablecer' }));
+    expect(resetUserPasswordRequest).toHaveBeenCalledWith('bea', 'nuevaClave456');
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('un error se muestra dentro del diálogo, que sigue abierto', async () => {
+    const user = userEvent.setup();
+    const message = 'El usuario no existe.';
+    jest
+      .mocked(resetUserPasswordRequest)
+      .mockRejectedValue(envelopeError('USER_NOT_FOUND', message));
+    await openMenuItem(user, 'Bea Gómez', 'Restablecer contraseña');
+    const dialog = within(screen.getByRole('dialog'));
+    await user.type(dialog.getByLabelText('Contraseña nueva'), 'nuevaClave456');
+    await user.click(dialog.getByRole('button', { name: 'Restablecer' }));
+    expect(dialog.getByRole('alert').textContent).toContain(message);
   });
 });

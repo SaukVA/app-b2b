@@ -1,8 +1,14 @@
-import type { AuthUser, CreateUserRequest, UserSummary } from '@app/shared';
+import type { AuthUser, CreateUserRequest, DesktopBridge, UserSummary } from '@app/shared';
 import { setupStore } from '../../store/store';
 import { fetchMe } from '../auth/authApi';
-import { createUserRequest, fetchUsers, setUserStatusRequest, updateUserRequest } from './usersApi';
-import { createUser, loadUsers, setUserStatus, updateUser } from './usersSlice';
+import {
+  createUserRequest,
+  fetchUsers,
+  resetUserPasswordRequest,
+  setUserStatusRequest,
+  updateUserRequest,
+} from './usersApi';
+import { createUser, loadUsers, resetUserPassword, setUserStatus, updateUser } from './usersSlice';
 
 jest.mock('./usersApi', () => ({
   ...jest.requireActual('./usersApi'),
@@ -10,6 +16,7 @@ jest.mock('./usersApi', () => ({
   updateUserRequest: jest.fn(),
   fetchUsers: jest.fn(),
   setUserStatusRequest: jest.fn(),
+  resetUserPasswordRequest: jest.fn(),
 }));
 jest.mock('../auth/authApi', () => ({
   ...jest.requireActual('../auth/authApi'),
@@ -203,5 +210,58 @@ describe('usersSlice · cambio de rol propio (US4, research R1)', () => {
     await store.dispatch(updateUser({ id: 'Carlos', body: { role: 'Almacén' } }));
     await store.dispatch(updateUser({ id: 'Bea', body: { name: 'Beatriz' } }));
     expect(fetchMe).not.toHaveBeenCalled();
+  });
+});
+
+const SELF = { id: 'Bea', login: 'bea@empresa.es', name: 'Bea', role: 'Comercial' } as AuthUser;
+const mockedReset = jest.mocked(resetUserPasswordRequest);
+
+function storeWithSelf() {
+  return setupStore({ auth: { user: SELF, accessToken: 'jwt', status: 'succeeded', error: null } });
+}
+
+function resetFor(id: string) {
+  return resetUserPassword({ id, password: 'nueva1234' });
+}
+
+describe('usersSlice · resetUserPassword (US5)', () => {
+  beforeEach(() => mockedReset.mockReset().mockResolvedValue(undefined));
+
+  it('llama al endpoint y, con otro usuario, mantiene la sesión', async () => {
+    const store = storeWithSelf();
+    const result = await store.dispatch(resetFor('Carlos'));
+    expect(mockedReset).toHaveBeenCalledWith('Carlos', 'nueva1234');
+    expect(result.payload).toEqual({ signedOut: false });
+    expect(store.getState().auth.user).toEqual(SELF);
+  });
+
+  it('rejected: devuelve el mensaje del envelope de error', async () => {
+    mockedReset.mockRejectedValue({
+      response: {
+        data: {
+          success: false,
+          error: { code: 'USER_NOT_FOUND', message: 'El usuario no existe.' },
+        },
+      },
+    });
+    const result = await storeWithSelf().dispatch(resetFor('x'));
+    expect(result.payload).toBe('El usuario no existe.');
+  });
+});
+
+describe('usersSlice · restablecer la propia contraseña (US5, research R1)', () => {
+  beforeEach(() => mockedReset.mockReset().mockResolvedValue(undefined));
+  afterEach(() => {
+    delete window.desktop;
+  });
+
+  it('limpia la sesión y el refresh token de escritorio', async () => {
+    const clearRefreshToken = jest.fn().mockResolvedValue(undefined);
+    window.desktop = { isDesktop: true, clearRefreshToken } as unknown as DesktopBridge;
+    const store = storeWithSelf();
+    const result = await store.dispatch(resetFor('Bea'));
+    expect(result.payload).toEqual({ signedOut: true });
+    expect(clearRefreshToken).toHaveBeenCalledTimes(1);
+    expect(store.getState().auth).toMatchObject({ user: null, accessToken: null });
   });
 });

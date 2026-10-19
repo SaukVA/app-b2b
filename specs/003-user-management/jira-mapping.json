@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T17:15:51Z",
-  "updated_at": "2026-10-19T12:37:19Z",
+  "updated_at": "2026-10-19T14:01:45Z",
   "spec": "003-user-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -671,7 +671,7 @@
           "key": "AB2B-241",
           "id": "T067",
           "summary": "T067: Tests de servicio para resetUserPassword y autorrestablecimiento",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-241"
         },
@@ -679,7 +679,7 @@
           "key": "AB2B-242",
           "id": "T068",
           "summary": "T068: Tests de ruta PUT /api/users/:id/password",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-242"
         },
@@ -687,7 +687,7 @@
           "key": "AB2B-243",
           "id": "T069",
           "summary": "T069: Crear tests de ResetPasswordDialog",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-243"
         },
@@ -695,7 +695,7 @@
           "key": "AB2B-244",
           "id": "T070",
           "summary": "T070: Implementar resetUserPassword en user.service.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T067"
           ],
@@ -705,7 +705,7 @@
           "key": "AB2B-245",
           "id": "T071",
           "summary": "T071: Añadir handler resetPassword y ruta PUT /:id/password con @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T068"
           ],
@@ -715,7 +715,7 @@
           "key": "AB2B-246",
           "id": "T072",
           "summary": "T072: Añadir resetUserPassword a usersApi y usersSlice, con cierre de sesión si es el usuario actual",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-246"
         },
@@ -723,7 +723,7 @@
           "key": "AB2B-247",
           "id": "T073",
           "summary": "T073: Crear ResetPasswordDialog y cablear onResetPassword en UsersTable y UsersSettingsPage",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T069"
           ],

@@ -14,9 +14,16 @@ import { isConnectionErrorMessage } from '../features/auth/authApi';
 import { selectUser } from '../features/auth/authSelectors';
 import { sessionCleared } from '../features/auth/authSlice';
 import { loadRoles } from '../features/roles/rolesSlice';
+import { ResetPasswordDialog } from '../features/users/components/ResetPasswordDialog';
 import { UserForm, type UserFormOutcome } from '../features/users/components/UserForm';
 import { UsersTable } from '../features/users/components/UsersTable';
-import { createUser, loadUsers, setUserStatus, updateUser } from '../features/users/usersSlice';
+import {
+  createUser,
+  loadUsers,
+  resetUserPassword,
+  setUserStatus,
+  updateUser,
+} from '../features/users/usersSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getDesktopBridge } from '../utils/desktop';
 import styles from './UsersSettingsPage.module.css';
@@ -126,6 +133,7 @@ function NewUserSection() {
 
 const ROLE_CHANGE_NOTICE =
   'Un cambio de rol se aplica a sus sesiones abiertas en 15 minutos como máximo.';
+const SELF_RESET_NOTICE = 'Tu contraseña ha cambiado. Entra con la nueva.';
 const BLOCK_NOTICE =
   'No podrá iniciar sesión y sus sesiones abiertas se cerrarán. Podrás desbloquearlo más tarde; seguirá con la misma contraseña.';
 
@@ -256,12 +264,39 @@ function BlockUserDialog({ user, onClose }: { user: UserSummary; onClose: () => 
   );
 }
 
+/**
+ * Si se restablece la propia contraseña, el thunk ya ha limpiado la sesión: se vuelve al login con un
+ * aviso, igual que al retirar la cuenta inicial (navegación después de que se aplique el borrado).
+ */
+function useResetPassword(user: UserSummary, onDone: () => void) {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const reset = async (password: string) => {
+    const result = await dispatch(resetUserPassword({ id: user.id, password }));
+    if (!resetUserPassword.fulfilled.match(result)) return setError(result.payload ?? null);
+    flushSync(onDone);
+    if (result.payload.signedOut) {
+      navigate('/login', { replace: true, state: { notice: SELF_RESET_NOTICE } });
+    }
+  };
+  return { reset, error };
+}
+
+function ResetUserPasswordDialog({ user, onClose }: { user: UserSummary; onClose: () => void }) {
+  const { reset, error } = useResetPassword(user, onClose);
+  return (
+    <ResetPasswordDialog userName={user.name} onSubmit={reset} onClose={onClose} error={error} />
+  );
+}
+
 function usersCount(count: number): string {
   return count === 1 ? '1 usuario' : `${count} usuarios`;
 }
 
 interface RowActions {
   onEdit: (user: UserSummary) => void;
+  onResetPassword: (user: UserSummary) => void;
   onBlock: (user: UserSummary) => void;
   onUnblock: (user: UserSummary) => void;
 }
@@ -287,10 +322,11 @@ function useUnblock() {
   return { unblock, error };
 }
 
-/** Listado con acciones por fila (FR-011, FR-012); editar y bloquear se abren en un diálogo. */
+/** Listado con acciones por fila (FR-011, FR-012); editar, restablecer y bloquear abren un diálogo. */
 function UsersListSection() {
   const count = useAppSelector((state) => state.users.items.length);
   const [editing, setEditing] = useState<UserSummary | null>(null);
+  const [resetting, setResetting] = useState<UserSummary | null>(null);
   const [blocking, setBlocking] = useState<UserSummary | null>(null);
   const { unblock, error } = useUnblock();
   return (
@@ -299,10 +335,12 @@ function UsersListSection() {
       {error && <Alert>{error}</Alert>}
       <UsersListBody
         onEdit={setEditing}
+        onResetPassword={setResetting}
         onBlock={setBlocking}
         onUnblock={(user) => void unblock(user)}
       />
       {editing && <EditUserDialog user={editing} onClose={() => setEditing(null)} />}
+      {resetting && <ResetUserPasswordDialog user={resetting} onClose={() => setResetting(null)} />}
       {blocking && <BlockUserDialog user={blocking} onClose={() => setBlocking(null)} />}
     </section>
   );
@@ -323,7 +361,7 @@ function UsersManagement() {
   );
 }
 
-/** Ajustes › Usuarios. El restablecimiento de contraseña y la matriz llegan con US5 y US6. */
+/** Ajustes › Usuarios. La matriz de permisos llega con US6. */
 export function UsersSettingsPage() {
   const user = useAppSelector(selectUser);
   return (

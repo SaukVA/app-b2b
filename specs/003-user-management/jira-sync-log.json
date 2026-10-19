@@ -144,5 +144,25 @@
       "AB2B-195"
     ],
     "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-19T14:01:45Z",
+    "spec": "003-user-management",
+    "project": "AB2B",
+    "epic": "AB2B-189",
+    "total_tasks": 84,
+    "completed_tasks": 75,
+    "completion_pct": 89,
+    "updated_issues": [
+      "AB2B-196",
+      "AB2B-241",
+      "AB2B-242",
+      "AB2B-243",
+      "AB2B-244",
+      "AB2B-245",
+      "AB2B-246",
+      "AB2B-247"
+    ],
+    "skipped_issues": []
   }
 ]

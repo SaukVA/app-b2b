@@ -257,3 +257,38 @@ describe('PATCH /api/users/:id con rol (US4)', () => {
     expect(res.body.error.code).toBe('USER_LAST_ADMIN');
   });
 });
+
+function putPassword(id: string, password: string, token: string) {
+  return request(app())
+    .put(`/api/users/${id}/password`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ password });
+}
+
+describe('PUT /api/users/:id/password (US5)', () => {
+  it('200 con data: null y el token del afectado deja de valer', async () => {
+    const admin = await adminToken();
+    const comercial = await comercialToken(admin);
+    const bea = (await getJson('/api/users', admin)).body.data[1];
+    const res = await putPassword(bea.id, 'nuevaClave456', admin);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ success: true, data: null });
+    expect((await getJson('/api/auth/me', comercial)).status).toBe(401);
+    expect((await loginAs('bea@empresa.es', 'nuevaClave456')).status).toBe(200);
+  });
+
+  it('400 VALIDATION_ERROR con 7 caracteres', async () => {
+    const admin = await adminToken();
+    const { body } = await newUser(admin);
+    const res = await putPassword(body.data.user.id, '1234567', admin);
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('403 AUTH_FORBIDDEN para un Comercial', async () => {
+    const comercial = await comercialToken(await adminToken());
+    const res = await putPassword('0123456789abcdef01234567', 'nuevaClave456', comercial);
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('AUTH_FORBIDDEN');
+  });
+});
