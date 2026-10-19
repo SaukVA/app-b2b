@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { AuthUser, LoginRequest, LoginResponse } from '@app/shared';
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { AppearancePreferences, AuthUser, LoginRequest, LoginResponse } from '@app/shared';
 import { getDesktopBridge, isDesktop } from '../../utils/desktop';
 import {
   fetchMe,
@@ -90,6 +90,10 @@ const authSlice = createSlice({
   reducers: {
     /** Limpia la sesión local sin llamar al servidor (p. ej. al cambiar de base de datos, FR-012). */
     sessionCleared: () => initialState,
+    /** El servidor ha confirmado unas preferencias: pasan a ser las guardadas del usuario (004, R6). */
+    authPreferencesSaved: (state, action: PayloadAction<AppearancePreferences>) => {
+      if (state.user) state.user.preferences = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -122,5 +126,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { sessionCleared } = authSlice.actions;
+export const { sessionCleared, authPreferencesSaved } = authSlice.actions;
 export const authReducer = authSlice.reducer;

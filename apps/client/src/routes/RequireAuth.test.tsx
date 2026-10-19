@@ -25,7 +25,7 @@ const PERMISSIONS_BY_ROLE: Record<string, Permissions> = {
 
 const user = (
   role: Role,
-  homeScreen: AuthUser['homeScreen'] = null,
+  homeScreen: AuthUser['preferences']['homeScreen'] = null,
   permissions: Permissions = PERMISSIONS_BY_ROLE[role] ?? NO_ACCESS,
 ): AuthUser => ({
   id: '1',
@@ -35,7 +35,7 @@ const user = (
   roleName: role,
   permissions,
   isBootstrap: false,
-  homeScreen,
+  preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen },
 });
 
 function LoginProbe() {

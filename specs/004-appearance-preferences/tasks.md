@@ -48,7 +48,7 @@ prioridad: US1 (P1) → US2 (P2) → US3 (P2) → US4 (P3).
 
 **Purpose**: tipos y constantes compartidos que usan servidor y cliente (constitución VI)
 
-- [ ] T001 Crear `packages/shared/src/types/preferences.ts` con los tipos de data-model.md:
+- [X] T001 Crear `packages/shared/src/types/preferences.ts` con los tipos de data-model.md:
   - `ThemePreference = 'light' | 'dark' | 'system'`;
   - `TableDensity = 'comfortable' | 'compact'`;
   - `MoneyFormat = 'es' | 'en'` (`es` = "1.248,50 €", `en` = "€ 1,248.50");
@@ -56,9 +56,9 @@ prioridad: US1 (P1) → US2 (P2) → US3 (P2) → US4 (P3).
     nunca null" salvo `homeScreen`, donde "null = sin elegir");
   - `UpdatePreferencesRequest = Partial<{ theme: ThemePreference | null; tableDensity: TableDensity | null;
     moneyFormat: MoneyFormat | null; homeScreen: HomeScreen | null }>`.
-- [ ] T002 [P] Ampliar `HomeScreen` en `packages/shared/src/types/user.ts` a
+- [X] T002 [P] Ampliar `HomeScreen` en `packages/shared/src/types/user.ts` a
   `'panel' | 'ventas' | 'clientes' | 'productos' | 'proveedores' | 'cobros'` (research R9).
-- [ ] T003 Crear `packages/shared/src/constants/preferences.ts` con:
+- [X] T003 Crear `packages/shared/src/constants/preferences.ts` con:
   - `DEFAULT_THEME = 'light'`, `DEFAULT_TABLE_DENSITY = 'comfortable'` y `DEFAULT_MONEY_FORMAT = 'es'`;
   - `AVAILABLE_HOME_SCREENS = ['ventas', 'clientes', 'productos', 'proveedores', 'cobros'] as const satisfies
     readonly HomeScreen[]` ("pantallas con ruta en la aplicación, en el orden del selector"; `panel` se añadirá
@@ -69,7 +69,7 @@ prioridad: US1 (P1) → US2 (P2) → US3 (P2) → US4 (P3).
     `AVAILABLE_HOME_SCREENS` y `can(permissions, screen, 'view')` (data-model.md, "Pantalla de inicio permitida").
     Añadir `packages/shared/src/constants/preferences.test.ts`: pantalla con `view` y con `edit` → `true`; con
     `none` o ausente → `false`; `panel` → `false` (todavía no existe).
-- [ ] T004 Cambiar `AuthUser` en `packages/shared/src/types/auth.ts`: quitar `homeScreen` y añadir
+- [X] T004 Cambiar `AuthUser` en `packages/shared/src/types/auth.ts`: quitar `homeScreen` y añadir
   `preferences: AppearancePreferences` (research R2). Exportar en `packages/shared/src/index.ts` los tipos de
   T001 y las constantes de T003 (`export * from './constants/preferences'`). Compilar con
   `npm run build --workspace=@app/shared`: los errores de tipos que salgan en server y client los resuelven T005–T013.
@@ -87,7 +87,7 @@ Ninguna historia puede empezar antes.
 
 ### Tests de Foundational (primero, deben fallar) ⚠️
 
-- [ ] T005 [P] Crear `apps/server/src/modules/preferences/preferences.service.test.ts` (mongodb-memory-server, sin
+- [X] T005 [P] Crear `apps/server/src/modules/preferences/preferences.service.test.ts` (mongodb-memory-server, sin
   HTTP):
   - un usuario sin preferencias → `getPreferences` devuelve `{ theme: 'light', tableDensity: 'comfortable',
     moneyFormat: 'es', homeScreen: null }`;
@@ -95,7 +95,7 @@ Ninguna historia puede empezar antes.
     resueltos; los otros campos del documento no cambian;
   - `{ tableDensity: null }` vuelve a `comfortable`;
   - funciona con la cuenta inicial (`isBootstrap: true`).
-- [ ] T006 [P] Crear `apps/server/src/modules/preferences/preferences.routes.test.ts` (supertest +
+- [X] T006 [P] Crear `apps/server/src/modules/preferences/preferences.routes.test.ts` (supertest +
   mongodb-memory-server, con el login real para obtener el token):
   - `PATCH /api/preferences` sin token → 401 `AUTH_UNAUTHENTICATED`;
   - `{}` → 400 `VALIDATION_ERROR` ("al menos un campo");
@@ -104,7 +104,7 @@ Ninguna historia puede empezar antes.
   - después, `GET /api/auth/me` devuelve `user.preferences.theme = 'dark'` y no tiene `homeScreen` de primer
     nivel;
   - la cuenta inicial `admin` también puede → 200.
-- [ ] T007 [P] Crear `apps/client/src/features/preferences/preferencesSlice.test.ts`:
+- [X] T007 [P] Crear `apps/client/src/features/preferences/preferencesSlice.test.ts`:
   - estado inicial `applied: null`, `saveStatus: 'idle'`, `saveError: null`;
   - `login.fulfilled` y `sessionRestored` (acción que dispara `App` al terminar la restauración) →
     `applied = user.preferences`;
@@ -116,20 +116,20 @@ Ninguna historia puede empezar antes.
     `preferencesApi` mockeado); si la API va bien, `saveStatus: 'idle'` y `auth.user.preferences` se actualiza;
     si falla, `saveStatus: 'failed'`, `saveError` con el mensaje "No se ha podido guardar. Se mantiene hasta que
     cierres sesión." y `auth.user.preferences` sin cambios.
-- [ ] T008 [P] Crear `apps/client/src/features/preferences/useApplyAppearance.test.ts` (renderHook con store
+- [X] T008 [P] Crear `apps/client/src/features/preferences/useApplyAppearance.test.ts` (renderHook con store
   precargada):
   - con `applied` → `document.documentElement.dataset.theme` y `.dataset.density` toman sus valores y
     `localStorage['appearance.lastTheme']` guarda solo el tema;
   - con `applied: null` → `data-theme` = valor de `appearance.lastTheme` si es válido, si no `light`, y
     `data-density = 'comfortable'`; no escribe en `localStorage`;
   - si `localStorage` lanza (se mockea `getItem`/`setItem`), no rompe y usa `light`.
-- [ ] T009 [P] Crear `apps/client/src/components/OptionGroup.test.tsx` (research R11):
+- [X] T009 [P] Crear `apps/client/src/components/OptionGroup.test.tsx` (research R11):
   - `role="radiogroup"` con `aria-label` o `aria-labelledby`, y cada opción `role="radio"` con `aria-checked`;
   - flechas derecha/abajo e izquierda/arriba mueven el foco y seleccionan (con vuelta al principio); solo la
     opción marcada tiene `tabIndex=0`;
   - `onChange(value)` se llama también al pulsar la opción ya marcada (reintento, FR-004);
   - la opción marcada lleva además el texto "Seleccionado" (oculto visualmente) para no depender del color.
-- [ ] T010 [P] Actualizar `apps/client/src/pages/SettingsPage.test.tsx`:
+- [X] T010 [P] Actualizar `apps/client/src/pages/SettingsPage.test.tsx`:
   - cualquier rol ve la pestaña "Apariencia", la primera, y `/ajustes` redirige a `/ajustes/apariencia`;
   - con `ajustes: edit` ve además "Usuarios";
   - se elimina el caso "No hay ajustes disponibles para tu rol." (R10) y se mantiene el de redirección de
@@ -137,41 +137,41 @@ Ninguna historia puede empezar antes.
 
 ### Implementación de Foundational
 
-- [ ] T011 Actualizar `apps/server/src/modules/users/user.model.ts`:
+- [X] T011 Actualizar `apps/server/src/modules/users/user.model.ts`:
   - `UserFields` añade `theme: ThemePreference | null`, `tableDensity: TableDensity | null` y
     `moneyFormat: MoneyFormat | null`;
   - en el esquema, cada uno con `{ type: String, enum: [...valores, null], default: null }`;
   - `HOME_SCREENS` pasa a los 6 valores de `HomeScreen` (data-model.md). Sin migración.
-- [ ] T012 Crear `apps/server/src/modules/preferences/preferences.mapper.ts` con
+- [X] T012 Crear `apps/server/src/modules/preferences/preferences.mapper.ts` con
   `toAppearancePreferences(doc: UserDocument): AppearancePreferences`, que resuelve `null` con `DEFAULT_THEME`,
   `DEFAULT_TABLE_DENSITY` y `DEFAULT_MONEY_FORMAT` (`homeScreen` se queda `null`). En
   `apps/server/src/modules/users/user.mapper.ts`, `toAuthUser` sustituye `homeScreen` por
   `preferences: toAppearancePreferences(doc)`. Actualizar los tests existentes que comprueban `homeScreen` en
   `AuthUser` (`auth.service.test.ts`, `auth.routes.test.ts` y los del cliente que lo precargan, buscando
   `homeScreen`).
-- [ ] T013 Crear `apps/server/src/modules/preferences/preferences.validation.ts`: `updatePreferencesBody`
+- [X] T013 Crear `apps/server/src/modules/preferences/preferences.validation.ts`: `updatePreferencesBody`
   (zod) `.strict()` con los 4 campos opcionales y `nullable()`, enums de T001/T002 y
   `.refine((body) => Object.keys(body).length > 0, 'Indica al menos una preferencia')`.
-- [ ] T014 Crear `apps/server/src/modules/preferences/preferences.service.ts`:
+- [X] T014 Crear `apps/server/src/modules/preferences/preferences.service.ts`:
   - `getPreferences(userId)`: lee el usuario y lo mapea con T012;
   - `updatePreferences(userId, permissions, change)`: guarda con `findByIdAndUpdate(userId, { $set: change },
     { new: true })` y devuelve `toAppearancePreferences`. La validación de `homeScreen` contra el rol se añade
     en T033 (US2). Cada función ≤20 líneas.
-- [ ] T015 Crear `apps/server/src/modules/preferences/preferences.controller.ts` (`update`: lee `req.auth`,
+- [X] T015 Crear `apps/server/src/modules/preferences/preferences.controller.ts` (`update`: lee `req.auth`,
   llama al servicio y responde con `sendSuccess`) y `apps/server/src/modules/preferences/preferences.routes.ts`:
   `preferencesRouter.patch('/', requireAuth, validate({ body: updatePreferencesBody }), controller.update)`, sin
   `requirePermission`. Bloque `@openapi` copiado de `contracts/preferences-api.openapi.yaml` (esquemas
   `ThemePreference`, `TableDensity`, `MoneyFormat`, `HomeScreen`, `AppearancePreferences` y
   `UpdatePreferencesRequest`; respuestas 200, 400 y 401). Montarlo en `apps/server/src/app.ts` con
   `app.use('/api/preferences', preferencesRouter)`.
-- [ ] T016 Actualizar el bloque `@openapi` de `AuthUser` en `apps/server/src/modules/auth/auth.routes.ts`:
+- [X] T016 Actualizar el bloque `@openapi` de `AuthUser` en `apps/server/src/modules/auth/auth.routes.ts`:
   `required` sustituye `homeScreen` por `preferences`, y la propiedad pasa a
   `preferences: { $ref: '#/components/schemas/AppearancePreferences' }`.
-- [ ] T017 Crear `apps/client/src/features/preferences/preferencesApi.ts`:
+- [X] T017 Crear `apps/client/src/features/preferences/preferencesApi.ts`:
   `updatePreferences(change: UpdatePreferencesRequest): Promise<AppearancePreferences>` con `httpClient`
   (`PATCH /preferences`, desenvuelve `data`) y `toPreferencesErrorMessage(err)`, que devuelve siempre
   "No se ha podido guardar. Se mantiene hasta que cierres sesión." (FR-004).
-- [ ] T018 Crear `apps/client/src/features/preferences/preferencesSlice.ts` con el estado de data-model.md
+- [X] T018 Crear `apps/client/src/features/preferences/preferencesSlice.ts` con el estado de data-model.md
   (`applied: AppearancePreferences | null`, `saveStatus: 'idle' | 'saving' | 'failed'`, `saveError`) y
   `pendingChange: UpdatePreferencesRequest` (campos aplicados aún sin guardar):
   - acción `sessionRestored(user | null)`, reducers por `extraReducers` (`login.fulfilled`,
@@ -182,22 +182,22 @@ Ninguna historia puede empezar antes.
     reintenta lo pendiente) y, si va bien, limpia `pendingChange` y despacha `authPreferencesSaved(prefs)`.
   - Añadir `authPreferencesSaved` a `apps/client/src/features/auth/authSlice.ts` (actualiza
     `state.user.preferences` si hay usuario). Registrar `preferences` en `apps/client/src/store/store.ts`.
-- [ ] T019 En `apps/client/src/App.tsx`, `SessionRestore` despacha `sessionRestored(user)` con el usuario de
+- [X] T019 En `apps/client/src/App.tsx`, `SessionRestore` despacha `sessionRestored(user)` con el usuario de
   `refreshSession` (o `null` si falla) antes de `setRestored(true)`.
-- [ ] T020 Crear `apps/client/src/features/preferences/useApplyAppearance.ts`: con `useLayoutEffect` (antes
+- [X] T020 Crear `apps/client/src/features/preferences/useApplyAppearance.ts`: con `useLayoutEffect` (antes
   del pintado, para no destellar, R5) escribe `data-theme` y `data-density` en `document.documentElement`
   según T008, y guarda `appearance.lastTheme` cuando hay `applied`. Las lecturas y escrituras de
   `localStorage` van en helpers con `try/catch` (`readLastTheme`, `writeLastTheme`). Llamarlo en un
   componente `AppearanceRoot` dentro del `Provider` de `apps/client/src/App.tsx`, por encima de
   `SessionRestore` y `AppRouter`, para que su `useLayoutEffect` corra en el mismo commit que cualquier cambio de
   `preferences.applied`.
-- [ ] T021 Crear `apps/client/src/components/OptionGroup.tsx` (+ `.module.css`) según T009 y el tablero:
+- [X] T021 Crear `apps/client/src/components/OptionGroup.tsx` (+ `.module.css`) según T009 y el tablero:
   - props `label` o `labelledBy`, `options: { value; label; description?; preview?: ReactNode }[]`,
     `value`, `onChange` y `variant: 'cards' | 'buttons'`;
   - en `cards`, rejilla `repeat(auto-fit, minmax(220px, 1fr))` con vista previa y descripción; en `buttons`,
     botones de 44 px en fila;
   - la marcada con borde de 2 px `accent` y fondo `accentSoft`, foco con el `:focus-visible` global.
-- [ ] T022 Crear `apps/client/src/pages/AppearanceSettingsPage.tsx` (+ `.module.css`) con un panel "Apariencia"
+- [X] T022 Crear `apps/client/src/pages/AppearanceSettingsPage.tsx` (+ `.module.css`) con un panel "Apariencia"
   vacío y el aviso `Alert` cuando `saveStatus === 'failed'` (texto de `saveError`, `role="status"`). Actualizar
   `apps/client/src/pages/SettingsPage.tsx`: `useSettingsTabs` devuelve siempre
   `{ to: '/ajustes/apariencia', label: 'Apariencia' }` primero y Usuarios si `ajustes: edit`; quitar la rama

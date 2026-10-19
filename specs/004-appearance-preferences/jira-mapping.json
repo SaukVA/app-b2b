@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-19T15:46:04Z",
-  "updated_at": "2026-10-19T15:46:04Z",
+  "updated_at": "2026-10-19T16:01:31Z",
   "spec": "004-appearance-preferences",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -20,7 +20,7 @@
           "key": "AB2B-291",
           "id": "T001",
           "summary": "T001: Crear `packages/shared/src/types/preferences.ts` con los tipos de data-model.md",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-291"
         },
@@ -28,7 +28,7 @@
           "key": "AB2B-292",
           "id": "T002",
           "summary": "T002: Ampliar `HomeScreen` en `packages/shared/src/types/user.ts` a",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-292"
         },
@@ -36,7 +36,7 @@
           "key": "AB2B-293",
           "id": "T003",
           "summary": "T003: Crear `packages/shared/src/constants/preferences.ts` con",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-293"
         },
@@ -44,7 +44,7 @@
           "key": "AB2B-294",
           "id": "T004",
           "summary": "T004: Cambiar `AuthUser` en `packages/shared/src/types/auth.ts`: quitar `homeScreen` y añadir",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-294"
         }
@@ -59,7 +59,7 @@
           "key": "AB2B-295",
           "id": "T005",
           "summary": "T005: Crear `apps/server/src/modules/preferences/preferences.service.test.ts` (mongodb-memory-server, sin",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-295"
         },
@@ -67,7 +67,7 @@
           "key": "AB2B-296",
           "id": "T006",
           "summary": "T006: Crear `apps/server/src/modules/preferences/preferences.routes.test.ts` (supertest +",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-296"
         },
@@ -75,7 +75,7 @@
           "key": "AB2B-297",
           "id": "T007",
           "summary": "T007: Crear `apps/client/src/features/preferences/preferencesSlice.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-297"
         },
@@ -83,7 +83,7 @@
           "key": "AB2B-298",
           "id": "T008",
           "summary": "T008: Crear `apps/client/src/features/preferences/useApplyAppearance.test.ts` (renderHook con store",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-298"
         },
@@ -91,7 +91,7 @@
           "key": "AB2B-299",
           "id": "T009",
           "summary": "T009: Crear `apps/client/src/components/OptionGroup.test.tsx` (research R11)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-299"
         },
@@ -99,7 +99,7 @@
           "key": "AB2B-300",
           "id": "T010",
           "summary": "T010: Actualizar `apps/client/src/pages/SettingsPage.test.tsx`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-300"
         },
@@ -107,7 +107,7 @@
           "key": "AB2B-301",
           "id": "T011",
           "summary": "T011: Actualizar `apps/server/src/modules/users/user.model.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-301"
         },
@@ -115,7 +115,7 @@
           "key": "AB2B-302",
           "id": "T012",
           "summary": "T012: Crear `apps/server/src/modules/preferences/preferences.mapper.ts` con",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-302"
         },
@@ -123,7 +123,7 @@
           "key": "AB2B-303",
           "id": "T013",
           "summary": "T013: Crear `apps/server/src/modules/preferences/preferences.validation.ts`: `updatePreferencesBody`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-303"
         },
@@ -131,7 +131,7 @@
           "key": "AB2B-304",
           "id": "T014",
           "summary": "T014: Crear `apps/server/src/modules/preferences/preferences.service.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-304"
         },
@@ -139,7 +139,7 @@
           "key": "AB2B-305",
           "id": "T015",
           "summary": "T015: Crear `apps/server/src/modules/preferences/preferences.controller.ts` (`update`: lee `req.auth`,",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-305"
         },
@@ -147,7 +147,7 @@
           "key": "AB2B-306",
           "id": "T016",
           "summary": "T016: Actualizar el bloque `@openapi` de `AuthUser` en `apps/server/src/modules/auth/auth.routes.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-306"
         },
@@ -155,7 +155,7 @@
           "key": "AB2B-307",
           "id": "T017",
           "summary": "T017: Crear `apps/client/src/features/preferences/preferencesApi.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-307"
         },
@@ -163,7 +163,7 @@
           "key": "AB2B-308",
           "id": "T018",
           "summary": "T018: Crear `apps/client/src/features/preferences/preferencesSlice.ts` con el estado de data-model.md",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-308"
         },
@@ -171,7 +171,7 @@
           "key": "AB2B-309",
           "id": "T019",
           "summary": "T019: En `apps/client/src/App.tsx`, `SessionRestore` despacha `sessionRestored(user)` con el usuario de",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-309"
         },
@@ -179,7 +179,7 @@
           "key": "AB2B-310",
           "id": "T020",
           "summary": "T020: Crear `apps/client/src/features/preferences/useApplyAppearance.ts`: con `useLayoutEffect` (antes",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-310"
         },
@@ -187,7 +187,7 @@
           "key": "AB2B-311",
           "id": "T021",
           "summary": "T021: Crear `apps/client/src/components/OptionGroup.tsx` (+ `.module.css`) según T009 y el tablero",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-311"
         },
@@ -195,7 +195,7 @@
           "key": "AB2B-312",
           "id": "T022",
           "summary": "T022: Crear `apps/client/src/pages/AppearanceSettingsPage.tsx` (+ `.module.css`) con un panel \"Apariencia\"",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-312"
         }
@@ -503,7 +503,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 49,
-    "completed_tasks": 0,
-    "pending_tasks": 49
+    "completed_tasks": 22,
+    "pending_tasks": 27
   }
 }

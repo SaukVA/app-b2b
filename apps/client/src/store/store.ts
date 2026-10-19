@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { authReducer, refreshSession } from '../features/auth/authSlice';
 import { databaseReducer } from '../features/database/databaseSlice';
+import { preferencesReducer } from '../features/preferences/preferencesSlice';
 import { rolesReducer } from '../features/roles/rolesSlice';
 import { usersReducer } from '../features/users/usersSlice';
 import { setAccessTokenGetter, setRefreshHandler } from '../utils/httpClient';
@@ -10,6 +11,7 @@ import { setAccessTokenGetter, setRefreshHandler } from '../utils/httpClient';
 const rootReducer = combineReducers({
   auth: authReducer,
   database: databaseReducer,
+  preferences: preferencesReducer,
   roles: rolesReducer,
   users: usersReducer,
 });

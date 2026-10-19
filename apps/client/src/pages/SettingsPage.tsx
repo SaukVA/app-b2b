@@ -4,19 +4,22 @@ import { selectCan } from '../features/auth/authSelectors';
 import { useAppSelector } from '../store/store';
 import styles from './SettingsPage.module.css';
 
+const APPEARANCE_TAB: TabItem = { to: '/ajustes/apariencia', label: 'Apariencia' };
+const USERS_TAB: TabItem = { to: '/ajustes/usuarios', label: 'Usuarios' };
+
 /**
- * Pestañas de Ajustes que el rol puede abrir. La fila «Ajustes» de la matriz cubre las pestañas de
- * administración (Base de datos y Usuarios); Apariencia (004) será para todos.
+ * Pestañas de Ajustes que el rol puede abrir. Apariencia es para todos (004, FR-001); la fila «Ajustes»
+ * de la matriz cubre las pestañas de administración (Base de datos y Usuarios).
  */
 function useSettingsTabs(): TabItem[] {
   const canManageUsers = useAppSelector(selectCan('ajustes', 'edit'));
-  return canManageUsers ? [{ to: '/ajustes/usuarios', label: 'Usuarios' }] : [];
+  return canManageUsers ? [APPEARANCE_TAB, USERS_TAB] : [APPEARANCE_TAB];
 }
 
-/** Índice de /ajustes: primera pestaña permitida (si no hay ninguna, SettingsPage ya lo indica). */
+/** Índice de /ajustes: la primera pestaña, Apariencia. */
 export function SettingsIndexRedirect() {
   const [first] = useSettingsTabs();
-  return first ? <Navigate to={first.to} replace /> : null;
+  return <Navigate to={first.to} replace />;
 }
 
 /** Layout de Ajustes: título, pestañas y la pestaña activa. */
@@ -30,12 +33,8 @@ export function SettingsPage() {
           Preferencias de la aplicación, conexión de datos y acceso de usuarios.
         </p>
       </header>
-      {tabs.length > 0 ? (
-        <Tabs label="Secciones de ajustes" tabs={tabs} />
-      ) : (
-        <p className={styles.empty}>No hay ajustes disponibles para tu rol.</p>
-      )}
-      {/* Siempre: sin pestañas, el RequireAuth de cada pestaña es quien redirige (quickstart §3.4). */}
+      <Tabs label="Secciones de ajustes" tabs={tabs} />
+      {/* Sin permiso, el RequireAuth de cada pestaña es quien redirige (quickstart §3.4 de 003). */}
       <Outlet />
     </main>
   );

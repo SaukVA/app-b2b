@@ -34,7 +34,7 @@ export const authRouter = Router();
  *         client: { type: string, enum: [web, desktop] }
  *     AuthUser:
  *       type: object
- *       required: [id, login, name, role, roleName, permissions, isBootstrap, homeScreen]
+ *       required: [id, login, name, role, roleName, permissions, isBootstrap, preferences]
  *       properties:
  *         id: { type: string }
  *         login: { type: string }
@@ -45,7 +45,9 @@ export const authRouter = Router();
  *           $ref: '#/components/schemas/PermissionSet'
  *           description: Permisos del rol leídos de la colección roles (ADR 0003)
  *         isBootstrap: { type: boolean }
- *         homeScreen: { type: string, nullable: true, enum: [panel, ventas, productos] }
+ *         preferences:
+ *           $ref: '#/components/schemas/AppearancePreferences'
+ *           description: Tema, densidad, formato de importes y pantalla de inicio (004)
  *     LoginResponse:
  *       type: object
  *       required: [accessToken, user]

@@ -14,7 +14,8 @@ function canOpen(user: AuthUser, path: string | null | undefined): path is strin
 /** FR-006: ruta de origen → pantalla elegida → pantalla por defecto, siempre que el rol pueda abrirla. */
 export function resolveHomeRoute(user: AuthUser, from?: string | null): string {
   if (canOpen(user, from)) return from;
-  const preferred = user.homeScreen ? `/${user.homeScreen}` : null;
+  const { homeScreen } = user.preferences;
+  const preferred = homeScreen ? `/${homeScreen}` : null;
   if (canOpen(user, preferred)) return preferred;
   return `/${DEFAULT_HOME_SCREEN}`;
 }

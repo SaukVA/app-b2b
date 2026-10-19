@@ -3,6 +3,7 @@ import { APP_MODULES, type AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
 import { LogoutButton } from '../features/auth/components/LogoutButton';
 import { DATABASE_SETTINGS_PATH, LoginPage } from '../pages/LoginPage';
+import { AppearanceSettingsPage } from '../pages/AppearanceSettingsPage';
 import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
 import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
@@ -51,6 +52,8 @@ const settingsRoute = {
   ),
   children: [
     { index: true, element: <SettingsIndexRedirect /> },
+    // Solo sesión (la exige settingsRoute): Apariencia es para todos los roles (004).
+    { path: 'apariencia', element: <AppearanceSettingsPage /> },
     {
       path: 'usuarios',
       element: (
