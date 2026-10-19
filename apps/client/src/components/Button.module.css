@@ -44,6 +44,15 @@
   color: var(--ink);
 }
 
+.danger {
+  background: var(--danger-action);
+  color: var(--on-danger-action);
+}
+
+.danger:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
 .tertiary {
   min-height: auto;
   padding: 0;

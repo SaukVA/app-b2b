@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
-import { ACCESS_TOKEN_TTL_SEC, ROLES, type Role } from '@app/shared';
+import { ACCESS_TOKEN_TTL_SEC, type Role } from '@app/shared';
 import { getEnv } from '../config/env';
 
 export interface AccessTokenPayload {
@@ -21,7 +21,9 @@ function isPayload(decoded: unknown): decoded is AccessTokenPayload {
   return (
     typeof value?.sub === 'string' &&
     typeof value.sid === 'string' &&
-    ROLES.includes(value.role as Role)
+    // Clave de un documento de `roles` (ADR 0003): los permisos se resuelven en cada petición.
+    typeof value.role === 'string' &&
+    value.role.length > 0
   );
 }
 

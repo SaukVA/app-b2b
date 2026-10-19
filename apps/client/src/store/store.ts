@@ -2,12 +2,16 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { authReducer, refreshSession } from '../features/auth/authSlice';
 import { databaseReducer } from '../features/database/databaseSlice';
+import { rolesReducer } from '../features/roles/rolesSlice';
+import { usersReducer } from '../features/users/usersSlice';
 import { setAccessTokenGetter, setRefreshHandler } from '../utils/httpClient';
 
 // Cada dominio registra aquí su slice (features/<dominio>/<dominio>Slice.ts).
 const rootReducer = combineReducers({
   auth: authReducer,
   database: databaseReducer,
+  roles: rolesReducer,
+  users: usersReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

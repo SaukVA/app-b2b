@@ -4,6 +4,7 @@ import { EMBEDDED_CONNECTION_OPTIONS, connectDatabase, testConnection } from './
 import { getEnv } from './config/env';
 import { startEmbedded, type ParentPortLike } from './embeddedRuntime';
 import { ensureBootstrapAccount } from './modules/auth/bootstrap.service';
+import { ensureDefaultRoles } from './modules/roles/role.service';
 
 // Entrada del backend cuando lo lanza el escritorio con utilityProcess.fork() (research R1). La web arranca
 // con server.ts.
@@ -33,7 +34,11 @@ startEmbedded({
   env: getEnv(),
   listen,
   connect: (uri) => connectDatabase(uri, EMBEDDED_CONNECTION_OPTIONS),
-  ensureBootstrap: ensureBootstrapAccount,
+  // Roles antes que la cuenta inicial: sus permisos salen de la colección `roles` (ADR 0003).
+  ensureBootstrap: async () => {
+    await ensureDefaultRoles();
+    await ensureBootstrapAccount();
+  },
   onDatabaseReady: () => {
     databaseReady = true;
   },

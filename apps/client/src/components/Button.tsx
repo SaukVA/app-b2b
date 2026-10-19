@@ -1,7 +1,8 @@
 import type { ButtonHTMLAttributes } from 'react';
 import styles from './Button.module.css';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
+/** `danger` para acciones destructivas que se confirman (p. ej. «Bloquear»). */
+export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'danger';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;

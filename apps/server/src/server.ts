@@ -2,12 +2,14 @@ import { buildApp } from './app';
 import { getEnv } from './config/env';
 import { connectDatabase } from './config/database';
 import { ensureBootstrapAccount } from './modules/auth/bootstrap.service';
+import { ensureDefaultRoles } from './modules/roles/role.service';
 
 async function start(): Promise<void> {
   const env = getEnv();
   // MONGODB_URI es opcional solo para el backend embebido de escritorio (embedded.ts); la web la exige.
   if (!env.MONGODB_URI) throw new Error('Falta MONGODB_URI');
   await connectDatabase(env.MONGODB_URI);
+  await ensureDefaultRoles();
   await ensureBootstrapAccount();
   const onListening = () => {
     console.log(

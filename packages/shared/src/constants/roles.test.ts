@@ -1,46 +1,45 @@
-import { can, PERMISSIONS, ROLES, type AppModule, type PermissionLevel } from './roles';
-import type { Role } from '../types/user';
+import { ADMIN_ROLE_KEY, APP_MODULES, can, type PermissionSet } from './roles';
 
-const EXPECTED: Array<[AppModule, Role, PermissionLevel]> = [
-  ['ventas', 'Administrador', 'edit'],
-  ['ventas', 'Comercial', 'edit'],
-  ['ventas', 'Almacén', 'view'],
-  ['ventas', 'Administración', 'view'],
-  ['clientes', 'Administrador', 'edit'],
-  ['clientes', 'Comercial', 'edit'],
-  ['clientes', 'Almacén', 'none'],
-  ['clientes', 'Administración', 'view'],
-  ['productos', 'Administrador', 'edit'],
-  ['productos', 'Comercial', 'view'],
-  ['productos', 'Almacén', 'edit'],
-  ['productos', 'Administración', 'view'],
-  ['proveedores', 'Administrador', 'edit'],
-  ['proveedores', 'Comercial', 'none'],
-  ['proveedores', 'Almacén', 'view'],
-  ['proveedores', 'Administración', 'edit'],
-  ['cobros', 'Administrador', 'edit'],
-  ['cobros', 'Comercial', 'view'],
-  ['cobros', 'Almacén', 'none'],
-  ['cobros', 'Administración', 'edit'],
-  ['ajustes', 'Administrador', 'edit'],
-  ['ajustes', 'Comercial', 'none'],
-  ['ajustes', 'Almacén', 'none'],
-  ['ajustes', 'Administración', 'none'],
-];
-
-describe('PERMISSIONS', () => {
-  it('cubre los 4 roles en los 6 módulos', () => {
-    expect(ROLES).toHaveLength(4);
-    expect(Object.keys(PERMISSIONS)).toHaveLength(6);
-    expect(EXPECTED).toHaveLength(24);
+describe('APP_MODULES', () => {
+  it('son los 6 módulos de la aplicación, en orden', () => {
+    expect(APP_MODULES).toEqual([
+      'ventas',
+      'clientes',
+      'productos',
+      'proveedores',
+      'cobros',
+      'ajustes',
+    ]);
   });
 });
 
-describe('can()', () => {
-  it.each(EXPECTED)('%s · %s → %s', (module, role, level) => {
-    expect(PERMISSIONS[module][role]).toBe(level);
-    expect(can(role, module, 'edit')).toBe(level === 'edit');
-    expect(can(role, module, 'view')).toBe(level !== 'none');
-    expect(can(role, module, 'none')).toBe(true);
+describe('ADMIN_ROLE_KEY', () => {
+  it('es la clave del rol Administrador que crea la siembra', () => {
+    expect(ADMIN_ROLE_KEY).toBe('Administrador');
+  });
+});
+
+describe('can(permissions, module, level)', () => {
+  const permissions: PermissionSet = { ventas: 'edit', clientes: 'view', productos: 'none' };
+
+  it('edit incluye view', () => {
+    expect(can(permissions, 'ventas', 'edit')).toBe(true);
+    expect(can(permissions, 'ventas', 'view')).toBe(true);
+  });
+
+  it('view no incluye edit', () => {
+    expect(can(permissions, 'clientes', 'view')).toBe(true);
+    expect(can(permissions, 'clientes', 'edit')).toBe(false);
+  });
+
+  it('none no concede nada salvo el nivel none', () => {
+    expect(can(permissions, 'productos', 'view')).toBe(false);
+    expect(can(permissions, 'productos', 'none')).toBe(true);
+  });
+
+  it('un módulo ausente cuenta como none (FR-026)', () => {
+    expect(can(permissions, 'ajustes', 'view')).toBe(false);
+    expect(can(permissions, 'ajustes', 'edit')).toBe(false);
+    expect(can({}, 'cobros', 'view')).toBe(false);
   });
 });

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router';
+import { Alert } from '../components/Alert';
 import { ConnectionStatus, type ConnectionState } from '../components/ConnectionStatus';
 import { selectIsAuthenticated, selectUser } from '../features/auth/authSelectors';
 import { LoginForm } from '../features/auth/components/LoginForm';
@@ -49,13 +50,16 @@ function DatabaseIndicator() {
 export function LoginPage() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const user = useAppSelector(selectUser);
-  const from = (useLocation().state as { from?: string } | null)?.from ?? null;
+  const state = useLocation().state as { from?: string; notice?: string } | null;
+  const from = state?.from ?? null;
   if (isAuthenticated && user) return <Navigate to={resolveHomeRoute(user, from)} replace />;
   return (
     <div className={styles.page}>
       <LoginHero />
       <main className={styles.main}>
         <div className={styles.column}>
+          {/* Aviso de quien envía aquí (p. ej. tras crear el primer Administrador, 003). */}
+          {state?.notice && <Alert variant="info">{state.notice}</Alert>}
           <LoginForm />
           {isDesktop() && <DatabaseIndicator />}
         </div>

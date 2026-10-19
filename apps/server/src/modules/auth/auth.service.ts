@@ -6,6 +6,7 @@ import {
   PERSISTENT_SESSION_DAYS,
   type AuthUser,
   type ClientKind,
+  type PermissionSet,
   type Role,
 } from '@app/shared';
 import { AppError } from '../../utils/AppError';
@@ -16,6 +17,9 @@ import {
   signAccessToken,
   type AccessTokenPayload,
 } from '../../utils/tokens';
+import { toPermissionSet } from '../roles/role.mapper';
+import type { RoleDocument } from '../roles/role.model';
+import { findRole } from '../roles/role.service';
 import { toAuthUser } from '../users/user.mapper';
 import { UserModel, type UserDocument } from '../users/user.model';
 import type { LoginInput } from './auth.validation';
@@ -32,7 +36,11 @@ export interface IssuedSession {
 export interface AuthContext {
   userId: string;
   sessionId: string;
+  /** Login en el momento de la petición: lo copia el registro de acciones de Ajustes › Usuarios. */
+  login: string;
   role: Role;
+  /** Leídos de `roles` en cada petición: un cambio se aplica en la siguiente (FR-028). */
+  permissions: PermissionSet;
 }
 
 const MINUTE_MS = 60 * 1000;
@@ -123,13 +131,11 @@ export function assertCanSignIn(user: UserDocument): void {
       'Tu cuenta está bloqueada. Contacta con un administrador.',
     );
   }
-  if (user.status === 'Invitado') {
-    throw new AppError(
-      'AUTH_INVITATION_PENDING',
-      403,
-      'Completa la invitación que has recibido antes de iniciar sesión.',
-    );
-  }
+}
+
+/** Rol del usuario en la colección `roles`; `null` si la clave no existe (todo `none`). */
+function loadRoleFor(user: UserDocument): Promise<RoleDocument | null> {
+  return findRole(user.role);
 }
 
 export function sessionExpiry(persistent: boolean, from: Date): Date {
@@ -154,7 +160,7 @@ export async function createSession(
   });
   await UserModel.updateOne({ _id: user._id }, { lastLoginAt: now });
   const accessToken = signAccessToken({ sub: user.id, sid: session.id, role: user.role });
-  return { accessToken, refreshToken, user: toAuthUser(user) };
+  return { accessToken, refreshToken, user: toAuthUser(user, await loadRoleFor(user)) };
 }
 
 /** Orden de research R5: bloqueo temporal → credenciales → estado → sesión. */
@@ -204,7 +210,14 @@ export async function resolveAuthContext(payload: AccessTokenPayload): Promise<A
   if (!isSessionActive(session, payload.sub)) throw sessionExpired();
   const user = await loadSessionUser(payload.sub);
   await touchSession(session);
-  return { userId: user.id, sessionId: session.id, role: user.role };
+  const permissions = toPermissionSet(await loadRoleFor(user));
+  return {
+    userId: user.id,
+    sessionId: session.id,
+    login: user.login,
+    role: user.role,
+    permissions,
+  };
 }
 
 export interface RefreshedSession extends IssuedSession {
@@ -255,7 +268,7 @@ export async function refresh(token: string | undefined): Promise<RefreshedSessi
   return {
     accessToken,
     refreshToken,
-    user: toAuthUser(user),
+    user: toAuthUser(user, await loadRoleFor(user)),
     persistent: session.persistent,
     client: session.client,
   };
@@ -269,5 +282,5 @@ export async function logout(sessionId: string): Promise<void> {
 export async function getCurrentUser(userId: string): Promise<AuthUser> {
   const user = await UserModel.findById(userId);
   if (!user) throw sessionExpired();
-  return toAuthUser(user);
+  return toAuthUser(user, await loadRoleFor(user));
 }

@@ -34,12 +34,16 @@ export const authRouter = Router();
  *         client: { type: string, enum: [web, desktop] }
  *     AuthUser:
  *       type: object
- *       required: [id, login, name, role, isBootstrap, homeScreen]
+ *       required: [id, login, name, role, roleName, permissions, isBootstrap, homeScreen]
  *       properties:
  *         id: { type: string }
  *         login: { type: string }
  *         name: { type: string }
- *         role: { type: string, enum: [Administrador, Comercial, Almacén, Administración] }
+ *         role: { $ref: '#/components/schemas/Role' }
+ *         roleName: { type: string, description: Nombre visible del rol (la clave si el rol no existe) }
+ *         permissions:
+ *           $ref: '#/components/schemas/PermissionSet'
+ *           description: Permisos del rol leídos de la colección roles (ADR 0003)
  *         isBootstrap: { type: boolean }
  *         homeScreen: { type: string, nullable: true, enum: [panel, ventas, productos] }
  *     LoginResponse:
@@ -95,7 +99,7 @@ export const authRouter = Router();
  *               success: false
  *               error: { code: AUTH_INVALID_CREDENTIALS, message: 'Email o contraseña incorrectos. Te quedan 3 intentos.' }
  *       '403':
- *         description: AUTH_ACCOUNT_BLOCKED | AUTH_INVITATION_PENDING (solo con contraseña correcta)
+ *         description: AUTH_ACCOUNT_BLOCKED (solo con contraseña correcta)
  *         content:
  *           application/json:
  *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }

@@ -27,3 +27,9 @@ npm-debug.log*
 
 # Spec Kit: caché local de extensiones
 .specify/extensions/.cache/
+
+# Playwright (ADR 0004): salida de la CLI (puede contener credenciales), resultados e informes de los E2E
+.playwright-cli/
+test-results/
+playwright-report/
+blob-report/

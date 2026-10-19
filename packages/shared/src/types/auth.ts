@@ -1,3 +1,4 @@
+import type { AppModule, PermissionLevel } from '../constants/roles';
 import type { HomeScreen, Role } from './user';
 
 export type ClientKind = 'web' | 'desktop';
@@ -7,6 +8,9 @@ export interface AuthUser {
   login: string;
   name: string;
   role: Role;
+  roleName: string;
+  /** Permisos del rol leídos de la colección `roles`; completos (ausentes = `none`). */
+  permissions: Record<AppModule, PermissionLevel>;
   isBootstrap: boolean;
   homeScreen: HomeScreen | null;
 }

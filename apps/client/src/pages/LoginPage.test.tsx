@@ -19,10 +19,10 @@ const UNCONFIGURED: DatabaseSummary = {
   persisted: true,
 };
 
-function renderLogin() {
+function renderLogin(state?: unknown) {
   render(
     <Provider store={setupStore()}>
-      <MemoryRouter initialEntries={['/login']}>
+      <MemoryRouter initialEntries={[{ pathname: '/login', state }]}>
         <LoginPage />
       </MemoryRouter>
     </Provider>,
@@ -70,6 +70,20 @@ describe('LoginPage · indicador de base de datos', () => {
 
   it('la ruta de configuración es /ajustes/base-de-datos', () => {
     expect(DATABASE_SETTINGS_PATH).toBe('/ajustes/base-de-datos');
+  });
+});
+
+describe('LoginPage · aviso de la navegación (003, US1)', () => {
+  it('muestra state.notice en un aviso informativo', () => {
+    renderLogin({ notice: 'Entra con el usuario que acabas de crear.' });
+    expect(screen.getByRole('status').textContent).toContain(
+      'Entra con el usuario que acabas de crear.',
+    );
+  });
+
+  it('sin notice no muestra ningún aviso', () => {
+    renderLogin();
+    expect(screen.queryByRole('status')).toBeNull();
   });
 });
 

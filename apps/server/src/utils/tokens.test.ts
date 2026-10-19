@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN_TTL_SEC } from '@app/shared';
 import { setTestEnv } from './testDb';
 import { createRefreshToken, hashToken, signAccessToken, verifyAccessToken } from './tokens';
@@ -7,7 +8,7 @@ setTestEnv();
 const payload = {
   sub: '64b000000000000000000001',
   sid: '64b000000000000000000002',
-  role: 'Comercial' as const,
+  role: 'Comercial',
 };
 
 describe('signAccessToken / verifyAccessToken', () => {
@@ -15,6 +16,21 @@ describe('signAccessToken / verifyAccessToken', () => {
 
   it('firma y verifica sub, sid y role', () => {
     expect(verifyAccessToken(signAccessToken(payload))).toEqual(payload);
+  });
+
+  it('acepta cualquier clave de rol no vacía (roles en base de datos, ADR 0003)', () => {
+    const custom = { ...payload, role: 'Visitas' };
+    expect(verifyAccessToken(signAccessToken(custom))).toEqual(custom);
+  });
+
+  it('rechaza un payload con el rol vacío o ausente', () => {
+    const secret = process.env.JWT_ACCESS_SECRET!;
+    const empty = jwt.sign({ ...payload, role: '' }, secret, { algorithm: 'HS256' });
+    const missing = jwt.sign({ sub: payload.sub, sid: payload.sid }, secret, {
+      algorithm: 'HS256',
+    });
+    expect(verifyAccessToken(empty)).toBeNull();
+    expect(verifyAccessToken(missing)).toBeNull();
   });
 
   it('rechaza un token manipulado', () => {
