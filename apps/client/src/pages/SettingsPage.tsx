@@ -31,13 +31,12 @@ export function SettingsPage() {
         </p>
       </header>
       {tabs.length > 0 ? (
-        <>
-          <Tabs label="Secciones de ajustes" tabs={tabs} />
-          <Outlet />
-        </>
+        <Tabs label="Secciones de ajustes" tabs={tabs} />
       ) : (
         <p className={styles.empty}>No hay ajustes disponibles para tu rol.</p>
       )}
+      {/* Siempre: sin pestañas, el RequireAuth de cada pestaña es quien redirige (quickstart §3.4). */}
+      <Outlet />
     </main>
   );
 }

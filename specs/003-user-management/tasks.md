@@ -577,20 +577,20 @@ restaurado al arrancar y rol inexistente rechazado).
 
 ## Phase 9: Polish & Cross-Cutting Concerns
 
-- [ ] T077 [P] Anotar en `specs/001-user-login/spec.md`:
+- [X] T077 [P] Anotar en `specs/001-user-login/spec.md`:
   - FR-004: «el caso de invitación no completada queda sin efecto por 003-user-management (no hay estado
     Invitado)»;
   - FR-005: «la matriz se guarda en base de datos (003-user-management, FR-020)».
   Añadir al inicio de `specs/001-user-login/contracts/auth-api.openapi.yaml` una nota de que `AuthUser` y `AUTH_INVITATION_PENDING` los actualiza `specs/003-user-management/contracts/users-api.openapi.yaml`.
-- [ ] T078 [P] Comprobar que `/api-docs` coincide con `specs/003-user-management/contracts/users-api.openapi.yaml` (`/users`, `/users/{id}`, `/users/{id}/status`, `/users/{id}/password` y `/roles`, con códigos de error y esquemas) y con el `AuthUser` ampliado.
-- [ ] T079 [P] Revisar con `npm run lint` que las funciones nuevas o modificadas cumplen ≤40 líneas efectivas y anidamiento ≤2 (en especial `user.service.ts`, `auth.service.ts` y `role.service.ts`), y extraer helpers donde haga falta.
-- [ ] T080 [P] Revisar la accesibilidad de `/ajustes/usuarios` a 390 px y a 1440 px según `docs/design/README.md` y el tablero `Ajustes.dc.html`:
+- [X] T078 [P] Comprobar que `/api-docs` coincide con `specs/003-user-management/contracts/users-api.openapi.yaml` (`/users`, `/users/{id}`, `/users/{id}/status`, `/users/{id}/password` y `/roles`, con códigos de error y esquemas) y con el `AuthUser` ampliado.
+- [X] T079 [P] Revisar con `npm run lint` que las funciones nuevas o modificadas cumplen ≤40 líneas efectivas y anidamiento ≤2 (en especial `user.service.ts`, `auth.service.ts` y `role.service.ts`), y extraer helpers donde haga falta.
+- [X] T080 [P] Revisar la accesibilidad de `/ajustes/usuarios` a 390 px y a 1440 px según `docs/design/README.md` y el tablero `Ajustes.dc.html`:
   - etiquetas, foco visible y foco en los diálogos;
   - menú con teclado;
   - objetivos de 44 px, contraste 4.5:1 y estado en texto;
   - sin scroll horizontal de la página.
-- [ ] T081 Comprobar que ningún log del servidor ni ninguna entrada de `userAuditEntries` contiene contraseñas o hashes (FR-022, SC-008), con una búsqueda en los tests y una revisión manual de la colección tras quickstart §7.
-- [ ] T082 Ejecutar `npm run lint` y `npm test --workspaces` en verde. Validar manualmente quickstart.md completo en web y, al menos §2–§4, en escritorio (`npm run dev --workspace=apps/desktop`).
+- [X] T081 Comprobar que ningún log del servidor ni ninguna entrada de `userAuditEntries` contiene contraseñas o hashes (FR-022, SC-008), con una búsqueda en los tests y una revisión manual de la colección tras quickstart §7.
+- [X] T082 Ejecutar `npm run lint` y `npm test --workspaces` en verde. Validar manualmente quickstart.md completo en web y, al menos §2–§4, en escritorio (`npm run dev --workspace=apps/desktop`).
 
 ---
 

@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T17:15:51Z",
-  "updated_at": "2026-10-19T14:14:00Z",
+  "updated_at": "2026-10-19T14:55:34Z",
   "spec": "003-user-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -773,7 +773,7 @@
           "key": "AB2B-272",
           "id": "T077",
           "summary": "T077: Anotar en la spec y el contrato de 001-user-login los cambios de 003",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-272"
         },
@@ -781,7 +781,7 @@
           "key": "AB2B-273",
           "id": "T078",
           "summary": "T078: Comprobar que /api-docs coincide con users-api.openapi.yaml y el AuthUser ampliado",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-273"
         },
@@ -789,7 +789,7 @@
           "key": "AB2B-277",
           "id": "T079",
           "summary": "T079: Revisar límites de 40 líneas y anidamiento ≤2 en funciones nuevas o modificadas",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-277"
         },
@@ -797,7 +797,7 @@
           "key": "AB2B-278",
           "id": "T080",
           "summary": "T080: Revisar accesibilidad de /ajustes/usuarios a 390 px y 1440 px",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-278"
         },
@@ -805,7 +805,7 @@
           "key": "AB2B-279",
           "id": "T081",
           "summary": "T081: Comprobar que logs y userAuditEntries no contienen contraseñas ni hashes",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-279"
         },
@@ -813,7 +813,7 @@
           "key": "AB2B-280",
           "id": "T082",
           "summary": "T082: Lint y tests en verde y validación manual de quickstart.md en web y escritorio",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-280"
         }

@@ -5,6 +5,8 @@ info:
   description: >
     Contrato de la API de autenticación (feature 001-user-login). En la implementación cada ruta lleva
     su bloque JSDoc @openapi equivalente y se sirve en /api-docs.
+    Nota: el esquema AuthUser y el código AUTH_INVITATION_PENDING los actualiza
+    specs/003-user-management/contracts/users-api.openapi.yaml (003-user-management).
 servers:
   - url: /api
 tags:
