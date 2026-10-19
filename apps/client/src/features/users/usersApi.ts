@@ -16,6 +16,12 @@ export function toUsersErrorMessage(err: unknown): string {
   return toAuthErrorMessage(err);
 }
 
+/** Usuarios reales ordenados por nombre (GET /users), sin la cuenta inicial. */
+export async function fetchUsers(): Promise<UserSummary[]> {
+  const { data } = await httpClient.get<ApiSuccess<UserSummary[]>>('/users');
+  return data.data;
+}
+
 /** Alta directa (POST /users). Con el primer Administrador, `bootstrapRetired` es true. */
 export async function createUserRequest(body: CreateUserRequest): Promise<CreateUserResponse> {
   const { data } = await httpClient.post<ApiSuccess<CreateUserResponse>>('/users', body);

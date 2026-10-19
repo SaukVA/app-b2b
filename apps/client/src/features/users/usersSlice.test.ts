@@ -1,16 +1,18 @@
 import type { CreateUserRequest, UserSummary } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { createUserRequest, updateUserRequest } from './usersApi';
-import { createUser, updateUser } from './usersSlice';
+import { createUserRequest, fetchUsers, updateUserRequest } from './usersApi';
+import { createUser, loadUsers, updateUser } from './usersSlice';
 
 jest.mock('./usersApi', () => ({
   ...jest.requireActual('./usersApi'),
   createUserRequest: jest.fn(),
   updateUserRequest: jest.fn(),
+  fetchUsers: jest.fn(),
 }));
 
 const mockedCreate = jest.mocked(createUserRequest);
 const mockedUpdate = jest.mocked(updateUserRequest);
+const mockedFetch = jest.mocked(fetchUsers);
 
 function summary(name: string): UserSummary {
   return {
@@ -121,6 +123,43 @@ describe('usersSlice · updateUser (US2)', () => {
     expect(store.getState().users).toMatchObject({
       saving: false,
       error: 'Ya existe un usuario con ese email.',
+    });
+  });
+});
+
+describe('usersSlice · loadUsers (US3)', () => {
+  it('pending: pasa a loading y limpia el error', () => {
+    mockedFetch.mockReturnValue(new Promise(() => undefined));
+    const store = setupStore();
+    void store.dispatch(loadUsers());
+    expect(store.getState().users).toMatchObject({ status: 'loading', error: null });
+  });
+
+  it('fulfilled: guarda el listado', async () => {
+    const users = [summary('Álvaro'), summary('Bea')];
+    mockedFetch.mockResolvedValue(users);
+    const store = setupStore();
+    await store.dispatch(loadUsers());
+    expect(store.getState().users).toMatchObject({ items: users, status: 'succeeded' });
+  });
+
+  it('rejected: pasa a failed con el mensaje del envelope', async () => {
+    mockedFetch.mockRejectedValue({
+      response: {
+        data: {
+          success: false,
+          error: {
+            code: 'AUTH_FORBIDDEN',
+            message: 'No tienes permiso para realizar esta acción.',
+          },
+        },
+      },
+    });
+    const store = setupStore();
+    await store.dispatch(loadUsers());
+    expect(store.getState().users).toMatchObject({
+      status: 'failed',
+      error: 'No tienes permiso para realizar esta acción.',
     });
   });
 });

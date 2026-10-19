@@ -6,7 +6,8 @@ import { ensureBootstrapAccount } from '../auth/bootstrap.service';
 import { SessionModel } from '../auth/session.model';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from './user.model';
-import { createUser, updateUser, type UserRef } from './user.service';
+import { RoleModel } from '../roles/role.model';
+import { createUser, listUsers, updateUser, type UserRef } from './user.service';
 import { UserAuditModel } from './userAudit.model';
 
 setTestEnv();
@@ -222,5 +223,46 @@ describe('updateUser · casos límite (US2)', () => {
       code: 'VALIDATION_ERROR',
       status: 400,
     });
+  });
+});
+
+describe('listUsers (US3, FR-011)', () => {
+  async function seedUsers() {
+    const actor = await realAdmin();
+    for (const name of ['Carlos Ruiz', 'Bea Gómez', 'Álvaro Díaz']) {
+      const email = `${name.split(' ')[0].toLowerCase().normalize('NFD').replace(/\p{M}/gu, '')}@empresa.es`;
+      await createUser({ name, email, role: 'Comercial', password: PASSWORD }, actor);
+    }
+  }
+
+  it('excluye la cuenta inicial y ordena por nombre en español (Á antes de B)', async () => {
+    await ensureBootstrapAccount();
+    await seedUsers();
+    await UserModel.create({
+      login: 'admin',
+      name: 'Administrador inicial',
+      passwordHash: 'x',
+      role: 'Administrador',
+      status: 'Activo',
+      isBootstrap: true,
+    });
+    const names = (await listUsers()).map((user) => user.name);
+    expect(names).toEqual(['Álvaro Díaz', 'Ana Pérez', 'Bea Gómez', 'Carlos Ruiz']);
+  });
+
+  it('roleName sale del documento de roles', async () => {
+    await seedUsers();
+    await RoleModel.updateOne({ key: 'Comercial' }, { name: 'Comercial senior' });
+    const bea = (await listUsers()).find((user) => user.email === 'bea@empresa.es');
+    expect(bea).toMatchObject({ role: 'Comercial', roleName: 'Comercial senior' });
+  });
+
+  it('lastLoginAt es null si nunca ha entrado y una fecha ISO si ha entrado', async () => {
+    await seedUsers();
+    await signIn('bea@empresa.es');
+    const users = await listUsers();
+    expect(users.find((user) => user.email === 'carlos@empresa.es')?.lastLoginAt).toBeNull();
+    const beaLogin = users.find((user) => user.email === 'bea@empresa.es')?.lastLoginAt;
+    expect(beaLogin).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 });

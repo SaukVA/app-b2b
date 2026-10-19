@@ -81,6 +81,25 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
 /**
  * @openapi
  * /users:
+ *   get:
+ *     tags: [Users]
+ *     summary: Lista los usuarios reales ordenados por nombre (sin la cuenta inicial)
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       '200':
+ *         description: Listado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items: { $ref: '#/components/schemas/UserSummary' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403': { $ref: '#/components/responses/Forbidden' }
  *   post:
  *     tags: [Users]
  *     summary: Da de alta un usuario Activo (el primero tiene que ser Administrador)
@@ -115,6 +134,7 @@ userRouter.use(requireAuth, requirePermission('ajustes', 'edit'));
  *               success: false
  *               error: { code: USER_EMAIL_TAKEN, message: 'Ya existe un usuario con ese email.' }
  */
+userRouter.get('/', userController.list);
 userRouter.post('/', validate({ body: createUserSchema }), userController.create);
 
 /**

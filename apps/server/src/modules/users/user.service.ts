@@ -4,7 +4,7 @@ import { hashPassword } from '../../utils/password';
 import { countRealUsers, retireBootstrapIfNeeded } from '../auth/bootstrap.service';
 import { SessionModel } from '../auth/session.model';
 import type { RoleDocument } from '../roles/role.model';
-import { findRole } from '../roles/role.service';
+import { findRole, listRoles } from '../roles/role.service';
 import { toUserSummary } from './user.mapper';
 import { UserModel, type UserDocument } from './user.model';
 import type { CreateUserInput, UpdateUserInput } from './user.validation';
@@ -90,12 +90,19 @@ async function insertUser(input: CreateUserInput): Promise<UserDocument> {
 }
 
 /** Alta directa: el usuario queda Activo. Con el primer usuario real se retira la cuenta inicial (FR-004). */
-export async function createUser(input: CreateUserInput, actor: UserRef): Promise<CreateUserResponse> {
+export async function createUser(
+  input: CreateUserInput,
+  actor: UserRef,
+): Promise<CreateUserResponse> {
   const role = await assertRoleExists(input.role);
   await assertFirstUserIsAdmin(role);
   const user = await insertUser(input);
   const bootstrapRetired = await retireBootstrapIfNeeded();
-  await recordAudit({ action: 'create', actor, target: { id: user.id as string, login: user.login } });
+  await recordAudit({
+    action: 'create',
+    actor,
+    target: { id: user.id as string, login: user.login },
+  });
   return { user: toUserSummary(user, role.name), bootstrapRetired };
 }
 
@@ -140,6 +147,20 @@ async function applyChanges(id: string, changes: UserAuditChange[]): Promise<Use
 
 async function roleNameOf(key: string): Promise<string> {
   return (await findRole(key))?.name ?? key;
+}
+
+/** Nombre de cada rol por clave, con una sola consulta a `roles`. */
+async function roleNamesByKey(): Promise<Map<string, string>> {
+  return new Map((await listRoles()).map((role) => [role.key, role.name]));
+}
+
+/** Usuarios reales ordenados por nombre en español (Á antes de B), sin la cuenta inicial (FR-005, FR-011). */
+export async function listUsers(): Promise<UserSummary[]> {
+  const [users, roleNames] = await Promise.all([
+    UserModel.find({ isBootstrap: false }).collation({ locale: 'es' }).sort({ name: 1 }),
+    roleNamesByKey(),
+  ]);
+  return users.map((user) => toUserSummary(user, roleNames.get(user.role) ?? user.role));
 }
 
 /** Corrige nombre y email (FR-024). No cierra sus sesiones: el `sub` del token no cambia. */

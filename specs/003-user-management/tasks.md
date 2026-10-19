@@ -403,13 +403,13 @@ correctamente; un Comercial no ve la pestaña (quickstart §3.4–3.5).
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T054 [P] [US3] Ampliar `apps/server/src/modules/users/user.service.test.ts` y `user.routes.test.ts` con `listUsers` / `GET /api/users`:
+- [X] T054 [P] [US3] Ampliar `apps/server/src/modules/users/user.service.test.ts` y `user.routes.test.ts` con `listUsers` / `GET /api/users`:
   - excluye la cuenta inicial;
   - ordena por nombre con *collation* `es` (Á antes de B);
   - `roleName` sale de `roles`;
   - `lastLoginAt` es `null` si nunca ha entrado;
   - Comercial → 403.
-- [ ] T055 [P] [US3] Crear `apps/client/src/features/users/components/UsersTable.test.tsx`:
+- [X] T055 [P] [US3] Crear `apps/client/src/features/users/components/UsersTable.test.tsx`:
   - pinta nombre, email, `roleName`, último acceso («Nunca» si `null`, si no fecha y hora con
     `APP_TIME_ZONE`) y el `StatusStamp` con el texto del estado;
   - marca «(tú)» en la fila del usuario actual;
@@ -417,18 +417,18 @@ correctamente; un Comercial no ve la pestaña (quickstart §3.4–3.5).
 
 ### Implementation for User Story 3
 
-- [ ] T056 [US3] Implementar `listUsers()` en `apps/server/src/modules/users/user.service.ts`:
+- [X] T056 [US3] Implementar `listUsers()` en `apps/server/src/modules/users/user.service.ts`:
   - consulta `UserModel.find({ isBootstrap: false }).collation({ locale: 'es' }).sort({ name: 1 })`;
   - toma los nombres de rol de una sola consulta a `roles` (mapa `key → name`);
   - aplica `toUserSummary`.
   Añadir el handler `list` y `GET /` con su `@openapi` en `user.controller.ts` y `user.routes.ts` (hace pasar T054).
-- [ ] T057 [P] [US3] Añadir `fetchUsers()` a `apps/client/src/features/users/usersApi.ts` y el thunk `loadUsers` a `usersSlice.ts`, con los estados `loading` y `failed` y su mensaje. Cubrirlo en `usersSlice.test.ts`.
-- [ ] T058 [US3] Crear `apps/client/src/features/users/components/UsersTable.tsx` (+ `.module.css`) componiendo `Table` (con tarjetas en móvil), `StatusStamp` y un menú de acciones por fila:
+- [X] T057 [P] [US3] Añadir `fetchUsers()` a `apps/client/src/features/users/usersApi.ts` y el thunk `loadUsers` a `usersSlice.ts`, con los estados `loading` y `failed` y su mensaje. Cubrirlo en `usersSlice.test.ts`.
+- [X] T058 [US3] Crear `apps/client/src/features/users/components/UsersTable.tsx` (+ `.module.css`) componiendo `Table` (con tarjetas en móvil), `StatusStamp` y un menú de acciones por fila:
   - el menú compone `IconButton` (T033a) y `Menu` (T033b); `UsersTable` solo decide qué acciones mostrar;
   - las acciones se reciben por props: `onEdit`, `onResetPassword`, `onBlock` y `onUnblock`;
   - en esta fase solo se cablea `onEdit`;
   - hace pasar T055.
-- [ ] T059 [US3] Completar `apps/client/src/pages/UsersSettingsPage.tsx` con la sección «Usuarios» (contador «N usuarios», estados de carga y error con `Alert`):
+- [X] T059 [US3] Completar `apps/client/src/pages/UsersSettingsPage.tsx` con la sección «Usuarios» (contador «N usuarios», estados de carga y error con `Alert`):
   - al montar despacha `loadUsers`;
   - `onEdit` abre `Dialog` «Editar usuario» con `UserForm` en modo edición y despacha `updateUser`;
   - layout de dos columnas que se apila por debajo de 760 px, como en el tablero.

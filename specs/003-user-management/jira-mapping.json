@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-16T17:15:51Z",
-  "updated_at": "2026-10-19T12:01:09Z",
+  "updated_at": "2026-10-19T12:17:01Z",
   "spec": "003-user-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -541,7 +541,7 @@
           "key": "AB2B-268",
           "id": "T054",
           "summary": "T054: Tests de listUsers y GET /api/users (exclusión de cuenta inicial, orden es, roleName, 403)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-268"
         },
@@ -549,7 +549,7 @@
           "key": "AB2B-269",
           "id": "T055",
           "summary": "T055: Tests de UsersTable (columnas, último acceso, «(tú)» y menú de opciones por fila)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-269"
         },
@@ -557,7 +557,7 @@
           "key": "AB2B-270",
           "id": "T056",
           "summary": "T056: Implementar listUsers() y ruta GET /api/users con handler list y bloque @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T054"
           ],
@@ -567,7 +567,7 @@
           "key": "AB2B-274",
           "id": "T057",
           "summary": "T057: fetchUsers en usersApi.ts y thunk loadUsers en usersSlice.ts con estados loading/failed",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-274"
         },
@@ -575,7 +575,7 @@
           "key": "AB2B-275",
           "id": "T058",
           "summary": "T058: Crear UsersTable.tsx con Table/tarjetas, StatusStamp y menú de acciones accesible por fila",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T055",
             "T033a",
@@ -587,7 +587,7 @@
           "key": "AB2B-276",
           "id": "T059",
           "summary": "T059: Sección «Usuarios» en UsersSettingsPage.tsx con loadUsers, diálogo de edición y test de página",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-276"
         }

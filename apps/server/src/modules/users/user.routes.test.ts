@@ -85,7 +85,12 @@ async function adminToken(): Promise<string> {
   return res.body.data.accessToken as string;
 }
 
-const NEW_USER = { name: 'Bea Gómez', email: 'bea@empresa.es', role: 'Comercial', password: PASSWORD };
+const NEW_USER = {
+  name: 'Bea Gómez',
+  email: 'bea@empresa.es',
+  role: 'Comercial',
+  password: PASSWORD,
+};
 
 function newUser(token: string, body: Record<string, unknown> = {}) {
   return authed('post', '/api/users', token).send({ ...NEW_USER, ...body });
@@ -171,5 +176,25 @@ describe('Permisos de POST y PATCH (US2)', () => {
     });
     expect(patch.status).toBe(403);
     expect(patch.body.error.code).toBe('AUTH_FORBIDDEN');
+  });
+});
+
+describe('GET /api/users (US3)', () => {
+  it('200 con los usuarios reales, sin la cuenta inicial ni contraseñas', async () => {
+    const token = await adminToken();
+    await newUser(token);
+    const res = await request(app()).get('/api/users').set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(200);
+    const emails = (res.body.data as Array<{ email: string }>).map((user) => user.email);
+    expect(emails).toEqual(['ana@empresa.es', 'bea@empresa.es']);
+    expect(res.body.data[1]).toMatchObject({ roleName: 'Comercial', lastLoginAt: null });
+    expect(JSON.stringify(res.body)).not.toMatch(/password|_id/);
+  });
+
+  it('403 AUTH_FORBIDDEN para un Comercial', async () => {
+    const comercial = await comercialToken(await adminToken());
+    const res = await request(app()).get('/api/users').set('Authorization', `Bearer ${comercial}`);
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('AUTH_FORBIDDEN');
   });
 });

@@ -5,7 +5,7 @@ import type {
   UpdateUserRequest,
   UserSummary,
 } from '@app/shared';
-import { createUserRequest, toUsersErrorMessage, updateUserRequest } from './usersApi';
+import { createUserRequest, fetchUsers, toUsersErrorMessage, updateUserRequest } from './usersApi';
 
 export interface UsersState {
   items: UserSummary[];
@@ -21,6 +21,17 @@ const initialState: UsersState = { items: [], status: 'idle', error: null, savin
 function byName(a: UserSummary, b: UserSummary): number {
   return a.name.localeCompare(b.name, 'es');
 }
+
+export const loadUsers = createAsyncThunk<UserSummary[], void, { rejectValue: string }>(
+  'users/load',
+  async (_, { rejectWithValue }) => {
+    try {
+      return await fetchUsers();
+    } catch (err) {
+      return rejectWithValue(toUsersErrorMessage(err));
+    }
+  },
+);
 
 export const createUser = createAsyncThunk<
   CreateUserResponse,
@@ -50,13 +61,25 @@ function replaceItem(items: UserSummary[], user: UserSummary): UserSummary[] {
   return items.map((item) => (item.id === user.id ? user : item)).sort(byName);
 }
 
-// Los thunks loadUsers, setUserStatus y resetUserPassword llegan con cada historia.
+// Los thunks setUserStatus y resetUserPassword llegan con US4 y US5.
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(loadUsers.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(loadUsers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload;
+      })
+      .addCase(loadUsers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload ?? null;
+      })
       .addCase(createUser.pending, (state) => {
         state.saving = true;
         state.error = null;

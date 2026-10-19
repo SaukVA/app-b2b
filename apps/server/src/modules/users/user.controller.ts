@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import type { CreateUserResponse, UserSummary } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { sendSuccess } from '../../utils/sendSuccess';
-import { createUser, updateUser, type UserRef } from './user.service';
+import { createUser, listUsers, updateUser, type UserRef } from './user.service';
 import type { CreateUserInput, UpdateUserInput, UserIdParams } from './user.validation';
 
 // Controlador HTTP de Ajustes › Usuarios. Los handlers llegan con cada historia (US1–US5); las respuestas
@@ -15,6 +15,10 @@ function actorOf(req: Request): UserRef {
 }
 
 export const userController = {
+  async list(_req: Request, res: Response): Promise<void> {
+    sendSuccess<UserSummary[]>(res, await listUsers());
+  },
+
   async create(req: Request, res: Response): Promise<void> {
     const result = await createUser(req.body as CreateUserInput, actorOf(req));
     sendSuccess<CreateUserResponse>(res, result, 201);
