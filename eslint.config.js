@@ -11,6 +11,10 @@ module.exports = tseslint.config(
       '**/coverage/**',
       'apps/desktop/renderer/**',
       '**/*.min.js',
+      // Salida de Playwright (ADR 0004)
+      'test-results/**',
+      'playwright-report/**',
+      '.playwright-cli/**',
     ],
   },
   js.configs.recommended,
