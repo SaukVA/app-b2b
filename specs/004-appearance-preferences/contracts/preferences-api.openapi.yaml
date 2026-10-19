@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: App B2B · Preferencias de apariencia
+  version: 1.0.0
+  description: >
+    Contrato de la feature 004-appearance-preferences. En la implementación la ruta lleva su bloque JSDoc
+    @openapi equivalente en apps/server/src/modules/preferences/preferences.routes.ts y se sirve en
+    /api-docs. Exige sesión (bearerAuth) pero ningún permiso de módulo: cualquier rol, incluida la cuenta
+    inicial "admin", cambia solo sus propias preferencias.
+    SuccessEnvelope, ErrorEnvelope y las respuestas ValidationError y Unauthenticated son las de
+    contracts/auth-api.openapi.yaml de 001.
+    Cambio en el contrato de 001 y 003 (research R2): AuthUser (en /auth/login, /auth/refresh y /auth/me)
+    sustituye homeScreen por preferences (AppearancePreferences); se actualiza su bloque @openapi en
+    auth.routes.ts.
+servers:
+  - url: /api
+tags:
+  - name: Preferences
+security:
+  - bearerAuth: []
+paths:
+  /preferences:
+    patch:
+      tags: [Preferences]
+      summary: Cambia una o varias preferencias del usuario de la sesión
+      description: >
+        Cuerpo parcial: solo se cambian los campos enviados. null vuelve al valor por defecto. Responde con
+        las preferencias guardadas, ya resueltas con sus valores por defecto.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdatePreferencesRequest' }
+      responses:
+        '200':
+          description: Preferencias guardadas
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/AppearancePreferences' }
+        '400':
+          description: >
+            VALIDATION_ERROR (cuerpo vacío o valor fuera del enum) | PREFERENCES_HOME_SCREEN_NOT_ALLOWED (la
+            pantalla no existe todavía en la aplicación o el rol no tiene acceso a ella)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+        '401':
+          $ref: '../../001-user-login/contracts/auth-api.openapi.yaml#/components/responses/Unauthenticated'
+components:
+  schemas:
+    ThemePreference:
+      type: string
+      enum: [light, dark, system]
+      description: Claro, Oscuro o Según el sistema.
+    TableDensity:
+      type: string
+      enum: [comfortable, compact]
+      description: Cómoda o Compacta.
+    MoneyFormat:
+      type: string
+      enum: [es, en]
+      description: 'es = "1.248,50 €"; en = "€ 1,248.50".'
+    HomeScreen:
+      type: string
+      enum: [panel, ventas, clientes, productos, proveedores, cobros]
+    AppearancePreferences:
+      type: object
+      required: [theme, tableDensity, moneyFormat, homeScreen]
+      properties:
+        theme: { $ref: '#/components/schemas/ThemePreference' }
+        tableDensity: { $ref: '#/components/schemas/TableDensity' }
+        moneyFormat: { $ref: '#/components/schemas/MoneyFormat' }
+        homeScreen:
+          allOf:
+            - $ref: '#/components/schemas/HomeScreen'
+          nullable: true
+          description: null = sin elegir; el cliente usa la pantalla por defecto efectiva.
+    UpdatePreferencesRequest:
+      type: object
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        theme:
+          allOf:
+            - $ref: '#/components/schemas/ThemePreference'
+          nullable: true
+        tableDensity:
+          allOf:
+            - $ref: '#/components/schemas/TableDensity'
+          nullable: true
+        moneyFormat:
+          allOf:
+            - $ref: '#/components/schemas/MoneyFormat'
+          nullable: true
+        homeScreen:
+          allOf:
+            - $ref: '#/components/schemas/HomeScreen'
+          nullable: true
+    AuthUser:
+      description: >
+        AuthUser de 001 tal como lo deja 003, con preferences en lugar de homeScreen. Solo se muestran los
+        campos que cambian; el resto sigue igual que en users-api.openapi.yaml de 003.
+      type: object
+      required: [preferences]
+      properties:
+        preferences: { $ref: '#/components/schemas/AppearancePreferences' }
+    SuccessEnvelope:
+      $ref: '../../001-user-login/contracts/auth-api.openapi.yaml#/components/schemas/SuccessEnvelope'
+    ErrorEnvelope:
+      $ref: '../../001-user-login/contracts/auth-api.openapi.yaml#/components/schemas/ErrorEnvelope'
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
