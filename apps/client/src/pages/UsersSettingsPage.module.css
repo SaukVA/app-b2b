@@ -13,6 +13,14 @@
   align-items: start;
 }
 
+/* Segunda columna: listado y, debajo, «Permisos por rol». */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
 .panel {
   display: flex;
   flex-direction: column;

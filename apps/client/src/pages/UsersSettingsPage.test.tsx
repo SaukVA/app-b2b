@@ -250,3 +250,14 @@ describe('UsersSettingsPage · restablecer contraseña (US5)', () => {
     expect(dialog.getByRole('alert').textContent).toContain(message);
   });
 });
+
+describe('UsersSettingsPage · permisos por rol (US6)', () => {
+  it('muestra la matriz de solo lectura con los roles cargados', async () => {
+    renderPage();
+    const section = within(await screen.findByRole('region', { name: 'Permisos por rol' }));
+    const table = within(await section.findByRole('table'));
+    const titles = table.getAllByRole('columnheader').map((h) => h.querySelector('abbr')?.title);
+    expect(titles).toEqual([undefined, 'Administrador', 'Comercial']);
+    expect(table.getAllByRole('row')).toHaveLength(7);
+  });
+});

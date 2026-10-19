@@ -553,7 +553,7 @@ restaurado al arrancar y rol inexistente rechazado).
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T074 [P] [US6] Crear `apps/client/src/features/users/components/PermissionsMatrix.test.tsx`:
+- [X] T074 [P] [US6] Crear `apps/client/src/features/users/components/PermissionsMatrix.test.tsx`:
   - con los 4 `RoleSummary` iniciales pinta 6 filas (Ventas, Clientes, Productos, Proveedores, Cobros,
     Ajustes) con E, V o — idénticos a FR-020;
   - un quinto rol añade una columna;
@@ -563,13 +563,13 @@ restaurado al arrancar y rol inexistente rechazado).
 
 ### Implementation for User Story 6
 
-- [ ] T075 [US6] Crear `apps/client/src/features/users/components/PermissionsMatrix.tsx` (+ `.module.css`):
+- [X] T075 [US6] Crear `apps/client/src/features/users/components/PermissionsMatrix.tsx` (+ `.module.css`):
   - recibe `roles: RoleSummary[]`;
   - filas en el orden de `APP_MODULES` con etiqueta legible y columnas en el orden de `order`;
   - celdas en IBM Plex Mono: `edit` → E, `view` → V, `none` → —;
   - subtítulo «Guardados en la base de datos. Solo lectura.» y leyenda;
   - hace pasar T074.
-- [ ] T076 [US6] Añadir la sección «Permisos por rol» con `PermissionsMatrix` a `apps/client/src/pages/UsersSettingsPage.tsx`, en la segunda columna y con los roles de `rolesSlice`. Añadir el caso a `UsersSettingsPage.test.tsx`.
+- [X] T076 [US6] Añadir la sección «Permisos por rol» con `PermissionsMatrix` a `apps/client/src/pages/UsersSettingsPage.tsx`, en la segunda columna y con los roles de `rolesSlice`. Añadir el caso a `UsersSettingsPage.test.tsx`.
 
 **Checkpoint**: todas las historias completas.
 

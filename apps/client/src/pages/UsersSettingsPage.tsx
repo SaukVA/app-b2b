@@ -14,6 +14,7 @@ import { isConnectionErrorMessage } from '../features/auth/authApi';
 import { selectUser } from '../features/auth/authSelectors';
 import { sessionCleared } from '../features/auth/authSlice';
 import { loadRoles } from '../features/roles/rolesSlice';
+import { PermissionsMatrix } from '../features/users/components/PermissionsMatrix';
 import { ResetPasswordDialog } from '../features/users/components/ResetPasswordDialog';
 import { UserForm, type UserFormOutcome } from '../features/users/components/UserForm';
 import { UsersTable } from '../features/users/components/UsersTable';
@@ -346,7 +347,21 @@ function UsersListSection() {
   );
 }
 
-/** Gestión con usuarios reales: alta a la izquierda y listado a la derecha (se apilan en móvil). */
+/** Matriz guardada en la base de datos, de solo lectura (US6, FR-020). */
+function PermissionsSection() {
+  const roles = useAppSelector((state) => state.roles.items);
+  return (
+    <section aria-labelledby="users-perms-title" className={styles.panel}>
+      <SectionHeader id="users-perms-title" title="Permisos por rol" />
+      <PermissionsMatrix roles={roles} />
+    </section>
+  );
+}
+
+/**
+ * Gestión con usuarios reales: alta a la izquierda; listado y permisos a la derecha (se apilan en
+ * móvil).
+ */
 function UsersManagement() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -356,12 +371,15 @@ function UsersManagement() {
   return (
     <div className={styles.columns}>
       <NewUserSection />
-      <UsersListSection />
+      <div className={styles.stack}>
+        <UsersListSection />
+        <PermissionsSection />
+      </div>
     </div>
   );
 }
 
-/** Ajustes › Usuarios. La matriz de permisos llega con US6. */
+/** Ajustes › Usuarios. */
 export function UsersSettingsPage() {
   const user = useAppSelector(selectUser);
   return (
