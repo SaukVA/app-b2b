@@ -188,14 +188,14 @@ con `aria-current="page"`.
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T018 [P] [US2] Ampliar `apps/client/src/components/NavBar.test.tsx`:
+- [X] T018 [P] [US2] Ampliar `apps/client/src/components/NavBar.test.tsx`:
   - en la ruta `/ajustes/usuarios`, el elemento `/ajustes` tiene `aria-current="page"`;
   - ningún otro elemento lo tiene;
   - en `/ajustes` también (contrato N2).
 
 ### Implementación de US2
 
-- [ ] T019 [US2] En `NavBarLink` (`apps/client/src/components/NavBar.tsx`), usar `NavLink` sin `end` para que
+- [X] T019 [US2] En `NavBarLink` (`apps/client/src/components/NavBar.tsx`), usar `NavLink` sin `end` para que
   las subrutas activen el módulo. En `NavBar.module.css`, estilo activo: fondo `--nav-active`, texto
   `--nav-text-active` (token nuevo en `apps/client/src/styles/tokens.css`: `#E8EAE6` en los dos temas) e icono
   `--nav-icon-active`. Indicador de foco visible con `--accent`.

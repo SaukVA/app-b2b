@@ -16,6 +16,8 @@
   --nav-active: #262b31;
   --nav-text: #c9cdd2;
   --nav-icon-active: #f08a5d;
+  /* Texto del elemento activo del menú: igual en los dos temas (005). */
+  --nav-text-active: #e8eae6;
   --accent: #b4430f;
   --accent-hover: #8a320a;
   --on-accent: #ffffff;

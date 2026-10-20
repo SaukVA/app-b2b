@@ -8,9 +8,9 @@ const ITEMS: NavBarItem[] = [
   { to: '/clientes', label: 'Clientes', icon: <svg /> },
 ];
 
-function renderNavBar(items: NavBarItem[] = ITEMS) {
+function renderNavBar(items: NavBarItem[] = ITEMS, path = '/') {
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[path]}>
       <NavBar
         label="Principal"
         brand={<span>Marca</span>}
@@ -52,4 +52,17 @@ describe('NavBar', () => {
     renderNavBar();
     expect(screen.queryByRole('button', { name: /menú/ })).toBeNull();
   });
+});
+
+describe('NavBar · elemento activo', () => {
+  it.each(['/ajustes/usuarios', '/ajustes'])(
+    'en %s, Ajustes es el único con aria-current="page" (contrato N2)',
+    (path) => {
+      renderNavBar(ITEMS, path);
+      const current = within(nav())
+        .getAllByRole('link')
+        .filter((link) => link.getAttribute('aria-current') === 'page');
+      expect(current.map((link) => link.textContent)).toEqual(['Ajustes']);
+    },
+  );
 });

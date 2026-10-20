@@ -46,6 +46,17 @@
   background: var(--nav-active);
 }
 
+/* Activo (NavLink pone aria-current="page", también en subpantallas). El foco usa el :focus-visible global. */
+.item[aria-current='page'] {
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+  font-weight: 600;
+}
+
+.item[aria-current='page'] svg {
+  color: var(--nav-icon-active);
+}
+
 .label {
   white-space: nowrap;
 }
