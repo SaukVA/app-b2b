@@ -1,8 +1,9 @@
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { Provider } from 'react-redux';
-import type { AppearancePreferences } from '@app/shared';
+import type { AppearancePreferences, AuthUser } from '@app/shared';
 import { setupStore } from '../../store/store';
+import { login } from '../auth/authSlice';
 import { useApplyAppearance } from './useApplyAppearance';
 
 const LAST_THEME_KEY = 'appearance.lastTheme';
@@ -12,6 +13,26 @@ const PREFS: AppearancePreferences = {
   moneyFormat: 'es',
   homeScreen: null,
 };
+
+function userWith(preferences: AppearancePreferences): AuthUser {
+  return {
+    id: '1',
+    login: 'ana@empresa.es',
+    name: 'Ana',
+    role: 'Comercial',
+    roleName: 'Comercial',
+    permissions: {
+      ventas: 'edit',
+      clientes: 'edit',
+      productos: 'view',
+      proveedores: 'none',
+      cobros: 'view',
+      ajustes: 'none',
+    },
+    isBootstrap: false,
+    preferences,
+  };
+}
 
 function renderWith(applied: AppearancePreferences | null) {
   const store = setupStore({
@@ -66,6 +87,29 @@ describe('useApplyAppearance', () => {
     expect(() => renderWith(null)).not.toThrow();
     expect(root().dataset.theme).toBe('light');
     expect(() => renderWith(PREFS)).not.toThrow();
+    expect(root().dataset.theme).toBe('dark');
+  });
+});
+
+// T027: sin destello al entrar. El login cambia `preferences.applied` y el useLayoutEffect escribe data-theme
+// en ese mismo commit, antes del pintado; no hace falta esperar a ningún efecto posterior.
+describe('useApplyAppearance al iniciar sesión', () => {
+  it('aplica el tema del usuario al terminar el act del login', () => {
+    const store = setupStore();
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <Provider store={store}>{children}</Provider>
+    );
+    renderHook(() => useApplyAppearance(), { wrapper });
+    expect(root().dataset.theme).toBe('light');
+    act(() => {
+      store.dispatch(
+        login.fulfilled({ accessToken: 'jwt', user: userWith(PREFS) }, '', {
+          login: 'a',
+          password: 'b',
+          persistent: false,
+        }),
+      );
+    });
     expect(root().dataset.theme).toBe('dark');
   });
 });

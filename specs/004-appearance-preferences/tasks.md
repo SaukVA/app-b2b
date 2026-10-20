@@ -220,12 +220,12 @@ oscuro sin destello; Según el sistema sigue al equipo en vivo.
 
 ### Tests de US1 (primero, deben fallar) ⚠️
 
-- [ ] T023 [P] [US1] Crear `apps/client/src/features/preferences/components/AppearanceForm.test.tsx` (bloque
+- [X] T023 [P] [US1] Crear `apps/client/src/features/preferences/components/AppearanceForm.test.tsx` (bloque
   Tema):
   - con `applied.theme = 'light'` aparece "Claro" marcado (`aria-checked`) en el grupo "Tema";
   - al pulsar "Oscuro" se despacha `savePreference({ theme: 'dark' })` y el grupo lo marca al momento;
   - las 3 opciones llevan su descripción del tablero.
-- [ ] T024 [P] [US1] Crear `e2e/appearance.spec.ts` (Playwright, con el servidor E2E de ADR 0004):
+- [X] T024 [P] [US1] Crear `e2e/appearance.spec.ts` (Playwright, con el servidor E2E de ADR 0004):
   - el usuario `admin` elige "Oscuro" y `html[data-theme]` es `dark`;
   - tras cerrar sesión, el login tiene `data-theme="dark"` desde el primer documento (comprobado con
     `page.addInitScript`, que registra el valor de `data-theme` en `DOMContentLoaded` antes de que cargue React);
@@ -235,11 +235,11 @@ oscuro sin destello; Según el sistema sigue al equipo en vivo.
 
 ### Implementación de US1
 
-- [ ] T025 [US1] Añadir a `apps/client/index.html`, dentro de `<head>` y antes de los `<link>`, un script inline
+- [X] T025 [US1] Añadir a `apps/client/index.html`, dentro de `<head>` y antes de los `<link>`, un script inline
   (≤10 líneas, sin dependencias) que lee `localStorage['appearance.lastTheme']` dentro de `try/catch` y pone
   `document.documentElement.dataset.theme` a ese valor si es `light`, `dark` o `system`, o a `light` en otro
   caso (research R5, FR-007).
-- [ ] T026 [US1] Crear `apps/client/src/features/preferences/components/AppearanceForm.tsx` (+ `.module.css`)
+- [X] T026 [US1] Crear `apps/client/src/features/preferences/components/AppearanceForm.tsx` (+ `.module.css`)
   con el bloque "Tema" del tablero: cabecera "Tema", subtítulo "Se guarda por usuario y se aplica en la web y en
   la aplicación de escritorio." y `OptionGroup variant="cards"` con:
   - textos del tablero: Claro ("Papel y tinta. Recomendado para oficina."), Oscuro ("Menos brillo en turnos
@@ -249,7 +249,7 @@ oscuro sin destello; Según el sistema sigue al equipo en vivo.
     el tablero;
   - `onChange` → `dispatch(savePreference({ theme }))`.
   Montarlo en `AppearanceSettingsPage`.
-- [ ] T027 [US1] Garantizar que no destella al entrar, sin código condicional: la navegación tras el login la
+- [X] T027 [US1] Garantizar que no destella al entrar, sin código condicional: la navegación tras el login la
   hace `<Navigate>` en `apps/client/src/pages/LoginPage.tsx` (línea `if (isAuthenticated && user) return
   <Navigate …>`) en el mismo commit en que `login.fulfilled` cambia `preferences.applied`, y el
   `useLayoutEffect` de `AppearanceRoot` (T020) escribe `data-theme` antes del pintado. No se modifican

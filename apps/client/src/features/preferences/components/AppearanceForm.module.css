@@ -1,0 +1,105 @@
+/* Tablero «Ajustes» › Apariencia. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  margin: 0;
+  font: 600 18px var(--font-sans);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink2);
+}
+
+.body {
+  padding: 20px;
+}
+
+/*
+ * Miniatura de cada tema con sus propios colores, sea cual sea el tema aplicado: por eso son valores fijos
+ * de la paleta de tokens.css y no var(--…). «Según el sistema» parte el fondo en claro y oscuro.
+ */
+.preview {
+  display: flex;
+  height: 110px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+}
+
+.light {
+  --p-nav: #16191d;
+  --p-bg: #f3f4f1;
+  --p-ink: #16191d;
+  --p-surface: #ffffff;
+  --p-border: #d9dcd5;
+  --p-accent: #b4430f;
+}
+
+.dark {
+  --p-nav: #0b0d0f;
+  --p-bg: #111417;
+  --p-ink: #e8eae6;
+  --p-surface: #1a1e23;
+  --p-border: #2f353c;
+  --p-accent: #e8794a;
+}
+
+.system {
+  --p-nav: #16191d;
+  --p-bg: linear-gradient(90deg, #f3f4f1 50%, #111417 50%);
+  --p-ink: #6b717a;
+  --p-surface: transparent;
+  --p-border: #d9dcd5;
+  --p-accent: #b4430f;
+}
+
+.previewNav {
+  width: 28%;
+  background: var(--p-nav);
+}
+
+.previewBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--p-bg);
+}
+
+.previewLine {
+  width: 50%;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--p-ink);
+}
+
+.previewPanel {
+  flex: 1;
+  border: 1px solid var(--p-border);
+  border-radius: 4px;
+  background: var(--p-surface);
+}
+
+.previewButton {
+  width: 36%;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--p-accent);
+}

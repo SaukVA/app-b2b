@@ -1,4 +1,5 @@
 import { Alert } from '../components/Alert';
+import { AppearanceForm } from '../features/preferences/components/AppearanceForm';
 import { useAppSelector } from '../store/store';
 import styles from './AppearanceSettingsPage.module.css';
 
@@ -17,6 +18,7 @@ export function AppearanceSettingsPage() {
         Apariencia
       </h2>
       <SaveErrorNotice />
+      <AppearanceForm />
     </section>
   );
 }
