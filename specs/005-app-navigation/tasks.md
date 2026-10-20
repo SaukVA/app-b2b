@@ -80,19 +80,19 @@ prioridad: US1 → US2 → US3 → US4 (P1) → US5 → US6 (P2).
 
 ### Tests de Foundational (primero, deben fallar) ⚠️
 
-- [ ] T004 [P] Crear `packages/shared/src/constants/modules.test.ts`:
+- [X] T004 [P] Crear `packages/shared/src/constants/modules.test.ts`:
   - `IMPLEMENTED_MODULES` es `['ajustes']`;
   - `isModuleImplemented('ajustes') === true`;
   - `isModuleImplemented` devuelve `false` para `ventas`, `clientes`, `productos`, `proveedores` y `cobros`.
 
 ### Implementación de Foundational
 
-- [ ] T005 Crear `packages/shared/src/constants/modules.ts` con
+- [X] T005 Crear `packages/shared/src/constants/modules.ts` con
   `export const IMPLEMENTED_MODULES: readonly AppModule[] = ['ajustes'];` y
   `export function isModuleImplemented(module: AppModule): boolean`. Incluir un comentario de cabecera: «Único
   sitio que se edita al implementar un módulo (005 FR-010)». Exportar ambos en
   `packages/shared/src/index.ts`.
-- [ ] T006 [P] Crear `apps/client/src/features/navigation/NavIcons.tsx`:
+- [X] T006 [P] Crear `apps/client/src/features/navigation/NavIcons.tsx`:
   - un componente por icono: `VentasIcon`, `ClientesIcon`, `ProductosIcon`, `ProveedoresIcon`, `CobrosIcon`,
     `AjustesIcon` y `CollapseIcon` (chevron que gira según el estado);
   - SVG inline de 18×18, `viewBox="0 0 24 24"`, `fill="none"`, `stroke="currentColor"`,
