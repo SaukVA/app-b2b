@@ -134,12 +134,14 @@ Las pantallas de escritorio son fluidas (anchura de referencia 1440 px); las ver
 | Productos | `Productos.dc.html` | `ProductosMovil.dc.html` | Filtros (búsqueda, categoría, subcategoría, proveedor, solo stock bajo), tabla con stock/mín., precio y estado, importar CSV |
 | Clientes | `Clientes.dc.html` | `ClientesMovil.dc.html` | Listado con riesgo usado y saldo + ficha lateral con historial reciente |
 | Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Listado con plazo y compras del año + productos asociados y pedido de compra sugerido |
-| Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio), Base de datos (API / MongoDB directo) y Usuarios (invitaciones, roles, matriz de permisos) |
+| Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio), Base de datos (estado de la conexión; web de solo lectura, escritorio con cadena de conexión editable) y Usuarios (alta directa con contraseña inicial, listado Activo/Bloqueado, menú por fila con editar, restablecer contraseña y bloquear/desbloquear, diálogos de confirmación, aviso de primer Administrador y matriz de permisos de solo lectura). Ajustes del tablero: `plataforma` (Web/Escritorio), `conexion` (Conectado/Error) y `primerAcceso` (cuenta inicial «admin») |
 | Login | `Login.dc.html` | `LoginMovil.dc.html` | Hero oscuro + formulario, estado de error, indicador de servidor |
 
 **Pendientes de diseño**: Panel (`Dashboard`), Ventas, Nueva venta y Cobros. Los tableros ya enlazan a `Dashboard.dc.html`, `Ventas.dc.html` y `NuevaVenta.dc.html`, que todavía no existen.
 
-Roles que aparecen en los diseños: Administrador, Comercial, Almacén, Administración (matriz de permisos en Ajustes › Usuarios).
+Roles que aparecen en los diseños: Administrador, Comercial, Almacén, Administración (matriz de permisos en Ajustes › Usuarios). En la aplicación, los roles y la matriz se guardan en la base de datos (spec 003): la matriz pinta una columna por rol guardado, y el diseño muestra los valores iniciales.
+
+Estados de usuario: solo **Activo** y **Bloqueado** (no hay invitaciones). Colores de estado: Activo `okBg`/`okFg`; Bloqueado `#FBE4E1`/`#A12A1C` (oscuro `#3A1D1A`/`#F09A8E`). Aviso (primer acceso, cierre de sesiones al cambiar de base de datos): `#FDF3D7`/`#6B4900` con borde `#E9CF8A` (oscuro `#3A3014`/`#E8C66A`, borde `#5C4A1C`). La acción destructiva «Bloquear» usa `#A12A1C` con texto blanco (oscuro `#F09A8E` con texto `#16191D`).
 
 ## Carpeta `canvas/`
 

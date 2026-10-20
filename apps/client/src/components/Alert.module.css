@@ -21,3 +21,9 @@
   background: var(--surface2);
   color: var(--ink2);
 }
+
+.warning {
+  background: var(--notice-bg);
+  color: var(--notice-fg);
+  border: 1px solid var(--notice-border);
+}

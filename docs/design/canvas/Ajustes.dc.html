@@ -31,18 +31,18 @@ a{color:#B4430F}a:hover{color:#8A320A}
 }
 </style>
 </helmet>
-<div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: {{t.bg}}; color: {{t.ink}}; font-family: 'IBM Plex Sans', system-ui, sans-serif">
+<div class="app" style="position: relative; min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: {{t.bg}}; color: {{t.ink}}; font-family: 'IBM Plex Sans', system-ui, sans-serif">
 
 <nav class="nav" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: {{t.nav}}; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
 <div class="nav-brand" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 24px">
 <div style="width: 36px; height: 36px; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
 <div class="nav-brand-text" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
 </div>
-<a href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>Clientes</a>
-<a href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg>Productos</a>
-<a href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Proveedores</a>
-<a class="nav-push" href="Ajustes.dc.html" aria-current="page" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: {{t.navActive}}; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>Ajustes</a>
-<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">[USUARIO]</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Administrador · Web</span><a href="Login.dc.html" style="margin-top: 6px; font-size: 13px; color: #C9CDD2">Cerrar sesión</a></div>
+<a href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>Clientes</a>
+<a href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg>Productos</a>
+<a href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Proveedores</a>
+<a class="nav-push" href="Ajustes.dc.html" aria-current="page" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: {{t.navActive}}; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>Ajustes</a>
+<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">{{navUser}}</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Administrador · {{platformLabel}}</span><a href="Login.dc.html" style="margin-top: 6px; font-size: 13px; color: #C9CDD2">Cerrar sesión</a></div>
 </nav>
 
 <main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
@@ -104,58 +104,83 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <div style="padding: 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
 <div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Conexión a la base de datos</h2>
-<span style="font-size: 14px; color: {{t.ink2}}">Solo administradores. La cadena de conexión se guarda en el servidor y nunca se envía al navegador.</span>
+<sc-if value="{{isWeb}}" hint-placeholder-val="{{ true }}">
+<span style="font-size: 14px; color: {{t.ink2}}">Solo administradores. Solo lectura: la conexión se configura en el servidor de la empresa y la cadena de conexión nunca se envía al navegador.</span>
+</sc-if>
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 14px; color: {{t.ink2}}">Solo administradores. Base de datos a la que se conecta este equipo, en él mismo o en un servidor remoto.</span>
+</sc-if>
 </div>
-<span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 4px; background: {{t.okBg}}; color: {{t.okFg}}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.06em"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{t.okFg}}"></span>CONECTADO</span>
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 4px; background: {{db.bg}}; color: {{db.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{db.fg}}"></span>{{db.label}}</span>
 </div>
 <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px">
-<div style="display: flex; flex-direction: column; gap: 8px">
-<span id="aj-modo" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Origen de datos</span>
-<div role="radiogroup" aria-labelledby="aj-modo" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px">
-<sc-for list="{{sources}}" as="so" hint-placeholder-count="2">
-<button type="button" role="radio" aria-checked="{{so.checked}}" onClick="{{so.pick}}" style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 8px; border: {{so.border}}; background: {{so.bg}}; color: {{t.ink}}; text-align: left; font: inherit; cursor: pointer"><span style="font-size: 15px; font-weight: 600">{{so.label}}</span><span style="font-size: 13px; color: {{t.ink2}}">{{so.desc}}</span></button>
-</sc-for>
-</div>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
-<div style="display: flex; flex-direction: column; gap: 6px; grid-column: 1 / -1">
-<label for="aj-uri" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">{{uriLabel}}</label>
-<input id="aj-uri" type="text" value="{{uriValue}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
-<span style="font-size: 12px; color: {{t.ink3}}">{{uriHelp}}</span>
-</div>
-<div style="display: flex; flex-direction: column; gap: 6px">
-<label for="aj-db" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Base de datos</label>
-<input id="aj-db" type="text" value="wholesale" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
-</div>
-<div style="display: flex; flex-direction: column; gap: 6px">
-<label for="aj-timeout" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Tiempo de espera (s)</label>
-<input id="aj-timeout" type="text" value="10" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; text-align: right; color: {{t.ink}}; background: {{t.surface}}">
-</div>
-</div>
+<sc-if value="{{dbError}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="padding: 12px 16px; border-radius: 8px; background: {{t.errBg}}; color: {{t.errFg}}; font-size: 14px">No se ha podido conectar: la base de datos no responde en 10 segundos. Comprueba que el servidor está en marcha y vuelve a probar.</div>
+</sc-if>
 <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 1px solid {{t.border}}; border-radius: 8px; overflow: hidden">
 <div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Servidor</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">[HOST]</dd></div>
-<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Versión MongoDB</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">8.0.x</dd></div>
+<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Versión de la base de datos</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">{{db.version}}</dd></div>
 <div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Última comprobación</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">[FECHA Y HORA]</dd></div>
 </dl>
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="aj-uri" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Cadena de conexión MongoDB</label>
+<input id="aj-uri" type="text" value="mongodb://[USUARIO]:••••••••@[HOST]:27017/wholesale?tls=true" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
+<span style="font-size: 12px; color: {{t.ink3}}">La contraseña se muestra oculta y se guarda cifrada en este equipo. Un servidor remoto exige conexión cifrada (TLS).</span>
+</div>
+<div role="note" style="padding: 12px 16px; border-radius: 8px; border: 1px solid {{t.warnBorder}}; background: {{t.warnBg}}; color: {{t.warnFg}}; font-size: 14px">Al guardar, la aplicación pasa a la nueva base de datos y se cierran todas las sesiones de este equipo, también la tuya: volverás al inicio de sesión.</div>
+</sc-if>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
 <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Probar conexión</button>
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ false }}">
 <button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Guardar cambios</button>
+</sc-if>
 </div>
 </section>
 </sc-if>
 
 <sc-if value="{{showUsuarios}}" hint-placeholder-val="{{ false }}">
-<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
-<section style="flex: 3 1 560px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
-<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between">
-<h2 style="margin: 0; font-size: 18px; font-weight: 600">Usuarios</h2>
-<form style="display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end">
-<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-inv" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Invitar por email</label><input id="aj-inv" type="email" placeholder="nombre@[EMPRESA].es" style="width: 220px; height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"></div>
-<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-rol" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Rol</label><select id="aj-rol" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"><option>Comercial</option><option>Almacén</option><option>Administración</option><option>Administrador</option></select></div>
-<button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Invitar</button>
-</form>
+<div style="display: flex; flex-direction: column; gap: 24px">
+
+<sc-if value="{{firstAdmin}}" hint-placeholder-val="{{ false }}">
+<div role="note" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 8px; border: 1px solid {{t.warnBorder}}; background: {{t.warnBg}}; color: {{t.warnFg}}; font-size: 14px; line-height: 1.5">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>
+<span><strong>Has entrado con la cuenta inicial «admin».</strong> Crea el primer usuario: tiene que ser Administrador. En cuanto lo guardes, la cuenta inicial dejará de funcionar y tendrás que entrar con el usuario nuevo.</span>
 </div>
+</sc-if>
+
+<section aria-labelledby="aj-new" style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 4px">
+<h2 id="aj-new" style="margin: 0; font-size: 18px; font-weight: 600">Nuevo usuario</h2>
+<span style="font-size: 14px; color: {{t.ink2}}">Queda Activo y puede entrar en cuanto lo guardes. Comunícale la contraseña por tu cuenta: la aplicación no envía correos.</span>
+</div>
+<form style="padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-nombre" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Nombre</label><input id="aj-nombre" type="text" autocomplete="off" placeholder="[NOMBRE Y APELLIDOS]" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-email" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Email</label><input id="aj-email" type="email" autocomplete="off" placeholder="nombre@[EMPRESA].es" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"></div>
+<sc-if value="{{firstAdmin}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-rol" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Rol</label><input id="aj-rol" type="text" value="Administrador" readonly aria-describedby="aj-rol-help" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.border}}; border-radius: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; color: {{t.ink2}}; background: {{t.surface2}}"><span id="aj-rol-help" style="font-size: 12px; color: {{t.ink3}}">El primer usuario tiene que ser Administrador.</span></div>
+</sc-if>
+<sc-if value="{{notFirstAdmin}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-rol" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Rol</label><select id="aj-rol" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"><sc-for list="{{roles}}" as="r" hint-placeholder-count="4"><option>{{r.name}}</option></sc-for></select></div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="aj-pass" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Contraseña inicial</label><span style="position: relative; display: flex"><input id="aj-pass" type="password" autocomplete="new-password" aria-describedby="aj-pass-help" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 48px 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}"><button type="button" aria-label="Mostrar contraseña" style="position: absolute; right: 0; top: 0; width: 44px; height: 44px; border: 0; background: transparent; color: {{t.ink2}}; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></span><span id="aj-pass-help" style="font-size: 12px; color: {{t.ink3}}">Mínimo 8 caracteres. No hace falta cambiarla en el primer acceso.</span></div>
+</form>
+<div style="display: flex; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
+<button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">{{createLabel}}</button>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-labelledby="aj-users" style="flex: 3 1 560px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}; display: flex; gap: 12px; align-items: baseline; justify-content: space-between">
+<h2 id="aj-users" style="margin: 0; font-size: 18px; font-weight: 600">Usuarios</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{t.ink2}}">{{userCount}}</span>
+</div>
+<sc-if value="{{firstAdmin}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 32px 20px; text-align: center; font-size: 14px; color: {{t.ink2}}">Todavía no hay usuarios. El primero que des de alta será el Administrador.</p>
+</sc-if>
+<sc-if value="{{notFirstAdmin}}" hint-placeholder-val="{{ true }}">
 <div class="desk" style="overflow-x: auto">
 <table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
 <thead>
@@ -164,46 +189,71 @@ a{color:#B4430F}a:hover{color:#8A320A}
 </tr>
 </thead>
 <tbody>
-<sc-for list="{{users}}" as="u" hint-placeholder-count="5">
+<sc-for list="{{users}}" as="u" hint-placeholder-count="6">
 <tr style="border-top: 1px solid {{t.border}}">
-<td style="padding: 10px 20px"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 32px; height: 32px; border-radius: 6px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600">{{u.initials}}</span><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: {{t.ink3}}">{{u.email}}</span></span></div></td>
+<td style="padding: 10px 20px"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 32px; height: 32px; border-radius: 6px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600">{{u.initials}}</span><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">{{u.name}}<sc-if value="{{u.isMe}}" hint-placeholder-val="{{ false }}"><span style="margin-left: 6px; font-size: 12px; font-weight: 500; color: {{t.ink3}}">(tú)</span></sc-if></span><span style="font-size: 12px; color: {{t.ink3}}">{{u.email}}</span></span></div></td>
 <td style="padding: 10px 12px; font-weight: 500">{{u.role}}</td>
 <td style="padding: 10px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{t.ink2}}">{{u.last}}</td>
 <td style="padding: 10px 12px"><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{u.bg}}; color: {{u.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{u.fg}}"></span>{{u.status}}</span></td>
-<td style="padding: 10px 20px; text-align: right"><button type="button" aria-label="Opciones del usuario" style="width: 44px; height: 44px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button></td>
+<td style="position: relative; padding: 10px 20px; text-align: right">
+<button type="button" aria-label="Opciones de {{u.name}}" aria-haspopup="menu" aria-expanded="{{u.expanded}}" onClick="{{u.toggle}}" style="width: 44px; height: 44px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
+<sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{ false }}">
+<div role="menu" aria-label="Acciones sobre {{u.name}}" style="position: absolute; right: 20px; top: 56px; z-index: 3; min-width: 220px; padding: 6px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; flex-direction: column; text-align: left">
+<button type="button" role="menuitem" onClick="{{u.edit}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Editar nombre, email o rol</button>
+<button type="button" role="menuitem" onClick="{{u.reset}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Restablecer contraseña</button>
+<sc-if value="{{u.canBlock}}" hint-placeholder-val="{{ true }}">
+<button type="button" role="menuitem" onClick="{{u.block}}" style="height: 44px; padding: 0 12px; border: 0; border-top: 1px solid {{t.border}}; border-radius: 0 0 6px 6px; background: transparent; color: {{t.errFg}}; font: 600 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Bloquear</button>
+</sc-if>
+<sc-if value="{{u.canUnblock}}" hint-placeholder-val="{{ false }}">
+<button type="button" role="menuitem" onClick="{{u.unblock}}" style="height: 44px; padding: 0 12px; border: 0; border-top: 1px solid {{t.border}}; border-radius: 0 0 6px 6px; background: transparent; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Desbloquear</button>
+</sc-if>
+</div>
+</sc-if>
+</td>
 </tr>
 </sc-for>
 </tbody>
 </table>
 </div>
 <div class="mob" style="flex-direction: column">
-<sc-for list="{{users}}" as="u" hint-placeholder-count="5">
-<article style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid {{t.border}}">
+<sc-for list="{{users}}" as="u" hint-placeholder-count="6">
+<article style="position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid {{t.border}}">
 <span style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600">{{u.initials}}</span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: {{t.ink3}}">{{u.role}} · {{u.last}}</span></span>
-<span style="flex: none; display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{u.bg}}; color: {{u.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{u.fg}}"></span>{{u.status}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: {{t.ink3}}">{{u.role}} · {{u.last}}</span><span style="align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{u.bg}}; color: {{u.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{u.fg}}"></span>{{u.status}}</span></span>
+<button type="button" aria-label="Opciones de {{u.name}}" aria-haspopup="menu" aria-expanded="{{u.expanded}}" onClick="{{u.toggle}}" style="flex: none; width: 44px; height: 44px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
+<sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{ false }}">
+<div role="menu" aria-label="Acciones sobre {{u.name}}" style="position: absolute; right: 16px; top: 60px; z-index: 3; min-width: 220px; padding: 6px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; flex-direction: column">
+<button type="button" role="menuitem" onClick="{{u.edit}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Editar nombre, email o rol</button>
+<button type="button" role="menuitem" onClick="{{u.reset}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Restablecer contraseña</button>
+<sc-if value="{{u.canBlock}}" hint-placeholder-val="{{ true }}">
+<button type="button" role="menuitem" onClick="{{u.block}}" style="height: 44px; padding: 0 12px; border: 0; border-top: 1px solid {{t.border}}; background: transparent; color: {{t.errFg}}; font: 600 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Bloquear</button>
+</sc-if>
+<sc-if value="{{u.canUnblock}}" hint-placeholder-val="{{ false }}">
+<button type="button" role="menuitem" onClick="{{u.unblock}}" style="height: 44px; padding: 0 12px; border: 0; border-top: 1px solid {{t.border}}; background: transparent; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Desbloquear</button>
+</sc-if>
+</div>
+</sc-if>
 </article>
 </sc-for>
 </div>
+</sc-if>
 </section>
 
-<section style="flex: 2 1 340px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
-<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}"><h2 style="margin: 0; font-size: 18px; font-weight: 600">Permisos por rol</h2></div>
+<section aria-labelledby="aj-perms" style="flex: 2 1 340px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
+<div style="padding: 16px 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 4px"><h2 id="aj-perms" style="margin: 0; font-size: 18px; font-weight: 600">Permisos por rol</h2><span style="font-size: 13px; color: {{t.ink2}}">Guardados en la base de datos. Solo lectura.</span></div>
 <div style="overflow-x: auto">
 <table style="width: 100%; min-width: 360px; border-collapse: collapse; font-size: 13px">
 <thead>
 <tr style="background: {{t.surface2}}; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: {{t.ink2}}">
-<th style="padding: 10px 16px; text-align: left; font-weight: 600">Módulo</th><th style="padding: 10px 6px; font-weight: 600">Adm.</th><th style="padding: 10px 6px; font-weight: 600">Com.</th><th style="padding: 10px 6px; font-weight: 600">Alm.</th><th style="padding: 10px 16px 10px 6px; font-weight: 600">Admón.</th>
+<th scope="col" style="padding: 10px 16px; text-align: left; font-weight: 600">Módulo</th>
+<sc-for list="{{roles}}" as="r" hint-placeholder-count="4"><th scope="col" style="padding: 10px 6px; font-weight: 600"><abbr title="{{r.name}}" style="text-decoration: none">{{r.short}}</abbr></th></sc-for>
 </tr>
 </thead>
 <tbody>
 <sc-for list="{{perms}}" as="p" hint-placeholder-count="6">
 <tr style="border-top: 1px solid {{t.border}}">
-<td style="padding: 10px 16px; font-weight: 500">{{p.module}}</td>
-<td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.a}}</td>
-<td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.c}}</td>
-<td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.w}}</td>
-<td style="padding: 10px 16px 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{p.f}}</td>
+<th scope="row" style="padding: 10px 16px; text-align: left; font-weight: 500">{{p.module}}</th>
+<sc-for list="{{p.cells}}" as="c" hint-placeholder-count="4"><td style="padding: 10px 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; color: {{t.ink2}}">{{c.value}}</td></sc-for>
 </tr>
 </sc-for>
 </tbody>
@@ -212,23 +262,72 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <p style="margin: 0; padding: 12px 16px; border-top: 1px solid {{t.border}}; font-size: 12px; color: {{t.ink3}}">E = editar · V = solo ver · — = sin acceso</p>
 </section>
 </div>
+</div>
 </sc-if>
 </main>
+
+<sc-if value="{{showDialog}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 10; background: rgba(22,25,29,0.55); display: flex; align-items: flex-start; justify-content: center; padding: 120px 16px 16px; box-sizing: border-box">
+<div role="dialog" aria-modal="true" aria-labelledby="dlg-title" style="width: 100%; max-width: 480px; background: {{t.surface}}; color: {{t.ink}}; border-radius: 10px; border: 1px solid {{t.border}}; box-shadow: 0 16px 48px rgba(0,0,0,0.25); display: flex; flex-direction: column">
+
+<sc-if value="{{showEdit}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 20px 20px 0; display: flex; flex-direction: column; gap: 4px"><h2 id="dlg-title" style="margin: 0; font-size: 18px; font-weight: 600">Editar usuario</h2><span style="font-size: 14px; color: {{t.ink2}}">Un cambio de rol se aplica a sus sesiones abiertas en 15 minutos como máximo.</span></div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="dlg-nombre" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Nombre</label><input id="dlg-nombre" type="text" value="{{dlg.name}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="dlg-email" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Email</label><input id="dlg-email" type="email" value="[EMAIL]" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="dlg-rol" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Rol</label><select id="dlg-rol" defaultValue="{{dlg.role}}" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; color: {{t.ink}}; background: {{t.surface}}"><sc-for list="{{roles}}" as="r" hint-placeholder-count="4"><option value="{{r.name}}">{{r.name}}</option></sc-for></select></div>
+<sc-if value="{{dlg.onlyAdmin}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="padding: 12px 16px; border-radius: 8px; background: {{t.errBg}}; color: {{t.errFg}}; font-size: 14px">Es el único Administrador activo: no se le puede cambiar el rol. Debe quedar al menos un Administrador activo.</div>
+</sc-if>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
+<button type="button" onClick="{{closeDialog}}" style="height: 44px; padding: 0 18px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Cancelar</button>
+<button type="button" onClick="{{closeDialog}}" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Guardar cambios</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showReset}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 20px 20px 0; display: flex; flex-direction: column; gap: 4px"><h2 id="dlg-title" style="margin: 0; font-size: 18px; font-weight: 600">Restablecer contraseña</h2><span style="font-size: 14px; color: {{t.ink2}}">Pon una contraseña nueva a {{dlg.name}} y comunícasela por tu cuenta. Sus sesiones abiertas se cerrarán y la contraseña anterior dejará de servir.</span></div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<label for="dlg-pass" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Contraseña nueva</label>
+<input id="dlg-pass" type="password" autocomplete="new-password" aria-describedby="dlg-pass-help" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 400 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
+<span id="dlg-pass-help" style="font-size: 12px; color: {{t.ink3}}">Mínimo 8 caracteres.</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
+<button type="button" onClick="{{closeDialog}}" style="height: 44px; padding: 0 18px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Cancelar</button>
+<button type="button" onClick="{{closeDialog}}" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Restablecer</button>
+</div>
+</sc-if>
+
+<sc-if value="{{showBlock}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 8px"><h2 id="dlg-title" style="margin: 0; font-size: 18px; font-weight: 600">¿Bloquear a {{dlg.name}}?</h2><span style="font-size: 14px; color: {{t.ink2}}; line-height: 1.5">No podrá iniciar sesión y sus sesiones abiertas se cerrarán. Podrás desbloquearlo más tarde; seguirá con la misma contraseña.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
+<button type="button" onClick="{{closeDialog}}" style="height: 44px; padding: 0 18px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Cancelar</button>
+<button type="button" onClick="{{confirmBlock}}" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.danger}}; color: {{t.onDanger}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Bloquear</button>
+</div>
+</sc-if>
+
+</div>
+</div>
+</sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"plataforma":{"editor":"enum","options":["Web","Escritorio"],"default":"Web"},"conexion":{"editor":"enum","options":["Conectado","Error"],"default":"Conectado"},"primerAcceso":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1100}}'>
 class Component extends DCLogic {
 constructor(props) {
 super(props);
-this.state = { tab: 'apariencia', theme: 'claro', density: 'comoda', source: 'api' };
+this.state = { tab: 'apariencia', theme: 'claro', density: 'comoda', menu: null, dialog: null, target: null, blocked: { cs: true } };
 }
 renderVals() {
 const accent = this.props.accent ?? '#B4430F';
-const light = { bg: '#F3F4F1', surface: '#FFFFFF', surface2: '#EEF0EC', border: '#D9DCD5', control: '#C5C9C1', ink: '#16191D', ink2: '#4A5058', ink3: '#6B717A', nav: '#16191D', navActive: '#262B31', accent, onAccent: '#FFFFFF', accentSoft: '#FBEDE5', okBg: '#E2F1E8', okFg: '#1F6B3F' };
-const dark = { bg: '#111417', surface: '#1A1E23', surface2: '#23282E', border: '#2F353C', control: '#3A4148', ink: '#E8EAE6', ink2: '#B3B9C0', ink3: '#949BA3', nav: '#0B0D0F', navActive: '#23282E', accent: '#E8794A', onAccent: '#16191D', accentSoft: '#3A2419', okBg: '#1B3326', okFg: '#7FD3A0' };
+const light = { bg: '#F3F4F1', surface: '#FFFFFF', surface2: '#EEF0EC', border: '#D9DCD5', control: '#C5C9C1', ink: '#16191D', ink2: '#4A5058', ink3: '#6B717A', nav: '#16191D', navActive: '#262B31', accent, onAccent: '#FFFFFF', accentSoft: '#FBEDE5', okBg: '#E2F1E8', okFg: '#1F6B3F', errBg: '#FBE4E1', errFg: '#A12A1C', warnBg: '#FDF3D7', warnFg: '#6B4900', warnBorder: '#E9CF8A', danger: '#A12A1C', onDanger: '#FFFFFF' };
+const dark = { bg: '#111417', surface: '#1A1E23', surface2: '#23282E', border: '#2F353C', control: '#3A4148', ink: '#E8EAE6', ink2: '#B3B9C0', ink3: '#949BA3', nav: '#0B0D0F', navActive: '#23282E', accent: '#E8794A', onAccent: '#16191D', accentSoft: '#3A2419', okBg: '#1B3326', okFg: '#7FD3A0', errBg: '#3A1D1A', errFg: '#F09A8E', warnBg: '#3A3014', warnFg: '#E8C66A', warnBorder: '#5C4A1C', danger: '#F09A8E', onDanger: '#16191D' };
 const st = this.state;
 const t = st.theme === 'oscuro' ? dark : light;
 const sel = (on) => (on ? '2px solid ' + t.accent : '1px solid ' + t.control);
+const isDesktop = (this.props.plataforma ?? 'Web') === 'Escritorio';
+const dbError = (this.props.conexion ?? 'Conectado') === 'Error';
+const firstAdmin = this.props.primerAcceso ?? false;
 const tabs = [['apariencia', 'Apariencia'], ['datos', 'Base de datos'], ['usuarios', 'Usuarios']].map(([id, label]) => ({
 label, selected: st.tab === id ? 'true' : 'false',
 bg: st.tab === id ? t.surface : 'transparent', fg: st.tab === id ? t.ink : t.ink2,
@@ -247,33 +346,58 @@ const densities = [['comoda', 'Cómoda'], ['compacta', 'Compacta']].map(([id, la
 label, checked: st.density === id ? 'true' : 'false', border: sel(st.density === id), bg: st.density === id ? t.accentSoft : t.surface,
 pick: () => this.setState({ density: id })
 }));
-const sources = [
-['api', 'Servidor de la empresa', 'La web y el escritorio se conectan a la API REST compartida.'],
-['local', 'MongoDB directo', 'Para el servidor o una instalación de escritorio sin red.']
-].map(([id, label, desc]) => ({
-label, desc, checked: st.source === id ? 'true' : 'false', border: sel(st.source === id), bg: st.source === id ? t.accentSoft : t.surface,
-pick: () => this.setState({ source: id })
-}));
-const isApi = st.source === 'api';
-const U = { Activo: [t.okBg, t.okFg], Invitado: st.theme === 'oscuro' ? ['#3A3014', '#E8C66A'] : ['#FDF3D7', '#7A5300'], Bloqueado: st.theme === 'oscuro' ? ['#3A1D1A', '#F09A8E'] : ['#FBE4E1', '#A12A1C'] };
-const users = [
-['MI', 'Marta Ibáñez', 'Administrador', 'Hoy 09:12', 'Activo'],
-['JR', 'Jorge Ruiz', 'Comercial', 'Hoy 08:47', 'Activo'],
-['AP', 'Ana Pons', 'Administración', 'Ayer 18:03', 'Activo'],
-['LM', 'Luis Moreno', 'Almacén', '06/10 07:30', 'Activo'],
-['—', 'Pendiente de alta', 'Comercial', '—', 'Invitado'],
-['CS', 'Carlos Sanz', 'Almacén', '12/08 14:20', 'Bloqueado']
-].map(([initials, name, role, last, status]) => ({ initials, name, role, last, status, email: '[EMAIL]', bg: U[status][0], fg: U[status][1] }));
+const db = dbError
+? { label: 'Error', bg: t.errBg, fg: t.errFg, version: 'No disponible' }
+: { label: 'Conectado', bg: t.okBg, fg: t.okFg, version: '8.0.x' };
+// Roles y matriz: en la aplicación vienen de la base de datos (spec 003, FR-020); aquí, los valores iniciales.
+const roles = [
+['Administrador', 'Adm.'], ['Comercial', 'Com.'], ['Almacén', 'Alm.'], ['Administración', 'Admón.']
+].map(([name, short]) => ({ name, short }));
 const perms = [
 ['Ventas', 'E', 'E', 'V', 'V'], ['Clientes', 'E', 'E', '—', 'V'], ['Productos', 'E', 'V', 'E', 'V'],
 ['Proveedores', 'E', '—', 'V', 'E'], ['Cobros', 'E', 'V', '—', 'E'], ['Ajustes', 'E', '—', '—', '—']
-].map(([module, a, c, w, f]) => ({ module, a, c, w, f }));
+].map(([module, ...values]) => ({ module, cells: values.map((value) => ({ value })) }));
+const base = [
+['mi', 'MI', 'Marta Ibáñez', 'Administrador', 'Hoy 09:12', true],
+['jr', 'JR', 'Jorge Ruiz', 'Comercial', 'Hoy 08:47', false],
+['ap', 'AP', 'Ana Pons', 'Administración', 'Ayer 18:03', false],
+['lm', 'LM', 'Luis Moreno', 'Almacén', '06/10 07:30', false],
+['ev', 'EV', 'Elena Vidal', 'Comercial', 'Nunca', false],
+['cs', 'CS', 'Carlos Sanz', 'Almacén', '12/08 14:20', false]
+];
+const blocked = st.blocked;
+const users = firstAdmin ? [] : base.map(([id, initials, name, role, last, isMe]) => {
+const isBlocked = Boolean(blocked[id]);
+const open = st.menu === id;
 return {
-t, tabs, themes, densities, sources, users, perms,
+initials, name, role, last, isMe, email: '[EMAIL]',
+status: isBlocked ? 'Bloqueado' : 'Activo',
+bg: isBlocked ? t.errBg : t.okBg, fg: isBlocked ? t.errFg : t.okFg,
+menuOpen: open, expanded: open ? 'true' : 'false',
+canBlock: !isMe && !isBlocked, canUnblock: isBlocked,
+toggle: () => this.setState({ menu: open ? null : id }),
+edit: () => this.setState({ menu: null, dialog: 'edit', target: id }),
+reset: () => this.setState({ menu: null, dialog: 'reset', target: id }),
+block: () => this.setState({ menu: null, dialog: 'block', target: id }),
+unblock: () => this.setState({ menu: null, blocked: { ...blocked, [id]: false } })
+};
+});
+const target = base.find((u) => u[0] === st.target);
+const activeAdmins = base.filter((u) => u[3] === 'Administrador' && !blocked[u[0]]).length;
+const dlg = target
+? { name: target[2], role: target[3], onlyAdmin: target[3] === 'Administrador' && activeAdmins === 1 }
+: { name: '', role: '', onlyAdmin: false };
+return {
+t, tabs, themes, densities, db, roles, perms, users, dlg,
+isDesktop, isWeb: !isDesktop, dbError, firstAdmin, notFirstAdmin: !firstAdmin,
+platformLabel: isDesktop ? 'Escritorio' : 'Web',
+navUser: firstAdmin ? 'admin (cuenta inicial)' : '[USUARIO]',
+createLabel: firstAdmin ? 'Crear Administrador' : 'Dar de alta',
+userCount: firstAdmin ? '0 usuarios' : users.length + ' usuarios',
 showApariencia: st.tab === 'apariencia', showDatos: st.tab === 'datos', showUsuarios: st.tab === 'usuarios',
-uriLabel: isApi ? 'URL del servidor API' : 'Cadena de conexión MongoDB',
-uriValue: isApi ? 'https://[SERVIDOR]/api' : 'mongodb://[USUARIO]:••••••••@[HOST]:27017',
-uriHelp: isApi ? 'La dirección que usan la web y el escritorio para hablar con el backend.' : 'La contraseña se muestra oculta. Se lee de las variables de entorno del servidor.'
+showDialog: Boolean(st.dialog), showEdit: st.dialog === 'edit', showReset: st.dialog === 'reset', showBlock: st.dialog === 'block',
+closeDialog: () => this.setState({ dialog: null }),
+confirmBlock: () => this.setState({ dialog: null, blocked: { ...blocked, [st.target]: true } })
 };
 }
 }

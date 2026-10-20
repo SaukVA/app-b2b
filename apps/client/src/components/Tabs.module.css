@@ -1,0 +1,30 @@
+.tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  max-width: 100%;
+  padding: var(--space-1);
+  border-radius: var(--radius-card);
+  background: var(--surface2);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-control);
+  color: var(--ink2);
+  font: 500 14px/1 var(--font-sans);
+  text-decoration: none;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.active {
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+}

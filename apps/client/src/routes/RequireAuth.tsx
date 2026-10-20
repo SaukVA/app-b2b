@@ -1,18 +1,20 @@
 import type { ReactNode } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
-import { can, type AppModule } from '@app/shared';
+import { can, type AppModule, type PermissionLevel } from '@app/shared';
 import { selectIsAuthenticated, selectUser } from '../features/auth/authSelectors';
 import { useAppSelector } from '../store/store';
 import { resolveHomeRoute } from './homeRoute';
 
 export interface RequireAuthProps {
-  /** Si se indica, además exige permiso de lectura sobre el módulo. */
+  /** Si se indica, además exige permiso sobre el módulo. */
   module?: AppModule;
+  /** Nivel exigido en `module` (por defecto, lectura). */
+  level?: PermissionLevel;
   children?: ReactNode;
 }
 
 /** FR-007: sin sesión, a /login conservando la ruta de origen; sin permiso, a la pantalla por defecto. */
-export function RequireAuth({ module, children }: RequireAuthProps) {
+export function RequireAuth({ module, level = 'view', children }: RequireAuthProps) {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const user = useAppSelector(selectUser);
   const location = useLocation();
@@ -20,7 +22,7 @@ export function RequireAuth({ module, children }: RequireAuthProps) {
     const from = `${location.pathname}${location.search}`;
     return <Navigate to="/login" replace state={{ from }} />;
   }
-  if (module && !can(user.role, module, 'view')) {
+  if (module && !can(user.permissions, module, level)) {
     return <Navigate to={resolveHomeRoute(user, null)} replace />;
   }
   return children ?? <Outlet />;

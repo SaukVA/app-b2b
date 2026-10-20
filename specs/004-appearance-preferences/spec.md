@@ -25,6 +25,21 @@ preferencias globales de empresa."
 - Q: ¿Con qué tema se muestra la pantalla de inicio de sesión, antes de saber quién es el usuario? → A: Con el
   último tema usado en ese equipo, o Claro si no hay ninguno.
 
+### Session 2026-10-19
+
+- Q: ¿Qué pantallas cuentan como «existentes» para el selector de pantalla de inicio, si hoy las de negocio
+  son provisionales? → A: Toda pantalla con ruta en la aplicación, aunque su contenido sea provisional
+  (Ventas, Clientes, Productos, Proveedores y Cobros); el Panel se añade cuando exista.
+- Q: ¿A qué pantalla va un usuario cuyo rol no tiene acceso a la pantalla por defecto? → A: A la primera
+  pantalla permitida para su rol, por orden (Ventas, Clientes, Productos, Proveedores, Cobros); si no tiene
+  ninguna, a Ajustes › Apariencia.
+- Q: ¿Una preferencia cambiada en otro equipo se aplica sola al renovarse la sesión en segundo plano? → A: No;
+  solo al recargar o al iniciar sesión. La renovación en segundo plano no toca las preferencias aplicadas.
+- Q: ¿Cómo se vuelve a intentar guardar una preferencia que no se pudo guardar? → A: Solo con el aviso; para
+  reintentar, el usuario vuelve a elegir la opción (aunque ya esté marcada).
+- Q: ¿Los campos de importe aceptan más de dos decimales? → A: No; como mucho 2 decimales. Un valor con más se
+  rechaza indicando el formato esperado.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Elegir el tema (Priority: P1)
@@ -134,8 +149,9 @@ filas en la misma pantalla que con Cómoda.
 
 - No se puede guardar la preferencia (sin conexión o error del servidor): el cambio se ve en la pantalla, se avisa
   de que no se ha podido guardar y en la próxima sesión se usa el último valor guardado.
-- El mismo usuario tiene sesión abierta en dos equipos y cambia una preferencia en uno: el otro la recoge como
-  muy tarde al volver a iniciar sesión o al recargar.
+- El mismo usuario tiene sesión abierta en dos equipos y cambia una preferencia en uno: el otro la recoge al
+  recargar o al volver a iniciar sesión, nunca a mitad de la sesión (la renovación automática de la sesión no
+  cambia las preferencias aplicadas).
 - El equipo o navegador no informa del modo claro/oscuro con "Según el sistema": se usa el tema Claro.
 - Pantalla de inicio de sesión (todavía sin usuario identificado): se muestra con el último tema usado en ese
   equipo; si no hay ninguno, con el tema Claro.
@@ -144,6 +160,8 @@ filas en la misma pantalla que con Cómoda.
   usuario real.
 - Se crea una pantalla nueva (por ejemplo, el Panel): pasa a aparecer en el selector para los roles con acceso, y
   los usuarios que no eligieron ninguna empiezan en la nueva pantalla por defecto.
+- Un rol sin acceso a la pantalla por defecto (por ejemplo, uno creado en la base de datos que solo ve Ventas):
+  empieza en la primera pantalla permitida para su rol o, si no tiene ninguna, en Ajustes › Apariencia.
 - Importes muy grandes o con más de dos decimales almacenados: se muestran redondeados a dos decimales con
   separador de miles en ambos formatos.
 
@@ -160,7 +178,8 @@ filas en la misma pantalla que con Cómoda.
 - **FR-003**: Las preferencias guardadas MUST aplicarse al iniciar sesión, en la web y en el escritorio, en
   cualquier equipo.
 - **FR-004**: Si una preferencia no se puede guardar, el sistema MUST avisar al usuario y MUST NOT dar el cambio
-  por guardado.
+  por guardado. No hay reintento automático ni botón aparte: volver a elegir la opción, aunque ya esté marcada,
+  MUST intentar guardarla de nuevo.
 
 **Tema**
 
@@ -187,8 +206,9 @@ filas en la misma pantalla que con Cómoda.
 - **FR-011**: El formato elegido MUST aplicarse a todas las cifras monetarias que muestra la aplicación (listados,
   fichas, formularios, totales y resúmenes), siempre con dos decimales y signo menos en los negativos.
 - **FR-012**: Los campos de importe de los formularios MUST aceptar el separador decimal del formato elegido (coma
-  con "1.248,50 €", punto con "€ 1,248.50"), con el separador de miles de ese formato opcional. Un valor que no
-  encaje en el formato elegido MUST rechazarse indicando el formato esperado, nunca interpretarse de otra forma.
+  con "1.248,50 €", punto con "€ 1,248.50"), con el separador de miles de ese formato opcional y como mucho 2
+  decimales. Un valor que no encaje en el formato elegido (incluido uno con más de 2 decimales) MUST rechazarse
+  indicando el formato esperado, nunca interpretarse ni redondearse de otra forma.
   El valor guardado MUST ser el mismo sea cual sea el formato con el que se introdujo.
 - **FR-013**: El formato de importes NEVER MUST afectar a cantidades no monetarias (unidades, stock), fechas ni
   códigos.
@@ -196,8 +216,11 @@ filas en la misma pantalla que con Cómoda.
 **Pantalla de inicio**
 
 - **FR-014**: El selector de pantalla de inicio MUST ofrecer solo las pantallas que ya existen en la aplicación y a
-  las que el rol del usuario tiene acceso (editar o solo ver) según la matriz de permisos.
-- **FR-015**: La pantalla de inicio por defecto MUST ser el Panel; mientras no exista, MUST ser Productos.
+  las que el rol del usuario tiene acceso (editar o solo ver) según la matriz de permisos. Una pantalla existe si
+  tiene ruta en la aplicación, aunque su contenido sea todavía provisional.
+- **FR-015**: La pantalla de inicio por defecto MUST ser el Panel; mientras no exista, MUST ser Productos. Si el
+  rol del usuario no tiene acceso a ella, MUST usarse la primera pantalla permitida para su rol en este orden:
+  Ventas, Clientes, Productos, Proveedores, Cobros; si no tiene ninguna, Ajustes › Apariencia.
 - **FR-016**: Si la pantalla elegida deja de estar disponible para el usuario, el sistema MUST llevarle a la
   pantalla por defecto y MUST mostrarla como seleccionada en Ajustes › Apariencia.
 - **FR-017**: La pantalla de inicio MUST respetar el orden de destino de 001-user-login: primero la pantalla que se
@@ -244,7 +267,7 @@ filas en la misma pantalla que con Cómoda.
 - La densidad Compacta solo cambia las tablas en pantalla de ordenador; en móvil los listados se muestran como
   tarjetas y no cambian.
 - El formato "€ 1,248.50" solo cambia la presentación: la moneda es siempre el euro y no hay conversión.
-- Pantallas existentes hoy: Productos (implementada) y las que se vayan añadiendo (Panel, Ventas, Clientes,
-  Proveedores, Cobros). El selector crece a medida que se implementan.
+- Pantallas existentes hoy (con ruta, aunque con contenido provisional): Ventas, Clientes, Productos, Proveedores
+  y Cobros. El Panel se añade al selector cuando exista su pantalla.
 - Fuera de alcance: color de acento, idioma, tamaño de letra, preferencias globales de empresa y preferencias por
   equipo distintas de las del usuario.

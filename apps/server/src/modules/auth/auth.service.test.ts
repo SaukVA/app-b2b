@@ -2,14 +2,17 @@ import type { UserStatus } from '@app/shared';
 import { hashPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { UserModel } from '../users/user.model';
-import { hashToken } from '../../utils/tokens';
-import { login, refresh, touchSession } from './auth.service';
+import { hashToken, verifyAccessToken } from '../../utils/tokens';
+import { RoleModel } from '../roles/role.model';
+import { ensureDefaultRoles } from '../roles/role.service';
+import { getCurrentUser, login, refresh, resolveAuthContext, touchSession } from './auth.service';
 import { LoginAttemptModel } from './loginAttempt.model';
 import { SessionModel } from './session.model';
 
 setTestEnv();
 
 beforeAll(startTestDb);
+beforeEach(ensureDefaultRoles);
 afterEach(clearTestDb);
 afterAll(stopTestDb);
 
@@ -21,9 +24,9 @@ const credentials = (loginValue: string, password = PASSWORD) => ({
   client: 'web' as const,
 });
 
-async function createUser(login: string, status: UserStatus = 'Activo') {
+async function createUser(login: string, status: UserStatus = 'Activo', role = 'Comercial') {
   const passwordHash = await hashPassword(PASSWORD);
-  return UserModel.create({ login, name: 'Ana García', passwordHash, role: 'Comercial', status });
+  return UserModel.create({ login, name: 'Ana García', passwordHash, role, status });
 }
 
 describe('login · credenciales correctas', () => {
@@ -89,13 +92,52 @@ describe('login · estado de la cuenta', () => {
     });
     await expect(SessionModel.countDocuments()).resolves.toBe(0);
   });
+});
 
-  it('Invitado: con la contraseña correcta da AUTH_INVITATION_PENDING', async () => {
-    await createUser('ana@empresa.es', 'Invitado');
-    await expect(login(credentials('ana@empresa.es'))).rejects.toMatchObject({
-      code: 'AUTH_INVITATION_PENDING',
-      status: 403,
+const COMERCIAL_PERMISSIONS = {
+  ventas: 'edit',
+  clientes: 'edit',
+  productos: 'view',
+  proveedores: 'none',
+  cobros: 'view',
+  ajustes: 'none',
+};
+
+describe('permisos desde la colección roles (ADR 0003)', () => {
+  async function contextOf(accessToken: string) {
+    return resolveAuthContext(verifyAccessToken(accessToken)!);
+  }
+
+  it('login, refresh y getCurrentUser devuelven AuthUser con roleName y permissions', async () => {
+    const user = await createUser('ana@empresa.es');
+    const issued = await login(credentials('ana@empresa.es'));
+    const expected = { roleName: 'Comercial', permissions: COMERCIAL_PERMISSIONS };
+    expect(issued.user).toMatchObject(expected);
+    expect((await refresh(issued.refreshToken)).user).toMatchObject(expected);
+    await expect(getCurrentUser(user.id)).resolves.toMatchObject(expected);
+  });
+
+  it('resolveAuthContext devuelve los permisos guardados en el rol', async () => {
+    await createUser('ana@empresa.es');
+    const issued = await login(credentials('ana@empresa.es'));
+    await expect(contextOf(issued.accessToken)).resolves.toMatchObject({
+      permissions: COMERCIAL_PERMISSIONS,
     });
+  });
+
+  it('un cambio en roles se aplica en la siguiente llamada (FR-028)', async () => {
+    await createUser('ana@empresa.es');
+    const issued = await login(credentials('ana@empresa.es'));
+    await RoleModel.updateOne({ key: 'Comercial' }, { 'permissions.ajustes': 'view' });
+    const context = await contextOf(issued.accessToken);
+    expect(context.permissions.ajustes).toBe('view');
+  });
+
+  it('con una clave de rol inexistente todos los módulos son none', async () => {
+    await createUser('ana@empresa.es', 'Activo', 'Inexistente');
+    const issued = await login(credentials('ana@empresa.es'));
+    expect(issued.user.roleName).toBe('Inexistente');
+    expect(Object.values(issued.user.permissions)).toEqual(Array(6).fill('none'));
   });
 });
 

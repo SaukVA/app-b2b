@@ -9,10 +9,10 @@ export const selectAuthError = (state: RootState) => state.auth.error;
 export const selectIsAuthenticated = (state: RootState): boolean =>
   Boolean(state.auth.user && state.auth.accessToken);
 
-/** Permiso del usuario actual según la matriz de @app/shared (sin sesión, ninguno). */
+/** Permiso del usuario actual según los permisos de su rol (ADR 0003); sin sesión, ninguno. */
 export const selectCan =
   (module: AppModule, level: PermissionLevel) =>
   (state: RootState): boolean => {
     const user = state.auth.user;
-    return user ? can(user.role, module, level) : false;
+    return user ? can(user.permissions, module, level) : false;
   };

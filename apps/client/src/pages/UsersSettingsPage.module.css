@@ -1,0 +1,93 @@
+.page {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Tablero «Ajustes» › Usuarios: alta a la izquierda y listado a la derecha. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* Segunda columna: listado y, debajo, «Permisos por rol». */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--ink);
+}
+
+.sectionTitle {
+  margin: 0;
+  font: var(--text-section);
+}
+
+.aside {
+  font: var(--text-figure);
+  color: var(--ink2);
+}
+
+.subtitle,
+.empty {
+  margin: 0;
+  color: var(--ink2);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Corte responsive único de «Albarán»: 760 px (las container queries no admiten var()). */
+@container (max-width: 759px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Confirmación del cambio de rol dentro de «Editar usuario». */
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--notice-border);
+  border-radius: var(--radius-control);
+  background: var(--notice-bg);
+  color: var(--notice-fg);
+}
+
+.confirmText {
+  margin: 0;
+  font-weight: 600;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}

@@ -1,13 +1,4 @@
-import { can, DEFAULT_HOME_SCREEN, type AppModule, type AuthUser } from '@app/shared';
-
-export const APP_MODULES: readonly AppModule[] = [
-  'ventas',
-  'clientes',
-  'productos',
-  'proveedores',
-  'cobros',
-  'ajustes',
-];
+import { APP_MODULES, can, DEFAULT_HOME_SCREEN, type AppModule, type AuthUser } from '@app/shared';
 
 /** Módulo al que pertenece una ruta ("/clientes/42?x=1" → "clientes"), o null. */
 export function moduleFromPath(path: string): AppModule | null {
@@ -17,13 +8,14 @@ export function moduleFromPath(path: string): AppModule | null {
 
 function canOpen(user: AuthUser, path: string | null | undefined): path is string {
   const module = path ? moduleFromPath(path) : null;
-  return module !== null && can(user.role, module, 'view');
+  return module !== null && can(user.permissions, module, 'view');
 }
 
 /** FR-006: ruta de origen → pantalla elegida → pantalla por defecto, siempre que el rol pueda abrirla. */
 export function resolveHomeRoute(user: AuthUser, from?: string | null): string {
   if (canOpen(user, from)) return from;
-  const preferred = user.homeScreen ? `/${user.homeScreen}` : null;
+  const { homeScreen } = user.preferences;
+  const preferred = homeScreen ? `/${homeScreen}` : null;
   if (canOpen(user, preferred)) return preferred;
   return `/${DEFAULT_HOME_SCREEN}`;
 }

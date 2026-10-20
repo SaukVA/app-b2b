@@ -243,10 +243,12 @@ usuario real (directamente en datos, mientras no exista el módulo de usuarios) 
 - **FR-003**: Ante credenciales incorrectas, el sistema MUST mostrar el mensaje genérico "Email o contraseña
   incorrectos" junto con los intentos restantes, sin revelar si el email existe.
 - **FR-004**: El sistema MUST impedir el acceso a cuentas bloqueadas por un administrador y a invitaciones no
-  completadas, con un mensaje específico para cada caso.
+  completadas, con un mensaje específico para cada caso. El caso de invitación no completada queda sin efecto
+  por [003-user-management](../003-user-management/spec.md) (no hay estado Invitado).
 - **FR-005**: El sistema MUST asociar a la sesión el rol del usuario (Administrador, Comercial, Almacén o
   Administración) y aplicar desde el primer momento los permisos de la matriz de Ajustes › Usuarios (editar,
-  solo ver o sin acceso por módulo).
+  solo ver o sin acceso por módulo). La matriz se guarda en base de datos
+  ([003-user-management](../003-user-management/spec.md), FR-020).
 - **FR-006**: Tras iniciar sesión, el sistema MUST llevar al usuario a la pantalla que intentaba abrir; si no
   había ninguna, a la pantalla de inicio elegida en Ajustes › Apariencia; si no hay ninguna o no está disponible
   para su rol, a la pantalla de inicio por defecto.

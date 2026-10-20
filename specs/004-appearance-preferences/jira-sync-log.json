@@ -1,0 +1,50 @@
+[
+  {
+    "synced_at": "2026-10-19T15:51:16Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 4,
+    "completion_pct": 8,
+    "updated_issues": [
+      "AB2B-291",
+      "AB2B-292",
+      "AB2B-293",
+      "AB2B-294",
+      "AB2B-284"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-19T16:01:31Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 22,
+    "completion_pct": 44,
+    "updated_issues": [
+      "AB2B-295",
+      "AB2B-296",
+      "AB2B-297",
+      "AB2B-298",
+      "AB2B-299",
+      "AB2B-300",
+      "AB2B-301",
+      "AB2B-302",
+      "AB2B-303",
+      "AB2B-304",
+      "AB2B-305",
+      "AB2B-306",
+      "AB2B-307",
+      "AB2B-308",
+      "AB2B-309",
+      "AB2B-310",
+      "AB2B-311",
+      "AB2B-312",
+      "AB2B-285"
+    ],
+    "skipped_issues": []
+  }
+]

@@ -35,6 +35,7 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 | Prettier | 3.4.x | Formateo |
 | Jest | 30.x + `ts-jest` 29.4.x | Tests unitarios e integración en todos los workspaces (`ts-jest` ≥29.4 es la primera versión compatible con Jest 30) |
 | concurrently | 9.x | Levantar client+server+desktop en paralelo en dev |
+| @playwright/test | 1.64.x | Tests E2E en navegador (`e2e/`, `playwright.config.ts`), ADR 0004. Misma versión que la `playwright-core` de `@playwright/cli`, instalada globalmente |
 
 ### `apps/server` (Express + MongoDB)
 
@@ -136,12 +137,16 @@ app-wholesale-sales/
 │           ├── types/           # Product, Customer, Supplier, Sale, Payment...
 │           └── constants/
 │
+├── e2e/                         # Tests E2E con Playwright (*.spec.ts), ADR 0004
+│   └── support/                 # startServer.ts: API contra MongoDB en memoria
+│
 ├── docs/
 │   ├── adr/                     # Architecture Decision Records
 │   └── design/                  # Diseño visual «Albarán»: README (tokens, reglas) + canvas/ (tableros .dc.html)
 │
 ├── .env.example
 ├── docker-compose.yml           # MongoDB local para desarrollo
+├── playwright.config.ts         # Configuración de los tests E2E
 ├── package.json                 # raíz, define los workspaces
 └── CLAUDE.md
 ```
@@ -191,6 +196,8 @@ El diseño de la interfaz («Albarán») está documentado en `docs/design/`:
 - `rtk` como proxy de comandos de dev ops en sesiones de Claude Code.
 - `caveman` para comprimir la salida en sesiones largas de refactor.
 - `codegraph` para navegar repositorios grandes con `.codegraph/`.
+- `playwright-cli` (instalado globalmente, skill en `.claude/skills/playwright-cli/`) para explorar la app
+  en el navegador, verificar cambios de UI y generar o depurar los tests E2E (ADR 0004).
 
 ## Preferencias de tono y formato
 
@@ -225,6 +232,9 @@ Ejecutar siempre desde la raíz del repo (workspaces de npm):
 | `npm run dev` (raíz) | `concurrently`: server + client + desktop a la vez |
 | `npm test --workspaces` | Ejecuta la suite de Jest en todos los workspaces |
 | `npm test --workspace=apps/server -- --watch` | Tests del backend en modo watch |
+| `npx playwright install chromium` | Instala Chromium para los E2E (una vez por equipo) |
+| `npm run test:e2e` | Tests E2E con Playwright; levanta la API (MongoDB en memoria, puerto 4100) y Vite (5180) |
+| `npm run test:e2e:ui` | Tests E2E en el modo UI de Playwright |
 | `npm run lint` | ESLint en todo el repo |
 | `npm run format` | Prettier sobre todo el repo |
 | `npm run build --workspaces` | Build de producción de client, server y desktop |

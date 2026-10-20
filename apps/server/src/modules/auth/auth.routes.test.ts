@@ -3,17 +3,34 @@ import type { UserStatus } from '@app/shared';
 import { buildApp } from '../../app';
 import { hashPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
+import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
 import { SessionModel } from './session.model';
 
 setTestEnv();
 
 beforeAll(startTestDb);
+beforeEach(ensureDefaultRoles);
 afterEach(clearTestDb);
 afterAll(stopTestDb);
 
 const PASSWORD = 'secreto123';
 const app = () => buildApp();
+
+/** Forma de AuthUser con los permisos leídos de `roles` (ADR 0003). */
+const COMERCIAL_USER = expect.objectContaining({
+  login: 'ana@empresa.es',
+  role: 'Comercial',
+  roleName: 'Comercial',
+  permissions: {
+    ventas: 'edit',
+    clientes: 'edit',
+    productos: 'view',
+    proveedores: 'none',
+    cobros: 'view',
+    ajustes: 'none',
+  },
+});
 
 async function createUser(status: UserStatus = 'Activo') {
   const passwordHash = await hashPassword(PASSWORD);
@@ -48,10 +65,7 @@ describe('POST /api/auth/login · web', () => {
     const res = await postLogin({});
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
-    expect(res.body.data).toEqual({
-      accessToken: expect.any(String),
-      user: expect.objectContaining({ login: 'ana@empresa.es' }),
-    });
+    expect(res.body.data).toEqual({ accessToken: expect.any(String), user: COMERCIAL_USER });
     const cookie = refreshCookie(res);
     expect(cookie).toMatch(/HttpOnly/);
     expect(cookie).toMatch(/SameSite=Strict/);
@@ -120,6 +134,7 @@ describe('GET /api/auth/me', () => {
       .get('/api/auth/me')
       .set('Authorization', `Bearer ${body.data.accessToken}`);
     expect(res.status).toBe(200);
+    expect(res.body.data).toEqual(COMERCIAL_USER);
     expect(res.body.data).toEqual(body.data.user);
     expect(JSON.stringify(res.body)).not.toContain('passwordHash');
   });
@@ -167,7 +182,7 @@ describe('POST /api/auth/refresh · web', () => {
     expect(res.body.data).toEqual({
       accessToken: expect.any(String),
       persistent: false,
-      user: expect.objectContaining({ login: 'ana@empresa.es' }),
+      user: COMERCIAL_USER,
     });
     const newCookie = refreshCookie(res);
     expect(newCookie).toMatch(/HttpOnly/);

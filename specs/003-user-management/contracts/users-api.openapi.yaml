@@ -1,0 +1,295 @@
+openapi: 3.0.3
+info:
+  title: App B2B · Gestión de usuarios
+  version: 1.0.0
+  description: >
+    Contrato de la API de gestión de usuarios (feature 003-user-management). En la implementación cada ruta
+    lleva su bloque JSDoc @openapi equivalente en user.routes.ts y se sirve en /api-docs. Todas las rutas
+    exigen sesión (bearerAuth) y permiso de edición en el módulo "ajustes" (solo Administrador, incluida la
+    cuenta inicial "admin" mientras exista). SuccessEnvelope, ErrorEnvelope y las respuestas ValidationError
+    y Unauthenticated son las ya definidas en contracts/auth-api.openapi.yaml de 001.
+    Cambio en el contrato de 001 (research R11): el esquema AuthUser de /auth/login, /auth/refresh y
+    /auth/me pasa a tener role como clave de rol (string libre) y añade roleName y permissions
+    (PermissionSet completo); se actualiza su bloque @openapi en auth.routes.ts.
+servers:
+  - url: /api
+tags:
+  - name: Users
+  - name: Roles
+security:
+  - bearerAuth: []
+paths:
+  /roles:
+    get:
+      tags: [Roles]
+      summary: Roles guardados con su fila de la matriz de permisos, ordenados por order (solo lectura)
+      responses:
+        '200':
+          description: Roles y matriz
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/RoleSummary' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /users:
+    get:
+      tags: [Users]
+      summary: Lista los usuarios reales ordenados por nombre (sin la cuenta inicial)
+      responses:
+        '200':
+          description: Listado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items: { $ref: '#/components/schemas/UserSummary' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Users]
+      summary: Da de alta un usuario Activo (el primero tiene que ser Administrador)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateUserRequest' }
+      responses:
+        '201':
+          description: >
+            Usuario creado. Si era el primer usuario real, bootstrapRetired=true: la cuenta inicial se ha
+            borrado y sus sesiones (incluida la que hizo la petición) ya no valen.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/CreateUserResponse' }
+        '400': { $ref: '#/components/responses/ValidationOrRoleError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409':
+          description: USER_EMAIL_TAKEN | USER_FIRST_MUST_BE_ADMIN
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+              example:
+                success: false
+                error: { code: USER_EMAIL_TAKEN, message: 'Ya existe un usuario con ese email.' }
+  /users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    patch:
+      tags: [Users]
+      summary: Edita nombre, email y/o rol
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateUserRequest' }
+      responses:
+        '200':
+          description: Usuario actualizado. Las sesiones abiertas no se cierran.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/UserSummary' }
+        '400': { $ref: '#/components/responses/ValidationOrRoleError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/UserNotFound' }
+        '409':
+          description: USER_EMAIL_TAKEN | USER_LAST_ADMIN (el cambio de rol dejaría sin Administrador activo)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  /users/{id}/status:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    patch:
+      tags: [Users]
+      summary: Bloquea o desbloquea un usuario
+      description: Al bloquear se revocan todas las sesiones del usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateUserStatusRequest' }
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/UserSummary' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/UserNotFound' }
+        '409':
+          description: USER_SELF_BLOCK | USER_LAST_ADMIN
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  /users/{id}/password:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    put:
+      tags: [Users]
+      summary: Restablece la contraseña de un usuario
+      description: >
+        Revoca todas las sesiones del usuario (también la del Administrador si se restablece a sí mismo) y
+        reinicia su bloqueo temporal por intentos fallidos. No cambia el estado Bloqueado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ResetUserPasswordRequest' }
+      responses:
+        '200':
+          description: Contraseña cambiada
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { type: 'null' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/UserNotFound' }
+components:
+  parameters:
+    UserId:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, pattern: '^[a-f0-9]{24}$' }
+  responses:
+    ValidationOrRoleError:
+      description: VALIDATION_ERROR | USER_ROLE_NOT_FOUND (la clave de rol no existe en la base de datos)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    Forbidden:
+      description: AUTH_FORBIDDEN (el rol no es Administrador)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    UserNotFound:
+      description: USER_NOT_FOUND (no existe o es la cuenta inicial)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  schemas:
+    Role:
+      type: string
+      minLength: 1
+      description: >
+        Clave de un rol guardado en la base de datos. Iniciales: Administrador, Comercial, Almacén,
+        Administración; puede haber más en el futuro.
+      example: Comercial
+    PermissionLevel:
+      type: string
+      enum: [edit, view, none]
+    PermissionSet:
+      type: object
+      description: Nivel por módulo; siempre incluye los 6 módulos de la aplicación.
+      required: [ventas, clientes, productos, proveedores, cobros, ajustes]
+      properties:
+        ventas: { $ref: '#/components/schemas/PermissionLevel' }
+        clientes: { $ref: '#/components/schemas/PermissionLevel' }
+        productos: { $ref: '#/components/schemas/PermissionLevel' }
+        proveedores: { $ref: '#/components/schemas/PermissionLevel' }
+        cobros: { $ref: '#/components/schemas/PermissionLevel' }
+        ajustes: { $ref: '#/components/schemas/PermissionLevel' }
+    RoleSummary:
+      type: object
+      required: [key, name, isAdmin, order, permissions]
+      properties:
+        key: { $ref: '#/components/schemas/Role' }
+        name: { type: string }
+        isAdmin: { type: boolean, description: true solo en el rol Administrador del sistema }
+        order: { type: number }
+        permissions: { $ref: '#/components/schemas/PermissionSet' }
+    UserStatus:
+      type: string
+      enum: [Activo, Bloqueado]
+    UserSummary:
+      type: object
+      required: [id, name, email, role, roleName, status, lastLoginAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+        role: { $ref: '#/components/schemas/Role' }
+        roleName: { type: string }
+        status: { $ref: '#/components/schemas/UserStatus' }
+        lastLoginAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: null si nunca ha iniciado sesión ("Nunca" en la interfaz)
+    CreateUserRequest:
+      type: object
+      required: [name, email, role, password]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 100 }
+        email:
+          type: string
+          format: email
+          description: Se normaliza a minúsculas y sin espacios; único sin distinguir mayúsculas.
+        role: { $ref: '#/components/schemas/Role' }
+        password: { type: string, minLength: 8 }
+    CreateUserResponse:
+      type: object
+      required: [user, bootstrapRetired]
+      properties:
+        user: { $ref: '#/components/schemas/UserSummary' }
+        bootstrapRetired: { type: boolean }
+    UpdateUserRequest:
+      type: object
+      minProperties: 1
+      properties:
+        name: { type: string, minLength: 1, maxLength: 100 }
+        email: { type: string, format: email }
+        role: { $ref: '#/components/schemas/Role' }
+    UpdateUserStatusRequest:
+      type: object
+      required: [status]
+      properties:
+        status: { $ref: '#/components/schemas/UserStatus' }
+    ResetUserPasswordRequest:
+      type: object
+      required: [password]
+      properties:
+        password: { type: string, minLength: 8 }
+    SuccessEnvelope:
+      $ref: '../../001-user-login/contracts/auth-api.openapi.yaml#/components/schemas/SuccessEnvelope'
+    ErrorEnvelope:
+      $ref: '../../001-user-login/contracts/auth-api.openapi.yaml#/components/schemas/ErrorEnvelope'
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }

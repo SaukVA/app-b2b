@@ -1,0 +1,41 @@
+/* Anatomía del sello (docs/design/README.md): alto 24, padding 0 8, radio 4, Plex Mono 11/600. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-stamp);
+  font: 600 11px/1 var(--font-mono);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.marker {
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: currentColor;
+  flex: none;
+}
+
+.ok {
+  background: var(--stamp-ok-bg);
+  color: var(--stamp-ok-fg);
+}
+
+.danger {
+  background: var(--stamp-error-bg);
+  color: var(--stamp-error-fg);
+}
+
+.warning {
+  background: var(--stamp-pending-bg);
+  color: var(--stamp-pending-fg);
+}
+
+.neutral {
+  background: var(--stamp-draft-bg);
+  color: var(--stamp-draft-fg);
+}

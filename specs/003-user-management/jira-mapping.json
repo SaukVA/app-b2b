@@ -1,0 +1,1091 @@
+{
+  "created_at": "2026-10-16T17:15:51Z",
+  "updated_at": "2026-10-19T14:55:34Z",
+  "spec": "003-user-management",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-189",
+    "summary": "Gestión de usuarios (Ajustes › Usuarios)",
+    "url": "https://sauk.atlassian.net/browse/AB2B-189"
+  },
+  "stories": [
+    {
+      "key": "AB2B-190",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-190",
+      "tasks": [
+        {
+          "key": "AB2B-199",
+          "id": "T001",
+          "summary": "T001: Crear ADR 0003 de roles y permisos en base de datos",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-199"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-191",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-191",
+      "tasks": [
+        {
+          "key": "AB2B-203",
+          "id": "T002",
+          "summary": "T002: Reescribir tests de roles.ts para la nueva firma can(permissions, module, level)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-203"
+        },
+        {
+          "key": "AB2B-204",
+          "id": "T003",
+          "summary": "T003: Reescribir roles.ts con APP_MODULES, PermissionSet y can(), eliminando ROLES y PERMISSIONS",
+          "status": "completed",
+          "depends_on": [
+            "T002"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-204"
+        },
+        {
+          "key": "AB2B-205",
+          "id": "T004",
+          "summary": "T004: Actualizar tipos compartidos de usuario (Role, UserStatus, UserSummary y DTO de peticiones)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-205"
+        },
+        {
+          "key": "AB2B-206",
+          "id": "T005",
+          "summary": "T005: Crear tipo RoleSummary y ampliar AuthUser con roleName y permissions",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-206"
+        },
+        {
+          "key": "AB2B-207",
+          "id": "T006",
+          "summary": "T006: Crear constantes de usuarios USER_NAME_MAX_LENGTH y USER_ERROR_CODES",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-207"
+        },
+        {
+          "key": "AB2B-225",
+          "id": "T007",
+          "summary": "T007: Exportar los tipos y constantes nuevos desde packages/shared/src/index.ts y recompilar shared",
+          "status": "completed",
+          "depends_on": [
+            "T003",
+            "T004",
+            "T005",
+            "T006"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-225"
+        },
+        {
+          "key": "AB2B-226",
+          "id": "T008",
+          "summary": "T008: Escribir tests del servicio de roles (siembra idempotente, rol isAdmin, listRoles, findRole)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-226"
+        },
+        {
+          "key": "AB2B-227",
+          "id": "T009",
+          "summary": "T009: Crear el modelo Mongoose de la colección roles",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-227"
+        },
+        {
+          "key": "AB2B-228",
+          "id": "T010",
+          "summary": "T010: Crear DEFAULT_ROLES con los 4 roles y su matriz de permisos por defecto",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-228"
+        },
+        {
+          "key": "AB2B-229",
+          "id": "T011",
+          "summary": "T011: Crear role.mapper.ts y role.service.ts (siembra, listRoles, findRole, findAdminRoleKeys)",
+          "status": "completed",
+          "depends_on": [
+            "T008"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-229"
+        },
+        {
+          "key": "AB2B-230",
+          "id": "T012",
+          "summary": "T012: Sembrar roles con ensureDefaultRoles() antes de ensureBootstrapAccount() en server.ts y embedded.ts",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-230"
+        },
+        {
+          "key": "AB2B-251",
+          "id": "T013",
+          "summary": "T013: Actualizar tests de auth.service (sin Invitado, permisos leídos del rol, AuthUser con roleName y permissions)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-251"
+        },
+        {
+          "key": "AB2B-254",
+          "id": "T014",
+          "summary": "T014: Validar el role del payload del token como string no vacío en lugar de ROLES.includes",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-254"
+        },
+        {
+          "key": "AB2B-255",
+          "id": "T015",
+          "summary": "T015: Actualizar user.model.ts (status sin Invitado, role string sin enum)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-255"
+        },
+        {
+          "key": "AB2B-257",
+          "id": "T016",
+          "summary": "T016: Cambiar toAuthUser para recibir el rol y devolver roleName y permissions",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-257"
+        },
+        {
+          "key": "AB2B-258",
+          "id": "T017",
+          "summary": "T017: Actualizar auth.service.ts para cargar el rol y propagar permissions (sin rama Invitado)",
+          "status": "completed",
+          "depends_on": [
+            "T013"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-258"
+        },
+        {
+          "key": "AB2B-259",
+          "id": "T018",
+          "summary": "T018: Hacer que requirePermission use can(req.auth.permissions, module, level)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-259"
+        },
+        {
+          "key": "AB2B-260",
+          "id": "T019",
+          "summary": "T019: Actualizar el bloque @openapi de auth.routes.ts (AuthUser con roleName y permissions, sin AUTH_INVITATION_PENDING)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-260"
+        },
+        {
+          "key": "AB2B-202",
+          "id": "T020",
+          "summary": "T020: Ajustar tests de rutas de auth y bootstrap a roles sembrados y nuevo AuthUser",
+          "status": "completed",
+          "depends_on": [
+            "T011",
+            "T017"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-202"
+        },
+        {
+          "key": "AB2B-219",
+          "id": "T021",
+          "summary": "T021: Escribir tests de integración de GET /api/roles (role.routes.test.ts)",
+          "status": "completed",
+          "depends_on": [
+            "T011"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-219"
+        },
+        {
+          "key": "AB2B-220",
+          "id": "T022",
+          "summary": "T022: Crear controlador y rutas de roles (GET /api/roles) con @openapi y montarlo en app.ts",
+          "status": "completed",
+          "depends_on": [
+            "T021",
+            "T011"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-220"
+        },
+        {
+          "key": "AB2B-221",
+          "id": "T023",
+          "summary": "T023: Crear modelo userAudit.model.ts (colección userAuditEntries)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-221"
+        },
+        {
+          "key": "AB2B-222",
+          "id": "T024",
+          "summary": "T024: Crear esquemas zod de usuarios en user.validation.ts",
+          "status": "completed",
+          "depends_on": [
+            "T006"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-222"
+        },
+        {
+          "key": "AB2B-223",
+          "id": "T025",
+          "summary": "T025: Crear helpers comunes de user.service.ts y toUserSummary en user.mapper.ts",
+          "status": "completed",
+          "depends_on": [
+            "T006",
+            "T011",
+            "T023"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-223"
+        },
+        {
+          "key": "AB2B-224",
+          "id": "T026",
+          "summary": "T026: Crear esqueleto de user.controller.ts y user.routes.ts montado en /api/users",
+          "status": "completed",
+          "depends_on": [
+            "T018"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-224"
+        },
+        {
+          "key": "AB2B-236",
+          "id": "T027",
+          "summary": "T027: Actualizar fixtures de AuthUser en tests del cliente y añadir caso de permisos en RequireAuth",
+          "status": "completed",
+          "depends_on": [
+            "T005"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-236"
+        },
+        {
+          "key": "AB2B-237",
+          "id": "T028",
+          "summary": "T028: Usar user.permissions en homeRoute, RequireAuth (prop level) y selectCan del cliente",
+          "status": "completed",
+          "depends_on": [
+            "T027",
+            "T003"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-237"
+        },
+        {
+          "key": "AB2B-238",
+          "id": "T029",
+          "summary": "T029: Crear componente genérico Select «Albarán» con estilos y test",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-238"
+        },
+        {
+          "key": "AB2B-239",
+          "id": "T030",
+          "summary": "T030: Crear componente genérico Table con variante de tarjetas en móvil y test",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-239"
+        },
+        {
+          "key": "AB2B-240",
+          "id": "T031",
+          "summary": "T031: Crear componente genérico StatusStamp (sello de estado) con estilos y test",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-240"
+        },
+        {
+          "key": "AB2B-261",
+          "id": "T032",
+          "summary": "T032: Crear componente genérico Dialog (modal accesible con foco atrapado) y test",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-261"
+        },
+        {
+          "key": "AB2B-262",
+          "id": "T033",
+          "summary": "T033: Crear componente genérico Tabs (pestañas de navegación) con estilos y test",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-262"
+        },
+        {
+          "key": "AB2B-281",
+          "id": "T033a",
+          "summary": "T033a: Crear componente genérico IconButton con estilos y test",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-281"
+        },
+        {
+          "key": "AB2B-282",
+          "id": "T033b",
+          "summary": "T033b: Crear componente genérico Menu (menú de acciones accesible) con estilos y test",
+          "status": "completed",
+          "depends_on": [
+            "T033a"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-282"
+        },
+        {
+          "key": "AB2B-263",
+          "id": "T034",
+          "summary": "T034: Crear rolesApi.ts, rolesSlice.ts (thunk loadRoles) con test y registrar roles en la store",
+          "status": "completed",
+          "depends_on": [
+            "T005"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-263"
+        },
+        {
+          "key": "AB2B-264",
+          "id": "T035",
+          "summary": "T035: Crear usersApi.ts (toUsersErrorMessage) y usersSlice.ts y registrar users en la store",
+          "status": "completed",
+          "depends_on": [
+            "T004"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-264"
+        },
+        {
+          "key": "AB2B-265",
+          "id": "T036",
+          "summary": "T036: Crear layout SettingsPage, UsersSettingsPage y rutas /ajustes y /ajustes/usuarios en AppRouter",
+          "status": "completed",
+          "depends_on": [
+            "T028",
+            "T033"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-265"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-192",
+      "summary": "Phase 3: User Story 1 - Crear el primer Administrador con la cuenta inicial (Priority: P1) 🎯 MVP",
+      "url": "https://sauk.atlassian.net/browse/AB2B-192",
+      "tasks": [
+        {
+          "key": "AB2B-200",
+          "id": "T037",
+          "summary": "T037: Tests de servicio createUser para el primer Administrador (user.service.test.ts)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-200"
+        },
+        {
+          "key": "AB2B-208",
+          "id": "T038",
+          "summary": "T038: Tests de rutas del primer acceso con supertest (user.routes.test.ts)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-208"
+        },
+        {
+          "key": "AB2B-209",
+          "id": "T039",
+          "summary": "T039: Tests de UserForm en modo alta firstAdmin (UserForm.test.tsx)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-209"
+        },
+        {
+          "key": "AB2B-210",
+          "id": "T040",
+          "summary": "T040: Implementar createUser(input, actor) con regla del primer Administrador en user.service.ts",
+          "status": "completed",
+          "depends_on": [
+            "T037"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-210"
+        },
+        {
+          "key": "AB2B-211",
+          "id": "T041",
+          "summary": "T041: Handler create y ruta POST /api/users con validación zod y bloque @openapi",
+          "status": "completed",
+          "depends_on": [
+            "T038"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-211"
+        },
+        {
+          "key": "AB2B-212",
+          "id": "T042",
+          "summary": "T042: createUser en usersApi.ts y thunk createUser en usersSlice.ts con tests",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-212"
+        },
+        {
+          "key": "AB2B-231",
+          "id": "T043",
+          "summary": "T043: Crear UserForm.tsx en modo alta con variante firstAdmin",
+          "status": "completed",
+          "depends_on": [
+            "T039"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-231"
+        },
+        {
+          "key": "AB2B-232",
+          "id": "T044",
+          "summary": "T044: Primer acceso en UsersSettingsPage.tsx: aviso, UserForm firstAdmin y vuelta al login",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-232"
+        },
+        {
+          "key": "AB2B-233",
+          "id": "T045",
+          "summary": "T045: Mostrar state.notice en LoginPage.tsx con Alert informativo y cubrirlo en LoginPage.test.tsx",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-233"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-193",
+      "summary": "Phase 4: User Story 2 - Dar de alta un usuario (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-193",
+      "tasks": [
+        {
+          "key": "AB2B-234",
+          "id": "T046",
+          "summary": "T046: Tests de servicio de alta con usuarios reales, errores de alta y updateUser de nombre/email",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-234"
+        },
+        {
+          "key": "AB2B-235",
+          "id": "T047",
+          "summary": "T047: Tests de rutas POST /api/users y PATCH /api/users/:id (validación, 404 y 403)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-235"
+        },
+        {
+          "key": "AB2B-248",
+          "id": "T048",
+          "summary": "T048: Tests de UserForm en alta normal, modo edición y error del servidor",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-248"
+        },
+        {
+          "key": "AB2B-249",
+          "id": "T049",
+          "summary": "T049: Implementar updateUser(id, input, actor) para nombre y email en user.service.ts",
+          "status": "completed",
+          "depends_on": [
+            "T046"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-249"
+        },
+        {
+          "key": "AB2B-250",
+          "id": "T050",
+          "summary": "T050: Handler update y ruta PATCH /api/users/:id con validación zod y bloque @openapi",
+          "status": "completed",
+          "depends_on": [
+            "T047"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-250"
+        },
+        {
+          "key": "AB2B-252",
+          "id": "T051",
+          "summary": "T051: updateUser en usersApi.ts y thunk updateUser en usersSlice.ts con tests",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-252"
+        },
+        {
+          "key": "AB2B-253",
+          "id": "T052",
+          "summary": "T052: Modo edición de UserForm.tsx (nombre, email y rol) con opciones desde RoleSummary[]",
+          "status": "completed",
+          "depends_on": [
+            "T048"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-253"
+        },
+        {
+          "key": "AB2B-256",
+          "id": "T053",
+          "summary": "T053: Sección «Nuevo usuario» en UsersSettingsPage.tsx con loadRoles y UserForm en modo alta",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-256"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-194",
+      "summary": "Phase 5: User Story 3 - Consultar el listado de usuarios (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-194",
+      "tasks": [
+        {
+          "key": "AB2B-268",
+          "id": "T054",
+          "summary": "T054: Tests de listUsers y GET /api/users (exclusión de cuenta inicial, orden es, roleName, 403)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-268"
+        },
+        {
+          "key": "AB2B-269",
+          "id": "T055",
+          "summary": "T055: Tests de UsersTable (columnas, último acceso, «(tú)» y menú de opciones por fila)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-269"
+        },
+        {
+          "key": "AB2B-270",
+          "id": "T056",
+          "summary": "T056: Implementar listUsers() y ruta GET /api/users con handler list y bloque @openapi",
+          "status": "completed",
+          "depends_on": [
+            "T054"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-270"
+        },
+        {
+          "key": "AB2B-274",
+          "id": "T057",
+          "summary": "T057: fetchUsers en usersApi.ts y thunk loadUsers en usersSlice.ts con estados loading/failed",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-274"
+        },
+        {
+          "key": "AB2B-275",
+          "id": "T058",
+          "summary": "T058: Crear UsersTable.tsx con Table/tarjetas, StatusStamp y menú de acciones accesible por fila",
+          "status": "completed",
+          "depends_on": [
+            "T055",
+            "T033a",
+            "T033b"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-275"
+        },
+        {
+          "key": "AB2B-276",
+          "id": "T059",
+          "summary": "T059: Sección «Usuarios» en UsersSettingsPage.tsx con loadUsers, diálogo de edición y test de página",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-276"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-195",
+      "summary": "Phase 6: User Story 4 - Cambiar el rol y bloquear o desbloquear (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-195",
+      "tasks": [
+        {
+          "key": "AB2B-201",
+          "id": "T060",
+          "summary": "T060: Tests de servicio para cambio de rol, bloqueo, desbloqueo y último Administrador",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-201"
+        },
+        {
+          "key": "AB2B-213",
+          "id": "T061",
+          "summary": "T061: Tests de rutas PATCH /api/users/:id/status y cambio de rol",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-213"
+        },
+        {
+          "key": "AB2B-214",
+          "id": "T062",
+          "summary": "T062: Tests de cliente para bloqueo, desbloqueo y cambio de rol en UsersTable y UsersSettingsPage",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-214"
+        },
+        {
+          "key": "AB2B-215",
+          "id": "T063",
+          "summary": "T063: Implementar applyWithAdminGuard, cambio de rol y setUserStatus en user.service.ts",
+          "status": "completed",
+          "depends_on": [
+            "T060"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-215"
+        },
+        {
+          "key": "AB2B-216",
+          "id": "T064",
+          "summary": "T064: Añadir handler setStatus y ruta PATCH /:id/status con @openapi",
+          "status": "completed",
+          "depends_on": [
+            "T061"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-216"
+        },
+        {
+          "key": "AB2B-217",
+          "id": "T065",
+          "summary": "T065: Añadir setUserStatus a usersApi y usersSlice, con loadMe al cambiar el rol propio",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-217"
+        },
+        {
+          "key": "AB2B-218",
+          "id": "T066",
+          "summary": "T066: Cablear bloqueo, desbloqueo y confirmación de cambio de rol en UsersTable y UsersSettingsPage",
+          "status": "completed",
+          "depends_on": [
+            "T062"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-218"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-196",
+      "summary": "Phase 7: User Story 5 - Restablecer la contraseña de un usuario (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-196",
+      "tasks": [
+        {
+          "key": "AB2B-241",
+          "id": "T067",
+          "summary": "T067: Tests de servicio para resetUserPassword y autorrestablecimiento",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-241"
+        },
+        {
+          "key": "AB2B-242",
+          "id": "T068",
+          "summary": "T068: Tests de ruta PUT /api/users/:id/password",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-242"
+        },
+        {
+          "key": "AB2B-243",
+          "id": "T069",
+          "summary": "T069: Crear tests de ResetPasswordDialog",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-243"
+        },
+        {
+          "key": "AB2B-244",
+          "id": "T070",
+          "summary": "T070: Implementar resetUserPassword en user.service.ts",
+          "status": "completed",
+          "depends_on": [
+            "T067"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-244"
+        },
+        {
+          "key": "AB2B-245",
+          "id": "T071",
+          "summary": "T071: Añadir handler resetPassword y ruta PUT /:id/password con @openapi",
+          "status": "completed",
+          "depends_on": [
+            "T068"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-245"
+        },
+        {
+          "key": "AB2B-246",
+          "id": "T072",
+          "summary": "T072: Añadir resetUserPassword a usersApi y usersSlice, con cierre de sesión si es el usuario actual",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-246"
+        },
+        {
+          "key": "AB2B-247",
+          "id": "T073",
+          "summary": "T073: Crear ResetPasswordDialog y cablear onResetPassword en UsersTable y UsersSettingsPage",
+          "status": "completed",
+          "depends_on": [
+            "T069"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-247"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-197",
+      "summary": "Phase 8: User Story 6 - Consultar la matriz de permisos por rol (Priority: P3)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-197",
+      "tasks": [
+        {
+          "key": "AB2B-266",
+          "id": "T074",
+          "summary": "T074: Crear tests de PermissionsMatrix",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-266"
+        },
+        {
+          "key": "AB2B-267",
+          "id": "T075",
+          "summary": "T075: Crear componente PermissionsMatrix de solo lectura",
+          "status": "completed",
+          "depends_on": [
+            "T074"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-267"
+        },
+        {
+          "key": "AB2B-271",
+          "id": "T076",
+          "summary": "T076: Añadir la sección «Permisos por rol» con PermissionsMatrix a UsersSettingsPage",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-271"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-198",
+      "summary": "Phase 9: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-198",
+      "tasks": [
+        {
+          "key": "AB2B-272",
+          "id": "T077",
+          "summary": "T077: Anotar en la spec y el contrato de 001-user-login los cambios de 003",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-272"
+        },
+        {
+          "key": "AB2B-273",
+          "id": "T078",
+          "summary": "T078: Comprobar que /api-docs coincide con users-api.openapi.yaml y el AuthUser ampliado",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-273"
+        },
+        {
+          "key": "AB2B-277",
+          "id": "T079",
+          "summary": "T079: Revisar límites de 40 líneas y anidamiento ≤2 en funciones nuevas o modificadas",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-277"
+        },
+        {
+          "key": "AB2B-278",
+          "id": "T080",
+          "summary": "T080: Revisar accesibilidad de /ajustes/usuarios a 390 px y 1440 px",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-278"
+        },
+        {
+          "key": "AB2B-279",
+          "id": "T081",
+          "summary": "T081: Comprobar que logs y userAuditEntries no contienen contraseñas ni hashes",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-279"
+        },
+        {
+          "key": "AB2B-280",
+          "id": "T082",
+          "summary": "T082: Lint y tests en verde y validación manual de quickstart.md en web y escritorio",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-280"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-190",
+      "to": "AB2B-191"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-191",
+      "to": "AB2B-192"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-192",
+      "to": "AB2B-193"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-193",
+      "to": "AB2B-194"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-194",
+      "to": "AB2B-195"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-194",
+      "to": "AB2B-196"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-191",
+      "to": "AB2B-197"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-195",
+      "to": "AB2B-198"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-196",
+      "to": "AB2B-198"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-197",
+      "to": "AB2B-198"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-203",
+      "to": "AB2B-204"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-204",
+      "to": "AB2B-225"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-205",
+      "to": "AB2B-225"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-206",
+      "to": "AB2B-225"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-207",
+      "to": "AB2B-225"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-226",
+      "to": "AB2B-229"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-251",
+      "to": "AB2B-258"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-229",
+      "to": "AB2B-202"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-258",
+      "to": "AB2B-202"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-229",
+      "to": "AB2B-219"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-219",
+      "to": "AB2B-220"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-229",
+      "to": "AB2B-220"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-207",
+      "to": "AB2B-222"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-207",
+      "to": "AB2B-223"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-229",
+      "to": "AB2B-223"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-221",
+      "to": "AB2B-223"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-259",
+      "to": "AB2B-224"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-206",
+      "to": "AB2B-236"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-236",
+      "to": "AB2B-237"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-204",
+      "to": "AB2B-237"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-206",
+      "to": "AB2B-263"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-205",
+      "to": "AB2B-264"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-237",
+      "to": "AB2B-265"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-262",
+      "to": "AB2B-265"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-200",
+      "to": "AB2B-210"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-208",
+      "to": "AB2B-211"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-209",
+      "to": "AB2B-231"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-234",
+      "to": "AB2B-249"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-235",
+      "to": "AB2B-250"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-248",
+      "to": "AB2B-253"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-268",
+      "to": "AB2B-270"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-269",
+      "to": "AB2B-275"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-201",
+      "to": "AB2B-215"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-213",
+      "to": "AB2B-216"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-214",
+      "to": "AB2B-218"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-241",
+      "to": "AB2B-244"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-242",
+      "to": "AB2B-245"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-243",
+      "to": "AB2B-247"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-266",
+      "to": "AB2B-267"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-281",
+      "to": "AB2B-282"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-281",
+      "to": "AB2B-275"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-282",
+      "to": "AB2B-275"
+    }
+  ],
+  "summary": {
+    "total_stories": 9,
+    "total_tasks": 84,
+    "completed_tasks": 38,
+    "pending_tasks": 46
+  }
+}

@@ -1,18 +1,41 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
-import type { AuthUser, Role } from '@app/shared';
+import type { AppModule, AuthUser, PermissionLevel, Role } from '@app/shared';
 import { setupStore } from '../store/store';
 import { resolveHomeRoute } from './homeRoute';
 import { RequireAuth } from './RequireAuth';
 
-const user = (role: Role, homeScreen: AuthUser['homeScreen'] = null): AuthUser => ({
+type Permissions = Record<AppModule, PermissionLevel>;
+
+const NO_ACCESS: Permissions = {
+  ventas: 'none',
+  clientes: 'none',
+  productos: 'none',
+  proveedores: 'none',
+  cobros: 'none',
+  ajustes: 'none',
+};
+
+/** Permisos iniciales de FR-020 de los roles que usan estos tests. */
+const PERMISSIONS_BY_ROLE: Record<string, Permissions> = {
+  Comercial: { ...NO_ACCESS, ventas: 'edit', clientes: 'edit', productos: 'view', cobros: 'view' },
+  Almacén: { ...NO_ACCESS, ventas: 'view', productos: 'edit', proveedores: 'view' },
+};
+
+const user = (
+  role: Role,
+  homeScreen: AuthUser['preferences']['homeScreen'] = null,
+  permissions: Permissions = PERMISSIONS_BY_ROLE[role] ?? NO_ACCESS,
+): AuthUser => ({
   id: '1',
   login: 'ana@empresa.es',
   name: 'Ana',
   role,
+  roleName: role,
+  permissions,
   isBootstrap: false,
-  homeScreen,
+  preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen },
 });
 
 function LoginProbe() {
@@ -59,6 +82,11 @@ describe('RequireAuth', () => {
 
   it('con sesión y permiso muestra la pantalla', () => {
     renderAt('/clientes', user('Comercial'));
+    expect(screen.getByText('Clientes')).toBeTruthy();
+  });
+
+  it('concede el acceso según permissions aunque el rol sea desconocido (ADR 0003)', () => {
+    renderAt('/clientes', user('Visitas', null, { ...NO_ACCESS, clientes: 'view' }));
     expect(screen.getByText('Clientes')).toBeTruthy();
   });
 

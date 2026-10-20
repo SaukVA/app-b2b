@@ -1,0 +1,22 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.withHint {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hint {
+  font-size: 12px;
+  /* ink2 y no ink3: sobre el fondo de la página ink3 se queda en 4.46:1 (mínimo 4.5:1). */
+  color: var(--ink2);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

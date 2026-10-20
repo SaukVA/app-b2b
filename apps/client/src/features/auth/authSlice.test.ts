@@ -21,8 +21,17 @@ const user: AuthUser = {
   login: 'ana@empresa.es',
   name: 'Ana',
   role: 'Comercial',
+  roleName: 'Comercial',
+  permissions: {
+    ventas: 'edit',
+    clientes: 'edit',
+    productos: 'view',
+    proveedores: 'none',
+    cobros: 'view',
+    ajustes: 'none',
+  },
   isBootstrap: false,
-  homeScreen: null,
+  preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen: null },
 };
 
 function loggedInStore() {

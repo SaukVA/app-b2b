@@ -98,16 +98,31 @@ describe('httpClient · casos sin refresh ni reintento', () => {
   });
 });
 
-describe('httpClient conectado a la store', () => {
-  const user: AuthUser = {
-    id: '1',
-    login: 'ana@empresa.es',
-    name: 'Ana',
-    role: 'Comercial',
-    isBootstrap: false,
+/** Usuario de prueba de la store (fuera del describe por el límite de 40 líneas por función). */
+const user: AuthUser = {
+  id: '1',
+  login: 'ana@empresa.es',
+  name: 'Ana',
+  role: 'Comercial',
+  roleName: 'Comercial',
+  permissions: {
+    ventas: 'edit',
+    clientes: 'edit',
+    productos: 'view',
+    proveedores: 'none',
+    cobros: 'view',
+    ajustes: 'none',
+  },
+  isBootstrap: false,
+  preferences: {
+    theme: 'light',
+    tableDensity: 'comfortable',
+    moneyFormat: 'es',
     homeScreen: null,
-  };
+  },
+};
 
+describe('httpClient conectado a la store', () => {
   it('guarda el access token renovado en la store', async () => {
     const store = setupStore({
       auth: { user, accessToken: 'viejo', status: 'succeeded', error: null },

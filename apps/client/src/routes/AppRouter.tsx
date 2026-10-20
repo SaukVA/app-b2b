@@ -1,12 +1,15 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router';
-import type { AppModule } from '@app/shared';
+import { APP_MODULES, type AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
 import { LogoutButton } from '../features/auth/components/LogoutButton';
 import { DATABASE_SETTINGS_PATH, LoginPage } from '../pages/LoginPage';
+import { AppearanceSettingsPage } from '../pages/AppearanceSettingsPage';
 import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
+import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
+import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
 import { isDesktop } from '../utils/desktop';
-import { APP_MODULES, resolveHomeRoute } from './homeRoute';
+import { resolveHomeRoute } from './homeRoute';
 import { RequireAuth } from './RequireAuth';
 
 function RootLayout() {
@@ -30,7 +33,7 @@ function ModulePlaceholder({ module }: { module: AppModule }) {
   );
 }
 
-const moduleRoutes = APP_MODULES.map((module) => ({
+const moduleRoutes = APP_MODULES.filter((module) => module !== 'ajustes').map((module) => ({
   path: module,
   element: (
     <RequireAuth module={module}>
@@ -38,6 +41,29 @@ const moduleRoutes = APP_MODULES.map((module) => ({
     </RequireAuth>
   ),
 }));
+
+// Ajustes solo exige sesión: cada pestaña pide su permiso (Usuarios, `ajustes: edit`; FR-001).
+const settingsRoute = {
+  path: 'ajustes',
+  element: (
+    <RequireAuth>
+      <SettingsPage />
+    </RequireAuth>
+  ),
+  children: [
+    { index: true, element: <SettingsIndexRedirect /> },
+    // Solo sesión (la exige settingsRoute): Apariencia es para todos los roles (004).
+    { path: 'apariencia', element: <AppearanceSettingsPage /> },
+    {
+      path: 'usuarios',
+      element: (
+        <RequireAuth module="ajustes" level="edit">
+          <UsersSettingsPage />
+        </RequireAuth>
+      ),
+    },
+  ],
+};
 
 // Pública y solo en escritorio (002 FR-007/FR-008): en web la ruta cae en la protegida /ajustes.
 const desktopRoutes = isDesktop()
@@ -53,6 +79,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       ...desktopRoutes,
       ...moduleRoutes,
+      settingsRoute,
       { path: '*', element: <HomeRedirect /> },
     ],
   },

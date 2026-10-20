@@ -1,0 +1,80 @@
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface2);
+  color: var(--ink2);
+  font: var(--text-label);
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.self {
+  font-weight: 400;
+  color: var(--ink3);
+}
+
+.email {
+  font-size: 13px;
+  color: var(--ink2);
+  overflow-wrap: anywhere;
+}
+
+.mono {
+  font: var(--text-figure);
+  white-space: nowrap;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  align-items: start;
+}
+
+.card > .identity {
+  grid-column: 1;
+}
+
+.meta {
+  grid-column: 1;
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.cardStatus {
+  grid-column: 1;
+}
+
+.cardActions {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+}
