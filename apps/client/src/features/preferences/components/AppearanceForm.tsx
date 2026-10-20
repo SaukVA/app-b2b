@@ -5,6 +5,7 @@ import {
   isHomeScreenAllowed,
   type AuthUser,
   type HomeScreen,
+  type MoneyFormat,
   type ThemePreference,
   type UpdatePreferencesRequest,
 } from '@app/shared';
@@ -12,8 +13,10 @@ import { OptionGroup, type OptionGroupOption } from '../../../components/OptionG
 import { Select } from '../../../components/Select';
 import { effectiveHomeScreen } from '../../../routes/homeRoute';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { MONEY_FORMAT_EXAMPLES } from '../../../utils/money';
 import { selectUser } from '../../auth/authSelectors';
 import { savePreference } from '../preferencesSlice';
+import { useMoneyFormat } from '../useMoneyFormat';
 import styles from './AppearanceForm.module.css';
 
 /** Miniatura del tema con sus propios colores (barra, fondo, línea, panel y botón), como en el tablero. */
@@ -124,12 +127,35 @@ function HomeScreenField() {
   );
 }
 
+const MONEY_FORMAT_OPTIONS = (Object.keys(MONEY_FORMAT_EXAMPLES) as MoneyFormat[]).map(
+  (format) => ({ value: format, label: MONEY_FORMAT_EXAMPLES[format] }),
+);
+
+/** Bloque «Formato de importes» (004 US3): se ve con el propio formato, en IBM Plex Mono (FR-010). */
+function MoneyFormatField() {
+  const dispatch = useAppDispatch();
+  const retry = useRetryOnBlur('moneyFormat');
+  return (
+    <Select
+      label="Formato de importes"
+      className={styles.mono}
+      options={MONEY_FORMAT_OPTIONS}
+      value={useMoneyFormat()}
+      onChange={(event) =>
+        void dispatch(savePreference({ moneyFormat: event.target.value as MoneyFormat }))
+      }
+      onBlur={retry}
+    />
+  );
+}
+
 /** Preferencias personales de Ajustes › Apariencia (tablero «Ajustes»). */
 export function AppearanceForm() {
   return (
     <section aria-labelledby="appearance-theme-title" className={styles.panel}>
       <ThemeSection />
       <div className={styles.settings}>
+        <MoneyFormatField />
         <HomeScreenField />
       </div>
     </section>

@@ -326,7 +326,7 @@ selector conserva el valor al recargar.
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T035 [P] [US3] Crear `apps/client/src/utils/money.test.ts` con los ejemplos de quickstart §4:
+- [X] T035 [P] [US3] Crear `apps/client/src/utils/money.test.ts` con los ejemplos de quickstart §4:
   - `formatMoney(1248.5, 'es')` → "1.248,50 €" y `'en'` → "€ 1,248.50";
   - `-35` → "-35,00 €" y "€ -35.00";
   - `1234567.899` → "1.234.567,90 €" y "€ 1,234,567.90";
@@ -336,7 +336,7 @@ selector conserva el valor al recargar.
     "Formato esperado: 1.248,50";
   - con `'en'`, lo simétrico y "Formato esperado: 1,248.50";
   - el mismo importe en los dos formatos da exactamente el mismo número (`toBe`).
-- [ ] T036 [P] [US3] Crear los tests de los componentes genéricos, que reciben el formato por prop (constitución
+- [X] T036 [P] [US3] Crear los tests de los componentes genéricos, que reciben el formato por prop (constitución
   VIII: "se configuran por props"), sin store:
   - `apps/client/src/components/Money.test.tsx`: `<Money value={1248.5} format="es" />` muestra "1.248,50 €" y
     con `format="en"` "€ 1,248.50"; solo formatea el número que recibe (FR-013);
@@ -346,12 +346,12 @@ selector conserva el valor al recargar.
   Crear además `apps/client/src/features/preferences/components/UserMoney.test.tsx`: con la store precargada,
   `UserMoney` y `UserMoneyField` pasan `applied.moneyFormat` (o `DEFAULT_MONEY_FORMAT` sin sesión) y cambian
   al cambiar la preferencia.
-- [ ] T037 [P] [US3] Ampliar `AppearanceForm.test.tsx` (bloque Formato de importes): opciones "1.248,50 €" y
+- [X] T037 [P] [US3] Ampliar `AppearanceForm.test.tsx` (bloque Formato de importes): opciones "1.248,50 €" y
   "€ 1,248.50", valor actual seleccionado y `savePreference({ moneyFormat: 'en' })` al cambiar.
 
 ### Implementación de US3
 
-- [ ] T038 [US3] Crear `apps/client/src/utils/money.ts` (research R8):
+- [X] T038 [US3] Crear `apps/client/src/utils/money.ts` (research R8):
   - `formatMoney(value: number, format: MoneyFormat): string` con `Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, maximumFractionDigits: 2 })` y `formatToParts`, cambiando grupo y decimal según
     el formato y colocando el símbolo ("1.248,50 €" / "€ 1,248.50");
@@ -359,7 +359,7 @@ selector conserva el valor al recargar.
     estricta por formato (miles opcionales bien agrupados, como mucho 2 decimales, signo menos opcional y €
     opcional delante o detrás según el formato), calculando en céntimos enteros (FR-012);
   - `MONEY_FORMAT_EXAMPLES: Record<MoneyFormat, string>` = `{ es: '1.248,50 €', en: '€ 1,248.50' }`.
-- [ ] T039 [US3] Crear:
+- [X] T039 [US3] Crear:
   - `apps/client/src/components/Money.tsx`: genérico, props `value: number` y `format: MoneyFormat`; `<span>`
     en IBM Plex Mono con `font-variant-numeric: tabular-nums`. Sin store (constitución VIII);
   - `apps/client/src/components/MoneyField.tsx`: genérico sobre `TextField`, props `format`, `value` y
@@ -369,7 +369,7 @@ selector conserva el valor al recargar.
   - `apps/client/src/features/preferences/components/UserMoney.tsx`: exporta `UserMoney` y `UserMoneyField`,
     envoltorios finos que toman el formato con `useMoneyFormat()` y renderizan `Money` / `MoneyField`. Son los
     que usarán las pantallas de negocio.
-- [ ] T040 [US3] Añadir a `AppearanceForm.tsx` el bloque "Formato de importes" con el `Select` (fuente IBM
+- [X] T040 [US3] Añadir a `AppearanceForm.tsx` el bloque "Formato de importes" con el `Select` (fuente IBM
   Plex Mono), opciones de `MONEY_FORMAT_EXAMPLES`, `onChange` → `savePreference({ moneyFormat })` y el mismo
   reintento por `onBlur` de T034.
 

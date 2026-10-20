@@ -121,3 +121,22 @@ describe('AppearanceForm · Pantalla de inicio', () => {
     expect(mockedUpdate).toHaveBeenCalledTimes(2);
   });
 });
+
+const moneySelect = () =>
+  screen.getByRole<HTMLSelectElement>('combobox', { name: 'Formato de importes' });
+
+describe('AppearanceForm · Formato de importes', () => {
+  it('ofrece los dos formatos con el actual seleccionado', () => {
+    renderForm();
+    expect(optionLabels(moneySelect())).toEqual(['1.248,50 €', '€ 1,248.50']);
+    expect(moneySelect().value).toBe('es');
+  });
+
+  it('al elegir "€ 1,248.50" lo guarda', async () => {
+    mockedUpdate.mockResolvedValue({ ...SAVED, moneyFormat: 'en' });
+    renderForm();
+    await userEvent.selectOptions(moneySelect(), 'en');
+    expect(mockedUpdate).toHaveBeenCalledWith({ moneyFormat: 'en' });
+    expect(moneySelect().value).toBe('en');
+  });
+});

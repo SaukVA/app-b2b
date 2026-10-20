@@ -112,3 +112,8 @@
   padding: 20px;
   border-top: 1px solid var(--border);
 }
+
+/* Dos clases: gana a la fuente de Select.module.css sin depender del orden de carga. */
+.settings .mono {
+  font-family: var(--font-mono);
+}
