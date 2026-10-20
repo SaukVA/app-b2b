@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import {
   AVAILABLE_HOME_SCREENS,
+  DEFAULT_TABLE_DENSITY,
   DEFAULT_THEME,
   isHomeScreenAllowed,
   type AuthUser,
   type HomeScreen,
   type MoneyFormat,
+  type TableDensity,
   type ThemePreference,
   type UpdatePreferencesRequest,
 } from '@app/shared';
@@ -127,6 +129,32 @@ function HomeScreenField() {
   );
 }
 
+const DENSITY_OPTIONS: OptionGroupOption<TableDensity>[] = [
+  { value: 'comfortable', label: 'Cómoda' },
+  { value: 'compact', label: 'Compacta' },
+];
+
+/** Bloque «Densidad de tablas» (004 US4): Compacta reduce el alto de las filas de escritorio (FR-008). */
+function DensityField() {
+  const dispatch = useAppDispatch();
+  const density = useAppSelector(
+    (state) => state.preferences.applied?.tableDensity ?? DEFAULT_TABLE_DENSITY,
+  );
+  return (
+    <div className={styles.field}>
+      <span id="appearance-density-title" className={styles.fieldLabel}>
+        Densidad de tablas
+      </span>
+      <OptionGroup
+        labelledBy="appearance-density-title"
+        options={DENSITY_OPTIONS}
+        value={density}
+        onChange={(value) => void dispatch(savePreference({ tableDensity: value }))}
+      />
+    </div>
+  );
+}
+
 const MONEY_FORMAT_OPTIONS = (Object.keys(MONEY_FORMAT_EXAMPLES) as MoneyFormat[]).map(
   (format) => ({ value: format, label: MONEY_FORMAT_EXAMPLES[format] }),
 );
@@ -155,6 +183,7 @@ export function AppearanceForm() {
     <section aria-labelledby="appearance-theme-title" className={styles.panel}>
       <ThemeSection />
       <div className={styles.settings}>
+        <DensityField />
         <MoneyFormatField />
         <HomeScreenField />
       </div>

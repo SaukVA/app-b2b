@@ -117,3 +117,17 @@
 .settings .mono {
   font-family: var(--font-mono);
 }
+
+/* Densidad: etiqueta como la de TextField/Select para alinearse con los otros dos campos. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.fieldLabel {
+  font: var(--text-label);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--ink2);
+}

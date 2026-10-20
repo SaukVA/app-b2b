@@ -387,9 +387,9 @@ selector conserva el valor al recargar.
 
 ### Tests de US4 (primero, deben fallar) ⚠️
 
-- [ ] T041 [P] [US4] Ampliar `AppearanceForm.test.tsx` (bloque Densidad): `OptionGroup variant="buttons"` con
+- [X] T041 [P] [US4] Ampliar `AppearanceForm.test.tsx` (bloque Densidad): `OptionGroup variant="buttons"` con
   "Cómoda" y "Compacta", la actual marcada y `savePreference({ tableDensity: 'compact' })` al pulsar.
-- [ ] T042 [P] [US4] E2E de densidad sin retirar la cuenta inicial: los E2E comparten servidor y base de datos
+- [X] T042 [P] [US4] E2E de densidad sin retirar la cuenta inicial: los E2E comparten servidor y base de datos
   entre archivos y entre los proyectos `desktop` y `mobile`, y `smoke.spec.ts` necesita `admin`. Dar de alta un
   Administrador por la API lo retiraría (003), así que los datos se crean directamente en la base de datos:
   - en `e2e/support/startServer.ts`, escribir la URI de MongoDB en memoria en
@@ -408,13 +408,13 @@ selector conserva el valor al recargar.
 
 ### Implementación de US4
 
-- [ ] T043 [US4] En `apps/client/src/components/Table.module.css`:
+- [X] T043 [US4] En `apps/client/src/components/Table.module.css`:
   - `.table td` usa `padding: var(--table-cell-py, 12px) var(--space-4)` y `.table th`
     `padding: var(--table-head-py, 10px) var(--space-4)`;
   - añadir `:root[data-density='compact'] { --table-cell-py: 4px; --table-head-py: 6px; }` en
     `apps/client/src/styles/tokens.css` (research R7);
   - las tarjetas (`.mob`) no usan estas variables.
-- [ ] T044 [US4] Añadir a `AppearanceForm.tsx` el bloque "Densidad de tablas" con
+- [X] T044 [US4] Añadir a `AppearanceForm.tsx` el bloque "Densidad de tablas" con
   `OptionGroup variant="buttons"` etiquetado por "Densidad de tablas" y `onChange` →
   `savePreference({ tableDensity })`. Con T026, T034 y T040, completar la rejilla del tablero
   (`repeat(auto-fit, minmax(240px, 1fr))`, 20 px de separación) para densidad, formato e inicio.

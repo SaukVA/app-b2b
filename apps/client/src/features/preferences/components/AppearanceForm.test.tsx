@@ -140,3 +140,24 @@ describe('AppearanceForm · Formato de importes', () => {
     expect(moneySelect().value).toBe('en');
   });
 });
+
+const densityGroup = () => screen.getByRole('radiogroup', { name: 'Densidad de tablas' });
+
+describe('AppearanceForm · Densidad de tablas', () => {
+  it('ofrece Cómoda y Compacta con la actual marcada', () => {
+    renderForm();
+    const radios = within(densityGroup()).getAllByRole('radio');
+    expect(radios.map((radio) => radio.textContent?.replace('Seleccionado', ''))).toEqual([
+      'Cómoda',
+      'Compacta',
+    ]);
+    expect(radios[0].getAttribute('aria-checked')).toBe('true');
+  });
+
+  it('al pulsar Compacta la guarda', async () => {
+    mockedUpdate.mockResolvedValue({ ...SAVED, tableDensity: 'compact' });
+    renderForm();
+    await userEvent.click(within(densityGroup()).getByRole('radio', { name: /Compacta/ }));
+    expect(mockedUpdate).toHaveBeenCalledWith({ tableDensity: 'compact' });
+  });
+});
