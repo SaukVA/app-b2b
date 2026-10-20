@@ -438,7 +438,7 @@ selector conserva el valor al recargar.
 - [X] T048 Revisar la accesibilidad de `/ajustes/apariencia` a 390 px y 1440 px, en claro y en oscuro, con
   `playwright-cli` (FR-018): etiquetas, teclado en los grupos de radio, opción marcada también como texto,
   objetivos de 44 px, contraste de 4.5:1 y sin scroll horizontal.
-- [ ] T049 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
+- [X] T049 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
   quickstart.md completo en web y, al menos, §2 y §3 en escritorio (`npm run dev --workspace=apps/desktop`).
 
 ---

@@ -139,5 +139,19 @@
       "AB2B-339",
       "AB2B-290"
     ]
+  },
+  {
+    "synced_at": "2026-10-20T16:24:47Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 49,
+    "completion_pct": 100,
+    "updated_issues": [
+      "AB2B-339",
+      "AB2B-290"
+    ],
+    "skipped_issues": []
   }
 ]
