@@ -120,5 +120,24 @@
       "AB2B-289"
     ],
     "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T12:33:24Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 48,
+    "completion_pct": 97,
+    "updated_issues": [
+      "AB2B-335",
+      "AB2B-336",
+      "AB2B-337",
+      "AB2B-338"
+    ],
+    "skipped_issues": [
+      "AB2B-339",
+      "AB2B-290"
+    ]
   }
 ]

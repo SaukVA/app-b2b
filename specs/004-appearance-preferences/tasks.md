@@ -425,17 +425,17 @@ selector conserva el valor al recargar.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T045 [P] Actualizar `docs/design/README.md`, línea del formato de importes: sustituir
+- [X] T045 [P] Actualizar `docs/design/README.md`, línea del formato de importes: sustituir
   `toLocaleString('es-ES', { minimumFractionDigits: 2 })` por "`formatMoney` (`apps/client/src/utils/money.ts`);
   `es-ES` no agrupa los miles de números de 4 cifras" (research R8). No cambia el lienzo.
-- [ ] T046 [P] Comprobar que `/api-docs` coincide con `contracts/preferences-api.openapi.yaml` (`PATCH
+- [X] T046 [P] Comprobar que `/api-docs` coincide con `contracts/preferences-api.openapi.yaml` (`PATCH
   /preferences`, esquemas y códigos) y con el `AuthUser` con `preferences`, comparando el spec generado por
   `buildSwaggerSpec()` como en 003 T078.
-- [ ] T047 [P] Añadir a la sección Convenciones de `CLAUDE.md`: "MUST mostrar los importes con `<UserMoney>` y
+- [X] T047 [P] Añadir a la sección Convenciones de `CLAUDE.md`: "MUST mostrar los importes con `<UserMoney>` y
   pedirlos con `<UserMoneyField>` (`apps/client/src/features/preferences/components/UserMoney.tsx`, sobre los
   genéricos `Money` y `MoneyField`); NEVER formatear importes a mano ni usarlos para cantidades no monetarias
   como unidades o stock (004, FR-011, FR-013)".
-- [ ] T048 Revisar la accesibilidad de `/ajustes/apariencia` a 390 px y 1440 px, en claro y en oscuro, con
+- [X] T048 Revisar la accesibilidad de `/ajustes/apariencia` a 390 px y 1440 px, en claro y en oscuro, con
   `playwright-cli` (FR-018): etiquetas, teclado en los grupos de radio, opción marcada también como texto,
   objetivos de 44 px, contraste de 4.5:1 y sin scroll horizontal.
 - [ ] T049 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
