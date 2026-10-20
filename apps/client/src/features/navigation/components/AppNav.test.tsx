@@ -1,7 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
-import type { AppModule, AuthUser, PermissionLevel } from '@app/shared';
+import type { AppModule, AuthUser, DesktopBridge, PermissionLevel } from '@app/shared';
 import { setupStore } from '../../../store/store';
 import { refreshSession } from '../../auth/authSlice';
 import { AppNav } from './AppNav';
@@ -42,10 +42,10 @@ const user = (role: string, permissions: Permissions): AuthUser => ({
   preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen: null },
 });
 
-function renderAppNav() {
+function renderAppNav(authUser: AuthUser = user('Comercial', COMERCIAL)) {
   const store = setupStore({
     auth: {
-      user: user('Comercial', COMERCIAL),
+      user: authUser,
       accessToken: 'jwt',
       status: 'succeeded',
       error: null,
@@ -83,5 +83,39 @@ describe('AppNav', () => {
     });
     expect(nav()).toBe(before);
     expect(linkNames()).toEqual(['Ventas', 'Productos', 'Proveedores', 'Ajustes']);
+  });
+});
+
+describe('AppNav · pie', () => {
+  afterEach(() => {
+    delete window.desktop;
+  });
+
+  it('muestra el nombre, el rol y el canal Web (FR-007)', () => {
+    renderAppNav();
+    expect(within(nav()).getByText('Ana')).toBeTruthy();
+    expect(within(nav()).getByText('Comercial · Web')).toBeTruthy();
+  });
+
+  it('en la aplicación de escritorio el canal es Escritorio', () => {
+    window.desktop = {} as unknown as DesktopBridge;
+    renderAppNav();
+    expect(within(nav()).getByText('Comercial · Escritorio')).toBeTruthy();
+  });
+
+  it('con la cuenta inicial muestra su nombre y su rol', () => {
+    renderAppNav({
+      ...user('Administrador', COMERCIAL),
+      login: 'admin',
+      name: 'Administrador inicial',
+      isBootstrap: true,
+    });
+    expect(within(nav()).getByText('Administrador inicial')).toBeTruthy();
+    expect(within(nav()).getByText('Administrador · Web')).toBeTruthy();
+  });
+
+  it('ofrece «Cerrar sesión» (FR-008)', () => {
+    renderAppNav();
+    expect(within(nav()).getByRole('button', { name: 'Cerrar sesión' })).toBeTruthy();
   });
 });

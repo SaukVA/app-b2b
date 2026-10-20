@@ -44,4 +44,19 @@ test.describe('Menú de navegación', () => {
     await expect(page).toHaveURL(/\/login/);
     await expect(page.getByRole('navigation')).toHaveCount(0);
   });
+
+  test('el pie muestra el rol y el canal, y «Cerrar sesión» vuelve al login', async ({ page }) => {
+    await loginAsAdmin(page);
+    await expect(mainNav(page).getByText('Administrador · Web')).toBeVisible();
+    // Una pantalla con sesión en el historial: el login y el cierre de sesión navegan con replace.
+    await mainNav(page).getByRole('link', { name: 'Ajustes' }).click();
+    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
+
+    await mainNav(page).getByRole('button', { name: 'Cerrar sesión' }).click();
+    await expect(page).toHaveURL(/\/login/);
+
+    await page.goBack();
+    await expect(page).toHaveURL(/\/login/);
+    await expect(page.getByRole('navigation', { name: 'Principal' })).toHaveCount(0);
+  });
 });

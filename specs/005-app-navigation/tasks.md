@@ -213,17 +213,17 @@ con `aria-current="page"`.
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T020 [P] [US3] Ampliar `apps/client/src/features/navigation/components/AppNav.test.tsx`:
+- [X] T020 [P] [US3] Ampliar `apps/client/src/features/navigation/components/AppNav.test.tsx`:
   - el pie muestra `user.name` y `${user.roleName} · Web`;
   - con `window.desktop` simulado muestra `· Escritorio`;
   - con la cuenta inicial muestra su nombre y rol;
   - hay un botón «Cerrar sesión» (FR-007, FR-008; contrato A8).
-- [ ] T021 [P] [US3] Ampliar `e2e/navigation.spec.ts`: el pie muestra «Administrador · Web». «Cerrar sesión»
+- [X] T021 [P] [US3] Ampliar `e2e/navigation.spec.ts`: el pie muestra «Administrador · Web». «Cerrar sesión»
   lleva a `/login`, y al volver atrás no se ve ninguna pantalla con sesión.
 
 ### Implementación de US3
 
-- [ ] T022 [US3] En `AppNav.tsx`, pasar a `NavBar` el `footer` con el nombre (recortado con
+- [X] T022 [US3] En `AppNav.tsx`, pasar a `NavBar` el `footer` con el nombre (recortado con
   `text-overflow: ellipsis` y `title` con el nombre completo), la línea `{roleName} · {isDesktop() ?
   'Escritorio' : 'Web'}` y `<LogoutButton />`. Estilos del pie en `AppNav.module.css` (borde superior,
   tamaños 13/12 px del lienzo, texto secundario `--disabled`). Si hace falta, añadir a `LogoutButton` una

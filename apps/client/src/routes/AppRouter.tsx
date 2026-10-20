@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router';
 import { APP_MODULES, type AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
-import { LogoutButton } from '../features/auth/components/LogoutButton';
 import { DATABASE_SETTINGS_PATH, LoginPage } from '../pages/LoginPage';
 import { AppearanceSettingsPage } from '../pages/AppearanceSettingsPage';
 import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
@@ -23,13 +22,12 @@ function HomeRedirect() {
   return <Navigate to={user ? resolveHomeRoute(user, null) : '/login'} replace />;
 }
 
-// Provisional mientras no existan los módulos de dominio.
+// Provisional mientras no existan los módulos de dominio. «Cerrar sesión» está en el pie del menú (005).
 function ModulePlaceholder({ module }: { module: AppModule }) {
   return (
     <main>
       <h1>{module.charAt(0).toUpperCase() + module.slice(1)}</h1>
       <p>Módulo pendiente de implementar.</p>
-      <LogoutButton />
     </main>
   );
 }

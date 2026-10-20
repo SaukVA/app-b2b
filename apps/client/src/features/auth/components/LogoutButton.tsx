@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../../store/store';
 import { logout } from '../authSlice';
 
 /** Sin "from": al volver a entrar se va a la pantalla de inicio, no a la última página visitada. */
-export function LogoutButton() {
+export function LogoutButton({ className }: { className?: string } = {}) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ export function LogoutButton() {
   }
 
   return (
-    <Button variant="tertiary" onClick={() => void handleClick()}>
+    <Button variant="tertiary" className={className} onClick={() => void handleClick()}>
       Cerrar sesión
     </Button>
   );
