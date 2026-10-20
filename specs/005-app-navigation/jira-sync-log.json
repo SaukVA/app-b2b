@@ -1,0 +1,18 @@
+[
+  {
+    "synced_at": "2026-10-20T16:43:21Z",
+    "spec": "005-app-navigation",
+    "project": "AB2B",
+    "epic": "AB2B-371",
+    "total_tasks": 49,
+    "completed_tasks": 3,
+    "completion_pct": 6,
+    "updated_issues": [
+      "AB2B-381",
+      "AB2B-384",
+      "AB2B-387",
+      "AB2B-372"
+    ],
+    "skipped_issues": []
+  }
+]

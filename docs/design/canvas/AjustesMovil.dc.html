@@ -14,6 +14,19 @@
 body{margin:0}
 a{color:#B4430F}a:hover{color:#8A320A}
 .mob{display:none}
+.nav-dot,.nav-out-icon{display:none}
+.nav-toggle svg{transition:transform .15s}
+.nav.is-collapsed{flex:0 0 72px!important}
+.is-collapsed .nav-brand{padding:4px 4px 24px!important}
+.is-collapsed .nav-brand-text,.is-collapsed .nav-user-info{display:none!important}
+.is-collapsed .nav-item{position:relative;padding:0!important;justify-content:center}
+.is-collapsed .nav-label,.is-collapsed .nav-stamp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0!important;padding:0!important}
+.is-collapsed .nav-item:hover .nav-label,.is-collapsed .nav-item:focus-visible .nav-label{left:56px;top:50%;transform:translateY(-50%);width:auto;height:auto;overflow:visible;clip:auto;padding:6px 10px!important;border-radius:6px;background:#262B31;color:#E8EAE6;font-size:13px;font-weight:500;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.is-collapsed .nav-dot{display:block}
+.is-collapsed .nav-out-icon{display:block}
+.is-collapsed .nav-user{padding:12px 0 4px!important;align-items:center}
+.is-collapsed .nav-toggle{align-self:center}
+.is-collapsed .nav-toggle svg{transform:rotate(180deg)}
 @container app (max-width: 760px){
 .nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
 .nav-brand{padding:0 8px 0 0!important}
@@ -22,6 +35,11 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .nav-push{margin-top:0!important}
 .nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
 .nav-user a{margin:0!important;white-space:nowrap}
+.nav.is-collapsed{flex:1 1 auto!important}
+.is-collapsed .nav-item{padding:0 12px!important}
+.is-collapsed .nav-label,.is-collapsed .nav-stamp{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip:auto!important}
+.is-collapsed .nav-stamp{margin-left:8px!important;padding:0 6px!important}
+.is-collapsed .nav-dot,.is-collapsed .nav-out-icon{display:none!important}
 .main{padding:16px 16px 32px!important;gap:16px!important}
 .desk{display:none!important}
 .mob{display:flex!important}

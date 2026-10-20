@@ -31,6 +31,7 @@ La estética toma prestado el lenguaje del albarán y la hoja de pedido: líneas
 | `navActive` | — | `#262B31` | Elemento activo de la barra lateral |
 | `navText` | — | `#C9CDD2` | Enlaces inactivos de la barra lateral |
 | `navIconActive` | — | `#F08A5D` | Icono del elemento activo |
+| `navTextActive` | — | `#E8EAE6` | Texto del elemento activo de la barra lateral (igual en los dos temas) |
 | `accent` | Óxido | `#B4430F` | Acción principal, foco, enlaces |
 | `accentHover` | — | `#8A320A` | Hover de enlaces |
 | `onAccent` | — | `#FFFFFF` | Texto sobre acento |
@@ -50,6 +51,7 @@ La estética toma prestado el lenguaje del albarán y la hoja de pedido: líneas
 | `ink3` | `#949BA3` |
 | `nav` | `#0B0D0F` |
 | `navActive` | `#23282E` |
+| `navTextActive` | `#E8EAE6` |
 | `accent` | `#E8794A` |
 | `onAccent` | `#16191D` |
 | `accentSoft` | `#3A2419` |
@@ -96,7 +98,7 @@ Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src
 - Escala base 4: `4, 8, 12, 16, 24, 32, 48` px.
 - Radios: **4** sello · **6** control (botón, input) · **8** grupo de tabs / tarjeta de opción · **10** panel.
 - Altura mínima de control y objetivo táctil: **44 px** (48 px en el formulario de login).
-- Barra lateral: base 232 px; contenido principal con padding `24px 32px 48px` y gap 20 px.
+- Barra lateral: 232 px desplegada y 72 px plegada; contenido principal con padding `24px 32px 48px` y gap 20 px.
 
 ## Componentes
 
@@ -113,12 +115,19 @@ Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src
 - **Cabecera de detalle**: etiqueta + título 22/600 + metadatos Mono 13, cerrada por regla de 2 px `ink`.
 - **Iconos**: SVG de trazo inline 18 px, `stroke-width: 1.8`; nunca emoji.
 - **Logotipo provisional**: cuadrado de 36 px (40 en login), fondo `accent`, inicial «M» en Mono 600.
+- **Barra lateral** (tablero «Sistema visual», sección «Barra lateral»):
+  - Orden: Ventas, Clientes, Productos, Proveedores y Cobros; Ajustes separado al final (`margin-top: auto`). Solo se muestran los módulos que el rol puede ver.
+  - Elemento: alto mínimo 44, padding 0 12, gap 12, radio 6, Sans 14/500 en `navText`. Activo: fondo `navActive`, texto `navTextActive` 14/600, icono en `navIconActive`.
+  - Iconos de trazo 18 px, `stroke-width: 1.8`; Ventas (albarán con líneas) y Cobros (pila de monedas) son nuevos.
+  - **Pendiente** (módulo sin implementar): etiqueta en `disabled` (`#9AA1A9`, 6,8:1 en claro y 7,5:1 en oscuro), enfocable pero sin navegar, y sello «Pendiente» sobre `--nav` con los colores oscuros del sello de aviso en los dos temas (`#3A3014` / `#E8C66A`, 7,9:1), Mono 10/600, alto 20, padding 0 6, radio 4. Versión reducida para el menú plegado: punto de 8 px `#E8C66A` en la esquina del icono con anillo de 2 px del color `nav` (10,7:1 en claro y 11,8:1 en oscuro); el texto «Pendiente» se conserva oculto visualmente.
+  - **Plegada**: 72 px, solo iconos centrados y el logotipo. La etiqueta aparece flotante a la derecha al pasar el ratón y con `:focus-visible` (fondo `#262B31`, texto `navTextActive`, Sans 13/500, radio 6). El pie deja solo «Cerrar sesión» como icono con etiqueta flotante.
+  - **Botón de plegar**: botón de icono 44×44 encima del pie, borde 1 px `#2C3238`, `aria-label` «Plegar menú» / «Desplegar menú» y `aria-expanded`; el icono gira al plegar. No aparece por debajo de 760 px.
 
 ## Responsive
 
 Los tableros usan **container queries** (`container-name: app`) con un único punto de corte a **760 px**:
 
-- La barra lateral pasa a barra horizontal superior *sticky* con scroll horizontal; se ocultan el texto de marca y los datos del usuario.
+- La barra lateral pasa a barra horizontal superior *sticky* con scroll horizontal; se ocultan el texto de marca, los datos del usuario y el botón de plegar. Se ve igual esté plegada o no.
 - Padding del contenido: `16px 16px 32px`, gap 16.
 - `.desk` (tablas) se oculta y `.mob` (tarjetas) se muestra.
 - `.hide-m` oculta columnas o bloques secundarios (p. ej. «Plazo» en proveedores, textos del hero de login).

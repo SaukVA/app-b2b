@@ -14,6 +14,19 @@
 body{margin:0}
 a{color:#B4430F}a:hover{color:#8A320A}
 .mob{display:none}
+.nav-dot,.nav-out-icon{display:none}
+.nav-toggle svg{transition:transform .15s}
+.nav.is-collapsed{flex:0 0 72px!important}
+.is-collapsed .nav-brand{padding:4px 4px 24px!important}
+.is-collapsed .nav-brand-text,.is-collapsed .nav-user-info{display:none!important}
+.is-collapsed .nav-item{position:relative;padding:0!important;justify-content:center}
+.is-collapsed .nav-label,.is-collapsed .nav-stamp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0!important;padding:0!important}
+.is-collapsed .nav-item:hover .nav-label,.is-collapsed .nav-item:focus-visible .nav-label{left:56px;top:50%;transform:translateY(-50%);width:auto;height:auto;overflow:visible;clip:auto;padding:6px 10px!important;border-radius:6px;background:#262B31;color:#E8EAE6;font-size:13px;font-weight:500;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.is-collapsed .nav-dot{display:block}
+.is-collapsed .nav-out-icon{display:block}
+.is-collapsed .nav-user{padding:12px 0 4px!important;align-items:center}
+.is-collapsed .nav-toggle{align-self:center}
+.is-collapsed .nav-toggle svg{transform:rotate(180deg)}
 @container app (max-width: 760px){
 .nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
 .nav-brand{padding:0 8px 0 0!important}
@@ -22,6 +35,11 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .nav-push{margin-top:0!important}
 .nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
 .nav-user a{margin:0!important;white-space:nowrap}
+.nav.is-collapsed{flex:1 1 auto!important}
+.is-collapsed .nav-item{padding:0 12px!important}
+.is-collapsed .nav-label,.is-collapsed .nav-stamp{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip:auto!important}
+.is-collapsed .nav-stamp{margin-left:8px!important;padding:0 6px!important}
+.is-collapsed .nav-dot,.is-collapsed .nav-out-icon{display:none!important}
 .main{padding:16px 16px 32px!important;gap:16px!important}
 .desk{display:none!important}
 .mob{display:flex!important}
@@ -33,16 +51,19 @@ a{color:#B4430F}a:hover{color:#8A320A}
 </helmet>
 <div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: #F3F4F1; color: #16191D; font-family: 'IBM Plex Sans', system-ui, sans-serif">
 
-<nav class="nav" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: #16191D; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
+<nav id="nav-principal" class="nav{{navClass}}" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: #16191D; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
 <div class="nav-brand" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 24px">
-<div style="width: 36px; height: 36px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
+<div style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
 <div class="nav-brand-text" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
 </div>
-<a href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>Clientes</a>
-<a href="Productos.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: #262B31; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg>Productos</a>
-<a href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Proveedores</a>
-<a class="nav-push" href="Ajustes.dc.html" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #C9CDD2; text-decoration: none; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>Ajustes</a>
-<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">[USUARIO]</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Comercial · Web</span><a href="Login.dc.html" style="margin-top: 6px; font-size: 13px; color: #C9CDD2">Cerrar sesión</a></div>
+<a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><span style="position: relative; display: inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg><span class="nav-dot" aria-hidden="true" style="position: absolute; top: -3px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: #E8C66A; box-shadow: 0 0 0 2px #16191D"></span></span><span class="nav-label">Ventas</span><span class="nav-stamp" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
+<a class="nav-item" href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg><span class="nav-label">Clientes</span></a>
+<a class="nav-item" href="Productos.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; background: #262B31; color: #E8EAE6; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg><span class="nav-label">Productos</span></a>
+<a class="nav-item" href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg><span class="nav-label">Proveedores</span></a>
+<a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><span style="position: relative; display: inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"></path><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path></svg><span class="nav-dot" aria-hidden="true" style="position: absolute; top: -3px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: #E8C66A; box-shadow: 0 0 0 2px #16191D"></span></span><span class="nav-label">Cobros</span><span class="nav-stamp" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
+<a class="nav-item nav-push" href="Ajustes.dc.html" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg><span class="nav-label">Ajustes</span></a>
+<button type="button" class="nav-toggle hide-m" aria-controls="nav-principal" aria-expanded="{{navExpanded}}" aria-label="{{navToggleLabel}}" title="{{navToggleLabel}}" onClick="{{toggleNav}}" style="margin-top: 8px; width: 44px; height: 44px; border: 1px solid #2C3238; border-radius: 6px; background: transparent; color: #C9CDD2; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"></path></svg></button>
+<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">[USUARIO]</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Comercial · Web</span><a class="nav-item" href="Login.dc.html" style="margin-top: 6px; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; font-size: 13px; color: #C9CDD2"><span class="nav-out-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"></path><path d="m10 16-4-4 4-4M6 12h10"></path></svg></span><span class="nav-label">Cerrar sesión</span></a></div>
 </nav>
 
 <main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
@@ -128,6 +149,10 @@ a{color:#B4430F}a:hover{color:#8A320A}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1060}}'>
 class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { navCollapsed: false };
+}
 renderVals() {
 const accent = this.props.accent ?? '#B4430F';
 const e = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
@@ -154,7 +179,7 @@ barColor: stock < min ? col[1] : '#4A5058',
 price: e(a)
 };
 });
-return { accent, products };
+return { navClass: this.state.navCollapsed ? ' is-collapsed' : '', navExpanded: this.state.navCollapsed ? 'false' : 'true', navToggleLabel: this.state.navCollapsed ? 'Desplegar menú' : 'Plegar menú', toggleNav: () => this.setState({ navCollapsed: !this.state.navCollapsed }), accent, products };
 }
 }
 </script>

@@ -49,10 +49,10 @@ prioridad: US1 → US2 → US3 → US4 (P1) → US5 → US6 (P2).
 
 **Purpose**: rama de trabajo y diseño previo obligatorio (FR-020, research R11)
 
-- [ ] T001 Crear la rama `005-app-navigation` a partir de la rama base que indique el usuario (`main` o
+- [X] T001 Crear la rama `005-app-navigation` a partir de la rama base que indique el usuario (`main` o
   `004-appearance-preferences`, que todavía no está integrada) y llevar a ella `specs/005-app-navigation/`.
   Comprobar que `.specify/feature.json` apunta a `specs/005-app-navigation`.
-- [ ] T002 Añadir al lienzo publicado (https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya), en el tablero del
+- [X] T002 Añadir al lienzo publicado (https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya), en el tablero del
   sistema visual (`Main.dc.html`) y en la barra lateral de los tableros:
   - el orden completo del menú: Ventas, Clientes, Productos, Proveedores, Cobros y, separado, Ajustes;
   - iconos de Ventas y Cobros (SVG de trazo de 18 px, `stroke-width: 1.8`);
@@ -60,7 +60,7 @@ prioridad: US1 → US2 → US3 → US4 (P1) → US5 → US6 (P2).
     contraste AA en claro y en oscuro;
   - menú plegado: ancho (propuesta 72 px), etiqueta flotante al pasar el ratón o con el foco, botón
     «Plegar menú»/«Desplegar menú» y pie reducido con «Cerrar sesión».
-- [ ] T003 Refrescar `docs/design/canvas/` (copia literal de los `*.dc.html` cambiados y `canvas.json`) y
+- [X] T003 Refrescar `docs/design/canvas/` (copia literal de los `*.dc.html` cambiados y `canvas.json`) y
   `docs/design/README.md`:
   - en Componentes, apartado «Barra lateral» con las medidas plegada y desplegada, el sello «Pendiente» y los
     iconos;
