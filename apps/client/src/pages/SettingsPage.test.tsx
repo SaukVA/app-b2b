@@ -22,7 +22,12 @@ function userWithAjustes(ajustes: PermissionLevel): AuthUser {
       ajustes,
     },
     isBootstrap: false,
-    homeScreen: null,
+    preferences: {
+      theme: 'light',
+      tableDensity: 'comfortable',
+      moneyFormat: 'es',
+      homeScreen: null,
+    },
   };
 }
 
@@ -37,6 +42,7 @@ function renderSettings(user: AuthUser, path = '/ajustes') {
         <Routes>
           <Route path="/ajustes" element={<SettingsPage />}>
             <Route index element={<SettingsIndexRedirect />} />
+            <Route path="apariencia" element={<p>Pantalla de apariencia</p>} />
             <Route
               path="usuarios"
               element={
@@ -54,21 +60,28 @@ function renderSettings(user: AuthUser, path = '/ajustes') {
 }
 
 describe('SettingsPage', () => {
-  it('con ajustes: edit muestra la pestaña Usuarios y abre la primera pestaña permitida', () => {
-    renderSettings(userWithAjustes('edit'));
+  it('cualquier rol ve la pestaña Apariencia, la primera, y /ajustes la abre', () => {
+    renderSettings(userWithAjustes('none'));
     expect(screen.getByRole('heading', { level: 1, name: 'Ajustes' })).toBeTruthy();
+    const links = screen.getAllByRole('link');
+    expect(links.map((link) => link.textContent)).toEqual(['Apariencia']);
+    expect(links[0].getAttribute('aria-current')).toBe('page');
+    expect(screen.getByText('Pantalla de apariencia')).toBeTruthy();
+  });
+
+  it('con ajustes: edit ve además la pestaña Usuarios, después de Apariencia', () => {
+    renderSettings(userWithAjustes('edit'));
+    const links = screen.getAllByRole('link');
+    expect(links.map((link) => link.textContent)).toEqual(['Apariencia', 'Usuarios']);
+    expect(screen.getByText('Pantalla de apariencia')).toBeTruthy();
+  });
+
+  it('con ajustes: edit abre la pestaña Usuarios', () => {
+    renderSettings(userWithAjustes('edit'), '/ajustes/usuarios');
     expect(screen.getByRole('link', { name: 'Usuarios' }).getAttribute('aria-current')).toBe(
       'page',
     );
     expect(screen.getByText('Pantalla de usuarios')).toBeTruthy();
-  });
-
-  it('sin ajustes: edit abre Ajustes sin la pestaña Usuarios (US3 AS3)', () => {
-    renderSettings(userWithAjustes('none'));
-    expect(screen.getByRole('heading', { level: 1, name: 'Ajustes' })).toBeTruthy();
-    expect(screen.queryByRole('link', { name: 'Usuarios' })).toBeNull();
-    expect(screen.queryByText('Pantalla de usuarios')).toBeNull();
-    expect(screen.getByText('No hay ajustes disponibles para tu rol.')).toBeTruthy();
   });
 
   it('sin ajustes: edit, abrir /ajustes/usuarios lleva a la pantalla de inicio (quickstart §3.4)', () => {

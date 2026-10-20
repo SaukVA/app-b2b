@@ -12,6 +12,13 @@ export type {
   ResetUserPasswordRequest,
 } from './types/user';
 export type { RoleSummary } from './types/role';
+export type {
+  ThemePreference,
+  TableDensity,
+  MoneyFormat,
+  AppearancePreferences,
+  UpdatePreferencesRequest,
+} from './types/preferences';
 export type { ClientKind, AuthUser, LoginRequest, LoginResponse } from './types/auth';
 export type {
   DesktopBridge,
@@ -27,6 +34,7 @@ export type { AppModule, PermissionLevel, PermissionSet } from './constants/role
 export { APP_MODULES, ADMIN_ROLE_KEY, can } from './constants/roles';
 export * from './constants/users';
 export * from './constants/auth';
+export * from './constants/preferences';
 export * from './constants/database';
 export type { ParsedMongoUri, ParseMongoUriResult } from './utils/mongoUri';
 export { parseMongoUri } from './utils/mongoUri';

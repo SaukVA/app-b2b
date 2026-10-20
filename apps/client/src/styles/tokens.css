@@ -138,3 +138,9 @@
     color-scheme: dark;
   }
 }
+
+/* Densidad Compacta de las tablas de escritorio (004, research R7). Las tarjetas de móvil no la usan. */
+:root[data-density='compact'] {
+  --table-cell-py: 4px;
+  --table-head-py: 6px;
+}

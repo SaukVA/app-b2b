@@ -89,7 +89,7 @@ Fuentes: **IBM Plex Sans** (400, 500, 600, 700) e **IBM Plex Mono** (400, 500, 6
 | Cifras | Mono 13–14/500 | `font-variant-numeric: tabular-nums`, alineadas a la derecha |
 | KPI | Mono 32–36/500 | `letter-spacing: -0.02em` |
 
-Formato de importes por defecto: `1.248,50 €` (`toLocaleString('es-ES', { minimumFractionDigits: 2 })`). Ajustes permite `€ 1,248.50`.
+Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src/utils/money.ts`; `es-ES` no agrupa los miles de números de 4 cifras). Ajustes permite `€ 1,248.50`.
 
 ## Espaciado, radios y tamaños
 

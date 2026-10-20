@@ -8,6 +8,7 @@ import { errorHandler, notFoundHandler } from './middlewares/errorHandler';
 import { requireDatabaseReady } from './middlewares/requireDatabaseReady';
 import { authRouter } from './modules/auth/auth.routes';
 import { healthRouter } from './modules/health/health.routes';
+import { preferencesRouter } from './modules/preferences/preferences.routes';
 import { roleRouter } from './modules/roles/role.routes';
 import { userRouter } from './modules/users/user.routes';
 
@@ -32,6 +33,7 @@ export function buildApp(options: BuildAppOptions = {}): Express {
   app.use('/api/auth', authRouter);
   app.use('/api/roles', roleRouter);
   app.use('/api/users', userRouter);
+  app.use('/api/preferences', preferencesRouter);
   if (options.docs !== false) {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(buildSwaggerSpec()));
   }
