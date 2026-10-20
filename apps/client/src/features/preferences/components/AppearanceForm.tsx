@@ -1,6 +1,18 @@
-import { DEFAULT_THEME, type ThemePreference } from '@app/shared';
+import { useMemo } from 'react';
+import {
+  AVAILABLE_HOME_SCREENS,
+  DEFAULT_THEME,
+  isHomeScreenAllowed,
+  type AuthUser,
+  type HomeScreen,
+  type ThemePreference,
+  type UpdatePreferencesRequest,
+} from '@app/shared';
 import { OptionGroup, type OptionGroupOption } from '../../../components/OptionGroup';
+import { Select } from '../../../components/Select';
+import { effectiveHomeScreen } from '../../../routes/homeRoute';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { selectUser } from '../../auth/authSelectors';
 import { savePreference } from '../preferencesSlice';
 import styles from './AppearanceForm.module.css';
 
@@ -34,7 +46,7 @@ function ThemeSection() {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.preferences.applied?.theme ?? DEFAULT_THEME);
   return (
-    <section aria-labelledby="appearance-theme-title" className={styles.panel}>
+    <>
       <header className={styles.header}>
         <h3 id="appearance-theme-title" className={styles.title}>
           Tema
@@ -52,11 +64,74 @@ function ThemeSection() {
           onChange={(value) => void dispatch(savePreference({ theme: value }))}
         />
       </div>
-    </section>
+    </>
+  );
+}
+
+const HOME_SCREEN_LABELS: Record<HomeScreen, string> = {
+  panel: 'Panel',
+  ventas: 'Ventas',
+  clientes: 'Clientes',
+  productos: 'Productos',
+  proveedores: 'Proveedores',
+  cobros: 'Cobros',
+};
+
+/** El usuario de la sesión con las preferencias que se ven (aplicadas aunque no se hayan guardado). */
+function useAppliedUser(): AuthUser | null {
+  const user = useAppSelector(selectUser);
+  const applied = useAppSelector((state) => state.preferences.applied);
+  return useMemo(
+    () => (user && applied ? { ...user, preferences: applied } : user),
+    [user, applied],
+  );
+}
+
+/**
+ * Reintento (FR-004): un <select> no avisa al volver a elegir la misma opción, así que, si quedó sin
+ * guardar `field`, se reenvía lo pendiente al salir del campo.
+ */
+function useRetryOnBlur(field: keyof UpdatePreferencesRequest): () => void {
+  const dispatch = useAppDispatch();
+  const { saveStatus, pendingChange } = useAppSelector((state) => state.preferences);
+  return () => {
+    if (saveStatus === 'failed' && pendingChange[field] !== undefined) {
+      void dispatch(savePreference({}));
+    }
+  };
+}
+
+/** Bloque «Pantalla de inicio» (004 US2): solo las pantallas que el rol puede ver (FR-014, FR-016). */
+function HomeScreenField() {
+  const dispatch = useAppDispatch();
+  const user = useAppliedUser();
+  const retry = useRetryOnBlur('homeScreen');
+  const value = user ? effectiveHomeScreen(user) : null;
+  if (!user || !value) return null;
+  const options = AVAILABLE_HOME_SCREENS.filter((screen) =>
+    isHomeScreenAllowed(user.permissions, screen),
+  ).map((screen) => ({ value: screen, label: HOME_SCREEN_LABELS[screen] }));
+  return (
+    <Select
+      label="Pantalla de inicio"
+      options={options}
+      value={value}
+      onChange={(event) =>
+        void dispatch(savePreference({ homeScreen: event.target.value as HomeScreen }))
+      }
+      onBlur={retry}
+    />
   );
 }
 
 /** Preferencias personales de Ajustes › Apariencia (tablero «Ajustes»). */
 export function AppearanceForm() {
-  return <ThemeSection />;
+  return (
+    <section aria-labelledby="appearance-theme-title" className={styles.panel}>
+      <ThemeSection />
+      <div className={styles.settings}>
+        <HomeScreenField />
+      </div>
+    </section>
+  );
 }

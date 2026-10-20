@@ -85,3 +85,29 @@ describe('PATCH /api/preferences', () => {
     expect(res.body.data.tableDensity).toBe('compact');
   });
 });
+
+// US2: la pantalla de inicio se valida contra los permisos del rol (FR-014).
+describe('PATCH /api/preferences · pantalla de inicio', () => {
+  it('200 si un Comercial elige una pantalla de inicio que puede ver', async () => {
+    const res = await patch(await comercialToken(), { homeScreen: 'clientes' });
+    expect(res.status).toBe(200);
+    expect(res.body.data.homeScreen).toBe('clientes');
+  });
+
+  it.each([
+    ['sin permiso en el rol', 'proveedores'],
+    ['que todavía no existe', 'panel'],
+  ])('400 PREFERENCES_HOME_SCREEN_NOT_ALLOWED con una pantalla %s', async (_case, homeScreen) => {
+    const res = await patch(await comercialToken(), { homeScreen });
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('PREFERENCES_HOME_SCREEN_NOT_ALLOWED');
+  });
+
+  it('200 con homeScreen: null (vuelve a "sin elegir")', async () => {
+    const token = await comercialToken();
+    await patch(token, { homeScreen: 'clientes' });
+    const res = await patch(token, { homeScreen: null });
+    expect(res.status).toBe(200);
+    expect(res.body.data.homeScreen).toBeNull();
+  });
+});

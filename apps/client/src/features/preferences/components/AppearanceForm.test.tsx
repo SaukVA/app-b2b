@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import type { AppearancePreferences, AuthUser } from '@app/shared';
@@ -21,7 +21,7 @@ const SAVED: AppearancePreferences = {
   homeScreen: null,
 };
 
-function user(): AuthUser {
+function user(preferences: AppearancePreferences = SAVED): AuthUser {
   return {
     id: '1',
     login: 'ana@empresa.es',
@@ -37,15 +37,15 @@ function user(): AuthUser {
       ajustes: 'none',
     },
     isBootstrap: false,
-    preferences: SAVED,
+    preferences,
   };
 }
 
-function renderForm() {
+function renderForm(preferences: AppearancePreferences = SAVED) {
   const store = setupStore({
-    auth: { user: user(), accessToken: 'jwt', status: 'succeeded', error: null },
+    auth: { user: user(preferences), accessToken: 'jwt', status: 'succeeded', error: null },
   });
-  store.dispatch(sessionRestored(user()));
+  store.dispatch(sessionRestored(user(preferences)));
   render(
     <Provider store={store}>
       <AppearanceForm />
@@ -82,5 +82,42 @@ describe('AppearanceForm · Tema', () => {
     expect(group.getByText('Menos brillo en turnos largos o poca luz.')).toBeTruthy();
     expect(group.getByText('Sigue la configuración del equipo.')).toBeTruthy();
     expect(group.getByRole('radio', { name: /Según el sistema/ })).toBeTruthy();
+  });
+});
+
+const homeSelect = () =>
+  screen.getByRole<HTMLSelectElement>('combobox', { name: 'Pantalla de inicio' });
+const optionLabels = (select: HTMLSelectElement) =>
+  Array.from(select.options).map((option) => option.textContent);
+
+describe('AppearanceForm · Pantalla de inicio', () => {
+  it('solo ofrece las pantallas que el rol puede ver', () => {
+    renderForm();
+    expect(optionLabels(homeSelect())).toEqual(['Ventas', 'Clientes', 'Productos', 'Cobros']);
+  });
+
+  it('con una pantalla guardada sin permiso, muestra la pantalla por defecto efectiva', () => {
+    renderForm({ ...SAVED, homeScreen: 'proveedores' });
+    expect(homeSelect().value).toBe('productos');
+  });
+
+  it('al elegir Clientes la guarda', async () => {
+    mockedUpdate.mockResolvedValue({ ...SAVED, homeScreen: 'clientes' });
+    renderForm();
+    await userEvent.selectOptions(homeSelect(), 'clientes');
+    expect(mockedUpdate).toHaveBeenCalledWith({ homeScreen: 'clientes' });
+    expect(homeSelect().value).toBe('clientes');
+  });
+
+  it('si no se pudo guardar, lo reintenta al salir del selector (FR-004)', async () => {
+    mockedUpdate.mockRejectedValueOnce(new Error('sin conexión'));
+    mockedUpdate.mockResolvedValueOnce({ ...SAVED, homeScreen: 'clientes' });
+    const store = renderForm();
+    await userEvent.selectOptions(homeSelect(), 'clientes');
+    expect(store.getState().preferences.saveStatus).toBe('failed');
+    fireEvent.blur(homeSelect());
+    await waitFor(() => expect(store.getState().preferences.saveStatus).toBe('idle'));
+    expect(mockedUpdate).toHaveBeenLastCalledWith({ homeScreen: 'clientes' });
+    expect(mockedUpdate).toHaveBeenCalledTimes(2);
   });
 });

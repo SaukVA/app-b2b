@@ -272,21 +272,21 @@ Productos; un rol sin Productos llega a Ventas sin bucle.
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T028 [P] [US2] Ampliar `apps/server/src/modules/preferences/preferences.routes.test.ts`:
+- [X] T028 [P] [US2] Ampliar `apps/server/src/modules/preferences/preferences.routes.test.ts`:
   - Comercial con `{ homeScreen: 'clientes' }` → 200;
   - Comercial con `{ homeScreen: 'proveedores' }` → 400 `PREFERENCES_HOME_SCREEN_NOT_ALLOWED`;
   - `{ homeScreen: 'panel' }` → 400 (todavía no existe);
   - `{ homeScreen: null }` → 200 con `homeScreen: null`.
-- [ ] T029 [P] [US2] Crear `apps/client/src/routes/homeRoute.test.ts`:
+- [X] T029 [P] [US2] Crear `apps/client/src/routes/homeRoute.test.ts`:
   - `from` permitido → `from`;
   - `preferences.homeScreen` permitido → esa pantalla;
   - `homeScreen` no permitido o `null` → `/productos` si el rol la ve;
   - rol sin Productos con `ventas: 'view'` → `/ventas` (primera de `AVAILABLE_HOME_SCREENS`);
   - rol sin ninguna pantalla → `/ajustes/apariencia`;
   - `effectiveHomeScreen(user)` devuelve la pantalla que debe aparecer seleccionada (FR-016).
-- [ ] T030 [P] [US2] Ampliar `apps/client/src/routes/RequireAuth.test.tsx`: un usuario cuyo rol solo tiene
+- [X] T030 [P] [US2] Ampliar `apps/client/src/routes/RequireAuth.test.tsx`: un usuario cuyo rol solo tiene
   `ventas: 'view'` que abre `/productos` acaba en `/ventas`, sin bucle de redirección (SC-006).
-- [ ] T031 [P] [US2] Ampliar `apps/client/src/features/preferences/components/AppearanceForm.test.tsx` (bloque
+- [X] T031 [P] [US2] Ampliar `apps/client/src/features/preferences/components/AppearanceForm.test.tsx` (bloque
   Pantalla de inicio):
   - un Comercial ve en el selector "Ventas", "Clientes", "Productos" y "Cobros", pero no "Proveedores";
   - con `homeScreen: 'proveedores'` guardado y sin permiso, aparece seleccionada "Productos";
@@ -294,18 +294,18 @@ Productos; un rol sin Productos llega a Ventas sin bucle.
 
 ### Implementación de US2
 
-- [ ] T032 [US2] Actualizar `apps/client/src/routes/homeRoute.ts`:
+- [X] T032 [US2] Actualizar `apps/client/src/routes/homeRoute.ts`:
   - nueva función `defaultHomeRoute(user)`: `DEFAULT_HOME_SCREEN` si `can(permissions, …, 'view')`, si no la
     primera de `AVAILABLE_HOME_SCREENS` que pueda ver, y si no hay ninguna `/ajustes/apariencia`;
   - `resolveHomeRoute` lee `user.preferences.homeScreen`, la acepta solo si `isHomeScreenAllowed` y, si no,
     usa `defaultHomeRoute`;
   - nueva `effectiveHomeScreen(user): HomeScreen | null` para el selector.
   Así `RequireAuth` deja de redirigir en bucle (research R9).
-- [ ] T033 [US2] En `apps/server/src/modules/preferences/preferences.service.ts`, antes de guardar, si
+- [X] T033 [US2] En `apps/server/src/modules/preferences/preferences.service.ts`, antes de guardar, si
   `change.homeScreen` no es `null`/`undefined` y `!isHomeScreenAllowed(permissions, change.homeScreen)`, lanzar
   `new AppError(PREFERENCES_ERROR_CODES.homeScreenNotAllowed, 400, 'Tu rol no tiene acceso a esa pantalla.')`
   (helper `assertHomeScreenAllowed`).
-- [ ] T034 [US2] Añadir a `AppearanceForm.tsx` el bloque "Pantalla de inicio" con el `Select` de 003:
+- [X] T034 [US2] Añadir a `AppearanceForm.tsx` el bloque "Pantalla de inicio" con el `Select` de 003:
   - etiqueta "Pantalla de inicio";
   - opciones: `AVAILABLE_HOME_SCREENS` filtradas con `isHomeScreenAllowed(user.permissions, …)` y nombres
     visibles "Ventas", "Clientes", "Productos", "Proveedores" y "Cobros";

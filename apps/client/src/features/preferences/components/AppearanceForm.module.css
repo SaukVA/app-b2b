@@ -103,3 +103,12 @@
   border-radius: 3px;
   background: var(--p-accent);
 }
+
+/* Densidad, formato de importes y pantalla de inicio, bajo los temas. */
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+}
