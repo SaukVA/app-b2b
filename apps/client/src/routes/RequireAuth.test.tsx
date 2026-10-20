@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import type { AppModule, AuthUser, PermissionLevel, Role } from '@app/shared';
 import { setupStore } from '../store/store';
-import { resolveHomeRoute } from './homeRoute';
 import { RequireAuth } from './RequireAuth';
 
 type Permissions = Record<AppModule, PermissionLevel>;
@@ -25,7 +24,7 @@ const PERMISSIONS_BY_ROLE: Record<string, Permissions> = {
 
 const user = (
   role: Role,
-  homeScreen: AuthUser['homeScreen'] = null,
+  homeScreen: AuthUser['preferences']['homeScreen'] = null,
   permissions: Permissions = PERMISSIONS_BY_ROLE[role] ?? NO_ACCESS,
 ): AuthUser => ({
   id: '1',
@@ -35,7 +34,7 @@ const user = (
   roleName: role,
   permissions,
   isBootstrap: false,
-  homeScreen,
+  preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen },
 });
 
 function LoginProbe() {
@@ -57,6 +56,14 @@ function renderAt(path: string, authUser: AuthUser | null) {
             element={
               <RequireAuth module="clientes">
                 <p>Clientes</p>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/ventas"
+            element={
+              <RequireAuth module="ventas">
+                <p>Ventas</p>
               </RequireAuth>
             }
           />
@@ -94,23 +101,9 @@ describe('RequireAuth', () => {
     renderAt('/clientes', user('Almacén'));
     expect(screen.getByText('Productos')).toBeTruthy();
   });
-});
 
-describe('resolveHomeRoute', () => {
-  it('prioriza la pantalla de origen si el rol puede abrirla', () => {
-    expect(resolveHomeRoute(user('Comercial', 'ventas'), '/clientes')).toBe('/clientes');
-  });
-
-  it('sin origen usa la pantalla de inicio elegida', () => {
-    expect(resolveHomeRoute(user('Comercial', 'ventas'), null)).toBe('/ventas');
-  });
-
-  it('sin pantalla elegida usa DEFAULT_HOME_SCREEN', () => {
-    expect(resolveHomeRoute(user('Comercial'), null)).toBe('/productos');
-  });
-
-  it('ignora el origen y la pantalla elegida si el rol no tiene acceso o no existe', () => {
-    expect(resolveHomeRoute(user('Almacén', 'panel'), '/clientes')).toBe('/productos');
-    expect(resolveHomeRoute(user('Comercial'), '/login')).toBe('/productos');
+  it('un rol sin Productos que la abre acaba en Ventas, sin bucle de redirecciones (SC-006)', () => {
+    renderAt('/productos', user('Visitas', null, { ...NO_ACCESS, ventas: 'view' }));
+    expect(screen.getByText('Ventas')).toBeTruthy();
   });
 });

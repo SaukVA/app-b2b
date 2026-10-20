@@ -1,0 +1,157 @@
+[
+  {
+    "synced_at": "2026-10-19T15:51:16Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 4,
+    "completion_pct": 8,
+    "updated_issues": [
+      "AB2B-291",
+      "AB2B-292",
+      "AB2B-293",
+      "AB2B-294",
+      "AB2B-284"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-19T16:01:31Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 22,
+    "completion_pct": 44,
+    "updated_issues": [
+      "AB2B-295",
+      "AB2B-296",
+      "AB2B-297",
+      "AB2B-298",
+      "AB2B-299",
+      "AB2B-300",
+      "AB2B-301",
+      "AB2B-302",
+      "AB2B-303",
+      "AB2B-304",
+      "AB2B-305",
+      "AB2B-306",
+      "AB2B-307",
+      "AB2B-308",
+      "AB2B-309",
+      "AB2B-310",
+      "AB2B-311",
+      "AB2B-312",
+      "AB2B-285"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T10:34:06Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 27,
+    "completion_pct": 55,
+    "updated_issues": [
+      "AB2B-313",
+      "AB2B-314",
+      "AB2B-315",
+      "AB2B-316",
+      "AB2B-317",
+      "AB2B-286"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T11:50:28Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 34,
+    "completion_pct": 69,
+    "updated_issues": [
+      "AB2B-318",
+      "AB2B-319",
+      "AB2B-320",
+      "AB2B-321",
+      "AB2B-322",
+      "AB2B-323",
+      "AB2B-324",
+      "AB2B-287"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T12:00:41Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 40,
+    "completion_pct": 81,
+    "updated_issues": [
+      "AB2B-325",
+      "AB2B-326",
+      "AB2B-327",
+      "AB2B-328",
+      "AB2B-329",
+      "AB2B-330",
+      "AB2B-288"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T12:22:44Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 44,
+    "completion_pct": 89,
+    "updated_issues": [
+      "AB2B-331",
+      "AB2B-332",
+      "AB2B-333",
+      "AB2B-334",
+      "AB2B-289"
+    ],
+    "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T12:33:24Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 48,
+    "completion_pct": 97,
+    "updated_issues": [
+      "AB2B-335",
+      "AB2B-336",
+      "AB2B-337",
+      "AB2B-338"
+    ],
+    "skipped_issues": [
+      "AB2B-339",
+      "AB2B-290"
+    ]
+  },
+  {
+    "synced_at": "2026-10-20T16:24:47Z",
+    "spec": "004-appearance-preferences",
+    "project": "AB2B",
+    "epic": "AB2B-283",
+    "total_tasks": 49,
+    "completed_tasks": 49,
+    "completion_pct": 100,
+    "updated_issues": [
+      "AB2B-339",
+      "AB2B-290"
+    ],
+    "skipped_issues": []
+  }
+]

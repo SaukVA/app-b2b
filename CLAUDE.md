@@ -182,6 +182,7 @@ El diseño de la interfaz («Albarán») está documentado en `docs/design/`:
 - MUST incluir tests de servicio y de rutas antes de considerar completo un módulo de dominio.
 - SHOULD seguir el formato Conventional Commits (`feat:`, `fix:`, `refactor:`, `test:`, `chore:`...), en español o inglés pero consistente dentro de un mismo PR.
 - MUST mantener controladores y servicios en ≤40 líneas efectivas y con una única responsabilidad; MUST extraer a funciones auxiliares en lugar de anidar lógica.
+- MUST mostrar los importes con `<UserMoney>` y pedirlos con `<UserMoneyField>` (`apps/client/src/features/preferences/components/UserMoney.tsx`, sobre los genéricos `Money` y `MoneyField`); NEVER formatear importes a mano ni usarlos para cantidades no monetarias como unidades o stock (004, FR-011, FR-013).
 
 ## Estilo de trabajo
 

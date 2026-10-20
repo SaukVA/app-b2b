@@ -85,7 +85,7 @@ const user: AuthUser = {
     ajustes: 'none',
   },
   isBootstrap: false,
-  homeScreen: null,
+  preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen: null },
 };
 
 const withSession = () =>

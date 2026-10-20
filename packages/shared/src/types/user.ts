@@ -3,7 +3,7 @@ export type Role = string;
 
 export type UserStatus = 'Activo' | 'Bloqueado';
 
-export type HomeScreen = 'panel' | 'ventas' | 'productos';
+export type HomeScreen = 'panel' | 'ventas' | 'clientes' | 'productos' | 'proveedores' | 'cobros';
 
 /** Usuario en Ajustes › Usuarios. NEVER incluye la contraseña ni su hash. */
 export interface UserSummary {

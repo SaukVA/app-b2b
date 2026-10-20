@@ -39,7 +39,7 @@ const ADMIN: AuthUser = {
   roleName: 'Administrador',
   permissions: ALL_EDIT,
   isBootstrap: false,
-  homeScreen: null,
+  preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen: null },
 };
 
 const ROLES: RoleSummary[] = [

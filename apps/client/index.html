@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Venta a mayoristas</title>
+    <!-- Último tema del equipo antes del primer pintado, sin destello (004, research R5, FR-007). -->
+    <script>
+      try {
+        var t = localStorage.getItem('appearance.lastTheme');
+        document.documentElement.dataset.theme = /^(light|dark|system)$/.test(t) ? t : 'light';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"

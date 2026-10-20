@@ -1,5 +1,6 @@
 import type { AppModule, PermissionLevel } from '../constants/roles';
-import type { HomeScreen, Role } from './user';
+import type { AppearancePreferences } from './preferences';
+import type { Role } from './user';
 
 export type ClientKind = 'web' | 'desktop';
 
@@ -12,7 +13,8 @@ export interface AuthUser {
   /** Permisos del rol leídos de la colección `roles`; completos (ausentes = `none`). */
   permissions: Record<AppModule, PermissionLevel>;
   isBootstrap: boolean;
-  homeScreen: HomeScreen | null;
+  /** Tema, densidad, formato de importes y pantalla de inicio (004, research R2). */
+  preferences: AppearancePreferences;
 }
 
 export interface LoginRequest {

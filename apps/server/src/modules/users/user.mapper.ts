@@ -1,4 +1,5 @@
 import type { AuthUser, UserSummary } from '@app/shared';
+import { toAppearancePreferences } from '../preferences/preferences.mapper';
 import { toPermissionSet } from '../roles/role.mapper';
 import type { RoleDocument } from '../roles/role.model';
 import type { UserDocument } from './user.model';
@@ -16,7 +17,7 @@ export function toAuthUser(doc: UserDocument, role: RoleDocument | null): AuthUs
     roleName: role?.name ?? doc.role,
     permissions: toPermissionSet(role),
     isBootstrap: doc.isBootstrap,
-    homeScreen: doc.homeScreen ?? null,
+    preferences: toAppearancePreferences(doc),
   };
 }
 
