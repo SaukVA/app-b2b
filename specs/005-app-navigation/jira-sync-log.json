@@ -85,5 +85,31 @@
       "AB2B-376"
     ],
     "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-20T17:40:18Z",
+    "spec": "005-app-navigation",
+    "project": "AB2B",
+    "epic": "AB2B-371",
+    "total_tasks": 49,
+    "completed_tasks": 35,
+    "completion_pct": 71,
+    "updated_issues": [
+      "AB2B-400",
+      "AB2B-401",
+      "AB2B-402",
+      "AB2B-403",
+      "AB2B-411",
+      "AB2B-412",
+      "AB2B-413",
+      "AB2B-414",
+      "AB2B-418",
+      "AB2B-421",
+      "AB2B-423",
+      "AB2B-426",
+      "AB2B-427",
+      "AB2B-377"
+    ],
+    "skipped_issues": []
   }
 ]

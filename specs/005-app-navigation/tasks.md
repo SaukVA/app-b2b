@@ -244,65 +244,65 @@ vía: ni desde el menú, ni por dirección, ni como pantalla de inicio (clarific
 
 ### Tests de US4 (primero, deben fallar) ⚠️
 
-- [ ] T023 [P] [US4] Ampliar `apps/client/src/components/NavBar.test.tsx` con un elemento `pending`:
+- [X] T023 [P] [US4] Ampliar `apps/client/src/components/NavBar.test.tsx` con un elemento `pending`:
   - tiene `role="link"`, `aria-disabled="true"`, `tabIndex=0` y no tiene `href`;
   - se ve el texto «Pendiente»;
   - recibe el foco con Tab;
   - ni el clic, ni Intro, ni Espacio cambian la ruta del `MemoryRouter` (contrato N3).
-- [ ] T024 [P] [US4] Ampliar `apps/client/src/features/navigation/navItems.test.ts`: con la lista real,
+- [X] T024 [P] [US4] Ampliar `apps/client/src/features/navigation/navItems.test.ts`: con la lista real,
   `ventas…cobros` llevan `pending: true` y `ajustes`, `pending: false`. Con `jest.mock` de
   `packages/shared/src/constants/modules.ts` (`IMPLEMENTED_MODULES = ['ajustes', 'clientes']`), `clientes`
   lleva `pending: false` en la misma posición (FR-010).
-- [ ] T025 [P] [US4] Ampliar `apps/client/src/routes/homeRoute.test.ts`:
+- [X] T025 [P] [US4] Ampliar `apps/client/src/routes/homeRoute.test.ts`:
   - `resolveHomeRoute(user, '/clientes')` no devuelve `/clientes` mientras esté pendiente;
   - sin módulos implementados, cualquier rol va a `/ajustes/apariencia`;
   - un `homeScreen: 'ventas'` guardado se ignora.
   
   Los casos actuales que esperan `/productos` o una pantalla elegida pasan a usar `jest.mock` de
   `constants/modules.ts` con los módulos implementados que necesiten.
-- [ ] T026 [P] [US4] Adaptar `packages/shared/src/constants/preferences.test.ts`:
+- [X] T026 [P] [US4] Adaptar `packages/shared/src/constants/preferences.test.ts`:
   - con la lista real, `AVAILABLE_HOME_SCREENS` está vacía e `isHomeScreenAllowed` devuelve `false` para
     cualquier pantalla;
   - los casos válidos actuales pasan a `jest.mock('./modules')` con módulos implementados.
-- [ ] T027 [P] [US4] Adaptar `apps/server/src/modules/preferences/preferences.routes.test.ts` y
+- [X] T027 [P] [US4] Adaptar `apps/server/src/modules/preferences/preferences.routes.test.ts` y
   `preferences.service.test.ts`:
   - nuevo caso: 400 `PREFERENCES_HOME_SCREEN_NOT_ALLOWED` con `homeScreen: 'clientes'` y la lista real;
   - los casos que hoy aceptan `'clientes'` usan `jest.mock` del archivo
     `packages/shared/src/constants/modules.ts` (misma ruta resuelta que el `moduleNameMapper` de
     `@app/shared`);
   - `homeScreen: null` sigue respondiendo 200.
-- [ ] T028 [P] [US4] Adaptar `apps/client/src/features/preferences/components/AppearanceForm.test.tsx`:
+- [X] T028 [P] [US4] Adaptar `apps/client/src/features/preferences/components/AppearanceForm.test.tsx`:
   - con la lista real no hay control «Pantalla de inicio»;
   - los casos de elegir `clientes`/`proveedores` usan `jest.mock` de `constants/modules.ts`.
-- [ ] T029 [P] [US4] Ampliar `e2e/navigation.spec.ts`:
+- [X] T029 [P] [US4] Ampliar `e2e/navigation.spec.ts`:
   - «Ventas» muestra «Pendiente»; el clic y Intro no cambian la URL;
   - `page.goto('/clientes')` acaba en `/ajustes/apariencia`;
   - en Apariencia no hay «Pantalla de inicio».
 
 ### Implementación de US4
 
-- [ ] T030 [US4] Añadir `NavBarPending` en `apps/client/src/components/NavBar.tsx`:
+- [X] T030 [US4] Añadir `NavBarPending` en `apps/client/src/components/NavBar.tsx`:
   - `<span role="link" aria-disabled="true" tabIndex={0}>` con icono, etiqueta y
     `<StatusStamp tone="warning">Pendiente</StatusStamp>`;
   - `onClick`/`onKeyDown` con `preventDefault` para Intro y Espacio;
   - estilo atenuado del diseño de T002, con el mismo alto de 44 px;
   - `NavBar` lo usa cuando `item.pending`.
-- [ ] T031 [US4] Modificar `packages/shared/src/constants/preferences.ts`:
+- [X] T031 [US4] Modificar `packages/shared/src/constants/preferences.ts`:
   - `AVAILABLE_HOME_SCREENS` = `(['ventas', 'clientes', 'productos', 'proveedores', 'cobros'] as const)
     .filter(isModuleImplemented)`, tipada como `readonly HomeScreen[]`;
   - actualizar su comentario: «pantallas de módulos implementados (005, clarificación del 2026-10-20)»;
   - comprobar que `isHomeScreenAllowed` y `defaultHomeScreen` siguen compilando sin cambios.
-- [ ] T032 [US4] Modificar `canOpen()` en `apps/client/src/routes/homeRoute.ts` para exigir también
+- [X] T032 [US4] Modificar `canOpen()` en `apps/client/src/routes/homeRoute.ts` para exigir también
   `isModuleImplemented(module)` (research R2). Actualizar el comentario de `resolveHomeRoute`.
-- [ ] T033 [US4] Modificar `apps/client/src/routes/AppRouter.tsx`:
+- [X] T033 [US4] Modificar `apps/client/src/routes/AppRouter.tsx`:
   - `moduleRoutes` solo para `APP_MODULES` implementados y distintos de `ajustes` (hoy ninguno);
   - eliminar `ModulePlaceholder` y el import de `LogoutButton`, que ya no se usan;
   - una dirección de un pendiente cae en `*` → `HomeRedirect`.
-- [ ] T034 [P] [US4] Actualizar la descripción `@openapi` de `homeScreen` en
+- [X] T034 [P] [US4] Actualizar la descripción `@openapi` de `homeScreen` en
   `apps/server/src/modules/preferences/preferences.routes.ts`: «solo pantallas de módulos implementados que el
   rol puede ver; si no, 400 PREFERENCES_HOME_SCREEN_NOT_ALLOWED». Añadir la misma nota, remitiendo a 005, en
   `specs/004-appearance-preferences/contracts/preferences-api.openapi.yaml`.
-- [ ] T035 [P] [US4] En `e2e/appearance.spec.ts`, línea `await page.goto('/productos');`: quitarla (el
+- [X] T035 [P] [US4] En `e2e/appearance.spec.ts`, línea `await page.goto('/productos');`: quitarla (el
   «Cerrar sesión» ya está en el menú de Apariencia) y comprobar que el test sigue en verde.
 
 **Checkpoint**: T023–T029 en verde; `npm test --workspaces` en verde (tests de 004 adaptados).

@@ -101,6 +101,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/HomeScreen'
           nullable: true
+          description: >
+            Solo pantallas de módulos implementados que el rol puede ver; si no, 400
+            PREFERENCES_HOME_SCREEN_NOT_ALLOWED. Lo cambia 005-app-navigation (contracts/navigation-ui.md §3):
+            antes bastaba con que la pantalla tuviera ruta.
     AuthUser:
       description: >
         AuthUser de 001 tal como lo deja 003, con preferences en lugar de homeScreen. Solo se muestran los

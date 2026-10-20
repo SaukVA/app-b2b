@@ -65,7 +65,8 @@ const nav = () => screen.getByRole('navigation', { name: 'Principal' });
 const linkNames = () =>
   within(nav())
     .getAllByRole('link')
-    .map((link) => link.textContent);
+    // Los módulos de negocio están pendientes: su texto termina en «Pendiente» (005).
+    .map((link) => link.textContent?.replace('Pendiente', ''));
 
 describe('AppNav', () => {
   it('muestra los módulos que el rol puede ver y Ajustes', () => {

@@ -61,6 +61,27 @@
   white-space: nowrap;
 }
 
+/* Pendiente (diseño de 005, sistema visual › Barra lateral): atenuado y sin cursor de enlace. */
+.pending {
+  color: var(--disabled);
+  cursor: default;
+}
+
+.pending:hover {
+  background: none;
+}
+
+/*
+ * Sello sobre --nav con los colores oscuros del aviso en los dos temas (#E8C66A sobre #3A3014, 7,9:1); el
+ * de tema claro (#FDF3D7) deslumbraría sobre la barra oscura.
+ */
+.stamp {
+  --stamp-pending-bg: #3a3014;
+  --stamp-pending-fg: #e8c66a;
+
+  margin-left: auto;
+}
+
 .footer {
   margin-top: var(--space-2);
   padding: var(--space-4) var(--space-3) var(--space-1);

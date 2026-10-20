@@ -1,4 +1,5 @@
 import type { AppModule, PermissionLevel } from '@app/shared';
+import type * as NavItemsModule from './navItems';
 import { buildNavItems } from './navItems';
 
 type Permissions = Record<AppModule, PermissionLevel>;
@@ -52,5 +53,40 @@ describe('buildNavItems', () => {
 
   it('un rol sin ningún view solo recibe Ajustes', () => {
     expect(labels(NO_ACCESS)).toEqual(['Ajustes']);
+  });
+});
+
+/** Carga ./navItems con otra lista de módulos implementados, en un registro de módulos aparte. */
+function loadNavItems(implemented: readonly string[]): typeof NavItemsModule {
+  let loaded: typeof NavItemsModule | undefined;
+  jest.isolateModules(() => {
+    jest.doMock('../../../../../packages/shared/src/constants/modules', () => ({
+      IMPLEMENTED_MODULES: implemented,
+      isModuleImplemented: (module: string) => implemented.includes(module),
+    }));
+    loaded = jest.requireActual<typeof NavItemsModule>('./navItems');
+  });
+  if (!loaded) throw new Error('No se pudo cargar ./navItems');
+  return loaded;
+}
+
+describe('buildNavItems · pendientes', () => {
+  it('con la lista real, los módulos de negocio están pendientes y Ajustes no', () => {
+    const pending = buildNavItems(ADMIN).map(({ label, pending }) => [label, pending]);
+    expect(pending).toEqual([
+      ['Ventas', true],
+      ['Clientes', true],
+      ['Productos', true],
+      ['Proveedores', true],
+      ['Cobros', true],
+      ['Ajustes', false],
+    ]);
+  });
+
+  it('al implementar Clientes deja de estar pendiente, en la misma posición (FR-010)', () => {
+    const { buildNavItems: build } = loadNavItems(['ajustes', 'clientes']);
+    const items = build(ADMIN);
+    expect(items[1]).toMatchObject({ label: 'Clientes', pending: false });
+    expect(items.filter((item) => item.pending)).toHaveLength(4);
   });
 });

@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, useLocation } from 'react-router';
 import { NavBar, type NavBarItem } from './NavBar';
 
 const ITEMS: NavBarItem[] = [
@@ -65,4 +66,50 @@ describe('NavBar · elemento activo', () => {
       expect(current.map((link) => link.textContent)).toEqual(['Ajustes']);
     },
   );
+});
+
+function LocationProbe() {
+  return <p>Ruta: {useLocation().pathname}</p>;
+}
+
+function renderWithPending() {
+  render(
+    <MemoryRouter initialEntries={['/ajustes']}>
+      <NavBar
+        label="Principal"
+        brand={<span>Marca</span>}
+        items={[
+          { to: '/ventas', label: 'Ventas', icon: <svg />, pending: true },
+          ...ITEMS.slice(0, 1),
+        ]}
+      />
+      <LocationProbe />
+    </MemoryRouter>,
+  );
+  return within(nav()).getByRole('link', { name: /Ventas/ });
+}
+
+describe('NavBar · elemento pendiente (contrato N3)', () => {
+  it('es un link deshabilitado, enfocable y sin href, con «Pendiente» escrito', () => {
+    const ventas = renderWithPending();
+    expect(ventas.getAttribute('aria-disabled')).toBe('true');
+    expect(ventas.tabIndex).toBe(0);
+    expect(ventas.hasAttribute('href')).toBe(false);
+    expect(within(ventas).getByText('Pendiente')).toBeTruthy();
+  });
+
+  it('recibe el foco con Tab', async () => {
+    const ventas = renderWithPending();
+    await userEvent.tab();
+    expect(document.activeElement).toBe(ventas);
+  });
+
+  it('ni el clic, ni Intro, ni Espacio cambian la ruta', async () => {
+    const ventas = renderWithPending();
+    await userEvent.click(ventas);
+    ventas.focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    expect(screen.getByText('Ruta: /ajustes')).toBeTruthy();
+  });
 });

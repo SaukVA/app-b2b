@@ -1,5 +1,6 @@
 import type { MoneyFormat, TableDensity, ThemePreference } from '../types/preferences';
 import type { HomeScreen } from '../types/user';
+import { isModuleImplemented } from './modules';
 import { can, type PermissionSet } from './roles';
 
 export const DEFAULT_THEME: ThemePreference = 'light';
@@ -7,17 +8,12 @@ export const DEFAULT_TABLE_DENSITY: TableDensity = 'comfortable';
 export const DEFAULT_MONEY_FORMAT: MoneyFormat = 'es';
 
 /**
- * Pantallas que se pueden elegir como inicio: las que tienen ruta en la aplicación, aunque su contenido
- * sea todavía provisional (clarificación del 2026-10-19), en el orden del selector. `panel` se añadirá
- * cuando exista su pantalla.
+ * Pantallas que se pueden elegir como inicio: las de módulos implementados (005, clarificación del
+ * 2026-10-20), en el orden del selector. Hoy no hay ninguna. `panel` se añadirá cuando exista su pantalla.
  */
-export const AVAILABLE_HOME_SCREENS = [
-  'ventas',
-  'clientes',
-  'productos',
-  'proveedores',
-  'cobros',
-] as const satisfies readonly HomeScreen[];
+export const AVAILABLE_HOME_SCREENS: readonly HomeScreen[] = (
+  ['ventas', 'clientes', 'productos', 'proveedores', 'cobros'] as const
+).filter(isModuleImplemented);
 
 /** Códigos de error de las preferencias (contracts/preferences-api.openapi.yaml). */
 export const PREFERENCES_ERROR_CODES = {

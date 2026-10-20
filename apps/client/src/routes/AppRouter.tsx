@@ -1,5 +1,4 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router';
-import { APP_MODULES, type AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
 import { DATABASE_SETTINGS_PATH, LoginPage } from '../pages/LoginPage';
 import { AppearanceSettingsPage } from '../pages/AppearanceSettingsPage';
@@ -21,25 +20,6 @@ function HomeRedirect() {
   const user = useAppSelector(selectUser);
   return <Navigate to={user ? resolveHomeRoute(user, null) : '/login'} replace />;
 }
-
-// Provisional mientras no existan los módulos de dominio. «Cerrar sesión» está en el pie del menú (005).
-function ModulePlaceholder({ module }: { module: AppModule }) {
-  return (
-    <main>
-      <h1>{module.charAt(0).toUpperCase() + module.slice(1)}</h1>
-      <p>Módulo pendiente de implementar.</p>
-    </main>
-  );
-}
-
-const moduleRoutes = APP_MODULES.filter((module) => module !== 'ajustes').map((module) => ({
-  path: module,
-  element: (
-    <RequireAuth module={module}>
-      <ModulePlaceholder module={module} />
-    </RequireAuth>
-  ),
-}));
 
 // Ajustes solo exige sesión (la pide AppLayout): cada pestaña pide su permiso (Usuarios, `ajustes: edit`).
 const settingsRoute = {
@@ -73,8 +53,9 @@ const router = createBrowserRouter([
       { index: true, element: <HomeRedirect /> },
       { path: 'login', element: <LoginPage /> },
       ...desktopRoutes,
-      // Pantallas con sesión, con el menú lateral (005 FR-001).
-      { element: <AppLayout />, children: [...moduleRoutes, settingsRoute] },
+      // Pantallas con sesión, con el menú lateral (005 FR-001). Cada módulo de negocio añade aquí su ruta
+      // al implementarse (IMPLEMENTED_MODULES); la dirección de un módulo pendiente cae en `*` (FR-011).
+      { element: <AppLayout />, children: [settingsRoute] },
       { path: '*', element: <HomeRedirect /> },
     ],
   },

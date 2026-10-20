@@ -6,6 +6,12 @@ import { ensureBootstrapAccount } from '../auth/bootstrap.service';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
 
+// Los módulos de negocio todavía son «Pendiente» (005): estos casos los simulan implementados.
+jest.mock('../../../../../packages/shared/src/constants/modules', () => ({
+  IMPLEMENTED_MODULES: ['ventas', 'clientes', 'productos', 'proveedores', 'cobros', 'ajustes'],
+  isModuleImplemented: () => true,
+}));
+
 setTestEnv();
 
 beforeAll(startTestDb);

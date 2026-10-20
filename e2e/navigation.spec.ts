@@ -18,12 +18,13 @@ test.describe('Menú de navegación', () => {
   }) => {
     await loginAsAdmin(page);
     const items = mainNav(page).getByRole('link');
+    // Los módulos de negocio están pendientes: su texto termina en «Pendiente».
     await expect(items).toHaveText([
-      'Ventas',
-      'Clientes',
-      'Productos',
-      'Proveedores',
-      'Cobros',
+      /^Ventas/,
+      /^Clientes/,
+      /^Productos/,
+      /^Proveedores/,
+      /^Cobros/,
       'Ajustes',
     ]);
 
@@ -58,5 +59,28 @@ test.describe('Menú de navegación', () => {
     await page.goBack();
     await expect(page).toHaveURL(/\/login/);
     await expect(page.getByRole('navigation', { name: 'Principal' })).toHaveCount(0);
+  });
+});
+
+// 005 US4: los módulos sin implementar se ven como «Pendiente» y no se abren.
+test.describe('Módulos pendientes', () => {
+  test('un módulo pendiente se ve como tal y no se abre por ninguna vía (FR-009, FR-011)', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
+    const ventas = mainNav(page).getByRole('link', { name: /Ventas/ });
+    await expect(ventas).toContainText('Pendiente');
+
+    // force: Playwright no pulsa un elemento con aria-disabled; aquí se comprueba justo que no navega.
+    await ventas.click({ force: true });
+    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
+    await ventas.focus();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
+
+    await page.goto('/clientes');
+    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
+    await expect(page.getByRole('combobox', { name: 'Pantalla de inicio' })).toHaveCount(0);
   });
 });

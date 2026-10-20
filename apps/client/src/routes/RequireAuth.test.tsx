@@ -5,6 +5,12 @@ import type { AppModule, AuthUser, PermissionLevel, Role } from '@app/shared';
 import { setupStore } from '../store/store';
 import { RequireAuth } from './RequireAuth';
 
+// Los módulos de negocio todavía son «Pendiente» (005): estos casos los simulan implementados.
+jest.mock('../../../../packages/shared/src/constants/modules', () => ({
+  IMPLEMENTED_MODULES: ['ventas', 'clientes', 'productos', 'proveedores', 'cobros', 'ajustes'],
+  isModuleImplemented: () => true,
+}));
+
 type Permissions = Record<AppModule, PermissionLevel>;
 
 const NO_ACCESS: Permissions = {

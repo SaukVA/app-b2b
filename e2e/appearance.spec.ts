@@ -83,7 +83,6 @@ test.describe.serial('Tema', () => {
     await expect(page.getByRole('radiogroup', { name: 'Tema' })).toBeVisible();
     expect(await firstTheme(page)).toBe('dark');
 
-    await page.goto('/productos');
     await page.getByRole('button', { name: 'Cerrar sesión' }).click();
     await expect(page).toHaveURL(/\/login/);
     await page.reload();
