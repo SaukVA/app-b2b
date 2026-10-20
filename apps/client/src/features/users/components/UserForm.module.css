@@ -1,7 +1,9 @@
+/* Tablero «Ajustes» › Nuevo usuario: campos en rejilla; en el diálogo de edición queda en una columna. */
 .form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
+  align-items: start;
 }
 
 .withHint {
@@ -14,6 +16,12 @@
   font-size: 12px;
   /* ink2 y no ink3: sobre el fondo de la página ink3 se queda en 4.46:1 (mínimo 4.5:1). */
   color: var(--ink2);
+}
+
+/* Avisos (Alert lleva role alert, status o note) y botón, a todo el ancho. */
+.form > [role],
+.actions {
+  grid-column: 1 / -1;
 }
 
 .actions {

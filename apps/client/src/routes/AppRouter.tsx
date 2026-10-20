@@ -9,6 +9,7 @@ import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
 import { isDesktop } from '../utils/desktop';
+import { AppLayout } from './AppLayout';
 import { resolveHomeRoute } from './homeRoute';
 import { RequireAuth } from './RequireAuth';
 
@@ -42,17 +43,13 @@ const moduleRoutes = APP_MODULES.filter((module) => module !== 'ajustes').map((m
   ),
 }));
 
-// Ajustes solo exige sesión: cada pestaña pide su permiso (Usuarios, `ajustes: edit`; FR-001).
+// Ajustes solo exige sesión (la pide AppLayout): cada pestaña pide su permiso (Usuarios, `ajustes: edit`).
 const settingsRoute = {
   path: 'ajustes',
-  element: (
-    <RequireAuth>
-      <SettingsPage />
-    </RequireAuth>
-  ),
+  element: <SettingsPage />,
   children: [
     { index: true, element: <SettingsIndexRedirect /> },
-    // Solo sesión (la exige settingsRoute): Apariencia es para todos los roles (004).
+    // Solo sesión: Apariencia es para todos los roles (004).
     { path: 'apariencia', element: <AppearanceSettingsPage /> },
     {
       path: 'usuarios',
@@ -78,8 +75,8 @@ const router = createBrowserRouter([
       { index: true, element: <HomeRedirect /> },
       { path: 'login', element: <LoginPage /> },
       ...desktopRoutes,
-      ...moduleRoutes,
-      settingsRoute,
+      // Pantallas con sesión, con el menú lateral (005 FR-001).
+      { element: <AppLayout />, children: [...moduleRoutes, settingsRoute] },
       { path: '*', element: <HomeRedirect /> },
     ],
   },

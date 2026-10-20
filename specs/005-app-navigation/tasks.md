@@ -114,13 +114,13 @@ su rol puede ver, más Ajustes. Pulsando Ajustes llegan a Ajustes. En `/login` n
 
 ### Tests de US1 (primero, deben fallar) ⚠️
 
-- [ ] T007 [P] [US1] Crear `apps/client/src/components/NavBar.test.tsx` (en `MemoryRouter`):
+- [X] T007 [P] [US1] Crear `apps/client/src/components/NavBar.test.tsx` (en `MemoryRouter`):
   - un único `navigation` con el `label` recibido;
   - los elementos `main` en el orden recibido y los de `section: 'footer'` después;
   - cada elemento es un enlace con su `label` como nombre accesible y lleva a `to`;
   - se pinta el `footer` recibido;
   - sin `onToggleCollapsed` no hay botón de plegar (contrato N1, N5).
-- [ ] T008 [P] [US1] Crear `apps/client/src/features/navigation/navItems.test.ts` para
+- [X] T008 [P] [US1] Crear `apps/client/src/features/navigation/navItems.test.ts` para
   `buildNavItems(permissions)`:
   - Administrador: devuelve los 6 módulos en el orden `ventas, clientes, productos, proveedores, cobros,
     ajustes`;
@@ -128,13 +128,13 @@ su rol puede ver, más Ajustes. Pulsando Ajustes llegan a Ajustes. En `/login` n
   - `ajustes` aparece siempre, incluso con `ajustes: 'none'`, con `section: 'footer'`;
   - un rol sin ningún `view` solo recibe Ajustes;
   - `to` es `/<module>` y la etiqueta es Ventas, Clientes, Productos, Proveedores, Cobros o Ajustes.
-- [ ] T009 [P] [US1] Crear `apps/client/src/routes/AppLayout.test.tsx` (store de prueba y `MemoryRouter`):
+- [X] T009 [P] [US1] Crear `apps/client/src/routes/AppLayout.test.tsx` (store de prueba y `MemoryRouter`):
   - con sesión, `/ajustes/apariencia` muestra `navigation` «Principal» y el contenido de la página;
   - sin sesión, redirige a `/login` y no hay menú (FR-001; contrato A1, A2).
-- [ ] T010 [P] [US1] Crear `apps/client/src/features/navigation/components/AppNav.test.tsx`: con un usuario
+- [X] T010 [P] [US1] Crear `apps/client/src/features/navigation/components/AppNav.test.tsx`: con un usuario
   Comercial, el menú muestra sus módulos visibles y Ajustes. Al despachar `refreshSession.fulfilled` con otros
   permisos, el menú cambia sin volver a montar (FR-005; contrato A3–A5).
-- [ ] T011 [P] [US1] Crear `e2e/navigation.spec.ts`, caso «menú tras el login»: tras `loginAsAdmin` se ve
+- [X] T011 [P] [US1] Crear `e2e/navigation.spec.ts`, caso «menú tras el login»: tras `loginAsAdmin` se ve
   `navigation` «Principal» con los 5 módulos y Ajustes en orden. Pulsar Ajustes lleva a `/ajustes/apariencia`.
   En `/login` no hay `navigation`. La configuración de base de datos solo existe en escritorio: en web,
   `/ajustes/base-de-datos` sin sesión lleva a `/login`, sin `navigation` (FR-001, A2). En escritorio se
@@ -142,7 +142,7 @@ su rol puede ver, más Ajustes. Pulsando Ajustes llegan a Ajustes. En `/login` n
 
 ### Implementación de US1
 
-- [ ] T012 [US1] Crear `apps/client/src/components/NavBar.tsx` y `NavBar.module.css` con la API de
+- [X] T012 [US1] Crear `apps/client/src/components/NavBar.tsx` y `NavBar.module.css` con la API de
   contracts/navigation-ui.md §1 (`NavBarItem`, `NavBarProps`):
   - `<nav aria-label>` con la marca, una lista de elementos `main`, un separador, los elementos `footer` y el
     `footer` recibido;
@@ -151,26 +151,26 @@ su rol puede ver, más Ajustes. Pulsando Ajustes llegan a Ajustes. En `/login` n
     `0 12px`, radio 6, gap 12, Ajustes empujado al final (`margin-top: auto`).
   
   Todavía sin estado activo, pendientes, plegado ni móvil.
-- [ ] T013 [US1] Después de T012 (usa el tipo `NavBarItem`), crear
+- [X] T013 [US1] Después de T012 (usa el tipo `NavBarItem`), crear
   `apps/client/src/features/navigation/navItems.ts` con `NAV_MODULES` (orden,
   etiqueta e icono de `NavIcons.tsx`) y `buildNavItems(permissions: PermissionSet): NavBarItem[]`:
   - filtra los módulos de negocio con `can(permissions, module, 'view')`;
   - añade Ajustes siempre con `section: 'footer'`;
   - pone `pending: !isModuleImplemented(module)` (data-model.md, «Elemento de menú»).
-- [ ] T014 [US1] Crear `apps/client/src/features/navigation/components/AppNav.tsx` (+ `AppNav.module.css`).
+- [X] T014 [US1] Crear `apps/client/src/features/navigation/components/AppNav.tsx` (+ `AppNav.module.css`).
   Lee `selectUser`; si no hay usuario no pinta nada. Compone:
   - `NavBar` con `label="Principal"`;
   - `brand={<BrandMark name="Venta a mayoristas" />}` (la misma marca que `LoginHero`, FR-018);
   - `items={buildNavItems(user.permissions)}`.
-- [ ] T015 [US1] Crear `apps/client/src/routes/AppLayout.tsx` (+ `AppLayout.module.css`): `<RequireAuth>`
+- [X] T015 [US1] Crear `apps/client/src/routes/AppLayout.tsx` (+ `AppLayout.module.css`): `<RequireAuth>`
   que envuelve un contenedor de dos columnas (`AppNav` y una zona de contenido con `<Outlet />`), de altura
   mínima `100dvh` y con la columna del menú `sticky`.
-- [ ] T016 [US1] Modificar `apps/client/src/routes/AppRouter.tsx`:
+- [X] T016 [US1] Modificar `apps/client/src/routes/AppRouter.tsx`:
   - nueva ruta sin `path` con `element: <AppLayout />`, hija de `/`;
   - `moduleRoutes` y `settingsRoute` pasan a ser sus hijas;
   - `login`, `desktopRoutes`, el índice y `*` siguen fuera del layout;
   - `settingsRoute` ya no necesita su propio `RequireAuth` de sesión; se mantiene el de la pestaña Usuarios.
-- [ ] T017 [US1] Ajustar `apps/client/src/pages/SettingsPage.module.css` al layout: quitar `max-width` y
+- [X] T017 [US1] Ajustar `apps/client/src/pages/SettingsPage.module.css` al layout: quitar `max-width` y
   `margin: 0 auto` si el contenido ya queda limitado por la zona de contenido, y usar el padding del diseño
   (`24px 32px 48px`; en móvil, `16px 16px 32px`).
 
