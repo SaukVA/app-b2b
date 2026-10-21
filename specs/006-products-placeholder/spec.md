@@ -35,6 +35,9 @@ importar CSV, migración de datos, ficha de producto, tarifas y stock reales."
 - Q: Mientras no exista el catálogo, ¿qué opciones ofrecen los filtros de categoría, subcategoría y proveedor? →
   A: Solo «Todas»/«Todos»; las opciones saldrán de los datos cuando se migre el catálogo, y el servidor acepta
   cualquier identificador con formato válido.
+- Q: Si la dirección trae categoría, subcategoría o proveedor, que los filtros no pueden mostrar, ¿qué hace la
+  pantalla? → A: Los ignora y los quita de la dirección hasta que se migre el catálogo; el servidor los sigue
+  validando.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -171,8 +174,8 @@ con el servidor de nuevo disponible, aparece el aviso de catálogo pendiente.
 
 - **FR-004**: La pantalla MUST mostrar el título «Productos», el número de referencias del listado, una búsqueda
   por texto, los filtros de categoría, subcategoría, proveedor y «solo stock bajo», y el listado con las columnas
-  del diseño «Albarán»: código, producto (con su proveedor), categoría › subcategoría, stock / mínimo, precio y
-  estado.
+  del diseño «Albarán»: código, producto (con su proveedor), categoría › subcategoría, stock (rotulada «Stock»,
+  con el valor «stock / mín. mínimo»), precio y estado.
 - **FR-005**: La pantalla NEVER MUST mostrar «Importar CSV», «Nuevo producto», la columna de acciones ni acciones
   por fila o por tarjeta.
 - **FR-006**: Mientras no haya catálogo, los filtros de categoría y subcategoría MUST ofrecer solo «Todas», y el
@@ -189,7 +192,10 @@ con el servidor de nuevo disponible, aparece el aviso de catálogo pendiente.
 - **FR-008a**: La búsqueda, los filtros y la página MUST formar parte de la dirección de la pantalla: al recargar,
   al volver con «Atrás» o al abrir un enlace compartido, la pantalla MUST mostrar esos mismos criterios y pedir el
   listado con ellos. Un valor no válido en la dirección MUST ignorarse y sustituirse por el valor por defecto
-  («Todas»/«Todos», sin búsqueda, página 1).
+  («Todas»/«Todos», sin búsqueda, página 1). Mientras no haya catálogo (FR-006), la dirección solo conserva la
+  búsqueda, «solo stock bajo» y la página: los parámetros de categoría, subcategoría y proveedor se ignoran y se
+  quitan de la dirección, y se incorporarán con la migración del catálogo. El servidor los sigue aceptando y
+  validando (FR-009).
 - **FR-009**: El servidor MUST exigir sesión iniciada y permiso de ver Productos para responder al listado, y MUST
   validar los criterios recibidos: texto de búsqueda de 100 caracteres como máximo (sin contar los espacios del
   principio y del final), identificadores de categoría, subcategoría y proveedor con formato válido y página

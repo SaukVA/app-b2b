@@ -50,6 +50,8 @@ Fila del listado (columnas de FR-004).
 - Servidor: formato no válido → 400 `VALIDATION_ERROR`. Identificador bien formado e inexistente → listado
   vacío (FR-009).
 - Cliente (dirección de la pantalla, FR-008a): valor no válido → se ignora y se usa el valor por defecto.
+  Mientras no haya catálogo, el cliente no lee `category`, `subcategory` ni `supplier` de la dirección y nunca
+  los envía; el tipo los mantiene para fijar el contrato.
 
 ## ListPage\<T\> (genérico, `types/api.ts`)
 

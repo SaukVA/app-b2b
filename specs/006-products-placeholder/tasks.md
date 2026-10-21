@@ -130,15 +130,27 @@ servidor (quickstart §3.1, §3.2, §3.10, §3.12, §3.13).
 - [ ] T009 [P] [US1] Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es
   `['ajustes', 'productos']`; `isModuleImplemented('productos')` es `true`; la lista de pendientes pasa a
   `['ventas', 'clientes', 'proveedores', 'cobros']`.
-- [ ] T010 [P] [US1] Ajustar los tests que usan Productos como módulo pendiente para que usen Proveedores:
-  `apps/server/src/modules/preferences/preferences.pendingModules.test.ts` y
-  `apps/client/src/features/preferences/components/AppearanceForm.pendingModules.test.tsx`. Comprobar qué
-  esperan hoy y cambiar solo el módulo de ejemplo. Si alguno deja de tener sentido porque ya hay una pantalla
-  implementada, adaptar la aserción (p. ej. «Pantalla de inicio» ofrece solo Productos).
+- [ ] T010 [P] [US1] Ajustar los tests que dependen de que Productos esté pendiente:
+  - `apps/server/src/modules/preferences/preferences.pendingModules.test.ts` y
+    `apps/client/src/features/preferences/components/AppearanceForm.pendingModules.test.tsx`: usar
+    Proveedores como módulo pendiente de ejemplo. Si alguno deja de tener sentido porque ya hay una pantalla
+    implementada, adaptar la aserción (p. ej. «Pantalla de inicio» ofrece solo Productos);
+  - `apps/client/src/features/navigation/navItems.test.ts` («con la lista real…»): Productos pasa a
+    `pending: false`;
+  - `apps/client/src/routes/homeRoute.test.ts` (bloque «lista real, 005»): un rol que ve Productos aterriza
+    en `/productos`; un rol sin Productos sigue yendo a Ajustes › Apariencia;
+  - solo título o comentario desfasados: `packages/shared/src/constants/preferences.test.ts` («todas están
+    pendientes») y `apps/client/src/features/navigation/components/AppNav.test.tsx` (comentario de la
+    línea de «Pendiente»).
+  Tras T021, ejecutar `npm test --workspaces` y ajustar cualquier otro caso que use la lista real.
 - [ ] T011 [P] [US1] Crear `apps/client/src/features/products/productsSlice.test.ts` (casos de US1):
   - estado inicial `{ items: [], total: 0, status: 'idle', error: null, requestId: null }`;
   - `loadProducts.pending` → `status: 'loading'`;
   - `loadProducts.fulfilled` con `{ items: [], total: 0, … }` → `status: 'succeeded'`, `total: 0`.
+- [ ] T011a [P] [US1] Crear `apps/client/src/features/products/productsApi.test.ts` con `httpClient` simulado:
+  - `{ lowStock: false, page: 1 }` → `GET /products` con `params` vacío;
+  - `{ q: 'aceite', lowStock: true, page: 2 }` → `params` con los tres valores;
+  - devuelve el `data` del envelope.
 - [ ] T012 [P] [US1] Crear `apps/client/src/features/products/components/ProductsTable.test.tsx`:
   - con `rows=[]`: tabla con `caption` «Productos» y cabeceras Código, Producto, Categoría, Stock, Precio y
     Estado; sin cabecera de acciones; sin filas;
@@ -161,7 +173,9 @@ servidor (quickstart §3.1, §3.2, §3.10, §3.12, §3.13).
   - en el menú «Productos» es un enlace sin «Pendiente» y con `aria-current="page"`;
   - se ven el h1, «0 referencias», los filtros y las cabeceras del listado (en móvil, las tarjetas no tienen
     filas; comprobar solo filtros y título);
-  - en Ajustes › Apariencia, «Pantalla de inicio» ofrece «Productos».
+  - en Ajustes › Apariencia, «Pantalla de inicio» ofrece «Productos»;
+  - un usuario Comercial (solo ver), creado con `seedUsers` de `e2e/support/db.ts` como en
+    `e2e/appearance.spec.ts`, ve la misma pantalla que el Administrador (FR-003).
 
 ### Implementación de US1
 
@@ -196,7 +210,7 @@ servidor (quickstart §3.1, §3.2, §3.10, §3.12, §3.13).
 - [ ] T022 [P] [US1] Crear `apps/client/src/features/products/productsApi.ts` con
   `fetchProducts(query: ProductListQuery): Promise<ListPage<ProductListItem>>`
   (`httpClient.get('/products', { params })`). En `params` se omiten los valores por defecto
-  (`lowStock: false`, `page: 1`) y los criterios ausentes.
+  (`lowStock: false`, `page: 1`) y los criterios ausentes. Comprobar que T011a pasa.
 - [ ] T023 [US1] Crear `apps/client/src/features/products/productsSlice.ts` con el estado de data-model.md
   (`items`, `total`, `status`, `error`, `requestId`) y el thunk `loadProducts(query)` sobre `fetchProducts`.
   Registrar `products: productsReducer` en `apps/client/src/store/store.ts`. Comprobar que T011 pasa.
@@ -227,7 +241,8 @@ servidor (quickstart §3.1, §3.2, §3.10, §3.12, §3.13).
 - [ ] T027 [US1] Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de
   `AppLayout`:
   `{ path: 'productos', element: <RequireAuth module="productos"><ProductsPage /></RequireAuth> }`. Actualizar
-  el comentario de la lista de rutas si hace falta. Depende de T026.
+  el comentario de la lista de rutas si hace falta. El bloqueo por rol sin acceso (menú y dirección) ya lo
+  cubren `RequireAuth.test.tsx` y `navItems.test.ts` (005); no se duplica. Depende de T026.
 - [ ] T028 [US1] Ajustar `e2e/navigation.spec.ts` y `e2e/smoke.spec.ts` a Productos implementado:
   - el menú muestra Productos sin «Pendiente»;
   - el módulo pendiente de ejemplo de «Módulos pendientes» pasa a ser otro (p. ej. Proveedores);
@@ -268,10 +283,11 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
   - no importa nada de `@app/shared` (comprobación por revisión, no por test).
 - [ ] T031 [P] [US2] Crear `apps/client/src/features/products/productCriteria.test.ts`:
   - `parseProductCriteria(new URLSearchParams(''))` → `{ lowStock: false, page: 1 }`;
-  - con `q=%20aceite%20&category=alimentacion&lowStock=true&page=2` → `q: 'aceite'`,
-    `category: 'alimentacion'`, `lowStock: true`, `page: 2`;
-  - valores no válidos se ignoran y quedan por defecto: `q` de 101 caracteres, `q=%20%20`, `category=a%20b`,
-    `lowStock=yes`, `page=0`, `page=-1` y `page=abc`;
+  - con `q=%20aceite%20&lowStock=true&page=2` → `q: 'aceite'`, `lowStock: true`, `page: 2`;
+  - `category`, `subcategory` y `supplier` se ignoran aunque sean válidos (`category=alimentacion` →
+    `{ lowStock: false, page: 1 }`, sin `category`), FR-008a;
+  - valores no válidos se ignoran y quedan por defecto: `q` de 101 caracteres, `q=%20%20`, `lowStock=yes`,
+    `page=0`, `page=-1` y `page=abc`;
   - `serializeProductCriteria` omite los valores por defecto (`{ lowStock: false, page: 1 }` → `''`) y es la
     inversa de `parseProductCriteria` para criterios válidos.
 - [ ] T032 [P] [US2] Ampliar `apps/client/src/features/products/productsSlice.test.ts`:
@@ -292,13 +308,21 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
   - teclear «café» con temporizadores falsos llama a `fetchProducts` una sola vez, 300 ms después de la
     última tecla, y la dirección pasa a `?q=caf%C3%A9`;
   - marcar «Solo stock bajo» pide el listado con `lowStock: true` y `page: 1`;
-  - con `/productos?page=0&q=` la dirección se normaliza a `/productos`.
+  - con `/productos?page=0&q=` la dirección se normaliza a `/productos`;
+  - con `/productos?category=alimentacion&q=aceite` la dirección se normaliza a `/productos?q=aceite` y
+    `fetchProducts` no recibe `category`;
+  - con `/productos?q=aceite&page=2` la dirección conserva `page=2` y `fetchProducts` recibe `page: 2`
+    (montar no reescribe la dirección);
+  - buscar «aceite», después «café» y volver «Atrás»: el campo muestra «aceite», `fetchProducts` recibe
+    `q: 'aceite'` y la dirección no vuelve a `café` al pasar los 300 ms.
 - [ ] T035 [P] [US2] Ampliar `e2e/products.spec.ts` (US2):
   - se ve el aviso de catálogo pendiente;
   - al escribir «aceite» se hace una petición `GET /api/products?q=aceite` (`page.waitForRequest`) y la
     dirección cambia;
   - marcar «Solo stock bajo» y recargar mantiene la casilla y la búsqueda;
-  - `page.goBack()` vuelve a los criterios anteriores.
+  - `page.goBack()` vuelve a los criterios anteriores;
+  - buscar «aceite», después «café» y `page.goBack()`: el campo muestra «aceite» y la dirección sigue en
+    `q=aceite` pasados 300 ms.
 
 ### Implementación de US2
 
@@ -312,8 +336,9 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
   - sin color de estado.
   Comprobar que T030 pasa.
 - [ ] T038 [P] [US2] Crear `apps/client/src/features/products/productCriteria.ts` con
-  `parseProductCriteria(params: URLSearchParams): ProductListQuery` (valida con `PRODUCT_SEARCH_MAX_LENGTH`
-  y `PRODUCT_FILTER_ID_PATTERN`, recorta `q` y descarta los valores no válidos) y
+  `parseProductCriteria(params: URLSearchParams): ProductListQuery` (valida `q` con
+  `PRODUCT_SEARCH_MAX_LENGTH`, recorta `q`, descarta los valores no válidos y no lee `category`,
+  `subcategory` ni `supplier` mientras no haya catálogo, FR-008a) y
   `serializeProductCriteria(query): URLSearchParams` (omite los valores por defecto). Funciones pequeñas, con
   una auxiliar por campo si hace falta. Comprobar que T031 pasa.
 - [ ] T039 [US2] En `apps/client/src/features/products/productsSlice.ts`, guardar `requestId` en `pending` e
@@ -325,7 +350,10 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
   - leer los criterios con `useSearchParams` + `parseProductCriteria` y normalizar la dirección con
     `replace` si no coincide con `serializeProductCriteria`;
   - estado local del campo de búsqueda + `useDebouncedValue(…, 300)`; al estabilizarse, escribir `q` en la
-    dirección con `replace` y volver a la página 1;
+    dirección con `replace` y volver a la página 1, **solo si el valor con debounce ≠ `criteria.q`** (montar
+    la pantalla no reescribe la dirección ni pierde la página);
+  - resincronizar el campo local con `criteria.q` cuando la dirección cambie desde fuera («Atrás», enlace),
+    para que el valor con debounce desfasado no deshaga la navegación;
   - «Solo stock bajo» escribe en la dirección con una entrada de historial nueva y vuelve a la página 1;
   - un efecto despacha `loadProducts(criteria)` cuando cambian los criterios y llama a `abort()` sobre la
     promesa anterior;
@@ -441,7 +469,7 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 ```text
 Tests a la vez:
   T007 product.service.test   T008 product.routes.test   T009 modules.test   T010 pendingModules (x2)
-  T011 productsSlice.test     T012 ProductsTable.test    T013 ProductFilters.test
+  T011 productsSlice.test     T011a productsApi.test     T012 ProductsTable.test    T013 ProductFilters.test
   T014 ProductsPage.test      T015 e2e/products.spec
 Implementación:
   Servidor: T016 validation → T017 service → T018 controller → T019 routes → T020 app.ts

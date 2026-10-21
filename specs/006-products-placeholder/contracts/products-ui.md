@@ -15,13 +15,15 @@
 | Parámetro | Ejemplo | Valor por defecto (se omite de la dirección) |
 |---|---|---|
 | `q` | `q=aceite` | sin búsqueda |
-| `category` | `category=alimentacion` | «Todas» |
-| `subcategory` | `subcategory=aceites` | «Todas» |
-| `supplier` | `supplier=prov-12` | «Todos» |
 | `lowStock` | `lowStock=true` | desmarcado |
 | `page` | `page=2` | 1 |
 
 - Un valor no válido se ignora y se usa el valor por defecto; la dirección se normaliza con `replace`.
+- `category`, `subcategory` y `supplier` no forman parte de la dirección mientras no haya catálogo (FR-006,
+  FR-008a): si llegan, se ignoran y se quitan al normalizar. Se añadirán con la migración del catálogo.
+- El campo de búsqueda se resincroniza con `q` cuando la dirección cambia desde fuera («Atrás», enlace). Solo
+  se escribe `q` en la dirección si el valor con debounce es distinto del `q` actual, así que montar la
+  pantalla no cambia la dirección ni la página.
 - Teclear en la búsqueda actualiza la dirección con `replace` 300 ms después de la última tecla. Cambiar un
   filtro crea una entrada de historial. Cualquier cambio de criterio vuelve a la página 1.
 

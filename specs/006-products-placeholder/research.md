@@ -63,11 +63,13 @@ producto se cerraron en `/speckit-clarify` (sesión 2026-10-21). Este documento 
 
 ## R6 · Criterios en la dirección de la pantalla
 
-- **Decision**: la dirección (`/productos?q=…&category=…&lowStock=true&page=2`) es la fuente de verdad de los
+- **Decision**: la dirección (`/productos?q=…&lowStock=true&page=2`) es la fuente de verdad de los
   criterios (FR-008a). La página los lee con `useSearchParams` y una función pura `parseProductCriteria`
   (en `features/products/productCriteria.ts`) que descarta los valores no válidos y aplica los valores por
   defecto. Cambiar un criterio reescribe la dirección (`replace` al teclear, entrada nueva de historial al
   cambiar un filtro) y vuelve a la página 1. `serializeProductCriteria` omite los valores por defecto.
+  Mientras no haya catálogo, `category`, `subcategory` y `supplier` no se leen de la dirección: los `Select`
+  no podrían mostrarlos y la petición filtraría sin que el usuario lo viera (FR-008a).
 - **Rationale**: recargar, «Atrás» y compartir el enlace funcionan sin estado extra; el slice no duplica los
   criterios.
 - **Alternatives considered**: criterios en el slice de Redux sincronizados con la URL (dos fuentes de

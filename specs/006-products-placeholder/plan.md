@@ -89,7 +89,8 @@ práctica es una sola petición sin acceso a la base de datos. Una petición por
 | Restricciones | Sin dependencias nuevas. No hay cambio de arquitectura que requiera ADR: un módulo sin modelo es una consecuencia temporal de FR-010, no una decisión de arquitectura. | ✅ |
 
 **Re-check post-design**: sin cambios. Los artefactos de Phase 1 (contrato OpenAPI, contrato de UI y modelo
-de tipos) respetan los ocho principios. Complexity Tracking queda vacío.
+de tipos) respetan los ocho principios. Complexity Tracking recoge la única desviación temporal (módulo sin
+modelo, FR-010).
 
 ## Project Structure
 
@@ -170,4 +171,6 @@ negocio.
 
 ## Complexity Tracking
 
-Sin violaciones de la constitución que justificar.
+| Desviación | Por qué hace falta | Alternativa descartada |
+|---|---|---|
+| Módulo `products` sin `product.model.ts` (principio I, que lista el modelo dentro del módulo). | FR-010: en esta entrega el servidor no lee ni escribe productos. Es temporal: el modelo llega con la spec de migración del catálogo. | Crear ya un modelo sin uso: añade un esquema que no se puede validar contra los datos reales de la base antigua. |
