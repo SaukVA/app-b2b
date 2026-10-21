@@ -420,7 +420,7 @@ desplazándola horizontalmente y no hay botón de plegar. Al ensanchar con el me
 - [X] T047 [P] Añadir a la sección Convenciones de `CLAUDE.md`: «Al implementar un módulo de dominio MUST
   añadirlo a `IMPLEMENTED_MODULES` (`packages/shared/src/constants/modules.ts`) en el mismo cambio: activa su
   entrada del menú y lo permite como pantalla de inicio (005, FR-010)».
-- [ ] T048 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
+- [X] T048 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
   quickstart.md completo en web (§3, §5) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).
 
 ---
