@@ -409,15 +409,15 @@ desplazándola horizontalmente y no hay botón de plegar. Al ensanchar con el me
 
 ## Phase 9: Polish & Cross-Cutting Concerns
 
-- [ ] T045 [P] Revisar la accesibilidad del menú con `playwright-cli` a 390 px y 1440 px, en claro y en
+- [X] T045 [P] Revisar la accesibilidad del menú con `playwright-cli` a 390 px y 1440 px, en claro y en
   oscuro, desplegado y plegado (FR-019, SC-005):
   - orden del teclado y foco visible;
   - `aria-current` y pendientes anunciados;
   - objetivos de 44 px y contraste de 4.5:1 (incluido el sello sobre `--nav`);
   - sin scroll horizontal de la página.
-- [ ] T046 [P] Comprobar que `/api-docs` refleja la nueva descripción de `homeScreen` en `PATCH /preferences`
+- [X] T046 [P] Comprobar que `/api-docs` refleja la nueva descripción de `homeScreen` en `PATCH /preferences`
   (T034) comparando el spec generado por `buildSwaggerSpec()`.
-- [ ] T047 [P] Añadir a la sección Convenciones de `CLAUDE.md`: «Al implementar un módulo de dominio MUST
+- [X] T047 [P] Añadir a la sección Convenciones de `CLAUDE.md`: «Al implementar un módulo de dominio MUST
   añadirlo a `IMPLEMENTED_MODULES` (`packages/shared/src/constants/modules.ts`) en el mismo cambio: activa su
   entrada del menú y lo permite como pantalla de inicio (005, FR-010)».
 - [ ] T048 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano

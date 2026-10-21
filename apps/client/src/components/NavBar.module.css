@@ -89,6 +89,8 @@
 
 /* Pendiente (diseño de 005, sistema visual › Barra lateral): atenuado y sin cursor de enlace. */
 .pending {
+  gap: var(--space-2);
+  padding-right: 6px;
   color: var(--disabled);
   cursor: default;
 }
@@ -106,6 +108,17 @@
   --stamp-pending-fg: #e8c66a;
 
   margin-left: auto;
+}
+
+/* Sello reducido de la barra lateral (README, «Pendiente»): Mono 10/600, alto 20, padding 0 6, sin marcador. */
+.stamp > * {
+  height: 20px;
+  padding: 0 6px;
+  font-size: 10px;
+}
+
+.stamp > * > [aria-hidden='true'] {
+  display: none;
 }
 
 .footer {
