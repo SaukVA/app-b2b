@@ -59,6 +59,7 @@
 
 /* Zona de estado: en ancho continúa el panel de la tabla por debajo de las filas. */
 .withStatus .desk {
+  border-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }

@@ -422,16 +422,16 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T051 [P] Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con
+- [X] T051 [P] Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con
   densidad Cómoda y Compacta (FR-015, FR-016):
   - orden del teclado y foco visible;
   - avisos anunciados (`status` / `alert`);
   - objetivos de 44 px y contraste de 4.5:1;
   - sin scroll horizontal de la página.
-- [ ] T052 [P] Comprobar que `/api-docs` muestra `GET /products` con sus parámetros, `ProductListPage` y las
+- [X] T052 [P] Comprobar que `/api-docs` muestra `GET /products` con sus parámetros, `ProductListPage` y las
   respuestas 400/401/403, comparando el spec de `buildSwaggerSpec()` con
   `contracts/products-api.openapi.yaml`.
-- [ ] T053 [P] Revisar que ningún fichero del módulo `apps/server/src/modules/products/` importa Mongoose y que
+- [X] T053 [P] Revisar que ningún fichero del módulo `apps/server/src/modules/products/` importa Mongoose y que
   ninguna función nueva pasa de 40 líneas efectivas (principio IV).
 - [ ] T054 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
   quickstart.md completo en web (§3) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).
