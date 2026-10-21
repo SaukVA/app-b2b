@@ -36,7 +36,10 @@
 - Decisiones por defecto aprobadas en `/speckit-detect`: la búsqueda y los filtros se envían al servidor, que los
   valida; los botones de acción («Importar CSV», «Nuevo producto», «Editar») no se muestran; el servidor responde
   con un listado vacío sin leer la base de datos.
-- Dependencia de diseño (FR-018): el aviso de catálogo pendiente de carga y el mensaje de error con «Reintentar»
-  no están en el lienzo; hay que diseñarlos y actualizar `docs/design/` antes de `/speckit-implement`.
-- Supuestos que se pueden revisar en `/speckit-clarify`: tamaño de página (10), máximo de 100 caracteres en la
-  búsqueda, filtros de categoría, subcategoría y proveedor solo con «Todas»/«Todos» hasta que exista el catálogo.
+- Diseño (FR-018, aclarado el 2026-10-21): el aviso de catálogo pendiente de carga y el mensaje de error con
+  «Reintentar» se construyen con los tokens y componentes existentes y se documentan en `docs/design/README.md`
+  en el mismo cambio. No bloquean `/speckit-implement`; el lienzo publicado se actualiza más adelante.
+- Aclarado el 2026-10-21: criterios del listado en la dirección de la pantalla (FR-008a), regla de estado y
+  filtro «solo stock bajo» (FR-011a), y opciones de filtros solo «Todas»/«Todos» hasta migrar el catálogo
+  (FR-006).
+- Supuestos sin revisar: tamaño de página (10) y máximo de 100 caracteres en la búsqueda.

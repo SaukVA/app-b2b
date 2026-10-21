@@ -21,6 +21,21 @@ con un listado vacío, para fijar desde ya el contrato del listado; los botones 
 «Importar CSV» y «Nuevo producto», no se muestran. Fuera de alcance: alta, edición y borrado de productos,
 importar CSV, migración de datos, ficha de producto, tarifas y stock reales."
 
+## Clarifications
+
+### Session 2026-10-21
+
+- Q: ¿Cómo se resuelve el diseño del aviso de «catálogo pendiente de carga» y del mensaje de error, que no están
+  en el lienzo «Albarán»? → A: Se implementan con los tokens y componentes existentes y se documentan en
+  `docs/design/README.md` en el mismo cambio; el lienzo se actualiza más adelante.
+- Q: Si el usuario recarga la página o comparte el enlace, ¿se conservan la búsqueda y los filtros? → A: Sí: la
+  búsqueda, los filtros y la página forman parte de la dirección de la pantalla y se conservan al recargar, al
+  usar «Atrás» y al compartir el enlace.
+- Q: ¿Qué productos incluye el filtro «solo stock bajo»? → A: Los de estado Stock bajo y los de estado Sin stock.
+- Q: Mientras no exista el catálogo, ¿qué opciones ofrecen los filtros de categoría, subcategoría y proveedor? →
+  A: Solo «Todas»/«Todos»; las opciones saldrán de los datos cuando se migre el catálogo, y el servidor acepta
+  cualquier identificador con formato válido.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Abrir Productos y ver su estructura (Priority: P1) 🎯 MVP
@@ -80,9 +95,11 @@ los nuevos criterios y que el aviso sigue visible.
    listado al servidor con ese texto y sigue mostrando el mismo aviso.
 3. **Given** la pantalla con el aviso, **When** el usuario cambia un filtro o marca «solo stock bajo», **Then** la
    pantalla pide el listado al servidor con los criterios elegidos y sigue mostrando el mismo aviso.
-4. **Given** la petición en curso, **When** el usuario mira la pantalla, **Then** ve que se está cargando, sin que
+4. **Given** una búsqueda y «solo stock bajo» aplicados, **When** el usuario recarga la página o abre el enlace en
+   otra pestaña, **Then** la pantalla muestra la misma búsqueda y el mismo filtro, y pide el listado con ellos.
+5. **Given** la petición en curso, **When** el usuario mira la pantalla, **Then** ve que se está cargando, sin que
    aparezca antes de tiempo el aviso de «sin datos».
-5. **Given** un lector de pantalla, **When** termina la carga, **Then** se anuncia el aviso de catálogo pendiente
+6. **Given** un lector de pantalla, **When** termina la carga, **Then** se anuncia el aviso de catálogo pendiente
    de carga.
 
 ---
@@ -118,8 +135,10 @@ con el servidor de nuevo disponible, aparece el aviso de catálogo pendiente.
 - Búsqueda con espacios al principio o al final: se ignoran; una búsqueda solo de espacios equivale a no buscar.
 - Búsqueda más larga de lo permitido: la pantalla no deja escribir más del máximo y el servidor rechaza un texto
   más largo con un error de validación.
-- Criterios no válidos enviados al servidor (filtro con un valor inexistente, página negativa…): el servidor los
-  rechaza con un error de validación y la pantalla muestra el mensaje de error de la historia 3.
+- Criterios con formato no válido enviados al servidor (identificador de filtro mal formado, página negativa…):
+  el servidor los rechaza con un error de validación y la pantalla muestra el mensaje de error de la historia 3.
+- Identificador de categoría, subcategoría o proveedor bien formado pero inexistente: no es un error; el servidor
+  responde con un listado vacío.
 - Varias peticiones seguidas al escribir rápido: la pantalla muestra solo el resultado de la última y no lanza una
   petición por cada tecla.
 - Selectores de categoría, subcategoría y proveedor: sin catálogo no hay opciones reales; solo ofrecen «Todas» o
@@ -157,7 +176,8 @@ con el servidor de nuevo disponible, aparece el aviso de catálogo pendiente.
 - **FR-005**: La pantalla NEVER MUST mostrar «Importar CSV», «Nuevo producto», la columna de acciones ni acciones
   por fila o por tarjeta.
 - **FR-006**: Mientras no haya catálogo, los filtros de categoría y subcategoría MUST ofrecer solo «Todas», y el
-  de proveedor solo «Todos». La búsqueda y «solo stock bajo» MUST poder usarse.
+  de proveedor solo «Todos». La búsqueda y «solo stock bajo» MUST poder usarse. Las opciones de estos filtros
+  NEVER MUST ser una lista fija de la aplicación: saldrán de los datos cuando se migre el catálogo.
 - **FR-007**: Con el listado vacío, la paginación NEVER MUST mostrarse.
 
 **Listado y criterios**
@@ -166,15 +186,24 @@ con el servidor de nuevo disponible, aparece el aviso de catálogo pendiente.
   pedir el listado al servidor con los criterios elegidos: texto de búsqueda, categoría, subcategoría, proveedor,
   «solo stock bajo» y página. Al escribir en la búsqueda, MUST esperar a que el usuario deje de teclear antes de
   pedirlo, y MUST mostrar solo el resultado de la última petición.
+- **FR-008a**: La búsqueda, los filtros y la página MUST formar parte de la dirección de la pantalla: al recargar,
+  al volver con «Atrás» o al abrir un enlace compartido, la pantalla MUST mostrar esos mismos criterios y pedir el
+  listado con ellos. Un valor no válido en la dirección MUST ignorarse y sustituirse por el valor por defecto
+  («Todas»/«Todos», sin búsqueda, página 1).
 - **FR-009**: El servidor MUST exigir sesión iniciada y permiso de ver Productos para responder al listado, y MUST
   validar los criterios recibidos: texto de búsqueda de 100 caracteres como máximo (sin contar los espacios del
-  principio y del final), filtros con formato válido y página entera positiva. Los criterios no válidos MUST
-  rechazarse con un error de validación.
+  principio y del final), identificadores de categoría, subcategoría y proveedor con formato válido y página
+  entera positiva. Los criterios con formato no válido MUST rechazarse con un error de validación; un
+  identificador con formato válido que no corresponde a ningún dato MUST aceptarse y devolver un listado vacío.
 - **FR-010**: En esta entrega, el servidor MUST responder siempre a una petición válida con un listado vacío y un
   total de 0 referencias, sin leer ni escribir productos en la base de datos.
 - **FR-011**: La respuesta del listado MUST tener ya la forma definitiva: los productos de la página (con los datos
   de las columnas de FR-004), el total de referencias, la página y el tamaño de página. Así, cargar el catálogo
   real no cambiará lo que recibe la pantalla.
+- **FR-011a**: El estado de cada producto MUST seguir esta regla: Sin stock si el stock es 0; Stock bajo si el
+  stock es mayor que 0 y menor que el mínimo; Disponible en el resto. El filtro «solo stock bajo» MUST incluir los
+  productos en estado Stock bajo y en estado Sin stock. En esta entrega la regla forma parte del contrato, aunque
+  el listado esté vacío.
 
 **Estados de la pantalla**
 
@@ -196,14 +225,16 @@ con el servidor de nuevo disponible, aparece el aviso de catálogo pendiente.
   (listado en tarjetas). Los controles MUST ser operables con teclado y tener un objetivo táctil mínimo de 44 px.
 - **FR-017**: Cuando el listado tenga productos (futuro), los precios MUST mostrarse con el formato de importes
   del usuario (004-appearance-preferences), y el stock y el mínimo como cantidades, nunca como importes.
-- **FR-018**: El aviso de catálogo pendiente de carga y el mensaje de error no están en el lienzo «Albarán»: su
-  diseño MUST definirse en `docs/design/` antes de implementarse.
+- **FR-018**: El aviso de catálogo pendiente de carga y el mensaje de error, que no están en el lienzo «Albarán»,
+  MUST construirse con los tokens y componentes existentes del diseño y documentarse en `docs/design/README.md`
+  en el mismo cambio que los implementa. La actualización del lienzo publicado queda para más adelante y no
+  bloquea la implementación.
 
 ### Key Entities
 
 - **Producto (listado)**: referencia del catálogo tal como aparece en el listado. Atributos: código, nombre,
   proveedor, categoría, subcategoría (opcional), stock, stock mínimo, precio y estado (Disponible, Stock bajo o
-  Sin stock). En esta entrega no hay ninguno; se define para fijar el contrato del listado.
+  Sin stock, según la regla de FR-011a). En esta entrega no hay ninguno; se define para fijar el contrato del listado.
 - **Criterios del listado**: texto de búsqueda, categoría, subcategoría, proveedor, «solo stock bajo» y página.
 - **Página de resultados**: productos de la página, total de referencias, página y tamaño de página.
 - **Usuario, rol y permisos**: definidos en 001-user-login y 003-user-management; aquí solo se lee el permiso de
