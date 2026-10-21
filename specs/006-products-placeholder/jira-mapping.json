@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-21T11:55:00Z",
-  "updated_at": "2026-10-21T14:30:00Z",
+  "updated_at": "2026-10-21T16:10:00Z",
   "spec": "006-products-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -298,7 +298,7 @@
           "key": "AB2B-465",
           "id": "T029",
           "summary": "T029: Crear `apps/client/src/hooks/useDebouncedValue.test.ts` con temporizadores falsos de Jest",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-465"
         },
@@ -306,7 +306,7 @@
           "key": "AB2B-466",
           "id": "T030",
           "summary": "T030: Crear `apps/client/src/components/EmptyState.test.tsx`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-466"
         },
@@ -314,7 +314,7 @@
           "key": "AB2B-467",
           "id": "T031",
           "summary": "T031: Crear `apps/client/src/features/products/productCriteria.test.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-467"
         },
@@ -322,7 +322,7 @@
           "key": "AB2B-468",
           "id": "T032",
           "summary": "T032: Ampliar `apps/client/src/features/products/productsSlice.test.ts` (respuestas obsoletas)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-468"
         },
@@ -330,7 +330,7 @@
           "key": "AB2B-469",
           "id": "T033",
           "summary": "T033: Crear `apps/client/src/features/products/components/ProductsListStatus.test.tsx` (casos de US2)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-469"
         },
@@ -338,7 +338,7 @@
           "key": "AB2B-470",
           "id": "T034",
           "summary": "T034: Ampliar `apps/client/src/pages/ProductsPage.test.tsx` (con `createMemoryRouter` o `MemoryRouter` e `initialEntries`)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-470"
         },
@@ -346,7 +346,7 @@
           "key": "AB2B-471",
           "id": "T035",
           "summary": "T035: Ampliar `e2e/products.spec.ts` (US2)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-471"
         },
@@ -354,7 +354,7 @@
           "key": "AB2B-472",
           "id": "T036",
           "summary": "T036: Crear `apps/client/src/hooks/useDebouncedValue.ts`: `useDebouncedValue<T>(value: T, delay: number): T` con `useEffect` y `setTimeout`/`clearTimeout`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-472"
         },
@@ -362,7 +362,7 @@
           "key": "AB2B-473",
           "id": "T037",
           "summary": "T037: Crear `apps/client/src/components/EmptyState.tsx` y `EmptyState.module.css` (contracts/products-ui.md §EmptyState)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-473"
         },
@@ -370,7 +370,7 @@
           "key": "AB2B-474",
           "id": "T038",
           "summary": "T038: Crear `apps/client/src/features/products/productCriteria.ts` con `parseProductCriteria(params: URLSearchParams): ProductListQuery` y `serializeProductCriteria(query): URLSearchParams`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-474"
         },
@@ -378,7 +378,7 @@
           "key": "AB2B-475",
           "id": "T039",
           "summary": "T039: En `apps/client/src/features/products/productsSlice.ts`, guardar `requestId` en `pending` e ignorar `fulfilled` y `rejected` de peticiones que no son la última (research R7)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-475"
         },
@@ -386,7 +386,7 @@
           "key": "AB2B-476",
           "id": "T040",
           "summary": "T040: Crear `apps/client/src/features/products/components/ProductsListStatus.tsx`, que según `status` y `total` muestra el estado de carga o el `EmptyState` con los textos del aviso",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T037"
           ],
@@ -396,7 +396,7 @@
           "key": "AB2B-477",
           "id": "T041",
           "summary": "T041: Conectar `apps/client/src/pages/ProductsPage.tsx` con la dirección (research R6, R7)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T036",
             "T038",
@@ -409,11 +409,12 @@
           "key": "AB2B-478",
           "id": "T042",
           "summary": "T042: Documentar `EmptyState` en `docs/design/README.md` › Componentes (anatomía, tokens y `role=\"status\"`), indicando que aún no está en el lienzo publicado (FR-018)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-478"
         }
-      ]
+      ],
+      "status": "completed"
     },
     {
       "key": "AB2B-435",
@@ -424,7 +425,7 @@
           "key": "AB2B-479",
           "id": "T043",
           "summary": "T043: Ampliar `apps/client/src/features/products/productsSlice.test.ts`: `loadProducts.rejected` → `status: 'failed'` y `error === PRODUCTS_LOAD_ERROR_MESSAGE`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-479"
         },
@@ -432,7 +433,7 @@
           "key": "AB2B-480",
           "id": "T044",
           "summary": "T044: Ampliar `apps/client/src/features/products/components/ProductsListStatus.test.tsx` (caso `failed` y «Reintentar»)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-480"
         },
@@ -440,7 +441,7 @@
           "key": "AB2B-481",
           "id": "T045",
           "summary": "T045: Ampliar `apps/client/src/pages/ProductsPage.test.tsx` (error y «Reintentar»)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-481"
         },
@@ -448,7 +449,7 @@
           "key": "AB2B-482",
           "id": "T046",
           "summary": "T046: Ampliar `e2e/products.spec.ts` (US3): con `page.route('**/api/products**', …)` respondiendo 500 se ve el error y no el aviso; tras quitar la intercepción, «Reintentar» muestra el aviso",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-482"
         },
@@ -456,7 +457,7 @@
           "key": "AB2B-483",
           "id": "T047",
           "summary": "T047: En `apps/client/src/features/products/productsSlice.ts`, definir y exportar `PRODUCTS_LOAD_ERROR_MESSAGE` y tratar `rejected` de la última petición",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-483"
         },
@@ -464,7 +465,7 @@
           "key": "AB2B-484",
           "id": "T048",
           "summary": "T048: Añadir el caso `failed` a `apps/client/src/features/products/components/ProductsListStatus.tsx`: `Alert variant=\"error\"` con el mensaje y un `Button` secundario «Reintentar» (prop `onRetry`)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-484"
         },
@@ -472,7 +473,7 @@
           "key": "AB2B-485",
           "id": "T049",
           "summary": "T049: En `apps/client/src/pages/ProductsPage.tsx`, pasar `onRetry`, que vuelve a despachar `loadProducts` con los criterios actuales",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T047",
             "T048"
@@ -483,11 +484,12 @@
           "key": "AB2B-486",
           "id": "T050",
           "summary": "T050: Documentar en `docs/design/README.md` el estado de error de un listado (`Alert` de error + botón secundario «Reintentar» dentro del panel)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-486"
         }
-      ]
+      ],
+      "status": "completed"
     },
     {
       "key": "AB2B-436",
@@ -498,7 +500,7 @@
           "key": "AB2B-487",
           "id": "T051",
           "summary": "T051: Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con densidad Cómoda y Compacta (FR-015, FR-016)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-487"
         },
@@ -506,7 +508,7 @@
           "key": "AB2B-488",
           "id": "T052",
           "summary": "T052: Comprobar que `/api-docs` muestra `GET /products` con sus parámetros, `ProductListPage` y las respuestas 400/401/403, comparando el spec de `buildSwaggerSpec()` con `contracts/products-api.openapi.yaml`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-488"
         },
@@ -514,7 +516,7 @@
           "key": "AB2B-489",
           "id": "T053",
           "summary": "T053: Revisar que ningún fichero del módulo `apps/server/src/modules/products/` importa Mongoose y que ninguna función nueva pasa de 40 líneas efectivas (principio IV)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-489"
         },
@@ -659,7 +661,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 55,
-    "completed_tasks": 29,
-    "pending_tasks": 26
+    "completed_tasks": 54,
+    "pending_tasks": 1
   }
 }
