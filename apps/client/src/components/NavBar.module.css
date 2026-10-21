@@ -1,0 +1,283 @@
+/* Tablero «Sistema visual» › Barra lateral: oscura en los dos temas. */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  box-sizing: border-box;
+  width: var(--nav-width);
+  min-height: 100%;
+  padding: 20px 14px;
+  background: var(--nav);
+  color: #e8eae6;
+  transition: width 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .toggle svg {
+    transition: none;
+  }
+}
+
+.brand {
+  padding: var(--space-1) var(--space-2) var(--space-6);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Ajustes, separado al final. */
+.bottom {
+  margin-top: auto;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--nav-text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.item:hover {
+  background: var(--nav-active);
+}
+
+/* Activo (NavLink pone aria-current="page", también en subpantallas). El foco usa el :focus-visible global. */
+.item[aria-current='page'] {
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+  font-weight: 600;
+}
+
+.item[aria-current='page'] svg {
+  color: var(--nav-icon-active);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.icon {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Marca reducida de «Pendiente» en el menú plegado: punto de aviso con anillo del color de la barra. */
+.dot {
+  display: none;
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e8c66a;
+  box-shadow: 0 0 0 2px var(--nav);
+}
+
+/* Pendiente (diseño de 005, sistema visual › Barra lateral): atenuado y sin cursor de enlace. */
+.pending {
+  gap: var(--space-2);
+  padding-right: 6px;
+  color: var(--disabled);
+  cursor: default;
+}
+
+.pending:hover {
+  background: none;
+}
+
+/*
+ * Sello sobre --nav con los colores oscuros del aviso en los dos temas (#E8C66A sobre #3A3014, 7,9:1); el
+ * de tema claro (#FDF3D7) deslumbraría sobre la barra oscura.
+ */
+.stamp {
+  --stamp-pending-bg: #3a3014;
+  --stamp-pending-fg: #e8c66a;
+
+  margin-left: auto;
+}
+
+/* Sello reducido de la barra lateral (README, «Pendiente»): Mono 10/600, alto 20, padding 0 6, sin marcador. */
+.stamp > * {
+  height: 20px;
+  padding: 0 6px;
+  font-size: 10px;
+}
+
+.stamp > * > [aria-hidden='true'] {
+  display: none;
+}
+
+.footer {
+  margin-top: var(--space-2);
+  padding: var(--space-4) var(--space-3) var(--space-1);
+  border-top: 1px solid #2c3238;
+}
+
+/* Botón de plegar: encima del pie, borde de separador sobre la barra oscura. */
+.toggle {
+  margin-top: var(--space-2);
+  border-color: #2c3238;
+  color: var(--nav-text);
+}
+
+.toggle:hover:not(:disabled) {
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+}
+
+.toggle svg {
+  transition: transform 150ms ease;
+}
+
+/* Plegada (diseño de 005): 72 px, solo iconos centrados; la etiqueta flota con :hover y :focus-visible. */
+.collapsed {
+  width: var(--nav-width-collapsed);
+}
+
+.collapsed .brand {
+  padding: var(--space-1) var(--space-1) var(--space-6);
+}
+
+.collapsed .item {
+  position: relative;
+  justify-content: center;
+  padding: 0;
+}
+
+.collapsed .label,
+.collapsed .stamp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.collapsed .item:hover .label,
+.collapsed .item:focus-visible .label {
+  left: 56px;
+  top: 50%;
+  z-index: 10;
+  width: auto;
+  height: auto;
+  padding: 6px 10px;
+  overflow: visible;
+  clip: auto;
+  transform: translateY(-50%);
+  border-radius: var(--radius-control);
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+}
+
+.collapsed .dot {
+  display: block;
+}
+
+.collapsed .toggle {
+  align-self: center;
+}
+
+.collapsed .footer {
+  padding: var(--space-3) 0 var(--space-1);
+}
+
+/*
+ * Estrecho (lienzo, @container app ≤760 px): barra superior sticky con desplazamiento horizontal, sin texto
+ * de marca ni botón de plegar, y se ve igual esté plegada o no (contrato N6).
+ */
+@media (max-width: 759px) {
+  .nav,
+  .collapsed {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    min-height: 0;
+    padding: 8px 12px;
+    overflow-x: auto;
+  }
+
+  .list {
+    flex-direction: row;
+  }
+
+  .bottom {
+    margin-top: 0;
+  }
+
+  .brand,
+  .collapsed .brand {
+    flex: none;
+    padding: 0 var(--space-2) 0 0;
+  }
+
+  /* Solo el logotipo: BrandMark pinta el logo primero y después el texto. */
+  .brand > * > :not(:first-child) {
+    display: none;
+  }
+
+  .item,
+  .collapsed .item {
+    flex: none;
+    justify-content: flex-start;
+    padding: 0 var(--space-3);
+    white-space: nowrap;
+  }
+
+  .stamp {
+    margin-left: var(--space-2);
+  }
+
+  .collapsed .label,
+  .collapsed .stamp,
+  .collapsed .item:hover .label,
+  .collapsed .item:focus-visible .label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    transform: none;
+    background: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    box-shadow: none;
+  }
+
+  .collapsed .dot,
+  .toggle {
+    display: none;
+  }
+
+  .footer,
+  .collapsed .footer {
+    flex: none;
+    margin: 0;
+    padding: 0 0 0 var(--space-3);
+    border-top: 0;
+    border-left: 1px solid #2c3238;
+  }
+}

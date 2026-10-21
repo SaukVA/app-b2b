@@ -4,6 +4,7 @@ import {
   can,
   DEFAULT_HOME_SCREEN,
   isHomeScreenAllowed,
+  isModuleImplemented,
   type AppModule,
   type AuthUser,
   type HomeScreen,
@@ -18,9 +19,10 @@ export function moduleFromPath(path: string): AppModule | null {
   return APP_MODULES.find((module) => module === segment) ?? null;
 }
 
+/** Ruta de un módulo implementado que el rol puede ver; un módulo pendiente nunca se abre (005 FR-011). */
 function canOpen(user: AuthUser, path: string | null | undefined): path is string {
   const module = path ? moduleFromPath(path) : null;
-  return module !== null && can(user.permissions, module, 'view');
+  return module !== null && isModuleImplemented(module) && can(user.permissions, module, 'view');
 }
 
 /**
@@ -30,7 +32,9 @@ function canOpen(user: AuthUser, path: string | null | undefined): path is strin
  */
 function defaultHomeScreen(user: AuthUser): HomeScreen | null {
   if (isHomeScreenAllowed(user.permissions, DEFAULT_HOME_SCREEN)) return DEFAULT_HOME_SCREEN;
-  return AVAILABLE_HOME_SCREENS.find((screen) => can(user.permissions, screen, 'view')) ?? null;
+  return (
+    AVAILABLE_HOME_SCREENS.find((screen) => isHomeScreenAllowed(user.permissions, screen)) ?? null
+  );
 }
 
 /** Pantalla de inicio que se usa de verdad, la que aparece seleccionada en Apariencia (FR-016). */
@@ -40,7 +44,10 @@ export function effectiveHomeScreen(user: AuthUser): HomeScreen | null {
   return defaultHomeScreen(user);
 }
 
-/** FR-006: ruta de origen → pantalla elegida → pantalla por defecto, siempre que el rol pueda abrirla. */
+/**
+ * FR-006: ruta de origen → pantalla elegida → pantalla por defecto, siempre que el rol pueda abrirla y el
+ * módulo esté implementado (005). Sin ninguno, Ajustes › Apariencia.
+ */
 export function resolveHomeRoute(user: AuthUser, from?: string | null): string {
   if (canOpen(user, from)) return from;
   const screen = effectiveHomeScreen(user);

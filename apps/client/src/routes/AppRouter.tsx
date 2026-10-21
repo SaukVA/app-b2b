@@ -1,7 +1,5 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router';
-import { APP_MODULES, type AppModule } from '@app/shared';
 import { selectUser } from '../features/auth/authSelectors';
-import { LogoutButton } from '../features/auth/components/LogoutButton';
 import { DATABASE_SETTINGS_PATH, LoginPage } from '../pages/LoginPage';
 import { AppearanceSettingsPage } from '../pages/AppearanceSettingsPage';
 import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
@@ -9,6 +7,7 @@ import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
 import { isDesktop } from '../utils/desktop';
+import { AppLayout } from './AppLayout';
 import { resolveHomeRoute } from './homeRoute';
 import { RequireAuth } from './RequireAuth';
 
@@ -22,37 +21,13 @@ function HomeRedirect() {
   return <Navigate to={user ? resolveHomeRoute(user, null) : '/login'} replace />;
 }
 
-// Provisional mientras no existan los módulos de dominio.
-function ModulePlaceholder({ module }: { module: AppModule }) {
-  return (
-    <main>
-      <h1>{module.charAt(0).toUpperCase() + module.slice(1)}</h1>
-      <p>Módulo pendiente de implementar.</p>
-      <LogoutButton />
-    </main>
-  );
-}
-
-const moduleRoutes = APP_MODULES.filter((module) => module !== 'ajustes').map((module) => ({
-  path: module,
-  element: (
-    <RequireAuth module={module}>
-      <ModulePlaceholder module={module} />
-    </RequireAuth>
-  ),
-}));
-
-// Ajustes solo exige sesión: cada pestaña pide su permiso (Usuarios, `ajustes: edit`; FR-001).
+// Ajustes solo exige sesión (la pide AppLayout): cada pestaña pide su permiso (Usuarios, `ajustes: edit`).
 const settingsRoute = {
   path: 'ajustes',
-  element: (
-    <RequireAuth>
-      <SettingsPage />
-    </RequireAuth>
-  ),
+  element: <SettingsPage />,
   children: [
     { index: true, element: <SettingsIndexRedirect /> },
-    // Solo sesión (la exige settingsRoute): Apariencia es para todos los roles (004).
+    // Solo sesión: Apariencia es para todos los roles (004).
     { path: 'apariencia', element: <AppearanceSettingsPage /> },
     {
       path: 'usuarios',
@@ -78,8 +53,9 @@ const router = createBrowserRouter([
       { index: true, element: <HomeRedirect /> },
       { path: 'login', element: <LoginPage /> },
       ...desktopRoutes,
-      ...moduleRoutes,
-      settingsRoute,
+      // Pantallas con sesión, con el menú lateral (005 FR-001). Cada módulo de negocio añade aquí su ruta
+      // al implementarse (IMPLEMENTED_MODULES); la dirección de un módulo pendiente cae en `*` (FR-011).
+      { element: <AppLayout />, children: [settingsRoute] },
       { path: '*', element: <HomeRedirect /> },
     ],
   },

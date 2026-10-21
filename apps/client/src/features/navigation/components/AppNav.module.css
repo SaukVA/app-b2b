@@ -1,0 +1,115 @@
+/* Pie de la barra lateral (lienzo «Albarán»): nombre 13/500, rol y canal 12 en --disabled. */
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.role {
+  font-size: 12px;
+  color: var(--disabled);
+}
+
+/* Dos clases: gana al estilo terciario de Button (texto --ink2, sin contraste sobre --nav). */
+.footer .logout {
+  justify-content: flex-start;
+  min-height: var(--control-height);
+  margin-top: var(--space-1);
+  color: var(--nav-text);
+  font-size: 13px;
+}
+
+.logoutIcon {
+  display: none;
+}
+
+/* Plegado: sin nombre ni rol; «Cerrar sesión» queda como icono y su texto flota con :hover y :focus-visible. */
+.collapsed {
+  align-items: center;
+}
+
+.collapsed .name,
+.collapsed .role {
+  display: none;
+}
+
+.collapsed .logout {
+  position: relative;
+  justify-content: center;
+  width: var(--control-height);
+  padding: 0;
+}
+
+.collapsed .logoutIcon {
+  display: inline-flex;
+}
+
+.collapsed .logoutLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.collapsed .logout:hover .logoutLabel,
+.collapsed .logout:focus-visible .logoutLabel {
+  left: 56px;
+  top: 50%;
+  z-index: 10;
+  width: auto;
+  height: auto;
+  padding: 6px 10px;
+  overflow: visible;
+  clip: auto;
+  transform: translateY(-50%);
+  border-radius: var(--radius-control);
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+}
+
+/* Estrecho: solo «Cerrar sesión», en línea con el resto de la barra y con su texto, esté plegado o no. */
+@media (max-width: 759px) {
+  .name,
+  .role,
+  .collapsed .logoutIcon {
+    display: none;
+  }
+
+  .footer .logout,
+  .collapsed .logout {
+    width: auto;
+    margin: 0;
+    padding: 0 var(--space-3);
+    white-space: nowrap;
+  }
+
+  .collapsed .logoutLabel,
+  .collapsed .logout:hover .logoutLabel,
+  .collapsed .logout:focus-visible .logoutLabel {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    transform: none;
+    background: none;
+    color: inherit;
+    font-size: inherit;
+    box-shadow: none;
+  }
+}

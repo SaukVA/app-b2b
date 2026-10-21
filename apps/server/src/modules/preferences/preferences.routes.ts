@@ -58,6 +58,9 @@ export const preferencesRouter = Router();
  *           allOf:
  *             - $ref: '#/components/schemas/HomeScreen'
  *           nullable: true
+ *           description: >
+ *             Solo pantallas de módulos implementados que el rol puede ver (005); si no, 400
+ *             PREFERENCES_HOME_SCREEN_NOT_ALLOWED. Hoy no hay ninguna: solo se acepta null.
  */
 
 /**

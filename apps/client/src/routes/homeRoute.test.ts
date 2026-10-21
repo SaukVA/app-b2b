@@ -1,5 +1,6 @@
 import type { AppModule, AuthUser, HomeScreen, PermissionLevel } from '@app/shared';
-import { effectiveHomeScreen, resolveHomeRoute } from './homeRoute';
+import type * as HomeRouteModule from './homeRoute';
+import * as realHomeRoute from './homeRoute';
 
 type Permissions = Record<AppModule, PermissionLevel>;
 
@@ -30,6 +31,28 @@ const user = (permissions: Permissions, homeScreen: HomeScreen | null = null): A
   isBootstrap: false,
   preferences: { theme: 'light', tableDensity: 'comfortable', moneyFormat: 'es', homeScreen },
 });
+
+const ALL_IMPLEMENTED = ['ventas', 'clientes', 'productos', 'proveedores', 'cobros', 'ajustes'];
+
+/**
+ * Carga ./homeRoute con otra lista de módulos implementados: AVAILABLE_HOME_SCREENS se calcula al cargar
+ * el módulo, así que cada lista necesita su propio registro de módulos.
+ */
+function loadHomeRoute(implemented: readonly string[]): typeof HomeRouteModule {
+  let loaded: typeof HomeRouteModule | undefined;
+  jest.isolateModules(() => {
+    jest.doMock('../../../../packages/shared/src/constants/modules', () => ({
+      IMPLEMENTED_MODULES: implemented,
+      isModuleImplemented: (module: string) => implemented.includes(module),
+    }));
+    loaded = jest.requireActual<typeof HomeRouteModule>('./homeRoute');
+  });
+  if (!loaded) throw new Error('No se pudo cargar ./homeRoute');
+  return loaded;
+}
+
+// Casos de 004 con los módulos implementados; los de la lista real (005) van al final.
+const { effectiveHomeScreen, resolveHomeRoute } = loadHomeRoute(ALL_IMPLEMENTED);
 
 describe('resolveHomeRoute', () => {
   it('prioriza la ruta de origen si el rol puede abrirla', () => {
@@ -75,5 +98,25 @@ describe('effectiveHomeScreen', () => {
 
   it('devuelve null si el rol no ve ninguna pantalla', () => {
     expect(effectiveHomeScreen(user(NO_ACCESS))).toBeNull();
+  });
+});
+
+describe('resolveHomeRoute con módulos pendientes (lista real, 005)', () => {
+  it('descarta un origen pendiente aunque el rol pueda verlo', () => {
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), '/clientes')).toBe(
+      '/ajustes/apariencia',
+    );
+  });
+
+  it('sin módulos implementados cualquier rol va a Ajustes › Apariencia', () => {
+    const admin = user({ ...COMERCIAL, proveedores: 'edit', ajustes: 'edit' });
+    expect(realHomeRoute.resolveHomeRoute(admin, null)).toBe('/ajustes/apariencia');
+  });
+
+  it('ignora una pantalla de inicio guardada que está pendiente', () => {
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL, 'ventas'), null)).toBe(
+      '/ajustes/apariencia',
+    );
+    expect(realHomeRoute.effectiveHomeScreen(user(COMERCIAL, 'ventas'))).toBeNull();
   });
 });

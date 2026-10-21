@@ -5,12 +5,14 @@
   gap: var(--space-6);
 }
 
-/* Tablero «Ajustes» › Usuarios: alta a la izquierda y listado a la derecha. */
+/*
+ * Tablero «Ajustes» › Usuarios: «Nuevo usuario» a todo el ancho encima del listado. Con el menú lateral
+ * (005) dos columnas dejaban el listado por debajo de 760 px y la tabla pasaba a tarjetas.
+ */
 .columns {
   display: grid;
-  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
-  align-items: start;
 }
 
 /* Segunda columna: listado y, debajo, «Permisos por rol». */
@@ -60,13 +62,6 @@
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
-}
-
-/* Corte responsive único de «Albarán»: 760 px (las container queries no admiten var()). */
-@container (max-width: 759px) {
-  .columns {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 /* Confirmación del cambio de rol dentro de «Editar usuario». */

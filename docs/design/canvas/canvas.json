@@ -9,7 +9,7 @@
       "title": "Ajustes",
       "w": 1440,
       "x": 1520,
-      "y": 1720
+      "y": 2520
     },
     "AjustesMovil.dc.html": {
       "h": 1300,
@@ -17,7 +17,7 @@
       "title": "Ajustes · móvil",
       "w": 390,
       "x": 1410,
-      "y": 3200
+      "y": 4000
     },
     "Clientes.dc.html": {
       "expand": "fill",
@@ -34,7 +34,7 @@
       "title": "Clientes · móvil",
       "w": 390,
       "x": 470,
-      "y": 3200
+      "y": 4000
     },
     "Login.dc.html": {
       "expand": "fill",
@@ -43,7 +43,7 @@
       "title": "Login",
       "w": 1440,
       "x": 3040,
-      "y": 1720
+      "y": 2520
     },
     "LoginMovil.dc.html": {
       "h": 844,
@@ -51,10 +51,10 @@
       "title": "Login · móvil",
       "w": 390,
       "x": 1880,
-      "y": 3200
+      "y": 4000
     },
     "Main.dc.html": {
-      "h": 1600,
+      "h": 2400,
       "title": "Sistema visual · Albarán",
       "w": 1440,
       "x": 0,
@@ -75,7 +75,7 @@
       "title": "Productos · móvil",
       "w": 390,
       "x": 0,
-      "y": 3200
+      "y": 4000
     },
     "Proveedores.dc.html": {
       "expand": "fill",
@@ -84,7 +84,7 @@
       "title": "Proveedores",
       "w": 1440,
       "x": 0,
-      "y": 1720
+      "y": 2520
     },
     "ProveedoresMovil.dc.html": {
       "h": 1600,
@@ -92,7 +92,7 @@
       "title": "Proveedores · móvil",
       "w": 390,
       "x": 940,
-      "y": 3200
+      "y": 4000
     }
   },
   "createdOnFiles": {
@@ -110,7 +110,7 @@
       "text": "Móvil · 390 px",
       "w": 240,
       "x": 0,
-      "y": 2940
+      "y": 3740
     }
   },
   "order": [

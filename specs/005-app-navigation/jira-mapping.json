@@ -1,0 +1,618 @@
+{
+  "created_at": "2026-10-20T12:44:14Z",
+  "updated_at": "2026-10-20T12:44:14Z",
+  "spec": "005-app-navigation",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-371",
+    "summary": "Menú lateral de navegación",
+    "url": "https://sauk.atlassian.net/browse/AB2B-371"
+  },
+  "stories": [
+    {
+      "key": "AB2B-372",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-372",
+      "tasks": [
+        {
+          "key": "AB2B-381",
+          "id": "T001",
+          "summary": "T001: Crear la rama `005-app-navigation` a partir de la rama base que indique el usuario (`main` o…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-381"
+        },
+        {
+          "key": "AB2B-384",
+          "id": "T002",
+          "summary": "T002: Añadir al lienzo publicado (https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya), en el tablero del sistema visual…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-384"
+        },
+        {
+          "key": "AB2B-387",
+          "id": "T003",
+          "summary": "T003: Refrescar `docs/design/canvas/` (copia literal de los `*.dc.html` cambiados y `canvas.json`) y `docs/design/README.md`",
+          "status": "pending",
+          "depends_on": [
+            "T002"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-387"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-373",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-373",
+      "tasks": [
+        {
+          "key": "AB2B-389",
+          "id": "T004",
+          "summary": "T004: Crear `packages/shared/src/constants/modules.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-389"
+        },
+        {
+          "key": "AB2B-394",
+          "id": "T005",
+          "summary": "T005: Crear `packages/shared/src/constants/modules.ts` con `export const IMPLEMENTED_MODULES: readonly AppModule[] =…",
+          "status": "pending",
+          "depends_on": [
+            "T004"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-394"
+        },
+        {
+          "key": "AB2B-396",
+          "id": "T006",
+          "summary": "T006: Crear `apps/client/src/features/navigation/NavIcons.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-396"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-374",
+      "summary": "Phase 3: User Story 1 - Navegar entre los módulos de mi rol (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-374",
+      "tasks": [
+        {
+          "key": "AB2B-398",
+          "id": "T007",
+          "summary": "T007: Crear `apps/client/src/components/NavBar.test.tsx` (en `MemoryRouter`)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-398"
+        },
+        {
+          "key": "AB2B-405",
+          "id": "T008",
+          "summary": "T008: Crear `apps/client/src/features/navigation/navItems.test.ts` para `buildNavItems(permissions)`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-405"
+        },
+        {
+          "key": "AB2B-407",
+          "id": "T009",
+          "summary": "T009: Crear `apps/client/src/routes/AppLayout.test.tsx` (store de prueba y `MemoryRouter`)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-407"
+        },
+        {
+          "key": "AB2B-409",
+          "id": "T010",
+          "summary": "T010: Crear `apps/client/src/features/navigation/components/AppNav.test.tsx`: con un usuario Comercial, el menú muestra sus…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-409"
+        },
+        {
+          "key": "AB2B-415",
+          "id": "T011",
+          "summary": "T011: Crear `e2e/navigation.spec.ts`, caso «menú tras el login»: tras `loginAsAdmin` se ve `navigation` «Principal» con los 5…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-415"
+        },
+        {
+          "key": "AB2B-419",
+          "id": "T012",
+          "summary": "T012: Crear `apps/client/src/components/NavBar.tsx` y `NavBar.module.css` con la API de contracts/navigation-ui.md §1…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-419"
+        },
+        {
+          "key": "AB2B-422",
+          "id": "T013",
+          "summary": "T013: Después de T012 (usa el tipo `NavBarItem`), crear `apps/client/src/features/navigation/navItems.ts` con `NAV_MODULES`…",
+          "status": "pending",
+          "depends_on": [
+            "T012"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-422"
+        },
+        {
+          "key": "AB2B-424",
+          "id": "T014",
+          "summary": "T014: Crear `apps/client/src/features/navigation/components/AppNav.tsx` (+ `AppNav.module.css`). Lee `selectUser`; si no hay…",
+          "status": "pending",
+          "depends_on": [
+            "T013"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-424"
+        },
+        {
+          "key": "AB2B-425",
+          "id": "T015",
+          "summary": "T015: Crear `apps/client/src/routes/AppLayout.tsx` (+ `AppLayout.module.css`): `<RequireAuth>` que envuelve un contenedor de…",
+          "status": "pending",
+          "depends_on": [
+            "T014"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-425"
+        },
+        {
+          "key": "AB2B-428",
+          "id": "T016",
+          "summary": "T016: Modificar `apps/client/src/routes/AppRouter.tsx`",
+          "status": "pending",
+          "depends_on": [
+            "T015"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-428"
+        },
+        {
+          "key": "AB2B-429",
+          "id": "T017",
+          "summary": "T017: Ajustar `apps/client/src/pages/SettingsPage.module.css` al layout: quitar `max-width` y `margin: 0 auto` si el…",
+          "status": "pending",
+          "depends_on": [
+            "T016"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-429"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-375",
+      "summary": "Phase 4: User Story 2 - Saber en qué pantalla estoy (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-375",
+      "tasks": [
+        {
+          "key": "AB2B-382",
+          "id": "T018",
+          "summary": "T018: Ampliar `apps/client/src/components/NavBar.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-382"
+        },
+        {
+          "key": "AB2B-385",
+          "id": "T019",
+          "summary": "T019: En `NavBarLink` (`apps/client/src/components/NavBar.tsx`), usar `NavLink` sin `end` para que las subrutas activen el…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-385"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-376",
+      "summary": "Phase 5: User Story 3 - Ver quién soy y cerrar sesión (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-376",
+      "tasks": [
+        {
+          "key": "AB2B-391",
+          "id": "T020",
+          "summary": "T020: Ampliar `apps/client/src/features/navigation/components/AppNav.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-391"
+        },
+        {
+          "key": "AB2B-392",
+          "id": "T021",
+          "summary": "T021: Ampliar `e2e/navigation.spec.ts`: el pie muestra «Administrador · Web». «Cerrar sesión» lleva a `/login`, y al volver…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-392"
+        },
+        {
+          "key": "AB2B-393",
+          "id": "T022",
+          "summary": "T022: En `AppNav.tsx`, pasar a `NavBar` el `footer` con el nombre (recortado con `text-overflow: ellipsis` y `title` con el…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-393"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-377",
+      "summary": "Phase 6: User Story 4 - Ver qué módulos están pendientes (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-377",
+      "tasks": [
+        {
+          "key": "AB2B-400",
+          "id": "T023",
+          "summary": "T023: Ampliar `apps/client/src/components/NavBar.test.tsx` con un elemento `pending`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-400"
+        },
+        {
+          "key": "AB2B-401",
+          "id": "T024",
+          "summary": "T024: Ampliar `apps/client/src/features/navigation/navItems.test.ts`: con la lista real, `ventas…cobros` llevan `pending…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-401"
+        },
+        {
+          "key": "AB2B-402",
+          "id": "T025",
+          "summary": "T025: Ampliar `apps/client/src/routes/homeRoute.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-402"
+        },
+        {
+          "key": "AB2B-403",
+          "id": "T026",
+          "summary": "T026: Adaptar `packages/shared/src/constants/preferences.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-403"
+        },
+        {
+          "key": "AB2B-411",
+          "id": "T027",
+          "summary": "T027: Adaptar `apps/server/src/modules/preferences/preferences.routes.test.ts` y `preferences.service.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-411"
+        },
+        {
+          "key": "AB2B-412",
+          "id": "T028",
+          "summary": "T028: Adaptar `apps/client/src/features/preferences/components/AppearanceForm.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-412"
+        },
+        {
+          "key": "AB2B-413",
+          "id": "T029",
+          "summary": "T029: Ampliar `e2e/navigation.spec.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-413"
+        },
+        {
+          "key": "AB2B-414",
+          "id": "T030",
+          "summary": "T030: Añadir `NavBarPending` en `apps/client/src/components/NavBar.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-414"
+        },
+        {
+          "key": "AB2B-418",
+          "id": "T031",
+          "summary": "T031: Modificar `packages/shared/src/constants/preferences.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-418"
+        },
+        {
+          "key": "AB2B-421",
+          "id": "T032",
+          "summary": "T032: Modificar `canOpen()` en `apps/client/src/routes/homeRoute.ts` para exigir también `isModuleImplemented(module)`…",
+          "status": "pending",
+          "depends_on": [
+            "T031"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-421"
+        },
+        {
+          "key": "AB2B-423",
+          "id": "T033",
+          "summary": "T033: Modificar `apps/client/src/routes/AppRouter.tsx`",
+          "status": "pending",
+          "depends_on": [
+            "T032"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-423"
+        },
+        {
+          "key": "AB2B-426",
+          "id": "T034",
+          "summary": "T034: Actualizar la descripción `@openapi` de `homeScreen` en `apps/server/src/modules/preferences/preferences.routes.ts`…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-426"
+        },
+        {
+          "key": "AB2B-427",
+          "id": "T035",
+          "summary": "T035: En `e2e/appearance.spec.ts`, línea `await page.goto('/productos');`: quitarla (el «Cerrar sesión» ya está en el menú de…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-427"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-378",
+      "summary": "Phase 7: User Story 5 - Plegar y desplegar el menú (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-378",
+      "tasks": [
+        {
+          "key": "AB2B-383",
+          "id": "T036",
+          "summary": "T036: Crear `apps/client/src/features/navigation/navigationSlice.test.ts` y `useNavCollapsed.test.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-383"
+        },
+        {
+          "key": "AB2B-386",
+          "id": "T037",
+          "summary": "T037: Ampliar `apps/client/src/components/NavBar.test.tsx`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-386"
+        },
+        {
+          "key": "AB2B-388",
+          "id": "T038",
+          "summary": "T038: Ampliar `e2e/navigation.spec.ts` a 1440 px",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-388"
+        },
+        {
+          "key": "AB2B-390",
+          "id": "T039",
+          "summary": "T039: Crear `apps/client/src/features/navigation/navigationSlice.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-390"
+        },
+        {
+          "key": "AB2B-395",
+          "id": "T039b",
+          "summary": "T039b: Crear `apps/client/src/features/navigation/useNavCollapsed.ts`: devuelve `{ collapsed, toggle }`; `toggle` despacha…",
+          "status": "pending",
+          "depends_on": [
+            "T039"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-395"
+        },
+        {
+          "key": "AB2B-397",
+          "id": "T040",
+          "summary": "T040: En `apps/client/src/components/NavBar.tsx` y `NavBar.module.css`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-397"
+        },
+        {
+          "key": "AB2B-399",
+          "id": "T041",
+          "summary": "T041: En `AppNav.tsx`, usar `useNavCollapsed()` y pasar `collapsed`, `onToggleCollapsed`, `toggleIcon` y…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-399"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-379",
+      "summary": "Phase 8: User Story 6 - Navegar en pantallas estrechas (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-379",
+      "tasks": [
+        {
+          "key": "AB2B-404",
+          "id": "T042",
+          "summary": "T042: Ampliar `e2e/navigation.spec.ts` con `viewport: { width: 390, height: 844 }`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-404"
+        },
+        {
+          "key": "AB2B-406",
+          "id": "T043",
+          "summary": "T043: En `NavBar.module.css`, `@media (max-width: 759px)`, siguiendo las reglas `.nav*` de…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-406"
+        },
+        {
+          "key": "AB2B-408",
+          "id": "T044",
+          "summary": "T044: En `AppNav.module.css` y `AppLayout.module.css`, `@media (max-width: 759px)`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-408"
+        }
+      ]
+    },
+    {
+      "key": "AB2B-380",
+      "summary": "Phase 9: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-380",
+      "tasks": [
+        {
+          "key": "AB2B-410",
+          "id": "T045",
+          "summary": "T045: Revisar la accesibilidad del menú con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, desplegado y plegado…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-410"
+        },
+        {
+          "key": "AB2B-416",
+          "id": "T046",
+          "summary": "T046: Comprobar que `/api-docs` refleja la nueva descripción de `homeScreen` en `PATCH /preferences` (T034) comparando el…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-416"
+        },
+        {
+          "key": "AB2B-417",
+          "id": "T047",
+          "summary": "T047: Añadir a la sección Convenciones de `CLAUDE.md`: «Al implementar un módulo de dominio MUST añadirlo a…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-417"
+        },
+        {
+          "key": "AB2B-420",
+          "id": "T048",
+          "summary": "T048: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano quickstart.md completo…",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-420"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-372",
+      "to": "AB2B-373"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-373",
+      "to": "AB2B-374"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-374",
+      "to": "AB2B-375"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-374",
+      "to": "AB2B-376"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-374",
+      "to": "AB2B-377"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-374",
+      "to": "AB2B-378"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-374",
+      "to": "AB2B-379"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-378",
+      "to": "AB2B-379"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-374",
+      "to": "AB2B-380"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-375",
+      "to": "AB2B-380"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-376",
+      "to": "AB2B-380"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-377",
+      "to": "AB2B-380"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-378",
+      "to": "AB2B-380"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-379",
+      "to": "AB2B-380"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-384",
+      "to": "AB2B-387"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-389",
+      "to": "AB2B-394"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-419",
+      "to": "AB2B-422"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-422",
+      "to": "AB2B-424"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-424",
+      "to": "AB2B-425"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-425",
+      "to": "AB2B-428"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-428",
+      "to": "AB2B-429"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-418",
+      "to": "AB2B-421"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-421",
+      "to": "AB2B-423"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-390",
+      "to": "AB2B-395"
+    }
+  ],
+  "summary": {
+    "total_stories": 9,
+    "total_tasks": 49,
+    "completed_tasks": 0,
+    "pending_tasks": 49
+  }
+}

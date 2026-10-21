@@ -7,6 +7,12 @@ import { updatePreferences } from '../preferencesApi';
 import { sessionRestored } from '../preferencesSlice';
 import { AppearanceForm } from './AppearanceForm';
 
+// Los módulos de negocio todavía son «Pendiente» (005): estos casos los simulan implementados.
+jest.mock('../../../../../../packages/shared/src/constants/modules', () => ({
+  IMPLEMENTED_MODULES: ['ventas', 'clientes', 'productos', 'proveedores', 'cobros', 'ajustes'],
+  isModuleImplemented: () => true,
+}));
+
 jest.mock('../preferencesApi', () => ({
   ...jest.requireActual('../preferencesApi'),
   updatePreferences: jest.fn(),

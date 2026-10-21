@@ -32,6 +32,7 @@ export type {
 } from './types/desktop';
 export type { AppModule, PermissionLevel, PermissionSet } from './constants/roles';
 export { APP_MODULES, ADMIN_ROLE_KEY, can } from './constants/roles';
+export { IMPLEMENTED_MODULES, isModuleImplemented } from './constants/modules';
 export * from './constants/users';
 export * from './constants/auth';
 export * from './constants/preferences';
