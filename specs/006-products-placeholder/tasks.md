@@ -51,7 +51,7 @@ prioridad: US1 → US2 (P1) → US3 (P2).
 
 **Purpose**: entorno de trabajo
 
-- [ ] T001 Comprobar que la rama activa es `006-products-placeholder`, que `.specify/feature.json` apunta a
+- [X] T001 Comprobar que la rama activa es `006-products-placeholder`, que `.specify/feature.json` apunta a
   `specs/006-products-placeholder` y que `npm test --workspaces` y `npm run lint` están en verde antes de
   empezar (línea base).
 
@@ -66,7 +66,7 @@ historias.
 
 ### Tests de Foundational (primero, deben fallar) ⚠️
 
-- [ ] T002 [P] Crear `packages/shared/src/constants/products.test.ts`:
+- [X] T002 [P] Crear `packages/shared/src/constants/products.test.ts`:
   - `productStatus(0, 10)` → `'Sin stock'`; `productStatus(0, 0)` → `'Sin stock'`;
     `productStatus(3, 10)` → `'Stock bajo'`; `productStatus(10, 10)` → `'Disponible'`;
     `productStatus(140, 80)` → `'Disponible'` (FR-011a: «Sin stock si el stock es 0; Stock bajo si el stock es
@@ -78,19 +78,19 @@ historias.
 
 ### Implementación de Foundational
 
-- [ ] T003 [P] Añadir a `packages/shared/src/types/api.ts` el genérico
+- [X] T003 [P] Añadir a `packages/shared/src/types/api.ts` el genérico
   `ListPage<T> { items: T[]; total: number; page: number; pageSize: number }` con un comentario que lo
   describa como página de cualquier listado (lo reutilizará 007).
-- [ ] T004 [P] Crear `packages/shared/src/types/product.ts` con:
+- [X] T004 [P] Crear `packages/shared/src/types/product.ts` con:
   - `ProductStatus = 'Disponible' | 'Stock bajo' | 'Sin stock'`;
   - `ProductListItem` con `id`, `code`, `name`, `supplierName: string | null`, `category`,
     `subcategory: string | null`, `stock` (entero ≥ 0, cantidad), `minStock` (entero ≥ 0, cantidad),
     `price` (euros con 2 decimales) y `status: ProductStatus`;
   - `ProductListQuery` con `q?`, `category?`, `subcategory?`, `supplier?`, `lowStock: boolean`, `page: number`.
-- [ ] T005 Crear `packages/shared/src/constants/products.ts` con `PRODUCT_SEARCH_MAX_LENGTH = 100`,
+- [X] T005 Crear `packages/shared/src/constants/products.ts` con `PRODUCT_SEARCH_MAX_LENGTH = 100`,
   `PRODUCTS_PAGE_SIZE = 10`, `PRODUCT_FILTER_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/`, `PRODUCT_STATUSES` y
   `productStatus(stock, minStock): ProductStatus` según FR-011a. Depende de T004.
-- [ ] T006 Exportar desde `packages/shared/src/index.ts` `ListPage`, `ProductStatus`, `ProductListItem`,
+- [X] T006 Exportar desde `packages/shared/src/index.ts` `ListPage`, `ProductStatus`, `ProductListItem`,
   `ProductListQuery` y `export * from './constants/products'`. Ejecutar `npm test --workspace=packages/shared`
   y comprobar que T002 pasa. Depende de T003–T005.
 
