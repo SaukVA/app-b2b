@@ -57,6 +57,19 @@
   background: var(--surface);
 }
 
+/* Zona de estado: en ancho continúa el panel de la tabla por debajo de las filas. */
+.withStatus .desk {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.status {
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border-row);
+  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+  background: var(--surface);
+}
+
 /* Corte responsive único de «Albarán»: 760 px (las container queries no admiten var()). */
 @container (max-width: 759px) {
   .desk {
@@ -65,5 +78,14 @@
 
   .mob {
     display: grid;
+  }
+
+  .status {
+    border-top: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .mob:not(:empty) + .status {
+    margin-top: var(--space-3);
   }
 }

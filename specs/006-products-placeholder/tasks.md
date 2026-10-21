@@ -272,16 +272,16 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T029 [P] [US2] Crear `apps/client/src/hooks/useDebouncedValue.test.ts` con temporizadores falsos de
+- [X] T029 [P] [US2] Crear `apps/client/src/hooks/useDebouncedValue.test.ts` con temporizadores falsos de
   Jest:
   - devuelve el valor inicial al momento;
   - tras cambios seguidos, solo devuelve el último cuando pasan `delay` ms (300) sin cambios;
   - limpia el temporizador al desmontar.
-- [ ] T030 [P] [US2] Crear `apps/client/src/components/EmptyState.test.tsx`:
+- [X] T030 [P] [US2] Crear `apps/client/src/components/EmptyState.test.tsx`:
   - muestra el título y el texto;
   - el contenedor tiene `role="status"`;
   - no importa nada de `@app/shared` (comprobación por revisión, no por test).
-- [ ] T031 [P] [US2] Crear `apps/client/src/features/products/productCriteria.test.ts`:
+- [X] T031 [P] [US2] Crear `apps/client/src/features/products/productCriteria.test.ts`:
   - `parseProductCriteria(new URLSearchParams(''))` → `{ lowStock: false, page: 1 }`;
   - con `q=%20aceite%20&lowStock=true&page=2` → `q: 'aceite'`, `lowStock: true`, `page: 2`;
   - `category`, `subcategory` y `supplier` se ignoran aunque sean válidos (`category=alimentacion` →
@@ -290,17 +290,17 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
     `page=0`, `page=-1` y `page=abc`;
   - `serializeProductCriteria` omite los valores por defecto (`{ lowStock: false, page: 1 }` → `''`) y es la
     inversa de `parseProductCriteria` para criterios válidos.
-- [ ] T032 [P] [US2] Ampliar `apps/client/src/features/products/productsSlice.test.ts`:
+- [X] T032 [P] [US2] Ampliar `apps/client/src/features/products/productsSlice.test.ts`:
   - un `fulfilled` cuyo `meta.requestId` no es el último `requestId` se ignora;
   - un `pending` posterior sustituye `requestId`.
-- [ ] T033 [P] [US2] Crear `apps/client/src/features/products/components/ProductsListStatus.test.tsx` (casos
+- [X] T033 [P] [US2] Crear `apps/client/src/features/products/components/ProductsListStatus.test.tsx` (casos
   de US2):
   - con `status: 'loading'` muestra «Cargando productos…» con `role="status"` y no muestra el aviso ni el
     error;
   - con `status: 'succeeded'` y `total: 0` muestra el `EmptyState` «Todavía no hay productos» / «El catálogo
     se cargará desde el sistema anterior.»;
   - con `succeeded` y elementos no muestra nada.
-- [ ] T034 [P] [US2] Ampliar `apps/client/src/pages/ProductsPage.test.tsx` (con `createMemoryRouter` o
+- [X] T034 [P] [US2] Ampliar `apps/client/src/pages/ProductsPage.test.tsx` (con `createMemoryRouter` o
   `MemoryRouter` e `initialEntries`):
   - con `/productos` se ve el aviso y no se ve paginación;
   - con `/productos?q=aceite&lowStock=true` el campo y la casilla muestran esos valores y `fetchProducts`
@@ -313,40 +313,42 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
     `fetchProducts` no recibe `category`;
   - con `/productos?q=aceite&page=2` la dirección conserva `page=2` y `fetchProducts` recibe `page: 2`
     (montar no reescribe la dirección);
-  - buscar «aceite», después «café» y volver «Atrás»: el campo muestra «aceite», `fetchProducts` recibe
-    `q: 'aceite'` y la dirección no vuelve a `café` al pasar los 300 ms.
-- [ ] T035 [P] [US2] Ampliar `e2e/products.spec.ts` (US2):
+  - buscar «aceite», marcar «Solo stock bajo» (entrada de historial nueva), buscar «café» y volver «Atrás»:
+    el campo muestra «aceite», `fetchProducts` recibe `q: 'aceite'` y la dirección no vuelve a `café` al
+    pasar los 300 ms. (La búsqueda escribe con `replace`, así que sin una entrada intermedia «Atrás» saldría
+    de la pantalla.)
+- [X] T035 [P] [US2] Ampliar `e2e/products.spec.ts` (US2):
   - se ve el aviso de catálogo pendiente;
   - al escribir «aceite» se hace una petición `GET /api/products?q=aceite` (`page.waitForRequest`) y la
     dirección cambia;
   - marcar «Solo stock bajo» y recargar mantiene la casilla y la búsqueda;
   - `page.goBack()` vuelve a los criterios anteriores;
-  - buscar «aceite», después «café» y `page.goBack()`: el campo muestra «aceite» y la dirección sigue en
-    `q=aceite` pasados 300 ms.
+  - buscar «aceite», marcar «Solo stock bajo», buscar «café» y `page.goBack()`: el campo muestra «aceite» y
+    la dirección sigue en `q=aceite` pasados 300 ms.
 
 ### Implementación de US2
 
-- [ ] T036 [P] [US2] Crear `apps/client/src/hooks/useDebouncedValue.ts`:
+- [X] T036 [P] [US2] Crear `apps/client/src/hooks/useDebouncedValue.ts`:
   `useDebouncedValue<T>(value: T, delay: number): T` con `useEffect` y `setTimeout`/`clearTimeout`. Comprobar
   que T029 pasa.
-- [ ] T037 [P] [US2] Crear `apps/client/src/components/EmptyState.tsx` y `EmptyState.module.css` (contracts/
+- [X] T037 [P] [US2] Crear `apps/client/src/components/EmptyState.tsx` y `EmptyState.module.css` (contracts/
   products-ui.md §EmptyState):
   - props `title` y `children`, contenedor con `role="status"`;
   - estilo: Sans 18/600 en `--ink` para el título, 14/400 en `--ink2` para el texto, padding 32 y centrado;
   - sin color de estado.
   Comprobar que T030 pasa.
-- [ ] T038 [P] [US2] Crear `apps/client/src/features/products/productCriteria.ts` con
+- [X] T038 [P] [US2] Crear `apps/client/src/features/products/productCriteria.ts` con
   `parseProductCriteria(params: URLSearchParams): ProductListQuery` (valida `q` con
   `PRODUCT_SEARCH_MAX_LENGTH`, recorta `q`, descarta los valores no válidos y no lee `category`,
   `subcategory` ni `supplier` mientras no haya catálogo, FR-008a) y
   `serializeProductCriteria(query): URLSearchParams` (omite los valores por defecto). Funciones pequeñas, con
   una auxiliar por campo si hace falta. Comprobar que T031 pasa.
-- [ ] T039 [US2] En `apps/client/src/features/products/productsSlice.ts`, guardar `requestId` en `pending` e
+- [X] T039 [US2] En `apps/client/src/features/products/productsSlice.ts`, guardar `requestId` en `pending` e
   ignorar `fulfilled` y `rejected` de peticiones que no son la última (research R7). Comprobar que T032 pasa.
-- [ ] T040 [US2] Crear `apps/client/src/features/products/components/ProductsListStatus.tsx`, que según
+- [X] T040 [US2] Crear `apps/client/src/features/products/components/ProductsListStatus.tsx`, que según
   `status` y `total` muestra el estado de carga («Cargando productos…», `role="status"`) o el `EmptyState`
   con los textos del aviso. El caso `failed` llega en US3. Comprobar que T033 pasa. Depende de T037.
-- [ ] T041 [US2] Conectar `apps/client/src/pages/ProductsPage.tsx` con la dirección (research R6, R7):
+- [X] T041 [US2] Conectar `apps/client/src/pages/ProductsPage.tsx` con la dirección (research R6, R7):
   - leer los criterios con `useSearchParams` + `parseProductCriteria` y normalizar la dirección con
     `replace` si no coincide con `serializeProductCriteria`;
   - estado local del campo de búsqueda + `useDebouncedValue(…, 300)`; al estabilizarse, escribir `q` en la
@@ -361,7 +363,7 @@ vuelve a los anteriores (quickstart §3.3–§3.7).
     paginación con 0 elementos;
   - extraer a hooks auxiliares (`useProductCriteria`, `useLoadProducts`) para no pasar de 40 líneas.
   Comprobar que T034 pasa. Depende de T036, T038–T040.
-- [ ] T042 [US2] Documentar `EmptyState` en `docs/design/README.md` › Componentes (anatomía, tokens y
+- [X] T042 [US2] Documentar `EmptyState` en `docs/design/README.md` › Componentes (anatomía, tokens y
   `role="status"`), indicando que aún no está en el lienzo publicado (FR-018). Ejecutar
   `npm run test:e2e -- products` y comprobar que T035 pasa.
 

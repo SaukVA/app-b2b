@@ -58,6 +58,73 @@ test.describe('Productos · abrir y ver su estructura (US1)', () => {
   });
 });
 
+const searchBox = (page: Page) => page.getByRole('searchbox', { name: 'Buscar' });
+const lowStockBox = (page: Page) => page.getByRole('checkbox', { name: 'Solo stock bajo' });
+const emptyNotice = (page: Page) => page.getByText('Todavía no hay productos');
+
+/** Escribe en la búsqueda y espera la petición que se lanza tras dejar de teclear. */
+async function searchFor(page: Page, text: string): Promise<void> {
+  const requested = page.waitForRequest(
+    (req) =>
+      new URL(req.url()).pathname === '/api/products' &&
+      new URL(req.url()).searchParams.get('q') === text,
+  );
+  await searchBox(page).fill(text);
+  await requested;
+}
+
+/**
+ * La casilla refleja la dirección, que el router actualiza de forma asíncrona: se pulsa y se espera a que
+ * quede marcada (`check()` exige que cambie en el mismo instante del clic).
+ */
+async function markLowStock(page: Page): Promise<void> {
+  await lowStockBox(page).click();
+  await expect(lowStockBox(page)).toBeChecked();
+}
+
+test.describe('Productos · catálogo pendiente de carga (US2)', () => {
+  test.beforeEach(async ({ page }) => {
+    await loginAsAdmin(page);
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+
+  test('se ve el aviso y la búsqueda pide el listado y cambia la dirección', async ({ page }) => {
+    await expect(page.getByText('El catálogo se cargará desde el sistema anterior.')).toBeVisible();
+    await searchFor(page, 'aceite');
+    await expect(page).toHaveURL(/\/productos\?q=aceite$/);
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+
+  test('recargar conserva la búsqueda y «solo stock bajo»; «Atrás» vuelve a los anteriores', async ({
+    page,
+  }) => {
+    await searchFor(page, 'aceite');
+    await markLowStock(page);
+    await expect(page).toHaveURL(/\/productos\?q=aceite&lowStock=true$/);
+
+    await page.reload();
+    await expect(searchBox(page)).toHaveValue('aceite');
+    await expect(lowStockBox(page)).toBeChecked();
+
+    await page.goBack();
+    await expect(page).toHaveURL(/\/productos\?q=aceite$/);
+    await expect(lowStockBox(page)).not.toBeChecked();
+  });
+
+  test('«Atrás» devuelve la búsqueda anterior y la espera no la deshace', async ({ page }) => {
+    await searchFor(page, 'aceite');
+    await markLowStock(page);
+    await searchFor(page, 'café');
+    await expect(page).toHaveURL(/q=caf%C3%A9&lowStock=true$/);
+
+    await page.goBack();
+    await expect(searchBox(page)).toHaveValue('aceite');
+    // Más que la espera de la búsqueda (300 ms): el valor desfasado no reescribe la dirección.
+    await page.waitForTimeout(600);
+    await expect(page).toHaveURL(/\/productos\?q=aceite$/);
+  });
+});
+
 test.describe.serial('Productos · rol de solo ver (FR-003)', () => {
   let comercial: SeedUser;
 

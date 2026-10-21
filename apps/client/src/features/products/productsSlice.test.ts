@@ -36,3 +36,31 @@ describe('productsSlice', () => {
     expect(mockedFetch).toHaveBeenCalledWith({ lowStock: false, page: 1 });
   });
 });
+
+describe('productsSlice · solo cuenta la última petición (US2, research R7)', () => {
+  function deferred<T>() {
+    let resolve!: (value: T) => void;
+    const promise = new Promise<T>((res) => (resolve = res));
+    return { promise, resolve };
+  }
+
+  it('un pending posterior sustituye el requestId', () => {
+    mockedFetch.mockReturnValue(new Promise(() => {}));
+    const store = setupStore();
+    const first = store.dispatch(loadProducts({ lowStock: false, page: 1 }));
+    const second = store.dispatch(loadProducts({ lowStock: true, page: 1 }));
+    expect(store.getState().products.requestId).toBe(second.requestId);
+    expect(first.requestId).not.toBe(second.requestId);
+  });
+
+  it('ignora el fulfilled de una petición que ya no es la última', async () => {
+    const stale = deferred<ListPage<ProductListItem>>();
+    mockedFetch.mockReturnValueOnce(stale.promise).mockReturnValueOnce(new Promise(() => {}));
+    const store = setupStore();
+    const first = store.dispatch(loadProducts({ q: 'ace', lowStock: false, page: 1 }));
+    void store.dispatch(loadProducts({ q: 'aceite', lowStock: false, page: 1 }));
+    stale.resolve({ ...EMPTY_PAGE, total: 7 });
+    await first;
+    expect(store.getState().products).toMatchObject({ status: 'loading', total: 0 });
+  });
+});

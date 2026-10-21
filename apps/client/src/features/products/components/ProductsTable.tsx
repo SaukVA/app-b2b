@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { ProductListItem, ProductStatus } from '@app/shared';
 import { StatusStamp, type StatusTone } from '../../../components/StatusStamp';
 import { Table, type TableColumn } from '../../../components/Table';
@@ -6,6 +7,9 @@ import styles from './ProductsTable.module.css';
 
 export interface ProductsTableProps {
   rows: readonly ProductListItem[];
+  /** Cargando, aviso de catálogo pendiente o error, dentro del panel del listado. */
+  status?: ReactNode;
+  busy?: boolean;
 }
 
 const STATUS_TONES: Record<ProductStatus, StatusTone> = {
@@ -65,7 +69,7 @@ function ProductCard({ product }: { product: ProductListItem }) {
 }
 
 /** Listado de Productos (FR-004): tabla en escritorio y tarjetas en móvil, sin columna de acciones. */
-export function ProductsTable({ rows }: ProductsTableProps) {
+export function ProductsTable({ rows, status, busy }: ProductsTableProps) {
   return (
     <Table
       caption="Productos"
@@ -73,6 +77,8 @@ export function ProductsTable({ rows }: ProductsTableProps) {
       rows={rows}
       getRowKey={(product) => product.id}
       renderCard={(product) => <ProductCard product={product} />}
+      status={status}
+      busy={busy}
     />
   );
 }
