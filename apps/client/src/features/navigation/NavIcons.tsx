@@ -90,3 +90,13 @@ export function CollapseIcon({ collapsed = false }: { collapsed?: boolean }) {
     </NavIcon>
   );
 }
+
+/** «Cerrar sesión» del pie en el menú plegado. */
+export function LogoutIcon() {
+  return (
+    <NavIcon>
+      <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
+      <path d="m10 16-4-4 4-4M6 12h10" />
+    </NavIcon>
+  );
+}

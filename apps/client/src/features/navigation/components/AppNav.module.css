@@ -27,3 +27,56 @@
   color: var(--nav-text);
   font-size: 13px;
 }
+
+.logoutIcon {
+  display: none;
+}
+
+/* Plegado: sin nombre ni rol; «Cerrar sesión» queda como icono y su texto flota con :hover y :focus-visible. */
+.collapsed {
+  align-items: center;
+}
+
+.collapsed .name,
+.collapsed .role {
+  display: none;
+}
+
+.collapsed .logout {
+  position: relative;
+  justify-content: center;
+  width: var(--control-height);
+  padding: 0;
+}
+
+.collapsed .logoutIcon {
+  display: inline-flex;
+}
+
+.collapsed .logoutLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.collapsed .logout:hover .logoutLabel,
+.collapsed .logout:focus-visible .logoutLabel {
+  left: 56px;
+  top: 50%;
+  z-index: 10;
+  width: auto;
+  height: auto;
+  padding: 6px 10px;
+  overflow: visible;
+  clip: auto;
+  transform: translateY(-50%);
+  border-radius: var(--radius-control);
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+}

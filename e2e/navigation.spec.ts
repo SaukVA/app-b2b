@@ -84,3 +84,46 @@ test.describe('Módulos pendientes', () => {
     await expect(page.getByRole('combobox', { name: 'Pantalla de inicio' })).toHaveCount(0);
   });
 });
+
+// 005 US5: en pantallas anchas el menú se pliega a iconos y el estado se recuerda en el equipo.
+test.describe('Menú plegado', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test('se pliega, muestra la etiqueta con el foco, se recuerda al recargar y se despliega', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    const nav = mainNav(page);
+    const widthOf = async () => (await nav.boundingBox())?.width ?? 0;
+    const expanded = await widthOf();
+
+    await page.getByRole('button', { name: 'Plegar menú' }).click();
+    await expect(page.getByRole('button', { name: 'Desplegar menú' })).toBeVisible();
+    await expect.poll(widthOf).toBeLessThan(expanded);
+
+    // La etiqueta, oculta visualmente al plegar, flota de nuevo con :focus-visible (teclado).
+    const ajustes = nav.getByRole('link', { name: 'Ajustes' });
+    const label = ajustes.getByText('Ajustes');
+    await nav.getByRole('link', { name: /Cobros/ }).focus();
+    await page.keyboard.press('Tab');
+    await expect(ajustes).toBeFocused();
+    await expect.poll(async () => (await label.boundingBox())?.width ?? 0).toBeGreaterThan(20);
+
+    await page.reload();
+    await expect(page.getByRole('button', { name: 'Desplegar menú' })).toBeVisible();
+    expect(await page.evaluate(() => localStorage.getItem('navigation.collapsed'))).toBe('1');
+
+    await page.getByRole('button', { name: 'Desplegar menú' }).click();
+    await expect.poll(widthOf).toBe(expanded);
+    expect(await page.evaluate(() => localStorage.getItem('navigation.collapsed'))).toBe('0');
+  });
+
+  test('con el menú plegado, «Cerrar sesión» se ve y funciona (FR-013)', async ({ page }) => {
+    await loginAsAdmin(page);
+    await page.getByRole('button', { name: 'Plegar menú' }).click();
+    const logout = mainNav(page).getByRole('button', { name: 'Cerrar sesión' });
+    await expect(logout).toBeVisible();
+    await logout.click();
+    await expect(page).toHaveURL(/\/login/);
+  });
+});

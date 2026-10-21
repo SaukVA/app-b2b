@@ -9,6 +9,14 @@
   padding: 20px 14px;
   background: var(--nav);
   color: #e8eae6;
+  transition: width 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .toggle svg {
+    transition: none;
+  }
 }
 
 .brand {
@@ -61,6 +69,24 @@
   white-space: nowrap;
 }
 
+.icon {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Marca reducida de «Pendiente» en el menú plegado: punto de aviso con anillo del color de la barra. */
+.dot {
+  display: none;
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e8c66a;
+  box-shadow: 0 0 0 2px var(--nav);
+}
+
 /* Pendiente (diseño de 005, sistema visual › Barra lateral): atenuado y sin cursor de enlace. */
 .pending {
   color: var(--disabled);
@@ -86,4 +112,77 @@
   margin-top: var(--space-2);
   padding: var(--space-4) var(--space-3) var(--space-1);
   border-top: 1px solid #2c3238;
+}
+
+/* Botón de plegar: encima del pie, borde de separador sobre la barra oscura. */
+.toggle {
+  margin-top: var(--space-2);
+  border-color: #2c3238;
+  color: var(--nav-text);
+}
+
+.toggle:hover:not(:disabled) {
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+}
+
+.toggle svg {
+  transition: transform 150ms ease;
+}
+
+/* Plegada (diseño de 005): 72 px, solo iconos centrados; la etiqueta flota con :hover y :focus-visible. */
+.collapsed {
+  width: var(--nav-width-collapsed);
+}
+
+.collapsed .brand {
+  padding: var(--space-1) var(--space-1) var(--space-6);
+}
+
+.collapsed .item {
+  position: relative;
+  justify-content: center;
+  padding: 0;
+}
+
+.collapsed .label,
+.collapsed .stamp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.collapsed .item:hover .label,
+.collapsed .item:focus-visible .label {
+  left: 56px;
+  top: 50%;
+  z-index: 10;
+  width: auto;
+  height: auto;
+  padding: 6px 10px;
+  overflow: visible;
+  clip: auto;
+  transform: translateY(-50%);
+  border-radius: var(--radius-control);
+  background: var(--nav-active);
+  color: var(--nav-text-active);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+}
+
+.collapsed .dot {
+  display: block;
+}
+
+.collapsed .toggle {
+  align-self: center;
+}
+
+.collapsed .footer {
+  padding: var(--space-3) 0 var(--space-1);
 }

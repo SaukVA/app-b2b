@@ -77,6 +77,7 @@
   --control-height: 44px;
   --control-height-login: 48px;
   --nav-width: 232px;
+  --nav-width-collapsed: 72px;
   --breakpoint-mobile: 760px; /* referencia: las media/container queries no admiten var() */
 
   color-scheme: light;

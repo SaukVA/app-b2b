@@ -319,14 +319,14 @@ se despliega y vuelve el menú completo.
 
 ### Tests de US5 (primero, deben fallar) ⚠️
 
-- [ ] T036 [P] [US5] Crear `apps/client/src/features/navigation/navigationSlice.test.ts` y
+- [X] T036 [P] [US5] Crear `apps/client/src/features/navigation/navigationSlice.test.ts` y
   `useNavCollapsed.test.ts`:
   - sin valor en `localStorage` → `collapsed === false`; con `'1'` → `true`;
   - `collapsedToggled` invierte `collapsed`;
   - el hook escribe `'1'` y luego `'0'` en `navigation.collapsed` al alternar;
   - si `getItem`/`setItem` lanzan, arranca desplegado y alternar funciona sin lanzar (FR-014; contrato A9,
     A10).
-- [ ] T037 [P] [US5] Ampliar `apps/client/src/components/NavBar.test.tsx`:
+- [X] T037 [P] [US5] Ampliar `apps/client/src/components/NavBar.test.tsx`:
   - con `onToggleCollapsed`, existe el botón «Plegar menú» con `aria-expanded="true"` y `aria-controls` igual
     al `id` del `nav`;
   - con `collapsed`, el botón es «Desplegar menú» con `aria-expanded="false"`;
@@ -335,7 +335,7 @@ se despliega y vuelve el menú completo.
   - se pinta `brandCollapsed` en lugar de `brand`;
   - pulsar el botón llama a `onToggleCollapsed` (contrato N4, N5);
   - con `collapsed`, el `footer` sigue pintado y su botón «Cerrar sesión» sigue accesible por nombre (FR-013).
-- [ ] T038 [P] [US5] Ampliar `e2e/navigation.spec.ts` a 1440 px:
+- [X] T038 [P] [US5] Ampliar `e2e/navigation.spec.ts` a 1440 px:
   - pulsar «Plegar menú» reduce el ancho del menú;
   - tabular a un enlace muestra su etiqueta;
   - tras `page.reload()` sigue plegado y `localStorage['navigation.collapsed'] === '1'`;
@@ -344,16 +344,16 @@ se despliega y vuelve el menú completo.
 
 ### Implementación de US5
 
-- [ ] T039 [P] [US5] Crear `apps/client/src/features/navigation/navigationSlice.ts`:
+- [X] T039 [P] [US5] Crear `apps/client/src/features/navigation/navigationSlice.ts`:
   - `initialState: { collapsed: readCollapsed() }`, con `readCollapsed()` = `try { return
     localStorage.getItem(NAV_COLLAPSED_KEY) === '1' } catch { return false }`;
   - reducer `collapsedToggled` y selector `selectNavCollapsed`;
   - exportar `NAV_COLLAPSED_KEY = 'navigation.collapsed'`;
   - registrar el slice en `apps/client/src/store/store.ts`.
-- [ ] T039b [US5] Crear `apps/client/src/features/navigation/useNavCollapsed.ts`: devuelve
+- [X] T039b [US5] Crear `apps/client/src/features/navigation/useNavCollapsed.ts`: devuelve
   `{ collapsed, toggle }`; `toggle` despacha `collapsedToggled` y guarda el nuevo valor (`'1'`/`'0'`) con
   `writeCollapsed()` dentro de `try/catch`.
-- [ ] T040 [US5] En `apps/client/src/components/NavBar.tsx` y `NavBar.module.css`:
+- [X] T040 [US5] En `apps/client/src/components/NavBar.tsx` y `NavBar.module.css`:
   - `NavBarToggle` (`IconButton` con `CollapseIcon` recibido por prop `toggleIcon`, `aria-expanded`,
     `aria-controls` y la etiqueta del contrato N5);
   - `useId()` para el `id` del `nav`;
@@ -363,7 +363,7 @@ se despliega y vuelve el menú completo.
   - con `collapsed`, el `footer` pasa a su versión reducida del diseño de T002 (sin nombre ni rol visibles,
     con «Cerrar sesión» como botón de icono o texto corto con nombre accesible «Cerrar sesión»);
   - transición de ancho ≤200 ms, desactivada con `prefers-reduced-motion`.
-- [ ] T041 [US5] En `AppNav.tsx`, usar `useNavCollapsed()` y pasar `collapsed`, `onToggleCollapsed`,
+- [X] T041 [US5] En `AppNav.tsx`, usar `useNavCollapsed()` y pasar `collapsed`, `onToggleCollapsed`,
   `toggleIcon` y `brandCollapsed={<BrandMark />}` (solo el logotipo). En `AppLayout.module.css`, la columna del
   menú usa el ancho del propio `nav` (`grid-template-columns: auto 1fr`) para que el contenido gane el espacio
   liberado (FR-015).
