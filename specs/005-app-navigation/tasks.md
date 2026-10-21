@@ -382,7 +382,7 @@ desplazándola horizontalmente y no hay botón de plegar. Al ensanchar con el me
 
 ### Tests de US6 (primero, deben fallar) ⚠️
 
-- [ ] T042 [P] [US6] Ampliar `e2e/navigation.spec.ts` con `viewport: { width: 390, height: 844 }`:
+- [X] T042 [P] [US6] Ampliar `e2e/navigation.spec.ts` con `viewport: { width: 390, height: 844 }`:
   - el `navigation` está en la parte superior y sigue visible tras desplazar el contenido;
   - no hay botón «Plegar menú»;
   - el texto «Venta a mayoristas» de la marca y la línea del rol no se ven;
@@ -393,13 +393,13 @@ desplazándola horizontalmente y no hay botón de plegar. Al ensanchar con el me
 
 ### Implementación de US6
 
-- [ ] T043 [US6] En `NavBar.module.css`, `@media (max-width: 759px)`, siguiendo las reglas `.nav*` de
+- [X] T043 [US6] En `NavBar.module.css`, `@media (max-width: 759px)`, siguiendo las reglas `.nav*` de
   `docs/design/canvas/Productos.dc.html`:
   - `flex-direction: row`, `overflow-x: auto`, `position: sticky; top: 0; z-index: 5` y padding `8px 12px`;
   - enlaces `flex: none; white-space: nowrap`;
   - ocultar el texto de la marca y el botón de plegar;
   - anular los estilos de `collapsed` (etiquetas visibles).
-- [ ] T044 [US6] En `AppNav.module.css` y `AppLayout.module.css`, `@media (max-width: 759px)`:
+- [X] T044 [US6] En `AppNav.module.css` y `AppLayout.module.css`, `@media (max-width: 759px)`:
   - ocultar nombre y rol del pie, dejando «Cerrar sesión» en línea con borde izquierdo `#2C3238`;
   - el layout pasa a una columna (menú arriba y contenido debajo).
 

@@ -131,5 +131,21 @@
       "AB2B-378"
     ],
     "skipped_issues": []
+  },
+  {
+    "synced_at": "2026-10-21T08:52:41Z",
+    "spec": "005-app-navigation",
+    "project": "AB2B",
+    "epic": "AB2B-371",
+    "total_tasks": 49,
+    "completed_tasks": 45,
+    "completion_pct": 91,
+    "updated_issues": [
+      "AB2B-404",
+      "AB2B-406",
+      "AB2B-408",
+      "AB2B-379"
+    ],
+    "skipped_issues": []
   }
 ]

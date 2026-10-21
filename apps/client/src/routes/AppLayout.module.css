@@ -15,3 +15,15 @@
   flex: 1 1 auto;
   min-width: 0;
 }
+
+/* Estrecho: una columna, con el menú como barra superior que se queda arriba al desplazar (FR-016). */
+@media (max-width: 759px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .nav {
+    z-index: 5;
+    height: auto;
+  }
+}

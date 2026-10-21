@@ -12,6 +12,12 @@ async function loginAsAdmin(page: Page): Promise<void> {
 
 const mainNav = (page: Page) => page.getByRole('navigation', { name: 'Principal' });
 
+/** En estrecho el pie solo deja «Cerrar sesión» (FR-016); el rol y el canal se ven en ancho. */
+async function expectRoleLineOnWide(page: Page): Promise<void> {
+  if (test.info().project.name === 'mobile') return;
+  await expect(mainNav(page).getByText('Administrador · Web')).toBeVisible();
+}
+
 test.describe('Menú de navegación', () => {
   test('tras el login muestra los módulos en orden y Ajustes lleva a Apariencia', async ({
     page,
@@ -48,7 +54,7 @@ test.describe('Menú de navegación', () => {
 
   test('el pie muestra el rol y el canal, y «Cerrar sesión» vuelve al login', async ({ page }) => {
     await loginAsAdmin(page);
-    await expect(mainNav(page).getByText('Administrador · Web')).toBeVisible();
+    await expectRoleLineOnWide(page);
     // Una pantalla con sesión en el historial: el login y el cierre de sesión navegan con replace.
     await mainNav(page).getByRole('link', { name: 'Ajustes' }).click();
     await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
@@ -125,5 +131,64 @@ test.describe('Menú plegado', () => {
     await expect(logout).toBeVisible();
     await logout.click();
     await expect(page).toHaveURL(/\/login/);
+  });
+});
+
+/** Añade contenido de sobra al layout y desplaza la página hacia abajo. */
+async function scrollFarDown(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    const spacer = document.createElement('div');
+    spacer.style.height = '3000px';
+    document.querySelector('nav')?.parentElement?.parentElement?.append(spacer);
+    window.scrollTo(0, 1500);
+  });
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+}
+
+// 005 US6: por debajo de 760 px el menú es una barra superior fija y desplazable en horizontal.
+test.describe('Menú en pantallas estrechas', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test('barra superior fija, sin marca ni datos del usuario, con «Cerrar sesión» (FR-016)', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    const nav = mainNav(page);
+    await expect(nav).toBeVisible();
+    expect((await nav.boundingBox())?.y).toBeLessThanOrEqual(1);
+
+    await expect(page.getByRole('button', { name: /menú$/ })).toHaveCount(0);
+    await expect(nav.getByText('Venta a mayoristas')).toBeHidden();
+    await expect(nav.getByText('Administrador · Web')).toBeHidden();
+
+    // SC-006: la barra entera cabe en el primer viewport en vertical.
+    const logout = nav.getByRole('button', { name: 'Cerrar sesión' });
+    const navBox = await nav.boundingBox();
+    expect((navBox?.y ?? 0) + (navBox?.height ?? 0)).toBeLessThanOrEqual(844);
+    await logout.scrollIntoViewIfNeeded();
+    await expect(logout).toBeInViewport();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      390,
+    );
+
+    await scrollFarDown(page);
+    await expect.poll(async () => (await nav.boundingBox())?.y ?? -1).toBeLessThanOrEqual(1);
+    await expect(nav).toBeInViewport();
+  });
+
+  test('el menú plegado en ancho sigue plegado al volver de estrecho (FR-017)', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await loginAsAdmin(page);
+    await page.getByRole('button', { name: 'Plegar menú' }).click();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.getByRole('button', { name: /menú$/ })).toHaveCount(0);
+    // En estrecho las etiquetas se ven aunque esté plegado.
+    await expect(mainNav(page).getByText('Ajustes', { exact: true })).toBeVisible();
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(page.getByRole('button', { name: 'Desplegar menú' })).toBeVisible();
   });
 });

@@ -186,3 +186,85 @@
 .collapsed .footer {
   padding: var(--space-3) 0 var(--space-1);
 }
+
+/*
+ * Estrecho (lienzo, @container app ≤760 px): barra superior sticky con desplazamiento horizontal, sin texto
+ * de marca ni botón de plegar, y se ve igual esté plegada o no (contrato N6).
+ */
+@media (max-width: 759px) {
+  .nav,
+  .collapsed {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    min-height: 0;
+    padding: 8px 12px;
+    overflow-x: auto;
+  }
+
+  .list {
+    flex-direction: row;
+  }
+
+  .bottom {
+    margin-top: 0;
+  }
+
+  .brand,
+  .collapsed .brand {
+    flex: none;
+    padding: 0 var(--space-2) 0 0;
+  }
+
+  /* Solo el logotipo: BrandMark pinta el logo primero y después el texto. */
+  .brand > * > :not(:first-child) {
+    display: none;
+  }
+
+  .item,
+  .collapsed .item {
+    flex: none;
+    justify-content: flex-start;
+    padding: 0 var(--space-3);
+    white-space: nowrap;
+  }
+
+  .stamp {
+    margin-left: var(--space-2);
+  }
+
+  .collapsed .label,
+  .collapsed .stamp,
+  .collapsed .item:hover .label,
+  .collapsed .item:focus-visible .label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    transform: none;
+    background: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    box-shadow: none;
+  }
+
+  .collapsed .dot,
+  .toggle {
+    display: none;
+  }
+
+  .footer,
+  .collapsed .footer {
+    flex: none;
+    margin: 0;
+    padding: 0 0 0 var(--space-3);
+    border-top: 0;
+    border-left: 1px solid #2c3238;
+  }
+}
