@@ -1,0 +1,139 @@
+openapi: 3.0.3
+info:
+  title: App B2B · Listado de productos (provisional)
+  version: 1.0.0
+  description: >
+    Contrato de la feature 006-products-placeholder. En la implementación la ruta lleva su bloque JSDoc
+    @openapi equivalente en apps/server/src/modules/products/product.routes.ts y se sirve en /api-docs.
+    Exige sesión (bearerAuth) y permiso de ver el módulo «productos» (editar incluye ver).
+    En esta entrega toda petición válida responde con un listado vacío sin leer la base de datos (FR-010);
+    la forma de la respuesta ya es la definitiva (FR-011).
+    SuccessEnvelope, ErrorEnvelope y las respuestas ValidationError, Unauthenticated y Forbidden son las de
+    contracts/auth-api.openapi.yaml de 001 y contracts/users-api.openapi.yaml de 003.
+servers:
+  - url: /api
+tags:
+  - name: Products
+security:
+  - bearerAuth: []
+paths:
+  /products:
+    get:
+      tags: [Products]
+      summary: Lista los productos del catálogo con búsqueda, filtros y paginación
+      description: >
+        Provisional: devuelve siempre items vacío y total 0. Un identificador de filtro bien formado que no
+        corresponde a ningún dato no es un error: devuelve un listado vacío. Los parámetros desconocidos se
+        ignoran.
+      parameters:
+        - name: q
+          in: query
+          description: Texto de búsqueda (código o nombre). Se recorta; vacío equivale a ausente.
+          schema: { type: string, maxLength: 100 }
+        - name: category
+          in: query
+          schema: { $ref: '#/components/schemas/FilterId' }
+        - name: subcategory
+          in: query
+          schema: { $ref: '#/components/schemas/FilterId' }
+        - name: supplier
+          in: query
+          schema: { $ref: '#/components/schemas/FilterId' }
+        - name: lowStock
+          in: query
+          description: Solo productos en estado «Stock bajo» o «Sin stock».
+          schema: { type: string, enum: ['true', 'false'], default: 'false' }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+      responses:
+        '200':
+          description: Página del listado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/ProductListPage' }
+              example:
+                success: true
+                data: { items: [], total: 0, page: 1, pageSize: 10 }
+        '400':
+          description: VALIDATION_ERROR (texto de más de 100 caracteres, identificador mal formado, página no válida)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+              example:
+                success: false
+                error: { code: VALIDATION_ERROR, message: 'page: Number must be greater than or equal to 1' }
+        '401':
+          description: AUTH_UNAUTHENTICATED
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+        '403':
+          description: AUTH_FORBIDDEN (el rol no puede ver Productos)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+        '503':
+          description: DATABASE_UNAVAILABLE (solo backend embebido de escritorio sin base de datos)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  schemas:
+    FilterId:
+      type: string
+      pattern: '^[A-Za-z0-9_-]{1,64}$'
+      description: Identificador opaco; las opciones saldrán de los datos migrados.
+    ProductStatus:
+      type: string
+      enum: [Disponible, Stock bajo, Sin stock]
+      description: >
+        Sin stock si stock = 0; Stock bajo si 0 < stock < minStock; Disponible en el resto.
+    ProductListItem:
+      type: object
+      required: [id, code, name, supplierName, category, subcategory, stock, minStock, price, status]
+      properties:
+        id: { type: string }
+        code: { type: string }
+        name: { type: string }
+        supplierName: { type: string, nullable: true }
+        category: { type: string }
+        subcategory: { type: string, nullable: true }
+        stock: { type: integer, minimum: 0 }
+        minStock: { type: integer, minimum: 0 }
+        price: { type: number, description: Euros con 2 decimales }
+        status: { $ref: '#/components/schemas/ProductStatus' }
+    ProductListPage:
+      type: object
+      required: [items, total, page, pageSize]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/ProductListItem' }
+        total: { type: integer, minimum: 0 }
+        page: { type: integer, minimum: 1 }
+        pageSize: { type: integer, enum: [10] }
+    SuccessEnvelope:
+      type: object
+      required: [success, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        data: {}
+    ErrorEnvelope:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, enum: [false] }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
