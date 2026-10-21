@@ -1,17 +1,17 @@
 import { IMPLEMENTED_MODULES, isModuleImplemented } from './modules';
 
 describe('IMPLEMENTED_MODULES', () => {
-  it('hoy solo está implementado Ajustes', () => {
-    expect(IMPLEMENTED_MODULES).toEqual(['ajustes']);
+  it('hoy están implementados Ajustes y Productos (006)', () => {
+    expect(IMPLEMENTED_MODULES).toEqual(['ajustes', 'productos']);
   });
 });
 
 describe('isModuleImplemented', () => {
-  it('Ajustes está implementado', () => {
-    expect(isModuleImplemented('ajustes')).toBe(true);
+  it.each(['ajustes', 'productos'] as const)('%s está implementado', (module) => {
+    expect(isModuleImplemented(module)).toBe(true);
   });
 
-  it.each(['ventas', 'clientes', 'productos', 'proveedores', 'cobros'] as const)(
+  it.each(['ventas', 'clientes', 'proveedores', 'cobros'] as const)(
     '%s está pendiente',
     (module) => {
       expect(isModuleImplemented(module)).toBe(false);

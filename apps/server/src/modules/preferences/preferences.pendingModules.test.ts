@@ -5,8 +5,9 @@ import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/te
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
 
-// Con la lista real de módulos implementados (005): solo Ajustes, así que ninguna pantalla de negocio se
-// puede elegir como inicio. Va en su propio archivo porque preferences.routes.test.ts simula los módulos.
+// Con la lista real de módulos implementados (005): Ajustes y Productos (006), así que de las pantallas de
+// negocio solo Productos se puede elegir como inicio. Va en su propio archivo porque
+// preferences.routes.test.ts simula los módulos.
 
 setTestEnv();
 
@@ -49,6 +50,12 @@ describe('PATCH /api/preferences · pantalla de inicio con módulos pendientes',
     const res = await patch(await comercialToken(), { homeScreen: 'clientes' });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('PREFERENCES_HOME_SCREEN_NOT_ALLOWED');
+  });
+
+  it('200 con Productos, que ya está implementado y el rol puede ver', async () => {
+    const res = await patch(await comercialToken(), { homeScreen: 'productos' });
+    expect(res.status).toBe(200);
+    expect(res.body.data.homeScreen).toBe('productos');
   });
 
   it('200 con homeScreen: null', async () => {

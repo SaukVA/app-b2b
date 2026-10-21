@@ -9,7 +9,8 @@ test('la cuenta inicial entra y cierra sesión', async ({ page }) => {
   await page.getByLabel('Contraseña', { exact: true }).fill('admin');
   await page.getByRole('button', { name: 'Entrar' }).click();
 
-  await expect(page).not.toHaveURL(/\/login/);
+  // Con Productos implementado (006), el Administrador aterriza en su pantalla de inicio.
+  await expect(page).toHaveURL(/\/productos$/);
   await page.getByRole('button', { name: 'Cerrar sesión' }).click();
   await expect(page).toHaveURL(/\/login/);
 });
