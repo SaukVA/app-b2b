@@ -386,33 +386,33 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T043 [P] [US3] Ampliar `apps/client/src/features/products/productsSlice.test.ts`: `loadProducts.rejected`
+- [X] T043 [P] [US3] Ampliar `apps/client/src/features/products/productsSlice.test.ts`: `loadProducts.rejected`
   (sin respuesta y con un envelope de error del servidor) → `status: 'failed'` y
   `error === PRODUCTS_LOAD_ERROR_MESSAGE` («No se ha podido cargar el listado de productos.»), nunca el
   mensaje del servidor; un `pending` posterior limpia `error`.
-- [ ] T044 [P] [US3] Ampliar `apps/client/src/features/products/components/ProductsListStatus.test.tsx`:
+- [X] T044 [P] [US3] Ampliar `apps/client/src/features/products/components/ProductsListStatus.test.tsx`:
   - con `status: 'failed'` muestra `role="alert"` con el mensaje y un botón «Reintentar», y no muestra el
     aviso;
   - pulsar «Reintentar» llama a `onRetry` una vez.
-- [ ] T045 [P] [US3] Ampliar `apps/client/src/pages/ProductsPage.test.tsx`:
+- [X] T045 [P] [US3] Ampliar `apps/client/src/pages/ProductsPage.test.tsx`:
   - con `fetchProducts` rechazado se ve el error;
   - «Reintentar» llama de nuevo a `fetchProducts` con los mismos criterios de la dirección y, si resuelve, se
     ve el aviso.
-- [ ] T046 [P] [US3] Ampliar `e2e/products.spec.ts` (US3): con `page.route('**/api/products**', …)`
+- [X] T046 [P] [US3] Ampliar `e2e/products.spec.ts` (US3): con `page.route('**/api/products**', …)`
   respondiendo 500 se ve el error y no el aviso; tras quitar la intercepción (`page.unroute`), «Reintentar»
   muestra el aviso.
 
 ### Implementación de US3
 
-- [ ] T047 [US3] En `apps/client/src/features/products/productsSlice.ts`, definir y exportar
+- [X] T047 [US3] En `apps/client/src/features/products/productsSlice.ts`, definir y exportar
   `PRODUCTS_LOAD_ERROR_MESSAGE`. En `rejected` (solo de la última petición, sin contar los `abort`), guardar
   `status: 'failed'` y ese mensaje; en `pending`, limpiar `error`. Comprobar que T043 pasa.
-- [ ] T048 [US3] Añadir el caso `failed` a `apps/client/src/features/products/components/ProductsListStatus.tsx`:
+- [X] T048 [US3] Añadir el caso `failed` a `apps/client/src/features/products/components/ProductsListStatus.tsx`:
   `Alert variant="error"` con el mensaje y un `Button` secundario «Reintentar» (prop `onRetry`). Comprobar
   que T044 pasa.
-- [ ] T049 [US3] En `apps/client/src/pages/ProductsPage.tsx`, pasar `onRetry`, que vuelve a despachar
+- [X] T049 [US3] En `apps/client/src/pages/ProductsPage.tsx`, pasar `onRetry`, que vuelve a despachar
   `loadProducts` con los criterios actuales. Comprobar que T045 pasa. Depende de T047–T048.
-- [ ] T050 [US3] Documentar en `docs/design/README.md` el estado de error de un listado (`Alert` de error +
+- [X] T050 [US3] Documentar en `docs/design/README.md` el estado de error de un listado (`Alert` de error +
   botón secundario «Reintentar» dentro del panel). Ejecutar `npm run test:e2e -- products` y comprobar que
   T046 pasa.
 

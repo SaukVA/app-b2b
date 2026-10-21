@@ -21,6 +21,9 @@ const initialState: ProductsState = {
   requestId: null,
 };
 
+/** Mensaje fijo del error de carga (FR-014): nunca se muestran los detalles técnicos del servidor. */
+export const PRODUCTS_LOAD_ERROR_MESSAGE = 'No se ha podido cargar el listado de productos.';
+
 export const loadProducts = createAsyncThunk<ListPage<ProductListItem>, ProductListQuery>(
   'products/load',
   (query) => fetchProducts(query),
@@ -34,6 +37,7 @@ const productsSlice = createSlice({
     builder
       .addCase(loadProducts.pending, (state, action) => {
         state.status = 'loading';
+        state.error = null;
         state.requestId = action.meta.requestId;
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
@@ -41,6 +45,12 @@ const productsSlice = createSlice({
         state.status = 'succeeded';
         state.items = action.payload.items;
         state.total = action.payload.total;
+      })
+      .addCase(loadProducts.rejected, (state, action) => {
+        // Una petición abortada (criterios nuevos o pantalla cerrada) no es un error.
+        if (action.meta.aborted || action.meta.requestId !== state.requestId) return;
+        state.status = 'failed';
+        state.error = PRODUCTS_LOAD_ERROR_MESSAGE;
       });
   },
 });

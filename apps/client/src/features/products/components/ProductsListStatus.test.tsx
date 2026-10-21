@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ProductsListStatus } from './ProductsListStatus';
 
 describe('ProductsListStatus (US2)', () => {
@@ -21,5 +22,23 @@ describe('ProductsListStatus (US2)', () => {
       <ProductsListStatus status="succeeded" total={3} onRetry={jest.fn()} />,
     );
     expect(container.textContent).toBe('');
+  });
+});
+
+describe('ProductsListStatus · error (US3)', () => {
+  it('muestra el error con role="alert" y «Reintentar», sin el aviso de catálogo pendiente', () => {
+    render(<ProductsListStatus status="failed" total={0} onRetry={jest.fn()} />);
+    expect(screen.getByRole('alert').textContent).toContain(
+      'No se ha podido cargar el listado de productos.',
+    );
+    expect(screen.getByRole('button', { name: 'Reintentar' })).toBeTruthy();
+    expect(screen.queryByText('Todavía no hay productos')).toBeNull();
+  });
+
+  it('«Reintentar» llama a onRetry una vez', async () => {
+    const onRetry = jest.fn();
+    render(<ProductsListStatus status="failed" total={0} onRetry={onRetry} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
+    expect(onRetry).toHaveBeenCalledTimes(1);
   });
 });

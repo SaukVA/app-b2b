@@ -154,3 +154,23 @@ describe('ProductsPage · búsqueda con espera (US2, FR-008)', () => {
     expect(lastQuery()).toEqual({ q: 'aceite', lowStock: false, page: 1 });
   });
 });
+
+describe('ProductsPage · error del listado (US3)', () => {
+  it('si la petición falla muestra el error y no el aviso de catálogo pendiente', async () => {
+    mockedFetch.mockRejectedValue(new Error('Network Error'));
+    renderPage('/productos?q=aceite');
+    expect(await screen.findByRole('alert')).toBeTruthy();
+    expect(screen.queryByText('Todavía no hay productos')).toBeNull();
+  });
+
+  it('«Reintentar» vuelve a pedir con los mismos criterios y, si responde, muestra el aviso', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('Network Error'));
+    renderPage('/productos?q=aceite&lowStock=true');
+    await screen.findByRole('alert');
+    await userEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
+    expect(await screen.findByText('Todavía no hay productos')).toBeTruthy();
+    expect(mockedFetch).toHaveBeenCalledTimes(2);
+    expect(lastQuery()).toEqual({ q: 'aceite', lowStock: true, page: 1 });
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
