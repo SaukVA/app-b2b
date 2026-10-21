@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-21T11:55:00Z",
-  "updated_at": "2026-10-21T12:15:00Z",
+  "updated_at": "2026-10-21T13:05:55Z",
   "spec": "006-products-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -111,7 +111,7 @@
         {
           "key": "AB2B-446",
           "id": "T010",
-          "summary": "T010: Ajustar los tests que usan Productos como módulo pendiente para que usen Proveedores",
+          "summary": "T010: Ajustar los tests que dependen de que Productos esté pendiente",
           "status": "pending",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-446"
@@ -123,6 +123,14 @@
           "status": "pending",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-447"
+        },
+        {
+          "key": "AB2B-491",
+          "id": "T011a",
+          "summary": "T011a: Crear `apps/client/src/features/products/productsApi.test.ts` con `httpClient` simulado",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-491"
         },
         {
           "key": "AB2B-448",
@@ -647,8 +655,8 @@
   ],
   "summary": {
     "total_stories": 6,
-    "total_tasks": 54,
+    "total_tasks": 55,
     "completed_tasks": 0,
-    "pending_tasks": 54
+    "pending_tasks": 55
   }
 }
