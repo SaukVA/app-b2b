@@ -45,4 +45,26 @@ describe('Table', () => {
     expect(cards).toHaveLength(2);
     expect(within(cards[0]).getByText('Tarjeta de Ana García')).toBeTruthy();
   });
+
+  it('sin status ni busy no añade zona de estado ni aria-busy', () => {
+    renderTable();
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(screen.getByRole('table').closest('[aria-busy]')).toBeNull();
+  });
+
+  it('pinta el status una sola vez, para la tabla y las tarjetas, y marca aria-busy', () => {
+    render(
+      <Table
+        caption="Usuarios"
+        columns={COLUMNS}
+        rows={[]}
+        getRowKey={(row) => row.id}
+        renderCard={(row) => <p>{row.name}</p>}
+        status={<p role="status">Cargando…</p>}
+        busy
+      />,
+    );
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.getByRole('table').closest('[aria-busy="true"]')).not.toBeNull();
+  });
 });

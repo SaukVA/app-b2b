@@ -9,7 +9,8 @@ export const DEFAULT_MONEY_FORMAT: MoneyFormat = 'es';
 
 /**
  * Pantallas que se pueden elegir como inicio: las de módulos implementados (005, clarificación del
- * 2026-10-20), en el orden del selector. Hoy no hay ninguna. `panel` se añadirá cuando exista su pantalla.
+ * 2026-10-20), en el orden del selector. Hoy solo Productos (006). `panel` se añadirá cuando exista su
+ * pantalla.
  */
 export const AVAILABLE_HOME_SCREENS: readonly HomeScreen[] = (
   ['ventas', 'clientes', 'productos', 'proveedores', 'cobros'] as const

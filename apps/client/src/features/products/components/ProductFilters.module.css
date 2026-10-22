@@ -1,0 +1,18 @@
+/* Tablero «Productos»: búsqueda ancha, tres selectores y la casilla, alineados por la base. */
+.filters {
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(140px, 1fr)) auto;
+  align-items: end;
+  gap: var(--space-3);
+}
+
+.search {
+  min-width: 0;
+}
+
+/* En estrecho, filtros apilados (ProductosMovil.dc.html). */
+@media (max-width: 759px) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

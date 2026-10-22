@@ -24,11 +24,11 @@ test.describe('Menú de navegación', () => {
   }) => {
     await loginAsAdmin(page);
     const items = mainNav(page).getByRole('link');
-    // Los módulos de negocio están pendientes: su texto termina en «Pendiente».
+    // Los módulos de negocio pendientes terminan su texto en «Pendiente»; Productos ya no (006).
     await expect(items).toHaveText([
       /^Ventas/,
       /^Clientes/,
-      /^Productos/,
+      'Productos',
       /^Proveedores/,
       /^Cobros/,
       'Ajustes',
@@ -73,21 +73,22 @@ test.describe('Módulos pendientes', () => {
   test('un módulo pendiente se ve como tal y no se abre por ninguna vía (FR-009, FR-011)', async ({
     page,
   }) => {
+    // Productos ya está implementado (006): es la pantalla de inicio y Proveedores, el pendiente de ejemplo.
     await loginAsAdmin(page);
-    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
-    const ventas = mainNav(page).getByRole('link', { name: /Ventas/ });
-    await expect(ventas).toContainText('Pendiente');
+    await expect(page).toHaveURL(/\/productos$/);
+    const proveedores = mainNav(page).getByRole('link', { name: /Proveedores/ });
+    await expect(proveedores).toContainText('Pendiente');
 
     // force: Playwright no pulsa un elemento con aria-disabled; aquí se comprueba justo que no navega.
-    await ventas.click({ force: true });
-    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
-    await ventas.focus();
+    await proveedores.click({ force: true });
+    await expect(page).toHaveURL(/\/productos$/);
+    await proveedores.focus();
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
+    await expect(page).toHaveURL(/\/productos$/);
 
-    await page.goto('/clientes');
-    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
-    await expect(page.getByRole('combobox', { name: 'Pantalla de inicio' })).toHaveCount(0);
+    await page.goto('/proveedores');
+    await expect(page).toHaveURL(/\/productos$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Productos' })).toBeVisible();
   });
 });
 

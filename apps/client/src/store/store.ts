@@ -4,6 +4,7 @@ import { authReducer, refreshSession } from '../features/auth/authSlice';
 import { databaseReducer } from '../features/database/databaseSlice';
 import { navigationReducer } from '../features/navigation/navigationSlice';
 import { preferencesReducer } from '../features/preferences/preferencesSlice';
+import { productsReducer } from '../features/products/productsSlice';
 import { rolesReducer } from '../features/roles/rolesSlice';
 import { usersReducer } from '../features/users/usersSlice';
 import { setAccessTokenGetter, setRefreshHandler } from '../utils/httpClient';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   database: databaseReducer,
   navigation: navigationReducer,
   preferences: preferencesReducer,
+  products: productsReducer,
   roles: rolesReducer,
   users: usersReducer,
 });

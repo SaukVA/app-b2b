@@ -103,20 +103,20 @@ describe('effectiveHomeScreen', () => {
 
 describe('resolveHomeRoute con módulos pendientes (lista real, 005)', () => {
   it('descarta un origen pendiente aunque el rol pueda verlo', () => {
-    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), '/clientes')).toBe(
-      '/ajustes/apariencia',
-    );
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), '/clientes')).toBe('/productos');
   });
 
-  it('sin módulos implementados cualquier rol va a Ajustes › Apariencia', () => {
-    const admin = user({ ...COMERCIAL, proveedores: 'edit', ajustes: 'edit' });
-    expect(realHomeRoute.resolveHomeRoute(admin, null)).toBe('/ajustes/apariencia');
+  it('un rol que ve Productos (006) aterriza en /productos', () => {
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), null)).toBe('/productos');
+  });
+
+  it('un rol sin Productos ni otra pantalla implementada va a Ajustes › Apariencia', () => {
+    const sinProductos = user({ ...COMERCIAL, productos: 'none', proveedores: 'edit' });
+    expect(realHomeRoute.resolveHomeRoute(sinProductos, null)).toBe('/ajustes/apariencia');
   });
 
   it('ignora una pantalla de inicio guardada que está pendiente', () => {
-    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL, 'ventas'), null)).toBe(
-      '/ajustes/apariencia',
-    );
-    expect(realHomeRoute.effectiveHomeScreen(user(COMERCIAL, 'ventas'))).toBeNull();
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL, 'ventas'), null)).toBe('/productos');
+    expect(realHomeRoute.effectiveHomeScreen(user(COMERCIAL, 'ventas'))).toBe('productos');
   });
 });
