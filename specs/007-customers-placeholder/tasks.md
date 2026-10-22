@@ -278,7 +278,7 @@ Mientras carga, se indica sin mostrar todavía el aviso.
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T030 [P] [US2] Crear `apps/client/src/features/customers/customerCriteria.test.ts`:
+- [X] T030 [P] [US2] Crear `apps/client/src/features/customers/customerCriteria.test.ts`:
   - `parseCustomerCriteria(new URLSearchParams(''))` → `{ page: 1 }`;
   - con `q=%20ferreteria%20&page=2` → `{ q: 'ferreteria', page: 2 }`;
   - valores no válidos se ignoran y quedan por defecto: `q` de 101 caracteres, `q=%20%20`, `page=0`,
@@ -286,16 +286,16 @@ Mientras carga, se indica sin mostrar todavía el aviso.
   - parámetros ajenos (`lowStock=true`) se ignoran;
   - `serializeCustomerCriteria` omite los valores por defecto (`{ page: 1 }` → `''`) y es la inversa de
     `parseCustomerCriteria` para criterios válidos.
-- [ ] T031 [P] [US2] Ampliar `apps/client/src/features/customers/customersSlice.test.ts`:
+- [X] T031 [P] [US2] Ampliar `apps/client/src/features/customers/customersSlice.test.ts`:
   - un `fulfilled` cuyo `meta.requestId` no es el último `requestId` se ignora;
   - un `pending` posterior sustituye `requestId`.
-- [ ] T032 [P] [US2] Crear `apps/client/src/features/customers/components/CustomersListStatus.test.tsx` (casos
+- [X] T032 [P] [US2] Crear `apps/client/src/features/customers/components/CustomersListStatus.test.tsx` (casos
   de US2):
   - con `status: 'loading'` muestra «Cargando clientes…» con `role="status"` y no muestra el aviso ni el error;
   - con `status: 'succeeded'` y `total: 0` muestra el `EmptyState` «Todavía no hay clientes» / «La cartera se
     cargará desde el sistema anterior.»;
   - con `succeeded` y elementos no muestra nada.
-- [ ] T033 [P] [US2] Ampliar `apps/client/src/pages/CustomersPage.test.tsx` (con `createMemoryRouter` e
+- [X] T033 [P] [US2] Ampliar `apps/client/src/pages/CustomersPage.test.tsx` (con `createMemoryRouter` e
   `initialEntries`):
   - con `/clientes` se ve el aviso y no se ve paginación;
   - con `/clientes?q=ferreteria` el campo muestra el valor y `fetchCustomers` recibe
@@ -307,7 +307,7 @@ Mientras carga, se indica sin mostrar todavía el aviso.
     (montar no reescribe la dirección); teclear otra búsqueda vuelve a `page: 1`;
   - con la dirección cambiada desde fuera (navegar a `/clientes?q=bar`), el campo se resincroniza y el valor
     con debounce anterior no deshace la navegación.
-- [ ] T034 [P] [US2] Ampliar `e2e/customers.spec.ts` (US2):
+- [X] T034 [P] [US2] Ampliar `e2e/customers.spec.ts` (US2):
   - se ve el aviso de cartera pendiente;
   - al escribir «ferreteria» se hace una petición `GET /api/customers?q=ferreteria` (`page.waitForRequest`) y
     la dirección cambia;
@@ -316,19 +316,19 @@ Mientras carga, se indica sin mostrar todavía el aviso.
 
 ### Implementación de US2
 
-- [ ] T035 [P] [US2] Crear `apps/client/src/features/customers/customerCriteria.ts` con
+- [X] T035 [P] [US2] Crear `apps/client/src/features/customers/customerCriteria.ts` con
   `parseCustomerCriteria(params: URLSearchParams): CustomerListQuery` (recorta `q`, lo descarta si queda vacío
   o pasa de `CUSTOMER_SEARCH_MAX_LENGTH`; `page` entero ≥ 1 o 1) y
   `serializeCustomerCriteria(query): URLSearchParams` (omite los valores por defecto), con la forma de
   `features/products/productCriteria.ts`. Comprobar que T030 pasa.
-- [ ] T036 [P] [US2] En `apps/client/src/features/customers/customersSlice.ts`, guardar `requestId` en
+- [X] T036 [P] [US2] En `apps/client/src/features/customers/customersSlice.ts`, guardar `requestId` en
   `pending` e ignorar `fulfilled` y `rejected` de peticiones que no son la última (research R9). Comprobar que
   T031 pasa.
-- [ ] T037 [P] [US2] Crear `apps/client/src/features/customers/components/CustomersListStatus.tsx` y
+- [X] T037 [P] [US2] Crear `apps/client/src/features/customers/components/CustomersListStatus.tsx` y
   `CustomersListStatus.module.css`, que según `status` y `total` muestran el estado de carga («Cargando
   clientes…», `role="status"`) o el `EmptyState` con los textos del aviso. El caso `failed` llega en US3.
   Comprobar que T032 pasa.
-- [ ] T038 [US2] Conectar `apps/client/src/pages/CustomersPage.tsx` con la dirección (research R8, R9), como
+- [X] T038 [US2] Conectar `apps/client/src/pages/CustomersPage.tsx` con la dirección (research R8, R9), como
   `ProductsPage.tsx`:
   - leer los criterios con `useSearchParams` + `parseCustomerCriteria` y normalizar la dirección con
     `replace` si no coincide con `serializeCustomerCriteria`;
@@ -341,7 +341,7 @@ Mientras carga, se indica sin mostrar todavía el aviso.
     paginación con 0 elementos;
   - extraer a hooks auxiliares (`useCustomerCriteria`, `useLoadCustomers`) para no pasar de 40 líneas.
   Comprobar que T033 pasa. Depende de T035–T037.
-- [ ] T039 [US2] En `docs/design/README.md` › Componentes, añadir a `EmptyState` su uso en Clientes («Todavía no
+- [X] T039 [US2] En `docs/design/README.md` › Componentes, añadir a `EmptyState` su uso en Clientes («Todavía no
   hay clientes · La cartera se cargará desde el sistema anterior.», 007) y documentar `ProgressBar` (anatomía,
   `role="meter"` y el texto «Sin límite» de la columna de riesgo) en la entrada «Barra de progreso» (FR-017).
   Ejecutar `npm run test:e2e -- customers` y comprobar que T034 pasa.

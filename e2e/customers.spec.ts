@@ -108,3 +108,49 @@ test.describe('Clientes · acceso por rol (US1, FR-002, FR-003)', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Clientes' })).toHaveCount(0);
   });
 });
+
+const searchBox = (page: Page) => page.getByRole('searchbox', { name: 'Buscar' });
+const emptyNotice = (page: Page) => page.getByText('Todavía no hay clientes');
+
+/** Escribe en la búsqueda y espera la petición que se lanza tras dejar de teclear. */
+async function searchFor(page: Page, text: string): Promise<void> {
+  const requested = page.waitForRequest(
+    (req) =>
+      new URL(req.url()).pathname === '/api/customers' &&
+      new URL(req.url()).searchParams.get('q') === text,
+  );
+  await searchBox(page).fill(text);
+  await requested;
+}
+
+test.describe('Clientes · cartera pendiente de carga (US2)', () => {
+  test.beforeEach(async ({ page }) => {
+    await loginAsAdmin(page);
+    await openCustomers(page);
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+
+  test('se ve el aviso y la búsqueda pide el listado y cambia la dirección', async ({ page }) => {
+    await expect(page.getByText('La cartera se cargará desde el sistema anterior.')).toBeVisible();
+    await searchFor(page, 'ferreteria');
+    await expect(page).toHaveURL(/\/clientes\?q=ferreteria$/);
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+
+  test('recargar conserva la búsqueda', async ({ page }) => {
+    await searchFor(page, 'ferreteria');
+    await expect(page).toHaveURL(/\/clientes\?q=ferreteria$/);
+    await page.reload();
+    await expect(searchBox(page)).toHaveValue('ferreteria');
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+
+  test('una dirección con valores no válidos se corrige y muestra el aviso, sin error', async ({
+    page,
+  }) => {
+    await page.goto('/clientes?page=abc&q=');
+    await expect(page).toHaveURL(/\/clientes$/);
+    await expect(emptyNotice(page)).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+  });
+});
