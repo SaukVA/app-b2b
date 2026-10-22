@@ -433,7 +433,7 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
   `contracts/products-api.openapi.yaml`.
 - [X] T053 [P] Revisar que ningún fichero del módulo `apps/server/src/modules/products/` importa Mongoose y que
   ninguna función nueva pasa de 40 líneas efectivas (principio IV).
-- [ ] T054 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
+- [X] T054 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
   quickstart.md completo en web (§3) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).
 
 ---
