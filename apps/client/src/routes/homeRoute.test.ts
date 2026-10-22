@@ -103,7 +103,15 @@ describe('effectiveHomeScreen', () => {
 
 describe('resolveHomeRoute con módulos pendientes (lista real, 005)', () => {
   it('descarta un origen pendiente aunque el rol pueda verlo', () => {
-    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), '/clientes')).toBe('/productos');
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), '/ventas')).toBe('/productos');
+  });
+
+  it('respeta un origen en Clientes (007), ya implementado', () => {
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), '/clientes')).toBe('/clientes');
+  });
+
+  it('una pantalla de inicio Clientes guardada de antes de 005 vuelve a funcionar (007)', () => {
+    expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL, 'clientes'), null)).toBe('/clientes');
   });
 
   it('un rol que ve Productos (006) aterriza en /productos', () => {
@@ -111,7 +119,12 @@ describe('resolveHomeRoute con módulos pendientes (lista real, 005)', () => {
   });
 
   it('un rol sin Productos ni otra pantalla implementada va a Ajustes › Apariencia', () => {
-    const sinProductos = user({ ...COMERCIAL, productos: 'none', proveedores: 'edit' });
+    const sinProductos = user({
+      ...COMERCIAL,
+      clientes: 'none',
+      productos: 'none',
+      proveedores: 'edit',
+    });
     expect(realHomeRoute.resolveHomeRoute(sinProductos, null)).toBe('/ajustes/apariencia');
   });
 

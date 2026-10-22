@@ -15,6 +15,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  /* Explícito: el Chromium 132 de Electron 34 da flex-start a <button> y no estira la vista previa. */
+  align-items: stretch;
   gap: var(--space-3);
   min-height: var(--control-height);
   border: 1px solid var(--control);

@@ -5,8 +5,8 @@ import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/te
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
 
-// Con la lista real de módulos implementados (005): Ajustes y Productos (006), así que de las pantallas de
-// negocio solo Productos se puede elegir como inicio. Va en su propio archivo porque
+// Con la lista real de módulos implementados (005): Ajustes, Productos (006) y Clientes (007), así que de las
+// pantallas de negocio solo Productos y Clientes se pueden elegir como inicio. Va en su propio archivo porque
 // preferences.routes.test.ts simula los módulos.
 
 setTestEnv();
@@ -47,7 +47,7 @@ function patch(token: string, body: object) {
 
 describe('PATCH /api/preferences · pantalla de inicio con módulos pendientes', () => {
   it('400 PREFERENCES_HOME_SCREEN_NOT_ALLOWED con una pantalla que el rol ve pero está pendiente', async () => {
-    const res = await patch(await comercialToken(), { homeScreen: 'clientes' });
+    const res = await patch(await comercialToken(), { homeScreen: 'ventas' });
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('PREFERENCES_HOME_SCREEN_NOT_ALLOWED');
   });
@@ -56,6 +56,12 @@ describe('PATCH /api/preferences · pantalla de inicio con módulos pendientes',
     const res = await patch(await comercialToken(), { homeScreen: 'productos' });
     expect(res.status).toBe(200);
     expect(res.body.data.homeScreen).toBe('productos');
+  });
+
+  it('200 con Clientes, que ya está implementado (007) y el rol puede ver', async () => {
+    const res = await patch(await comercialToken(), { homeScreen: 'clientes' });
+    expect(res.status).toBe(200);
+    expect(res.body.data.homeScreen).toBe('clientes');
   });
 
   it('200 con homeScreen: null', async () => {

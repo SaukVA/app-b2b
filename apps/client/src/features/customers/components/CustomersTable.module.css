@@ -1,0 +1,45 @@
+.names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.city {
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.mono {
+  font: var(--text-figure);
+  white-space: nowrap;
+}
+
+/* Cifra encima de la barra, con un ancho fijo para que las barras se alineen entre filas. */
+.risk {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 120px;
+}
+
+.unlimited {
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.figures {
+  display: flex;
+  gap: var(--space-4);
+}
