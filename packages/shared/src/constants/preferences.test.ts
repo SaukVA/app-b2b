@@ -36,8 +36,8 @@ describe('valores por defecto', () => {
 });
 
 describe('AVAILABLE_HOME_SCREENS', () => {
-  it('con la lista real solo ofrece Productos, el único módulo de negocio implementado (006)', () => {
-    expect(AVAILABLE_HOME_SCREENS).toEqual(['productos']);
+  it('con la lista real ofrece Clientes (007) y Productos (006), los módulos de negocio implementados', () => {
+    expect(AVAILABLE_HOME_SCREENS).toEqual(['clientes', 'productos']);
   });
 
   it('son las pantallas de módulos implementados, en el orden del selector y sin el Panel', () => {
@@ -56,7 +56,10 @@ describe('isHomeScreenAllowed(permissions, screen)', () => {
 
   it('con la lista real rechaza las pantallas pendientes (005)', () => {
     expect(isHomeScreenAllowed(permissions, 'ventas')).toBe(false);
-    expect(isHomeScreenAllowed(permissions, 'clientes')).toBe(false);
+  });
+
+  it('con la lista real admite Clientes, ya implementado (007)', () => {
+    expect(isHomeScreenAllowed(permissions, 'clientes')).toBe(true);
   });
 });
 

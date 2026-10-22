@@ -114,11 +114,11 @@ vacío. Almacén no ve Clientes.
 
 ### Tests de US1 (primero, deben fallar) ⚠️
 
-- [ ] T006 [P] [US1] Crear `apps/server/src/modules/customers/customer.service.test.ts`: `listCustomers` con
+- [X] T006 [P] [US1] Crear `apps/server/src/modules/customers/customer.service.test.ts`: `listCustomers` con
   `{ page: 1 }` y con `{ q: 'ferreteria', page: 3 }` devuelve `{ items: [], total: 0, page, pageSize: 10 }`
   (la `page` pedida). Comprobar que el servicio no importa Mongoose, como en
   `apps/server/src/modules/products/product.service.test.ts`.
-- [ ] T007 [P] [US1] Crear `apps/server/src/modules/customers/customer.routes.test.ts` con `startTestDb`,
+- [X] T007 [P] [US1] Crear `apps/server/src/modules/customers/customer.routes.test.ts` con `startTestDb`,
   `clearTestDb` y `stopTestDb` y los helpers de `apps/server/src/modules/products/product.routes.test.ts` como
   referencia:
   - 200 `{ success: true, data: { items: [], total: 0, page: 1, pageSize: 10 } }` para Administrador,
@@ -130,10 +130,10 @@ vacío. Almacén no ve Clientes.
     espacios del principio y del final no cuentan, FR-008), con
     `q=%20%20%20` (solo espacios = sin búsqueda), con `page=3` (devuelve `page: 3`) y con un parámetro
     desconocido `foo=bar` (se ignora).
-- [ ] T008 [P] [US1] Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es
+- [X] T008 [P] [US1] Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es
   `['ajustes', 'productos', 'clientes']`; `isModuleImplemented('clientes')` es `true`; los pendientes pasan a
   `['ventas', 'proveedores', 'cobros']`.
-- [ ] T009 [P] [US1] Ajustar los tests que dependen de que Clientes esté pendiente (research R11):
+- [X] T009 [P] [US1] Ajustar los tests que dependen de que Clientes esté pendiente (research R11):
   - `apps/server/src/modules/preferences/preferences.pendingModules.test.ts`: el caso 400
     `PREFERENCES_HOME_SCREEN_NOT_ALLOWED` con Comercial usa `homeScreen: 'ventas'` en lugar de `'clientes'`;
     añadir un caso 200 con `homeScreen: 'clientes'`;
@@ -146,22 +146,22 @@ vacío. Almacén no ve Clientes.
     guardado aterriza en `/clientes` tras el login (`resolveHomeRoute(user(COMERCIAL, 'clientes'), null)`,
     caso límite «pantalla de inicio de antes de 005»).
   Tras T020, ejecutar `npm test --workspaces` y ajustar cualquier otro caso que use la lista real.
-- [ ] T010 [P] [US1] Crear `apps/client/src/features/customers/customersSlice.test.ts` (casos de US1):
+- [X] T010 [P] [US1] Crear `apps/client/src/features/customers/customersSlice.test.ts` (casos de US1):
   - estado inicial `{ items: [], total: 0, status: 'idle', error: null, requestId: null }`;
   - `loadCustomers.pending` → `status: 'loading'`;
   - `loadCustomers.fulfilled` con `{ items: [], total: 0, … }` → `status: 'succeeded'`, `total: 0`.
-- [ ] T011 [P] [US1] Crear `apps/client/src/features/customers/customersApi.test.ts` con `httpClient` simulado:
+- [X] T011 [P] [US1] Crear `apps/client/src/features/customers/customersApi.test.ts` con `httpClient` simulado:
   - `{ page: 1 }` → `GET /customers` con `params` vacío;
   - `{ q: 'ferreteria', page: 2 }` → `params` con los dos valores;
   - devuelve el `data` del envelope.
-- [ ] T012 [P] [US1] Crear `apps/client/src/components/ProgressBar.test.tsx`:
+- [X] T012 [P] [US1] Crear `apps/client/src/components/ProgressBar.test.tsx`:
   - `role="meter"` con nombre accesible `label`, `aria-valuemin` 0 y `aria-valuemax` 100;
   - `value={45}` → `aria-valuenow` 45; `value={112}` → `aria-valuenow` 100 y `aria-valuetext` «112 %»;
     `value={-5}` → `aria-valuenow` 0;
   - `tone` se refleja en `data-tone` (`ok`, `warning`, `danger`).
-- [ ] T013 [P] [US1] Crear `apps/client/src/features/customers/formatOrderDate.test.ts`:
+- [X] T013 [P] [US1] Crear `apps/client/src/features/customers/formatOrderDate.test.ts`:
   `'2026-10-07'` → `'07/10/2026'`; `null` → `'—'`.
-- [ ] T014 [P] [US1] Crear `apps/client/src/features/customers/components/CustomersTable.test.tsx`:
+- [X] T014 [P] [US1] Crear `apps/client/src/features/customers/components/CustomersTable.test.tsx`:
   - con `rows=[]`: tabla con `caption` «Clientes» y cabeceras Cliente, Riesgo usado, Saldo y Último pedido;
     sin cabecera de acciones; sin filas;
   - con una fila de ejemplo (`riskUsed: 62`): nombre y población, «62 %» con un `meter` de tono `warning`,
@@ -171,16 +171,16 @@ vacío. Almacén no ve Clientes.
   - `lastOrderDate: null` → «—»; `city: null` → solo el nombre, sin línea de población;
   - tarjeta móvil (`renderCard`, FR-015): con la fila de ejemplo muestra nombre, población, «62 %» con su
     `meter`, saldo y `07/10/2026`; con `riskUsed: null`, «Sin límite».
-- [ ] T015 [P] [US1] Crear `apps/client/src/features/customers/components/CustomerSearch.test.tsx`:
+- [X] T015 [P] [US1] Crear `apps/client/src/features/customers/components/CustomerSearch.test.tsx`:
   - región `role="search"` con nombre «Buscar clientes»;
   - campo «Buscar» de tipo `search` con `maxLength` 100 y placeholder «Buscar cliente»;
   - escribir llama a `onSearchChange` con el texto.
-- [ ] T016 [P] [US1] Crear `apps/client/src/pages/CustomersPage.test.tsx` (casos de US1), con la store de
+- [X] T016 [P] [US1] Crear `apps/client/src/pages/CustomersPage.test.tsx` (casos de US1), con la store de
   `setupStore` y `fetchCustomers` simulado (`jest.mock('../features/customers/customersApi')`):
   - h1 «Clientes» y «0 fichas» tras resolver la petición;
   - sin botón «Nuevo cliente» ni acciones «Nueva venta», «Editar ficha» o «Ver ventas» (FR-005);
   - al montar llama a `fetchCustomers` una vez con `{ page: 1 }`.
-- [ ] T017 [P] [US1] Crear `e2e/customers.spec.ts` (US1), con los helpers de `e2e/products.spec.ts`:
+- [X] T017 [P] [US1] Crear `e2e/customers.spec.ts` (US1), con los helpers de `e2e/products.spec.ts`:
   - el Administrador pulsa Clientes en el menú: enlace sin «Pendiente» que abre `/clientes` y queda con
     `aria-current="page"`;
   - se ven el h1, «0 fichas», la búsqueda y las cabeceras del listado (en móvil, solo título y búsqueda);
@@ -191,7 +191,7 @@ vacío. Almacén no ve Clientes.
 
 ### Implementación de US1
 
-- [ ] T018 [US1] Crear la API en `apps/server/src/modules/customers/` siguiendo `products/` (research R1–R4):
+- [X] T018 [US1] Crear la API en `apps/server/src/modules/customers/` siguiendo `products/` (research R1–R4):
   - `customer.validation.ts`: `customerListQuerySchema` con `q`:
     `z.string().trim().max(CUSTOMER_SEARCH_MAX_LENGTH)` y vacío → `undefined`; `page`:
     `z.coerce.number().int().min(1).default(1)`; sin `.strict()`. Exportar `type CustomerListQueryInput`;
@@ -201,7 +201,7 @@ vacío. Almacén no ve Clientes.
   - `customer.controller.ts`: `customerController.list`, que lee `req.query as CustomerListQueryInput`,
     llama a `listCustomers` y responde con `sendSuccess<ListPage<CustomerListItem>>`.
   Comprobar que T006 pasa.
-- [ ] T019 [US1] Crear `apps/server/src/modules/customers/customer.routes.ts`:
+- [X] T019 [US1] Crear `apps/server/src/modules/customers/customer.routes.ts`:
   - `customerRouter.use(requireAuth, requirePermission('clientes', 'view'))`;
   - `customerRouter.get('/', validate({ query: customerListQuerySchema }), customerController.list)`;
   - bloque JSDoc `@openapi` equivalente a `contracts/customers-api.openapi.yaml`: tag `Customers`, parámetros
@@ -210,24 +210,24 @@ vacío. Almacén no ve Clientes.
   Montar en `apps/server/src/app.ts` con `app.use('/api/customers', customerRouter)`, después de
   `/api/products`. Ejecutar `npm test --workspace=apps/server -- customers` y comprobar que T007 pasa.
   Depende de T018.
-- [ ] T020 [US1] Añadir `'clientes'` a `IMPLEMENTED_MODULES` en `packages/shared/src/constants/modules.ts`
+- [X] T020 [US1] Añadir `'clientes'` a `IMPLEMENTED_MODULES` en `packages/shared/src/constants/modules.ts`
   (convención de CLAUDE.md). Comprobar que T008 y T009 pasan.
-- [ ] T021 [P] [US1] Crear `apps/client/src/features/customers/customersApi.ts` con
+- [X] T021 [P] [US1] Crear `apps/client/src/features/customers/customersApi.ts` con
   `fetchCustomers(query: CustomerListQuery): Promise<ListPage<CustomerListItem>>`
   (`httpClient.get('/customers', { params })`), omitiendo `page: 1` y `q` ausente. Comprobar que T011 pasa.
-- [ ] T022 [US1] Crear `apps/client/src/features/customers/customersSlice.ts` con el estado de data-model.md
+- [X] T022 [US1] Crear `apps/client/src/features/customers/customersSlice.ts` con el estado de data-model.md
   (`items`, `total`, `status`, `error`, `requestId`) y el thunk `loadCustomers(query)` sobre `fetchCustomers`.
   Registrar `customers: customersReducer` en `apps/client/src/store/store.ts`. Comprobar que T010 pasa.
   Depende de T021.
-- [ ] T023 [P] [US1] Crear `apps/client/src/components/ProgressBar.tsx` y `ProgressBar.module.css`
+- [X] T023 [P] [US1] Crear `apps/client/src/components/ProgressBar.tsx` y `ProgressBar.module.css`
   (contracts/customers-ui.md › ProgressBar): props `value`, `tone: 'ok' | 'warning' | 'danger'` y `label`;
   `role="meter"`, `aria-valuenow` limitado a 0–100 y `aria-valuetext` con el valor real («112 %»); 4 px de alto,
   pista `--surface2` y relleno del color del tono (semáforo de `docs/design/README.md`). Comprobar que T012
   pasa.
-- [ ] T024 [P] [US1] Crear `apps/client/src/features/customers/formatOrderDate.ts`:
+- [X] T024 [P] [US1] Crear `apps/client/src/features/customers/formatOrderDate.ts`:
   `formatOrderDate(date: string | null): string`, que pasa `YYYY-MM-DD` a `DD/MM/AAAA` sin convertir a `Date`
   y devuelve «—» con `null` (research R12). Comprobar que T013 pasa.
-- [ ] T025 [US1] Crear `apps/client/src/features/customers/components/CustomersTable.tsx` y
+- [X] T025 [US1] Crear `apps/client/src/features/customers/components/CustomersTable.tsx` y
   `CustomersTable.module.css`, que componen `Table` con las columnas de contracts/customers-ui.md
   §Estructura:
   - Cliente: nombre con la población debajo;
@@ -237,21 +237,21 @@ vacío. Almacén no ve Clientes.
   - Último pedido: `formatOrderDate` en Mono.
   Añadir `renderCard` para móvil según `ClientesMovil.dc.html` y prop `status`/`busy` como `ProductsTable`.
   Comprobar que T014 pasa. Depende de T023–T024.
-- [ ] T026 [P] [US1] Crear `apps/client/src/features/customers/components/CustomerSearch.tsx` y
+- [X] T026 [P] [US1] Crear `apps/client/src/features/customers/components/CustomerSearch.tsx` y
   `CustomerSearch.module.css`: componente controlado con props `search` y `onSearchChange` que compone
   `TextField` (`type="search"`, `maxLength={CUSTOMER_SEARCH_MAX_LENGTH}`, placeholder «Buscar cliente») dentro
   de `<div role="search" aria-label="Buscar clientes">`. Comprobar que T015 pasa.
-- [ ] T027 [US1] Crear `apps/client/src/pages/CustomersPage.tsx` y `CustomersPage.module.css`:
+- [X] T027 [US1] Crear `apps/client/src/pages/CustomersPage.tsx` y `CustomersPage.module.css`:
   - cabecera con h1 «Clientes» y «{total} fichas» (Mono);
   - `CustomerSearch` y, dentro de un panel, `CustomersTable` con `items`;
   - al montar, despacha `loadCustomers({ page: 1 })`. US2 sustituye esta llamada por los criterios de la
     dirección.
   Comprobar que T016 pasa. Depende de T022, T025–T026.
-- [ ] T028 [US1] Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de
+- [X] T028 [US1] Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de
   `AppLayout`:
   `{ path: 'clientes', element: <RequireAuth module="clientes"><CustomersPage /></RequireAuth> }`. Depende de
   T027.
-- [ ] T029 [US1] Ajustar `e2e/navigation.spec.ts` a Clientes implementado (Clientes sin «Pendiente» en el
+- [X] T029 [US1] Ajustar `e2e/navigation.spec.ts` a Clientes implementado (Clientes sin «Pendiente» en el
   menú; el ejemplo de módulo pendiente sigue siendo Proveedores). Ejecutar
   `npm run test:e2e -- customers navigation` y comprobar que T017 pasa.
 

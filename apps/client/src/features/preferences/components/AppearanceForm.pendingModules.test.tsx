@@ -54,11 +54,11 @@ function renderFor(user: AuthUser) {
 }
 
 describe('AppearanceForm con los módulos de negocio pendientes', () => {
-  it('«Pantalla de inicio» ofrece solo Productos, el único módulo de negocio implementado', () => {
+  it('«Pantalla de inicio» ofrece solo Clientes y Productos, los módulos de negocio implementados', () => {
     renderFor(COMERCIAL);
     const select = screen.getByRole('combobox', { name: 'Pantalla de inicio' });
     const options = Array.from((select as HTMLSelectElement).options).map((option) => option.text);
-    expect(options).toEqual(['Productos']);
+    expect(options).toEqual(['Clientes', 'Productos']);
   });
 
   it('sin pantallas implementadas que ver no muestra «Pantalla de inicio» y sí el resto', () => {

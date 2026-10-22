@@ -1,0 +1,27 @@
+/* Barra de progreso (docs/design/README.md › Componentes): 4 px, pista surface2, relleno del umbral. */
+.track {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface2);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: currentColor;
+}
+
+/* Colores del semáforo: los mismos que el texto de los sellos, con su variante oscura. */
+.ok {
+  color: var(--stamp-ok-fg);
+}
+
+.warning {
+  color: var(--stamp-pending-fg);
+}
+
+.danger {
+  color: var(--stamp-error-fg);
+}

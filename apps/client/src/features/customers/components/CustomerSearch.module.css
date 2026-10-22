@@ -1,0 +1,10 @@
+/* Tablero «Clientes»: un único campo de búsqueda; ancho completo en estrecho (ClientesMovil.dc.html). */
+.search {
+  max-width: 420px;
+}
+
+@media (max-width: 759px) {
+  .search {
+    max-width: none;
+  }
+}
