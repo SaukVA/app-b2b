@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T11:55:36Z",
-  "updated_at": "2026-10-22T14:30:00Z",
+  "updated_at": "2026-10-22T15:30:00Z",
   "spec": "007-customers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -297,7 +297,7 @@
           "key": "AB2B-528",
           "id": "T030",
           "summary": "T030: Crear `apps/client/src/features/customers/customerCriteria.test.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-528"
         },
@@ -305,7 +305,7 @@
           "key": "AB2B-529",
           "id": "T031",
           "summary": "T031: Ampliar `apps/client/src/features/customers/customersSlice.test.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-529"
         },
@@ -313,7 +313,7 @@
           "key": "AB2B-530",
           "id": "T032",
           "summary": "T032: Crear `apps/client/src/features/customers/components/CustomersListStatus.test.tsx` (casos",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-530"
         },
@@ -321,7 +321,7 @@
           "key": "AB2B-531",
           "id": "T033",
           "summary": "T033: Ampliar `apps/client/src/pages/CustomersPage.test.tsx` (con `createMemoryRouter` e",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-531"
         },
@@ -329,7 +329,7 @@
           "key": "AB2B-532",
           "id": "T034",
           "summary": "T034: Ampliar `e2e/customers.spec.ts` (US2):",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-532"
         },
@@ -337,7 +337,7 @@
           "key": "AB2B-533",
           "id": "T035",
           "summary": "T035: Crear `apps/client/src/features/customers/customerCriteria.ts` con",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-533"
         },
@@ -345,7 +345,7 @@
           "key": "AB2B-534",
           "id": "T036",
           "summary": "T036: En `apps/client/src/features/customers/customersSlice.ts`, guardar `requestId` en",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-534"
         },
@@ -353,7 +353,7 @@
           "key": "AB2B-535",
           "id": "T037",
           "summary": "T037: Crear `apps/client/src/features/customers/components/CustomersListStatus.tsx` y",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-535"
         },
@@ -361,7 +361,7 @@
           "key": "AB2B-536",
           "id": "T038",
           "summary": "T038: Conectar `apps/client/src/pages/CustomersPage.tsx` con la dirección (research R8, R9), como",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T035",
             "T036",
@@ -373,14 +373,14 @@
           "key": "AB2B-537",
           "id": "T039",
           "summary": "T039: En `docs/design/README.md` › Componentes, añadir a `EmptyState` su uso en Clientes («Todavía no",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T038"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-537"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-497",
@@ -635,7 +635,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 51,
-    "completed_tasks": 29,
-    "pending_tasks": 22
+    "completed_tasks": 39,
+    "pending_tasks": 12
   }
 }
