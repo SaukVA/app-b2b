@@ -12,12 +12,7 @@ const ITEMS: NavBarItem[] = [
 function renderNavBar(items: NavBarItem[] = ITEMS, path = '/') {
   render(
     <MemoryRouter initialEntries={[path]}>
-      <NavBar
-        label="Principal"
-        brand={<span>Marca</span>}
-        items={items}
-        footer={<span>Pie del menú</span>}
-      />
+      <NavBar label="Principal" items={items} footer={<span>Pie del menú</span>} />
     </MemoryRouter>,
   );
 }
@@ -43,15 +38,21 @@ describe('NavBar', () => {
     expect(clientes.getAttribute('href')).toBe('/clientes');
   });
 
-  it('pinta el footer y la marca recibidos', () => {
+  it('pinta el footer recibido', () => {
     renderNavBar();
     expect(within(nav()).getByText('Pie del menú')).toBeTruthy();
-    expect(within(nav()).getByText('Marca')).toBeTruthy();
   });
 
-  it('sin onToggleCollapsed no hay botón de plegar', () => {
+  it('no pinta ninguna marca: lo primero del nav es la lista de módulos (008, FR-001)', () => {
+    renderNavBar();
+    expect(nav().firstElementChild?.tagName).toBe('UL');
+  });
+
+  it('sin onToggleCollapsed no hay elemento de plegar y la lista inferior solo tiene Ajustes', () => {
     renderNavBar();
     expect(screen.queryByRole('button', { name: /menú/ })).toBeNull();
+    const [, bottom] = within(nav()).getAllByRole('list');
+    expect(within(bottom).getAllByRole('listitem')).toHaveLength(1);
   });
 });
 
@@ -77,7 +78,6 @@ function renderWithPending() {
     <MemoryRouter initialEntries={['/ajustes']}>
       <NavBar
         label="Principal"
-        brand={<span>Marca</span>}
         items={[
           { to: '/ventas', label: 'Ventas', icon: <svg />, pending: true },
           ...ITEMS.slice(0, 1),
@@ -119,8 +119,6 @@ function renderCollapsible({ collapsed = false, onToggle = jest.fn() } = {}) {
     <MemoryRouter initialEntries={['/ajustes']}>
       <NavBar
         label="Principal"
-        brand={<span>Marca completa</span>}
-        brandCollapsed={<span>Logo</span>}
         items={[...ITEMS, { to: '/cobros', label: 'Cobros', icon: <svg />, pending: true }]}
         footer={<button type="button">Cerrar sesión</button>}
         collapsed={collapsed}
@@ -132,19 +130,35 @@ function renderCollapsible({ collapsed = false, onToggle = jest.fn() } = {}) {
   return onToggle;
 }
 
-describe('NavBar · plegado (contrato N4, N5)', () => {
-  it('desplegado: botón «Plegar menú» con aria-expanded="true" que controla el nav', () => {
+const bottomItems = () => within(within(nav()).getAllByRole('list')[1]).getAllByRole('listitem');
+
+describe('NavBar · plegado (contrato 008 N4′, N5′)', () => {
+  it('desplegado: «Plegar menú» es el último elemento de la lista inferior, después de Ajustes', () => {
+    renderCollapsible();
+    const items = bottomItems();
+    expect(items).toHaveLength(2);
+    expect(within(items[0]).getByRole('link', { name: 'Ajustes' })).toBeTruthy();
+    expect(within(items[1]).getByRole('button', { name: 'Plegar menú' })).toBeTruthy();
+  });
+
+  it('desplegado: el nombre sale del texto visible, con title, aria-expanded="true" y aria-controls', () => {
     renderCollapsible();
     const toggle = screen.getByRole('button', { name: 'Plegar menú' });
+    expect(toggle.hasAttribute('aria-label')).toBe(false);
+    expect(within(toggle).getByText('Plegar menú')).toBeTruthy();
+    expect(toggle.getAttribute('title')).toBe('Plegar menú');
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
     expect(nav().id).not.toBe('');
     expect(toggle.getAttribute('aria-controls')).toBe(nav().id);
-    expect(within(nav()).getByText('Marca completa')).toBeTruthy();
   });
 
-  it('plegado: botón «Desplegar menú» con aria-expanded="false"', () => {
+});
+
+describe('NavBar · menú plegado (contrato 008 N4′)', () => {
+  it('plegado: «Desplegar menú» con title y aria-expanded="false"', () => {
     renderCollapsible({ collapsed: true });
     const toggle = screen.getByRole('button', { name: 'Desplegar menú' });
+    expect(toggle.getAttribute('title')).toBe('Desplegar menú');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     expect(toggle.getAttribute('aria-controls')).toBe(nav().id);
   });
@@ -155,12 +169,6 @@ describe('NavBar · plegado (contrato N4, N5)', () => {
     expect(within(nav()).getByRole('link', { name: 'Ajustes' })).toBeTruthy();
     const cobros = within(nav()).getByRole('link', { name: /Cobros/ });
     expect(cobros.textContent).toContain('Pendiente');
-  });
-
-  it('plegado: pinta brandCollapsed en lugar de brand', () => {
-    renderCollapsible({ collapsed: true });
-    expect(within(nav()).getByText('Logo')).toBeTruthy();
-    expect(within(nav()).queryByText('Marca completa')).toBeNull();
   });
 
   it('plegado: el footer sigue pintado y «Cerrar sesión» accesible por nombre (FR-013)', () => {

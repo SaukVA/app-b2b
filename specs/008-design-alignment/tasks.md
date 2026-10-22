@@ -51,33 +51,33 @@ description: "Task list for feature 008-design-alignment"
 
 ### Tests de US1 (primero, deben fallar) ⚠️
 
-- [ ] T003 [P] [US1] Ajustar `apps/client/src/components/NavBar.test.tsx` al contrato N4′–N6′:
+- [X] T003 [P] [US1] Ajustar `apps/client/src/components/NavBar.test.tsx` al contrato N4′–N6′:
   - quitar `brand`/`brandCollapsed` de `renderNavBar` y del bloque de plegado; el test «pinta el footer y la marca recibidos» pasa a «pinta el footer recibido»;
   - eliminar «plegado: pinta brandCollapsed en lugar de brand» y añadir «no pinta ninguna marca: el primer elemento del nav es la lista de módulos»;
   - con `onToggleCollapsed`: el botón «Plegar menú» es el **último `listitem`** de la segunda lista (la de `section: 'footer'`), después de Ajustes; su texto visible es «Plegar menú» (nombre accesible por texto, sin `aria-label`), tiene `title="Plegar menú"`, `aria-expanded="true"` y `aria-controls` = id del `<nav>`;
   - plegado: «Desplegar menú», `aria-expanded="false"`, `title="Desplegar menú"`;
   - sin `onToggleCollapsed` no hay `listitem` de plegar (la lista inferior solo tiene Ajustes).
-- [ ] T004 [P] [US1] Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx`: añadir «no muestra marca» — dentro del `navigation` «Principal» no aparecen «Venta a mayoristas» ni «M» como logotipo, desplegado y plegado (`localStorage['navigation.collapsed'] = 'true'` antes de montar, como en los tests de 005).
-- [ ] T005 [P] [US1] Ajustar `e2e/navigation.spec.ts`:
+- [X] T004 [P] [US1] Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx`: añadir «no muestra marca» — dentro del `navigation` «Principal» no aparecen «Venta a mayoristas» ni «M» como logotipo, desplegado y plegado (`localStorage['navigation.collapsed'] = 'true'` antes de montar, como en los tests de 005).
+- [X] T005 [P] [US1] Ajustar `e2e/navigation.spec.ts`:
   - en «tras el login muestra los módulos…» (ancho): el `navigation` «Principal» no contiene «Venta a mayoristas»; el botón «Plegar menú» aparece después del enlace «Ajustes» (comparar `boundingBox().y`) y mide al menos 44 px de alto;
   - en «Menú plegado»: plegado, sigue sin marca y el botón dice «Desplegar menú»;
   - en «Menú en pantallas estrechas» (línea ~162): sustituir `getByText('Venta a mayoristas')).toBeHidden()` por `toHaveCount(0)`; la comprobación de `getByRole('button', { name: /menú$/ })` con `toHaveCount(0)` se mantiene.
 
 ### Implementación de US1
 
-- [ ] T006 [US1] En `apps/client/src/components/NavBar.tsx`:
+- [X] T006 [US1] En `apps/client/src/components/NavBar.tsx`:
   - eliminar las props `brand` y `brandCollapsed` de `NavBarProps` (y sus comentarios) y el `<div className={styles.brand}>`;
   - sustituir `NavBarToggle` (IconButton) por `NavBarToggleItem`: un `<li className={styles.toggleItem}>` con `<button type="button" className={`${styles.item} ${styles.muted}`} aria-expanded={!collapsed} aria-controls={navId} title={text} onClick={onToggle}>` que contiene el `icon` y `<span className={styles.label}>{text}</span>`, con `text = collapsed ? 'Desplegar menú' : 'Plegar menú'`;
   - pintarlo como último elemento de la lista inferior (`NavBarList` acepta un hijo extra o `NavBar` monta la lista inferior con el `<li>` al final), solo si hay `onToggleCollapsed`;
   - quitar el import de `IconButton` si deja de usarse; actualizar el comentario de cabecera (contrato 008).
   Comprobar que T003 pasa.
-- [ ] T007 [US1] En `apps/client/src/components/NavBar.module.css`:
+- [X] T007 [US1] En `apps/client/src/components/NavBar.module.css`:
   - borrar `.brand`, `.collapsed .brand` y las reglas de marca del bloque estrecho (`.brand`, `.collapsed .brand`, `.brand > * > :not(:first-child)`);
   - sustituir `.toggle` por: `.item` aplicado a `<button>` (`width: 100%; border: 0; background: transparent; font: inherit; text-align: left; align-items: center; cursor: pointer`), `.muted { color: var(--disabled); }`, giro del icono con transición (respetando `prefers-reduced-motion`);
   - N7: `.muted:hover { background: var(--nav-active); color: var(--nav-text-active); }` y `.muted:focus-visible { outline: 2px solid var(--nav-icon-active); outline-offset: 2px; }`;
   - plegado: la etiqueta del elemento de plegar se oculta y flota como la del resto (reutilizar `.collapsed .label`);
   - `@media (max-width: 759px)`: `.toggleItem { display: none; }`.
-- [ ] T008 [US1] En `apps/client/src/features/navigation/components/AppNav.tsx`, dejar de pasar `brand` y `brandCollapsed` y quitar el import de `BrandMark`. Comprobar que T004 pasa y ejecutar `npm run test:e2e -- navigation` para T005.
+- [X] T008 [US1] En `apps/client/src/features/navigation/components/AppNav.tsx`, dejar de pasar `brand` y `brandCollapsed` y quitar el import de `BrandMark`. Comprobar que T004 pasa y ejecutar `npm run test:e2e -- navigation` para T005.
 
 **Checkpoint**: US1 funcional. Menú sin marca y «Plegar menú» como elemento de la lista en web y escritorio.
 

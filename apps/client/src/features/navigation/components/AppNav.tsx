@@ -1,5 +1,4 @@
 import type { AuthUser } from '@app/shared';
-import { BrandMark } from '../../../components/BrandMark';
 import { NavBar } from '../../../components/NavBar';
 import { useAppSelector } from '../../../store/store';
 import { isDesktop } from '../../../utils/desktop';
@@ -45,8 +44,6 @@ export function AppNav() {
   return (
     <NavBar
       label="Principal"
-      brand={<BrandMark name="Venta a mayoristas" />}
-      brandCollapsed={<BrandMark />}
       items={buildNavItems(user.permissions)}
       footer={<NavFooter user={user} collapsed={collapsed} />}
       collapsed={collapsed}

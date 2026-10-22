@@ -87,6 +87,20 @@ describe('AppNav', () => {
   });
 });
 
+describe('AppNav · sin marca (008, FR-001)', () => {
+  afterEach(() => localStorage.clear());
+
+  it.each([
+    ['desplegado', '0'],
+    ['plegado', '1'],
+  ])('%s no muestra «Venta a mayoristas» ni el logotipo', (_state, collapsed) => {
+    localStorage.setItem('navigation.collapsed', collapsed);
+    renderAppNav();
+    expect(within(nav()).queryByText('Venta a mayoristas')).toBeNull();
+    expect(within(nav()).queryByText('M')).toBeNull();
+  });
+});
+
 describe('AppNav · pie', () => {
   afterEach(() => {
     delete window.desktop;

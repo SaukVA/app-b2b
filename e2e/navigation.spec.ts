@@ -34,6 +34,9 @@ test.describe('Menú de navegación', () => {
       'Ajustes',
     ]);
 
+    // 008 FR-001: sin logotipo ni nombre de la aplicación en el menú.
+    await expect(mainNav(page).getByText('Venta a mayoristas')).toHaveCount(0);
+
     await mainNav(page).getByRole('link', { name: 'Ajustes' }).click();
     await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
     await expect(mainNav(page)).toBeVisible();
@@ -125,6 +128,23 @@ test.describe('Menú plegado', () => {
     expect(await page.evaluate(() => localStorage.getItem('navigation.collapsed'))).toBe('0');
   });
 
+  test('«Plegar menú» es un elemento más bajo Ajustes, de 44 px, y plegado sigue sin marca (008)', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    const nav = mainNav(page);
+    const toggle = nav.getByRole('button', { name: 'Plegar menú' });
+    const ajustesBox = await nav.getByRole('link', { name: 'Ajustes' }).boundingBox();
+    const toggleBox = await toggle.boundingBox();
+    expect(toggleBox!.y).toBeGreaterThan(ajustesBox!.y);
+    expect(toggleBox!.height).toBeGreaterThanOrEqual(44);
+    await expect(toggle).toHaveAttribute('title', 'Plegar menú');
+
+    await toggle.click();
+    await expect(nav.getByRole('button', { name: 'Desplegar menú' })).toBeVisible();
+    await expect(nav.getByText('Venta a mayoristas')).toHaveCount(0);
+  });
+
   test('con el menú plegado, «Cerrar sesión» se ve y funciona (FR-013)', async ({ page }) => {
     await loginAsAdmin(page);
     await page.getByRole('button', { name: 'Plegar menú' }).click();
@@ -159,7 +179,7 @@ test.describe('Menú en pantallas estrechas', () => {
     expect((await nav.boundingBox())?.y).toBeLessThanOrEqual(1);
 
     await expect(page.getByRole('button', { name: /menú$/ })).toHaveCount(0);
-    await expect(nav.getByText('Venta a mayoristas')).toBeHidden();
+    await expect(nav.getByText('Venta a mayoristas')).toHaveCount(0);
     await expect(nav.getByText('Administrador · Web')).toBeHidden();
 
     // SC-006: la barra entera cabe en el primer viewport en vertical.

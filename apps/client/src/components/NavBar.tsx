@@ -1,6 +1,5 @@
 import { useId, type KeyboardEvent, type ReactNode, type SyntheticEvent } from 'react';
 import { NavLink } from 'react-router';
-import { IconButton } from './IconButton';
 import styles from './NavBar.module.css';
 import { StatusStamp } from './StatusStamp';
 
@@ -20,16 +19,13 @@ export interface NavBarItem {
 export interface NavBarProps {
   /** `aria-label` del `<nav>`, p. ej. «Principal». */
   label: string;
-  brand: ReactNode;
-  /** Marca del menú plegado: solo el logotipo. */
-  brandCollapsed?: ReactNode;
   items: NavBarItem[];
   /** Datos del usuario y «Cerrar sesión». */
   footer?: ReactNode;
   collapsed?: boolean;
-  /** Sin él no se pinta el botón de plegar (contrato N5). */
+  /** Sin él no se pinta el elemento de plegar (contrato 008 N5′). */
   onToggleCollapsed?: () => void;
-  /** Icono del botón de plegar. */
+  /** Icono del elemento de plegar. */
   toggleIcon?: ReactNode;
 }
 
@@ -89,53 +85,61 @@ interface NavBarToggleProps {
   onToggle: () => void;
 }
 
-/** Botón de plegar (contrato N5): no aparece por debajo de 760 px. */
-function NavBarToggle({ navId, collapsed, icon, onToggle }: NavBarToggleProps) {
+/**
+ * Plegar o desplegar (contrato 008 N5′): un elemento más de la lista, bajo Ajustes, con su texto como
+ * nombre accesible. No aparece por debajo de 760 px.
+ */
+function NavBarToggleItem({ navId, collapsed, icon, onToggle }: NavBarToggleProps) {
+  const text = collapsed ? 'Desplegar menú' : 'Plegar menú';
   return (
-    <IconButton
-      aria-label={collapsed ? 'Desplegar menú' : 'Plegar menú'}
-      aria-expanded={!collapsed}
-      aria-controls={navId}
-      icon={icon}
-      className={styles.toggle}
-      onClick={onToggle}
-    />
+    <li className={styles.toggleItem}>
+      <button
+        type="button"
+        className={`${styles.item} ${styles.muted}`}
+        aria-expanded={!collapsed}
+        aria-controls={navId}
+        title={text}
+        onClick={onToggle}
+      >
+        <span className={styles.toggleIcon}>{icon}</span>
+        <span className={styles.label}>{text}</span>
+      </button>
+    </li>
   );
 }
 
-function NavBarList({ items, className }: { items: NavBarItem[]; className: string }) {
+interface NavBarListProps {
+  items: NavBarItem[];
+  className: string;
+  /** Elemento extra al final de la lista (el de plegar). */
+  children?: ReactNode;
+}
+
+function NavBarList({ items, className, children }: NavBarListProps) {
   return (
     <ul className={className}>
       {items.map((item) => (
         <NavBarEntry key={item.to} item={item} />
       ))}
+      {children}
     </ul>
   );
 }
 
 /**
- * Barra lateral de «Albarán» (contrato navigation-ui.md §1). Genérica: recibe los elementos ya filtrados
- * y no sabe nada de permisos. Plegada, las etiquetas se ocultan solo visualmente (contrato N4).
+ * Barra lateral de «Albarán» (contratos navigation-ui.md de 005 §1 y 008 §1). Genérica: recibe los
+ * elementos ya filtrados y no sabe nada de permisos. Sin marca (008, FR-001). Plegada, las etiquetas se
+ * ocultan solo visualmente (contrato N4′).
  */
 export function NavBar(props: NavBarProps) {
-  const {
-    label,
-    brand,
-    brandCollapsed,
-    items,
-    footer,
-    collapsed = false,
-    onToggleCollapsed,
-  } = props;
+  const { label, items, footer, collapsed = false, onToggleCollapsed } = props;
   const navId = useId();
-  const showCollapsed = collapsed && brandCollapsed !== undefined;
   return (
     <nav
       id={navId}
       aria-label={label}
       className={collapsed ? `${styles.nav} ${styles.collapsed}` : styles.nav}
     >
-      <div className={styles.brand}>{showCollapsed ? brandCollapsed : brand}</div>
       <NavBarList
         items={items.filter((item) => item.section !== 'footer')}
         className={styles.list}
@@ -143,15 +147,16 @@ export function NavBar(props: NavBarProps) {
       <NavBarList
         items={items.filter((item) => item.section === 'footer')}
         className={`${styles.list} ${styles.bottom}`}
-      />
-      {onToggleCollapsed && (
-        <NavBarToggle
-          navId={navId}
-          collapsed={collapsed}
-          icon={props.toggleIcon}
-          onToggle={onToggleCollapsed}
-        />
-      )}
+      >
+        {onToggleCollapsed && (
+          <NavBarToggleItem
+            navId={navId}
+            collapsed={collapsed}
+            icon={props.toggleIcon}
+            onToggle={onToggleCollapsed}
+          />
+        )}
+      </NavBarList>
       {footer && <div className={styles.footer}>{footer}</div>}
     </nav>
   );

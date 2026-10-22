@@ -14,13 +14,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nav,
-  .toggle svg {
+  .toggleIcon svg {
     transition: none;
   }
-}
-
-.brand {
-  padding: var(--space-1) var(--space-2) var(--space-6);
 }
 
 .list {
@@ -127,29 +123,44 @@
   border-top: 1px solid #2c3238;
 }
 
-/* Botón de plegar: encima del pie, borde de separador sobre la barra oscura. */
-.toggle {
-  margin-top: var(--space-2);
-  border-color: #2c3238;
-  color: var(--nav-text);
+/*
+ * Plegar menú (diseño de 008): un elemento más de la lista, bajo Ajustes, en --disabled. Es un <button>:
+ * se le quitan los estilos del navegador y se fija align-items (Chromium 132 de Electron da flex-start).
+ */
+button.item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
-.toggle:hover:not(:disabled) {
+.muted {
+  color: var(--disabled);
+}
+
+.muted:hover {
   background: var(--nav-active);
   color: var(--nav-text-active);
 }
 
-.toggle svg {
+.muted:focus-visible {
+  outline: 2px solid var(--nav-icon-active);
+  outline-offset: 2px;
+}
+
+.toggleIcon {
+  display: inline-flex;
+}
+
+.toggleIcon svg {
   transition: transform 150ms ease;
 }
 
 /* Plegada (diseño de 005): 72 px, solo iconos centrados; la etiqueta flota con :hover y :focus-visible. */
 .collapsed {
   width: var(--nav-width-collapsed);
-}
-
-.collapsed .brand {
-  padding: var(--space-1) var(--space-1) var(--space-6);
 }
 
 .collapsed .item {
@@ -192,17 +203,13 @@
   display: block;
 }
 
-.collapsed .toggle {
-  align-self: center;
-}
-
 .collapsed .footer {
   padding: var(--space-3) 0 var(--space-1);
 }
 
 /*
- * Estrecho (lienzo, @container app ≤760 px): barra superior sticky con desplazamiento horizontal, sin texto
- * de marca ni botón de plegar, y se ve igual esté plegada o no (contrato N6).
+ * Estrecho (lienzo, @container app ≤760 px): barra superior sticky con desplazamiento horizontal, sin el
+ * elemento de plegar, y se ve igual esté plegada o no (contrato 008 N6′).
  */
 @media (max-width: 759px) {
   .nav,
@@ -224,17 +231,6 @@
 
   .bottom {
     margin-top: 0;
-  }
-
-  .brand,
-  .collapsed .brand {
-    flex: none;
-    padding: 0 var(--space-2) 0 0;
-  }
-
-  /* Solo el logotipo: BrandMark pinta el logo primero y después el texto. */
-  .brand > * > :not(:first-child) {
-    display: none;
   }
 
   .item,
@@ -268,7 +264,7 @@
   }
 
   .collapsed .dot,
-  .toggle {
+  .toggleItem {
     display: none;
   }
 
