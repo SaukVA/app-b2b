@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T18:00:00Z",
-  "updated_at": "2026-10-22T22:00:00Z",
+  "updated_at": "2026-10-22T22:45:00Z",
   "spec": "008-design-alignment",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -256,7 +256,7 @@
           "key": "AB2B-579",
           "id": "T022",
           "summary": "T022: Eliminar `apps/client/src/components/BrandMark.tsx`, `BrandMark.module.css` y `BrandMark.test.tsx`, ya sin usos tras T008 y T017 (research R1). Comprobar con una búsqueda que no queda ninguna referencia a `BrandMark` en `apps/client` ni en `e2e`. De",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T008",
             "T017"
@@ -267,7 +267,7 @@
           "key": "AB2B-580",
           "id": "T023",
           "summary": "T023: Revisar con `playwright-cli` el menú (desplegado, plegado), el pie y el login a 390 px y 1440 px, en claro y en oscuro, comparando con los tableros (SC-006): orden del teclado, foco visible (contorno naranja en plegar y cerrar sesión), objetivos de ",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-580"
         },
@@ -275,7 +275,7 @@
           "key": "AB2B-581",
           "id": "T024",
           "summary": "T024: Revisar que ninguna función nueva o cambiada pasa de 40 líneas efectivas y que no quedan comentarios que mencionen la marca o el `IconButton` de plegar (principio IV).",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-581"
         },
@@ -425,7 +425,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 25,
-    "completed_tasks": 21,
-    "pending_tasks": 4
+    "completed_tasks": 24,
+    "pending_tasks": 1
   }
 }
