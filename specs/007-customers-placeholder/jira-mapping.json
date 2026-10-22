@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T11:55:36Z",
-  "updated_at": "2026-10-22T15:30:00Z",
+  "updated_at": "2026-10-22T16:15:00Z",
   "spec": "007-customers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -391,7 +391,7 @@
           "key": "AB2B-538",
           "id": "T040",
           "summary": "T040: Ampliar `apps/client/src/features/customers/customersSlice.test.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-538"
         },
@@ -399,7 +399,7 @@
           "key": "AB2B-539",
           "id": "T041",
           "summary": "T041: Ampliar `apps/client/src/features/customers/components/CustomersListStatus.test.tsx`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-539"
         },
@@ -407,7 +407,7 @@
           "key": "AB2B-540",
           "id": "T042",
           "summary": "T042: Ampliar `apps/client/src/pages/CustomersPage.test.tsx`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-540"
         },
@@ -415,7 +415,7 @@
           "key": "AB2B-541",
           "id": "T043",
           "summary": "T043: Ampliar `e2e/customers.spec.ts` (US3): con `page.route('**/api/customers**', …)`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-541"
         },
@@ -423,7 +423,7 @@
           "key": "AB2B-542",
           "id": "T044",
           "summary": "T044: En `apps/client/src/features/customers/customersSlice.ts`, definir y exportar",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-542"
         },
@@ -431,7 +431,7 @@
           "key": "AB2B-543",
           "id": "T045",
           "summary": "T045: Añadir el caso `failed` a",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-543"
         },
@@ -439,7 +439,7 @@
           "key": "AB2B-544",
           "id": "T046",
           "summary": "T046: En `apps/client/src/pages/CustomersPage.tsx`, pasar `onRetry`, que vuelve a despachar",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T044",
             "T045"
@@ -450,14 +450,14 @@
           "key": "AB2B-545",
           "id": "T047",
           "summary": "T047: En `docs/design/README.md`, añadir a «Error de un listado» su uso en Clientes («No se ha podido",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T046"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-545"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-498",
@@ -635,7 +635,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 51,
-    "completed_tasks": 39,
-    "pending_tasks": 12
+    "completed_tasks": 47,
+    "pending_tasks": 4
   }
 }
