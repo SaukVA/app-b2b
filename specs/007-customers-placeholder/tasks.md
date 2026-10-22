@@ -398,16 +398,16 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T048 [P] Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con
+- [X] T048 [P] Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con
   densidad Cómoda y Compacta (FR-015):
   - orden del teclado y foco visible;
   - avisos anunciados (`status` / `alert`);
   - objetivos de 44 px y contraste de 4.5:1;
   - sin scroll horizontal de la página.
-- [ ] T049 [P] Comprobar que `/api-docs` muestra `GET /customers` con sus parámetros, `CustomerListPage` y las
+- [X] T049 [P] Comprobar que `/api-docs` muestra `GET /customers` con sus parámetros, `CustomerListPage` y las
   respuestas 400/401/403, comparando el spec de `buildSwaggerSpec()` con
   `contracts/customers-api.openapi.yaml`.
-- [ ] T050 [P] Revisar que ningún fichero de `apps/server/src/modules/customers/` importa Mongoose, que
+- [X] T050 [P] Revisar que ningún fichero de `apps/server/src/modules/customers/` importa Mongoose, que
   `ProgressBar` no importa `@app/shared` y que ninguna función nueva pasa de 40 líneas efectivas
   (principios IV y VIII).
 - [ ] T051 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
