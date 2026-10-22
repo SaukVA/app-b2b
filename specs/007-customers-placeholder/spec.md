@@ -21,6 +21,24 @@ vacío, para fijar desde ya el contrato del listado; los botones de acción del 
 muestran. Fuera de alcance: alta y edición de clientes, ficha lateral con historial reciente, condiciones
 comerciales y migración de datos."
 
+## Clarifications
+
+### Session 2026-10-22
+
+- Q: ¿Cómo se resuelve el diseño del aviso de «cartera pendiente de carga» y del mensaje de error, que no están en
+  el lienzo «Albarán»? → A: Se reutilizan el EmptyState y el error de listado que 006-products-placeholder ya
+  documentó en `docs/design/README.md`, cambiando solo el texto; se añade allí su uso en Clientes.
+- Q: Si el usuario recarga la página, usa «Atrás» o comparte el enlace, ¿se conservan la búsqueda y la página de
+  Clientes? → A: Sí: la búsqueda y la página forman parte de la dirección de la pantalla y se conservan al
+  recargar, al usar «Atrás» y al compartir el enlace, igual que en Productos.
+- Q: Si un cliente no tiene riesgo máximo definido (o es 0), ¿qué muestra la columna «Riesgo usado» y qué devuelve
+  el listado en ese campo? → A: Riesgo máximo y riesgo usado son opcionales: sin riesgo máximo (o con 0), el
+  listado no trae porcentaje y la columna muestra «Sin límite», sin barra ni semáforo.
+- Q: ¿Cuántos clientes por página debe devolver el listado? → A: 10, igual que Productos, para unificar los
+  listados (el lienzo muestra 8).
+- Q: Si la dirección trae una búsqueda o una página no válidas, ¿qué hace la pantalla? → A: Ignora el valor no
+  válido, lo sustituye por el de por defecto (sin búsqueda, página 1) y corrige la dirección, igual que Productos.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Abrir Clientes y ver su estructura (Priority: P1) 🎯 MVP
@@ -116,6 +134,8 @@ el servidor de nuevo disponible, aparece el aviso de cartera pendiente.
   más largo con un error de validación.
 - Criterios no válidos enviados al servidor (página negativa, texto demasiado largo…): el servidor los rechaza con
   un error de validación y la pantalla muestra el mensaje de error de la historia 3.
+- Criterios no válidos escritos a mano en la dirección (`?page=abc`, búsqueda demasiado larga…): la pantalla los
+  sustituye por los valores por defecto y corrige la dirección antes de pedir el listado (FR-007a), sin error.
 - Varias peticiones seguidas al escribir rápido: la pantalla muestra solo el resultado de la última y no lanza una
   petición por cada tecla.
 - La sesión caduca mientras se pide el listado: se aplica el comportamiento de sesión caducada de
@@ -159,6 +179,11 @@ el servidor de nuevo disponible, aparece el aviso de cartera pendiente.
   listado al servidor con los criterios elegidos: texto de búsqueda y página. Al escribir en la búsqueda, MUST
   esperar a que el usuario deje de teclear antes de pedirlo, y MUST mostrar solo el resultado de la última
   petición.
+- **FR-007a**: La búsqueda y la página MUST formar parte de la dirección de la pantalla, de modo que se conserven
+  al recargar, al usar «Atrás» y al compartir el enlace; al abrir una dirección con criterios, la pantalla MUST
+  mostrarlos en la búsqueda y pedir el listado con ellos. Cambiar la búsqueda MUST volver a la página 1. Un valor
+  no válido en la dirección (página no entera o no positiva, búsqueda de más de 100 caracteres) MUST ignorarse,
+  sustituirse por el valor por defecto (sin búsqueda, página 1) y corregirse en la dirección, sin mostrar error.
 - **FR-008**: El servidor MUST exigir sesión iniciada y permiso de ver Clientes para responder al listado, y MUST
   validar los criterios recibidos: texto de búsqueda de 100 caracteres como máximo (sin contar los espacios del
   principio y del final) y página entera positiva. Los criterios no válidos MUST rechazarse con un error de
@@ -189,16 +214,18 @@ el servidor de nuevo disponible, aparece el aviso de cartera pendiente.
   (listado en tarjetas). Los controles MUST ser operables con teclado y tener un objetivo táctil mínimo de 44 px.
 - **FR-016**: Cuando el listado tenga clientes (futuro), el saldo pendiente MUST mostrarse con el formato de
   importes del usuario (004-appearance-preferences), y el riesgo usado como porcentaje con el semáforo de umbrales
-  del diseño, nunca como importe.
-- **FR-017**: Si el aviso de pantalla vacía y el mensaje de error ya se diseñan para Productos
-  (006-products-placeholder), Clientes MUST reutilizar el mismo diseño cambiando solo el texto; si no, su diseño
-  MUST definirse en `docs/design/` antes de implementarse.
+  del diseño, nunca como importe. Un cliente sin riesgo máximo (o con riesgo máximo 0) MUST mostrar «Sin límite»
+  en esa columna, sin barra ni semáforo.
+- **FR-017**: El aviso de pantalla vacía y el mensaje de error MUST reutilizar el EmptyState y el error de
+  listado documentados por 006-products-placeholder en `docs/design/README.md`, cambiando solo el texto, y
+  `docs/design/README.md` MUST registrar su uso en Clientes en el mismo cambio.
 
 ### Key Entities
 
-- **Cliente (listado)**: cliente mayorista tal como aparece en el listado. Atributos: nombre, población, riesgo
-  máximo, saldo pendiente, riesgo usado (saldo pendiente sobre riesgo máximo, en porcentaje) y fecha del último
-  pedido (opcional). En esta entrega no hay ninguno; se define para fijar el contrato del listado.
+- **Cliente (listado)**: cliente mayorista tal como aparece en el listado. Atributos: nombre, población
+  (opcional; sin ella se muestra solo el nombre), riesgo
+  máximo (opcional; sin él o con 0 el cliente no tiene límite), saldo pendiente, riesgo usado (saldo pendiente
+  sobre riesgo máximo, en porcentaje; ausente si no hay riesgo máximo) y fecha del último pedido (opcional). En esta entrega no hay ninguno; se define para fijar el contrato del listado.
 - **Criterios del listado**: texto de búsqueda y página.
 - **Página de resultados**: clientes de la página, total de fichas, página y tamaño de página.
 - **Usuario, rol y permisos**: definidos en 001-user-login y 003-user-management; aquí solo se lee el permiso de
@@ -229,11 +256,12 @@ el servidor de nuevo disponible, aparece el aviso de cartera pendiente.
   y la regla de módulo implementado son los de 005-app-navigation.
 - El escritorio usa su backend local (002-desktop-local-backend); la pantalla se comporta igual en web y
   escritorio.
-- El tamaño de página es el del diseño (8 fichas), aunque en esta entrega no se llega a usar.
+- El tamaño de página es de 10 fichas, igual que Productos (el lienzo muestra 8), aunque en esta entrega no se
+  llega a usar.
 - La búsqueda se aplicará en el futuro sobre el nombre y la población del cliente; en esta entrega solo se
   valida.
-- Esta spec es independiente de 006-products-placeholder; si 006 se implementa antes, Clientes sigue su mismo
-  patrón de pantalla provisional (aviso, error y contrato del listado).
+- 006-products-placeholder ya está en `develop`: Clientes sigue su mismo patrón de pantalla provisional (aviso,
+  error, criterios en la dirección y contrato del listado).
 - La cartera se cargará en una spec futura de migración desde la base de datos antigua.
 - Fuera de alcance: alta y edición de clientes; ficha lateral con datos de contacto e historial reciente;
   condiciones comerciales y tarifas; migración de datos; exportar el listado.

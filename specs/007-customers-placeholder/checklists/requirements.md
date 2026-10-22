@@ -36,9 +36,8 @@
 - Decisiones por defecto aprobadas en `/speckit-detect`: la búsqueda se envía al servidor, que la valida; «Nuevo
   cliente» y la ficha lateral con sus acciones no se muestran; el servidor responde con un listado vacío sin leer
   la base de datos.
-- Numeración: se usa 007, la aprobada en `/speckit-detect`. La spec 006 vive en la rama `006-products-placeholder`
-  y todavía no está en `develop`.
-- Dependencia de diseño (FR-017): el aviso de cartera pendiente y el mensaje de error no están en el lienzo; se
-  comparten con 006 si se diseñan allí.
-- Supuestos que se pueden revisar en `/speckit-clarify`: tamaño de página (8, el del diseño) y máximo de 100
-  caracteres en la búsqueda.
+- Numeración: se usa 007, la aprobada en `/speckit-detect`. La spec 006 ya está en `develop` (PR #8).
+- Diseño (FR-017): el aviso de cartera pendiente y el mensaje de error reutilizan el EmptyState y el error de
+  listado que 006 documentó en `docs/design/README.md` (clarificación del 2026-10-22).
+- Supuestos revisados en `/speckit-clarify` (2026-10-22): tamaño de página de 10, como Productos (el lienzo
+  muestra 8); el máximo de 100 caracteres en la búsqueda se mantiene.
