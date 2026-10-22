@@ -86,8 +86,8 @@ describe('SettingsPage', () => {
 
   it('sin ajustes: edit, abrir /ajustes/usuarios lleva a la pantalla de inicio (quickstart §3.4)', () => {
     renderSettings(userWithAjustes('none'), '/ajustes/usuarios');
-    // Sin módulos implementados (005), la pantalla de inicio de cualquier rol es Ajustes › Apariencia.
-    expect(screen.getByText('Pantalla de apariencia')).toBeTruthy();
+    // El rol ve Productos (006), su pantalla de inicio: aquí cae en la ruta `*`.
+    expect(screen.getByText('Pantalla de inicio')).toBeTruthy();
     expect(screen.queryByText('Pantalla de usuarios')).toBeNull();
   });
 });

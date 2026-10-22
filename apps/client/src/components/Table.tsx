@@ -17,6 +17,13 @@ export interface TableProps<Row> {
   getRowKey: (row: Row) => Key;
   /** Variante móvil: una tarjeta (`article`) por fila por debajo de 760 px. */
   renderCard: (row: Row) => ReactNode;
+  /**
+   * Zona de estado bajo las filas (cargando, sin datos, error), dentro del panel de la tabla y bajo las
+   * tarjetas en móvil. Se pinta una sola vez para que los lectores de pantalla no la anuncien dos veces.
+   */
+  status?: ReactNode;
+  /** Marca el listado con aria-busy mientras se cargan las filas. */
+  busy?: boolean;
 }
 
 function alignClass(align: TableColumn<unknown>['align']): string | undefined {
@@ -55,8 +62,12 @@ function DesktopTable<Row>({ caption, columns, rows, getRowKey }: TableProps<Row
 
 /** Tabla «Albarán» con su variante de tarjetas para móvil; las dos están en el DOM y el CSS elige. */
 export function Table<Row>(props: TableProps<Row>) {
+  const withStatus = props.status != null && props.status !== false;
   return (
-    <div className={styles.root}>
+    <div
+      className={[styles.root, withStatus && styles.withStatus].filter(Boolean).join(' ')}
+      aria-busy={props.busy || undefined}
+    >
       <DesktopTable {...props} />
       <div className={styles.mob}>
         {props.rows.map((row) => (
@@ -65,6 +76,7 @@ export function Table<Row>(props: TableProps<Row>) {
           </article>
         ))}
       </div>
+      {withStatus && <div className={styles.status}>{props.status}</div>}
     </div>
   );
 }

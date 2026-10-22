@@ -36,8 +36,8 @@ describe('valores por defecto', () => {
 });
 
 describe('AVAILABLE_HOME_SCREENS', () => {
-  it('con solo Ajustes implementado está vacía (005)', () => {
-    expect(AVAILABLE_HOME_SCREENS).toEqual([]);
+  it('con la lista real solo ofrece Productos, el único módulo de negocio implementado (006)', () => {
+    expect(AVAILABLE_HOME_SCREENS).toEqual(['productos']);
   });
 
   it('son las pantallas de módulos implementados, en el orden del selector y sin el Panel', () => {
@@ -54,7 +54,7 @@ describe('AVAILABLE_HOME_SCREENS', () => {
 describe('isHomeScreenAllowed(permissions, screen)', () => {
   const permissions: PermissionSet = { ventas: 'edit', clientes: 'view', productos: 'none' };
 
-  it('con la lista real rechaza cualquier pantalla: todas están pendientes (005)', () => {
+  it('con la lista real rechaza las pantallas pendientes (005)', () => {
     expect(isHomeScreenAllowed(permissions, 'ventas')).toBe(false);
     expect(isHomeScreenAllowed(permissions, 'clientes')).toBe(false);
   });

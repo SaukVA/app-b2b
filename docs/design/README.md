@@ -108,7 +108,9 @@ Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src
 - **Botón de icono**: 44×44, borde `control`, `aria-label` obligatorio.
 - **Input**: alto 44, padding 0 12, borde 1 px `control`, radio 6. Foco: borde 2 px `accent`. Error: borde 1 px `#A12A1C` + mensaje 12 px en el mismo color. Inputs numéricos en Mono y alineados a la derecha.
 - **Etiqueta de campo**: estilo «Etiqueta» encima del control, gap 6.
-- **Tabla**: dentro de panel blanco con borde y radio 10; cabecera en `surface2`; filas separadas por `borderRow`; fila seleccionada en `accentSoft`. En móvil se sustituye por tarjetas (`article`).
+- **Tabla**: dentro de panel blanco con borde y radio 10; cabecera en `surface2`; filas separadas por `borderRow`; fila seleccionada en `accentSoft`. En móvil se sustituye por tarjetas (`article`). La zona de estado del listado (cargando, sin datos, error) va bajo las filas, dentro del mismo panel (separada por `borderRow`); en móvil, en una tarjeta propia bajo las demás. Mientras carga, el listado lleva `aria-busy`.
+- **EmptyState** (sin datos en un listado): título Sans 18/600 `ink` + texto 14/400 `ink2`, centrados, padding 32, sin color de estado ni icono; `role="status"` para que se anuncie al aparecer. Primer uso: Productos, «Todavía no hay productos · El catálogo se cargará desde el sistema anterior.» (006). *Aún no está en el lienzo publicado.*
+- **Error de un listado**: en la zona de estado del panel, `Alert` de error (`role="alert"`, se anuncia de inmediato) con un mensaje sin detalles técnicos y, debajo, botón secundario «Reintentar» que vuelve a pedir el listado con los mismos criterios; padding 16, gap 12, alineado a la izquierda. Nunca a la vez que el EmptyState. Primer uso: «No se ha podido cargar el listado de productos.» (006). *Aún no está en el lienzo publicado.*
 - **Barra de progreso** (stock / riesgo): 4 px de alto, pista `surface2`, relleno del color del umbral.
 - **Tarjeta KPI**: panel blanco, etiqueta + cifra Mono 32 + línea de alerta en rojo.
 - **Paginación**: texto Mono `1–8 de N`, botones secundarios «Anterior»/«Siguiente», deshabilitados en `#9AA1A9`.
