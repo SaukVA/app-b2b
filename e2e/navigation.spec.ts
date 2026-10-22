@@ -1,13 +1,22 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import { removeUsers, seedUsers, type SeedUser } from './support/db';
 
 // 005 US1: menú lateral en las pantallas con sesión, con los módulos del rol y Ajustes al final.
 
-async function loginAsAdmin(page: Page): Promise<void> {
+async function loginAs(page: Page, login: string, password: string): Promise<void> {
   await page.goto('/login');
-  await page.getByRole('textbox', { name: 'Email' }).fill('admin');
-  await page.getByLabel('Contraseña', { exact: true }).fill('admin');
+  await page.getByRole('textbox', { name: 'Email' }).fill(login);
+  await page.getByLabel('Contraseña', { exact: true }).fill(password);
   await page.getByRole('button', { name: 'Entrar' }).click();
   await expect(page).not.toHaveURL(/\/login/);
+}
+
+const loginAsAdmin = (page: Page) => loginAs(page, 'admin', 'admin');
+
+async function boxOf(locator: Locator) {
+  const box = await locator.boundingBox();
+  expect(box).not.toBeNull();
+  return box!;
 }
 
 const mainNav = (page: Page) => page.getByRole('navigation', { name: 'Principal' });
@@ -136,6 +145,51 @@ test.describe('Menú plegado', () => {
   });
 });
 
+// 008: sin marca, «Plegar menú» como elemento de la lista y pie en una fila.
+test.describe('Menú sin marca y pie en una fila', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test('sin logotipo ni nombre de la aplicación en el menú (FR-001)', async ({ page }) => {
+    await loginAsAdmin(page);
+    await expect(mainNav(page).getByText('Venta a mayoristas')).toHaveCount(0);
+  });
+
+  test('«Plegar menú» es un elemento más bajo Ajustes, de 44 px, y plegado sigue sin marca (008)', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    const nav = mainNav(page);
+    const toggle = nav.getByRole('button', { name: 'Plegar menú' });
+    const ajustesBox = await nav.getByRole('link', { name: 'Ajustes' }).boundingBox();
+    const toggleBox = await toggle.boundingBox();
+    expect(toggleBox!.y).toBeGreaterThan(ajustesBox!.y);
+    expect(toggleBox!.height).toBeGreaterThanOrEqual(44);
+    await expect(toggle).toHaveAttribute('title', 'Plegar menú');
+
+    await toggle.click();
+    await expect(nav.getByRole('button', { name: 'Desplegar menú' })).toBeVisible();
+    await expect(nav.getByText('Venta a mayoristas')).toHaveCount(0);
+  });
+
+  test('el pie es una fila: «rol · canal» y, a su derecha, «Cerrar sesión» de 44×44 (008 US2)', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    const nav = mainNav(page);
+    const role = nav.getByText('Administrador · Web');
+    const logout = nav.getByRole('button', { name: 'Cerrar sesión' });
+    await expect(role).toBeVisible();
+    const logoutBox = await boxOf(logout);
+    expect(logoutBox.x).toBeGreaterThan((await boxOf(role)).x);
+    expect(Math.round(logoutBox.width)).toBe(44);
+    expect(Math.round(logoutBox.height)).toBe(44);
+
+    await nav.getByRole('button', { name: 'Plegar menú' }).click();
+    await expect(role).toBeHidden();
+    await expect(logout).toBeVisible();
+  });
+});
+
 /** Añade contenido de sobra al layout y desplaza la página hacia abajo. */
 async function scrollFarDown(page: Page): Promise<void> {
   await page.evaluate(() => {
@@ -160,11 +214,13 @@ test.describe('Menú en pantallas estrechas', () => {
     expect((await nav.boundingBox())?.y).toBeLessThanOrEqual(1);
 
     await expect(page.getByRole('button', { name: /menú$/ })).toHaveCount(0);
-    await expect(nav.getByText('Venta a mayoristas')).toBeHidden();
+    await expect(nav.getByText('Venta a mayoristas')).toHaveCount(0);
     await expect(nav.getByText('Administrador · Web')).toBeHidden();
 
     // SC-006: la barra entera cabe en el primer viewport en vertical.
     const logout = nav.getByRole('button', { name: 'Cerrar sesión' });
+    // 008: solo icono de 44×44, sin texto visible.
+    expect(Math.round((await boxOf(logout)).width)).toBe(44);
     const navBox = await nav.boundingBox();
     expect((navBox?.y ?? 0) + (navBox?.height ?? 0)).toBeLessThanOrEqual(844);
     await logout.scrollIntoViewIfNeeded();
@@ -192,5 +248,42 @@ test.describe('Menú en pantallas estrechas', () => {
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await expect(page.getByRole('button', { name: 'Desplegar menú' })).toBeVisible();
+  });
+});
+
+// 008 US2: con un nombre muy largo el pie sigue siendo una fila y «Cerrar sesión» no se sale del menú.
+test.describe('Pie con un nombre largo', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  const PASSWORD = 'secreto123';
+  const LONG_NAME = 'María de los Ángeles Fernández-Villaverde y Sánchez de la Rosa';
+  let longUser: SeedUser;
+
+  test.beforeAll(async () => {
+    longUser = {
+      login: `e2e.nombre-largo.${test.info().project.name}@empresa.es`,
+      name: LONG_NAME,
+      role: 'Comercial',
+      password: PASSWORD,
+    };
+    await seedUsers([longUser]);
+  });
+
+  test.afterAll(async () => {
+    await removeUsers([longUser.login]);
+  });
+
+  test('el nombre se recorta con title completo y el pie no crece', async ({ page }) => {
+    await loginAs(page, longUser.login, PASSWORD);
+    const nav = mainNav(page);
+    const name = nav.getByText(LONG_NAME);
+    await expect(name).toHaveAttribute('title', LONG_NAME);
+    const navBox = await boxOf(nav);
+    const logoutBox = await boxOf(nav.getByRole('button', { name: 'Cerrar sesión' }));
+    expect(logoutBox.x + logoutBox.width).toBeLessThanOrEqual(navBox.x + navBox.width);
+    // Una sola línea de nombre: no más alta que la fila del rol.
+    const nameBox = await boxOf(name);
+    expect(nameBox.height).toBeLessThanOrEqual(24);
+    expect(nameBox.x + nameBox.width).toBeLessThanOrEqual(logoutBox.x);
   });
 });

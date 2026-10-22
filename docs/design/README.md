@@ -116,24 +116,30 @@ Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src
 - **Paginación**: texto Mono `1–8 de N`, botones secundarios «Anterior»/«Siguiente», deshabilitados en `#9AA1A9`.
 - **Cabecera de detalle**: etiqueta + título 22/600 + metadatos Mono 13, cerrada por regla de 2 px `ink`.
 - **Iconos**: SVG de trazo inline 18 px, `stroke-width: 1.8`; nunca emoji.
-- **Logotipo provisional**: cuadrado de 36 px (40 en login), fondo `accent`, inicial «M» en Mono 600.
+- **Sin marca**: las pantallas de la aplicación no muestran logotipo, nombre de empresa ni el lema «Venta a mayoristas» (ni en la barra lateral ni en el login).
 - **Barra lateral** (tablero «Sistema visual», sección «Barra lateral»):
   - Orden: Ventas, Clientes, Productos, Proveedores y Cobros; Ajustes separado al final (`margin-top: auto`). Solo se muestran los módulos que el rol puede ver.
   - Elemento: alto mínimo 44, padding 0 12, gap 12, radio 6, Sans 14/500 en `navText`. Activo: fondo `navActive`, texto `navTextActive` 14/600, icono en `navIconActive`.
   - Iconos de trazo 18 px, `stroke-width: 1.8`; Ventas (albarán con líneas) y Cobros (pila de monedas) son nuevos.
   - **Pendiente** (módulo sin implementar): etiqueta en `disabled` (`#9AA1A9`, 6,8:1 en claro y 7,5:1 en oscuro), enfocable pero sin navegar, y sello «Pendiente» sobre `--nav` con los colores oscuros del sello de aviso en los dos temas (`#3A3014` / `#E8C66A`, 7,9:1), Mono 10/600, alto 20, padding 0 6, radio 4. Versión reducida para el menú plegado: punto de 8 px `#E8C66A` en la esquina del icono con anillo de 2 px del color `nav` (10,7:1 en claro y 11,8:1 en oscuro); el texto «Pendiente» se conserva oculto visualmente.
-  - **Plegada**: 72 px, solo iconos centrados y el logotipo. La etiqueta aparece flotante a la derecha al pasar el ratón y con `:focus-visible` (fondo `#262B31`, texto `navTextActive`, Sans 13/500, radio 6). El pie deja solo «Cerrar sesión» como icono con etiqueta flotante.
-  - **Botón de plegar**: botón de icono 44×44 encima del pie, borde 1 px `#2C3238`, `aria-label` «Plegar menú» / «Desplegar menú» y `aria-expanded`; el icono gira al plegar. No aparece por debajo de 760 px.
+  - **Plegada**: 72 px, solo iconos centrados. La etiqueta aparece flotante a la derecha al pasar el ratón y con `:focus-visible` (fondo `#262B31`, texto `navTextActive`, Sans 13/500, radio 6). El pie deja solo «Cerrar sesión» como icono con etiqueta flotante.
+  - **Plegar menú**: un elemento más de la lista, con el mismo estilo que los demás pero en `disabled` (`#9AA1A9`). Va justo debajo de Ajustes, con doble chevrón y el texto «Plegar menú» / «Desplegar menú», y lleva `aria-expanded`. El icono gira al plegar. No aparece por debajo de 760 px.
+  - **Pie de usuario**: separado por una línea de 1 px `#2C3238`, en una sola fila:
+    - avatar de 36 px (fondo `#262B31`, icono de persona);
+    - nombre (13/600) y rol · plataforma (12/400 `#9AA1A9`), recortados con puntos suspensivos;
+    - botón de icono «Cerrar sesión» de 44×44 a la derecha, con `aria-label` y `title`.
+
+    Al pasar el ratón por encima, el botón de plegar y el de cerrar sesión toman fondo `#262B31`, y al enfocarlos con teclado muestran un contorno de 2 px `#F08A5D`. Plegado: sin avatar, solo el botón de cerrar sesión. En móvil: solo el botón de cerrar sesión.
 
 ## Responsive
 
 Los tableros usan **container queries** (`container-name: app`) con un único punto de corte a **760 px**:
 
-- La barra lateral pasa a barra horizontal superior *sticky* con scroll horizontal; se ocultan el texto de marca, los datos del usuario y el botón de plegar. Se ve igual esté plegada o no.
+- La barra lateral pasa a barra horizontal superior *sticky* con scroll horizontal; se ocultan los datos del usuario y el botón de plegar. Se ve igual esté plegada o no.
 - Padding del contenido: `16px 16px 32px`, gap 16.
 - `.desk` (tablas) se oculta y `.mob` (tarjetas) se muestra.
 - `.hide-m` oculta columnas o bloques secundarios (p. ej. «Plazo» en proveedores, textos del hero de login).
-- Login: el panel oscuro se reduce a una franja con la marca y el formulario sube arriba.
+- Login: el panel oscuro se oculta y solo queda el formulario, centrado en la pantalla.
 
 Las pantallas de escritorio son fluidas (anchura de referencia 1440 px); las versiones móviles del lienzo (390 px) reutilizan el mismo tablero de escritorio importado, no son diseños independientes.
 
@@ -145,17 +151,17 @@ Las pantallas de escritorio son fluidas (anchura de referencia 1440 px); las ver
 | Productos | `Productos.dc.html` | `ProductosMovil.dc.html` | Filtros (búsqueda, categoría, subcategoría, proveedor, solo stock bajo), tabla con stock/mín., precio y estado, importar CSV |
 | Clientes | `Clientes.dc.html` | `ClientesMovil.dc.html` | Listado con riesgo usado y saldo + ficha lateral con historial reciente |
 | Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Listado con plazo y compras del año + productos asociados y pedido de compra sugerido |
-| Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio), Base de datos (estado de la conexión; web de solo lectura, escritorio con cadena de conexión editable) y Usuarios (alta directa con contraseña inicial, listado Activo/Bloqueado, menú por fila con editar, restablecer contraseña y bloquear/desbloquear, diálogos de confirmación, aviso de primer Administrador y matriz de permisos de solo lectura). Ajustes del tablero: `plataforma` (Web/Escritorio), `conexion` (Conectado/Error) y `primerAcceso` (cuenta inicial «admin») |
+| Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio) y Usuarios (alta directa con contraseña inicial, listado Activo/Bloqueado, menú por fila con editar, restablecer contraseña y bloquear/desbloquear, diálogos de confirmación, aviso de primer Administrador y matriz de permisos de solo lectura). Ajustes del tablero: `plataforma` (Web/Escritorio) y `primerAcceso` (cuenta inicial «admin») |
 | Login | `Login.dc.html` | `LoginMovil.dc.html` | Hero oscuro + formulario, estado de error, indicador de servidor |
 
 **Pendientes de diseño**: Panel (`Dashboard`), Ventas, Nueva venta y Cobros. Los tableros ya enlazan a `Dashboard.dc.html`, `Ventas.dc.html` y `NuevaVenta.dc.html`, que todavía no existen.
 
 Roles que aparecen en los diseños: Administrador, Comercial, Almacén, Administración (matriz de permisos en Ajustes › Usuarios). En la aplicación, los roles y la matriz se guardan en la base de datos (spec 003): la matriz pinta una columna por rol guardado, y el diseño muestra los valores iniciales.
 
-Estados de usuario: solo **Activo** y **Bloqueado** (no hay invitaciones). Colores de estado: Activo `okBg`/`okFg`; Bloqueado `#FBE4E1`/`#A12A1C` (oscuro `#3A1D1A`/`#F09A8E`). Aviso (primer acceso, cierre de sesiones al cambiar de base de datos): `#FDF3D7`/`#6B4900` con borde `#E9CF8A` (oscuro `#3A3014`/`#E8C66A`, borde `#5C4A1C`). La acción destructiva «Bloquear» usa `#A12A1C` con texto blanco (oscuro `#F09A8E` con texto `#16191D`).
+Estados de usuario: solo **Activo** y **Bloqueado** (no hay invitaciones). Colores de estado: Activo `okBg`/`okFg`; Bloqueado `#FBE4E1`/`#A12A1C` (oscuro `#3A1D1A`/`#F09A8E`). Aviso (primer acceso): `#FDF3D7`/`#6B4900` con borde `#E9CF8A` (oscuro `#3A3014`/`#E8C66A`, borde `#5C4A1C`). La acción destructiva «Bloquear» usa `#A12A1C` con texto blanco (oscuro `#F09A8E` con texto `#16191D`).
 
 ## Carpeta `canvas/`
 
-Copia literal de los ficheros `project/` del lienzo (`canvas.json` + un `*.dc.html` por tablero). Son especificación visual: dependen del runtime del editor (`support.js`, `<x-dc>`, `<sc-for>`, `{{…}}`) y no se abren sueltos en el navegador. Los textos entre corchetes (`[NOMBRE EMPRESA]`, `[N]`, `[CIF]`…) son marcadores de contenido real.
+Copia literal de los ficheros `project/` del lienzo (`canvas.json` + un `*.dc.html` por tablero). Son especificación visual: dependen del runtime del editor (`support.js`, `<x-dc>`, `<sc-for>`, `{{…}}`) y no se abren sueltos en el navegador. Los textos entre corchetes (`[N]`, `[CIF]`, `[USUARIO]`…) son marcadores de contenido real.
 
 Si se modifica el lienzo, refrescar esta carpeta y este README en el mismo cambio.

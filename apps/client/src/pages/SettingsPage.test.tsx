@@ -91,3 +91,14 @@ describe('SettingsPage', () => {
     expect(screen.queryByText('Pantalla de usuarios')).toBeNull();
   });
 });
+
+describe('SettingsPage · subtítulo (008, FR-012)', () => {
+  it.each(['none', 'edit'] as const)(
+    'con ajustes: %s el subtítulo no habla de conexión de datos',
+    (level) => {
+      renderSettings(userWithAjustes(level));
+      expect(screen.getByText('Preferencias de la aplicación y acceso de usuarios.')).toBeTruthy();
+      expect(screen.queryByText(/conexión de datos/)).toBeNull();
+    },
+  );
+});

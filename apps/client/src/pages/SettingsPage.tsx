@@ -9,7 +9,7 @@ const USERS_TAB: TabItem = { to: '/ajustes/usuarios', label: 'Usuarios' };
 
 /**
  * Pestañas de Ajustes que el rol puede abrir. Apariencia es para todos (004, FR-001); la fila «Ajustes»
- * de la matriz cubre las pestañas de administración (Base de datos y Usuarios).
+ * de la matriz cubre la pestaña de Usuarios.
  */
 function useSettingsTabs(): TabItem[] {
   const canManageUsers = useAppSelector(selectCan('ajustes', 'edit'));
@@ -29,9 +29,7 @@ export function SettingsPage() {
     <main className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>Ajustes</h1>
-        <p className={styles.subtitle}>
-          Preferencias de la aplicación, conexión de datos y acceso de usuarios.
-        </p>
+        <p className={styles.subtitle}>Preferencias de la aplicación y acceso de usuarios.</p>
       </header>
       <Tabs label="Secciones de ajustes" tabs={tabs} />
       {/* Sin permiso, el RequireAuth de cada pestaña es quien redirige (quickstart §3.4 de 003). */}

@@ -1,65 +1,95 @@
-/* Pie de la barra lateral (lienzo «Albarán»): nombre 13/500, rol y canal 12 en --disabled. */
+/*
+ * Pie de la barra lateral en una fila (diseño de 008): avatar de 36 px, nombre 13/600 y «rol · canal» 12 en
+ * --disabled, recortados con puntos suspensivos, y «Cerrar sesión» como botón de icono de 44×44.
+ */
 .footer {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
 }
 
-.name {
+.avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-control);
+  background: var(--nav-active);
+  color: var(--nav-text);
+}
+
+.who {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name,
+.role {
   overflow: hidden;
-  font-size: 13px;
-  font-weight: 500;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.role {
-  font-size: 12px;
-  color: var(--disabled);
-}
-
-/* Dos clases: gana al estilo terciario de Button (texto --ink2, sin contraste sobre --nav). */
-.footer .logout {
-  justify-content: flex-start;
-  min-height: var(--control-height);
-  margin-top: var(--space-1);
-  color: var(--nav-text);
+.name {
+  color: var(--nav-text-active);
   font-size: 13px;
+  font-weight: 600;
 }
 
-.logoutIcon {
-  display: none;
+.role {
+  color: var(--disabled);
+  font-size: 12px;
 }
 
-/* Plegado: sin nombre ni rol; «Cerrar sesión» queda como icono y su texto flota con :hover y :focus-visible. */
-.collapsed {
-  align-items: center;
-}
-
-.collapsed .name,
-.collapsed .role {
-  display: none;
-}
-
-.collapsed .logout {
+/*
+ * Dos clases: gana al estilo terciario de Button (texto --ink2, subrayado). align-items explícito: el
+ * Chromium 132 de Electron da flex-start a <button>.
+ */
+.footer .logout {
   position: relative;
+  flex: none;
+  align-items: center;
   justify-content: center;
   width: var(--control-height);
+  min-height: var(--control-height);
   padding: 0;
+  color: var(--nav-text);
+  text-decoration: none;
 }
 
-.collapsed .logoutIcon {
-  display: inline-flex;
+.footer .logout:hover {
+  background: var(--nav-active);
+  color: var(--nav-text-active);
 }
 
-.collapsed .logoutLabel {
+.footer .logout:focus-visible {
+  outline: 2px solid var(--nav-icon-active);
+  outline-offset: 2px;
+}
+
+/* El texto «Cerrar sesión» da el nombre accesible; no se ve salvo flotando en el menú plegado. */
+.logoutLabel {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* Plegado: sin avatar ni textos; solo el botón, centrado, con su etiqueta flotante. */
+.collapsed {
+  justify-content: center;
+}
+
+.collapsed .avatar,
+.collapsed .who {
+  display: none;
 }
 
 .collapsed .logout:hover .logoutLabel,
@@ -81,35 +111,21 @@
   box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
 }
 
-/* Estrecho: solo «Cerrar sesión», en línea con el resto de la barra y con su texto, esté plegado o no. */
+/* Estrecho: solo el botón de icono, en línea con la barra, esté plegado o no (008 FR-008). */
 @media (max-width: 759px) {
-  .name,
-  .role,
-  .collapsed .logoutIcon {
+  .avatar,
+  .who {
     display: none;
   }
 
-  .footer .logout,
-  .collapsed .logout {
-    width: auto;
-    margin: 0;
-    padding: 0 var(--space-3);
-    white-space: nowrap;
-  }
-
-  .collapsed .logoutLabel,
   .collapsed .logout:hover .logoutLabel,
   .collapsed .logout:focus-visible .logoutLabel {
-    position: static;
-    width: auto;
-    height: auto;
+    left: auto;
+    width: 1px;
+    height: 1px;
     padding: 0;
-    overflow: visible;
-    clip: auto;
-    transform: none;
-    background: none;
-    color: inherit;
-    font-size: inherit;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
     box-shadow: none;
   }
 }

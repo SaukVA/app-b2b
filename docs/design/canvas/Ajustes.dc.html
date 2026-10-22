@@ -27,6 +27,11 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .is-collapsed .nav-user{padding:12px 0 4px!important;align-items:center}
 .is-collapsed .nav-toggle{align-self:center}
 .is-collapsed .nav-toggle svg{transform:rotate(180deg)}
+.nav-toggle:hover,.nav-logout:hover{background:#262B31!important;color:#E8EAE6!important}
+.nav-toggle:focus-visible,.nav-logout:focus-visible{outline:2px solid #F08A5D;outline-offset:2px}
+.is-collapsed .nav-user{flex-direction:column;gap:8px}
+.is-collapsed .nav-logout{margin-left:0!important}
+.is-collapsed .nav-avatar{display:none!important}
 @container app (max-width: 760px){
 .nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
 .nav-brand{padding:0 8px 0 0!important}
@@ -35,6 +40,7 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .nav-push{margin-top:0!important}
 .nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
 .nav-user a{margin:0!important;white-space:nowrap}
+.nav-avatar{display:none!important}
 .nav.is-collapsed{flex:1 1 auto!important}
 .is-collapsed .nav-item{padding:0 12px!important}
 .is-collapsed .nav-label,.is-collapsed .nav-stamp{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip:auto!important}
@@ -52,24 +58,20 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <div class="app" style="position: relative; min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: {{t.bg}}; color: {{t.ink}}; font-family: 'IBM Plex Sans', system-ui, sans-serif">
 
 <nav id="nav-principal" class="nav{{navClass}}" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: {{t.nav}}; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
-<div class="nav-brand" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 24px">
-<div style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 16px">M</div>
-<div class="nav-brand-text" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">[NOMBRE EMPRESA]</span><span style="font-size: 12px; color: #9AA1A9">Venta a mayoristas</span></div>
-</div>
 <a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><span style="position: relative; display: inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg><span class="nav-dot" aria-hidden="true" style="position: absolute; top: -3px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: #E8C66A; box-shadow: 0 0 0 2px {{t.nav}}"></span></span><span class="nav-label">Ventas</span><span class="nav-stamp" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
 <a class="nav-item" href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg><span class="nav-label">Clientes</span></a>
 <a class="nav-item" href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg><span class="nav-label">Productos</span></a>
 <a class="nav-item" href="Proveedores.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg><span class="nav-label">Proveedores</span></a>
 <a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><span style="position: relative; display: inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"></path><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path></svg><span class="nav-dot" aria-hidden="true" style="position: absolute; top: -3px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: #E8C66A; box-shadow: 0 0 0 2px {{t.nav}}"></span></span><span class="nav-label">Cobros</span><span class="nav-stamp" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
 <a class="nav-item nav-push" href="Ajustes.dc.html" aria-current="page" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; background: {{t.navActive}}; color: #E8EAE6; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg><span class="nav-label">Ajustes</span></a>
-<button type="button" class="nav-toggle hide-m" aria-controls="nav-principal" aria-expanded="{{navExpanded}}" aria-label="{{navToggleLabel}}" title="{{navToggleLabel}}" onClick="{{toggleNav}}" style="margin-top: 8px; width: 44px; height: 44px; border: 1px solid #2C3238; border-radius: 6px; background: transparent; color: #C9CDD2; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"></path></svg></button>
-<div class="nav-user" style="margin-top: 8px; padding: 16px 12px 4px; border-top: 1px solid #2C3238; display: flex; flex-direction: column; gap: 2px"><span class="nav-user-info" style="font-size: 13px; font-weight: 500">{{navUser}}</span><span class="nav-user-info" style="font-size: 12px; color: #9AA1A9">Administrador · {{platformLabel}}</span><a class="nav-item" href="Login.dc.html" style="margin-top: 6px; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0; font-size: 13px; color: #C9CDD2"><span class="nav-out-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"></path><path d="m10 16-4-4 4-4M6 12h10"></path></svg></span><span class="nav-label">Cerrar sesión</span></a></div>
+<button type="button" class="nav-item nav-toggle hide-m" aria-controls="nav-principal" aria-expanded="{{navExpanded}}" title="{{navToggleLabel}}" onClick="{{toggleNav}}" style="display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: #9AA1A9; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"></path></svg><span class="nav-label">{{navToggleLabel}}</span></button>
+<div class="nav-user" style="margin-top: 8px; padding: 12px 4px 0; border-top: 1px solid #2C3238; display: flex; align-items: center; gap: 10px"><span class="nav-avatar" aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: #262B31; color: #C9CDD2; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.9-3.6 3.7-5.5 7-5.5s6.1 1.9 7 5.5"></path></svg></span><span class="nav-user-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600; color: #E8EAE6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{navUser}}</span><span style="font-size: 12px; color: #9AA1A9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Administrador · {{platformLabel}}</span></span><a class="nav-logout" href="Login.dc.html" aria-label="Cerrar sesión" title="Cerrar sesión" style="flex: none; margin-left: auto; width: 44px; height: 44px; border-radius: 6px; color: #C9CDD2; display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"></path><path d="m10 16-4-4 4-4M6 12h10"></path></svg></a></div>
 </nav>
 
 <main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 20px; border-bottom: 2px solid {{t.ink}}">
 <h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Ajustes</h1>
-<span style="font-size: 14px; color: {{t.ink2}}">Preferencias de la aplicación, conexión de datos y acceso de usuarios.</span>
+<span style="font-size: 14px; color: {{t.ink2}}">Preferencias de la aplicación y acceso de usuarios.</span>
 </div>
 
 <div role="tablist" aria-label="Secciones de ajustes" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: {{t.surface2}}; border-radius: 8px; align-self: flex-start">
@@ -120,47 +122,6 @@ a{color:#B4430F}a:hover{color:#8A320A}
 </section>
 </sc-if>
 
-<sc-if value="{{showDatos}}" hint-placeholder-val="{{ false }}">
-<section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px; display: flex; flex-direction: column">
-<div style="padding: 20px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
-<div style="display: flex; flex-direction: column; gap: 4px">
-<h2 style="margin: 0; font-size: 18px; font-weight: 600">Conexión a la base de datos</h2>
-<sc-if value="{{isWeb}}" hint-placeholder-val="{{ true }}">
-<span style="font-size: 14px; color: {{t.ink2}}">Solo administradores. Solo lectura: la conexión se configura en el servidor de la empresa y la cadena de conexión nunca se envía al navegador.</span>
-</sc-if>
-<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ false }}">
-<span style="font-size: 14px; color: {{t.ink2}}">Solo administradores. Base de datos a la que se conecta este equipo, en él mismo o en un servidor remoto.</span>
-</sc-if>
-</div>
-<span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 4px; background: {{db.bg}}; color: {{db.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{db.fg}}"></span>{{db.label}}</span>
-</div>
-<div style="padding: 20px; display: flex; flex-direction: column; gap: 20px">
-<sc-if value="{{dbError}}" hint-placeholder-val="{{ false }}">
-<div role="alert" style="padding: 12px 16px; border-radius: 8px; background: {{t.errBg}}; color: {{t.errFg}}; font-size: 14px">No se ha podido conectar: la base de datos no responde en 10 segundos. Comprueba que el servidor está en marcha y vuelve a probar.</div>
-</sc-if>
-<dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 1px solid {{t.border}}; border-radius: 8px; overflow: hidden">
-<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Servidor</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">[HOST]</dd></div>
-<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Versión de la base de datos</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">{{db.version}}</dd></div>
-<div style="padding: 12px 16px; background: {{t.surface2}}"><dt style="font-size: 12px; color: {{t.ink3}}">Última comprobación</dt><dd style="margin: 4px 0 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px">[FECHA Y HORA]</dd></div>
-</dl>
-<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ false }}">
-<div style="display: flex; flex-direction: column; gap: 6px">
-<label for="aj-uri" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">Cadena de conexión MongoDB</label>
-<input id="aj-uri" type="text" value="mongodb://[USUARIO]:••••••••@[HOST]:27017/wholesale?tls=true" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid {{t.control}}; border-radius: 6px; font: 500 14px 'IBM Plex Mono', monospace; color: {{t.ink}}; background: {{t.surface}}">
-<span style="font-size: 12px; color: {{t.ink3}}">La contraseña se muestra oculta y se guarda cifrada en este equipo. Un servidor remoto exige conexión cifrada (TLS).</span>
-</div>
-<div role="note" style="padding: 12px 16px; border-radius: 8px; border: 1px solid {{t.warnBorder}}; background: {{t.warnBg}}; color: {{t.warnFg}}; font-size: 14px">Al guardar, la aplicación pasa a la nueva base de datos y se cierran todas las sesiones de este equipo, también la tuya: volverás al inicio de sesión.</div>
-</sc-if>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; padding: 16px 20px; border-top: 1px solid {{t.border}}">
-<button type="button" style="height: 44px; padding: 0 18px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Probar conexión</button>
-<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ false }}">
-<button type="button" style="height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Guardar cambios</button>
-</sc-if>
-</div>
-</section>
-</sc-if>
-
 <sc-if value="{{showUsuarios}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 24px">
 
@@ -202,8 +163,8 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <p style="margin: 0; padding: 32px 20px; text-align: center; font-size: 14px; color: {{t.ink2}}">Todavía no hay usuarios. El primero que des de alta será el Administrador.</p>
 </sc-if>
 <sc-if value="{{notFirstAdmin}}" hint-placeholder-val="{{ true }}">
-<div class="desk" style="overflow-x: auto">
-<table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
+<div class="desk" style="overflow: visible">
+<table style="width: 100%; border-collapse: collapse; font-size: 14px">
 <thead>
 <tr style="background: {{t.surface2}}; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.ink2}}">
 <th style="padding: 10px 20px; font-weight: 600">Usuario</th><th style="padding: 10px 12px; font-weight: 600">Rol</th><th style="padding: 10px 12px; font-weight: 600">Último acceso</th><th style="padding: 10px 12px; font-weight: 600">Estado</th><th style="padding: 10px 20px; font-weight: 600"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Acciones</span></th>
@@ -219,7 +180,7 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <td style="position: relative; padding: 10px 20px; text-align: right">
 <button type="button" aria-label="Opciones de {{u.name}}" aria-haspopup="menu" aria-expanded="{{u.expanded}}" onClick="{{u.toggle}}" style="width: 44px; height: 44px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
 <sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{ false }}">
-<div role="menu" aria-label="Acciones sobre {{u.name}}" style="position: absolute; right: 20px; top: 56px; z-index: 3; min-width: 220px; padding: 6px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; flex-direction: column; text-align: left">
+<div role="menu" aria-label="Acciones sobre {{u.name}}" style="position: absolute; right: 20px; {{u.menuPos}}; z-index: 20; min-width: 220px; padding: 6px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 8px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex; flex-direction: column; text-align: left">
 <button type="button" role="menuitem" onClick="{{u.edit}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Editar nombre, email o rol</button>
 <button type="button" role="menuitem" onClick="{{u.reset}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Restablecer contraseña</button>
 <sc-if value="{{u.canBlock}}" hint-placeholder-val="{{ true }}">
@@ -243,7 +204,7 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: {{t.ink3}}">{{u.role}} · {{u.last}}</span><span style="align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: {{u.bg}}; color: {{u.fg}}; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase"><span style="width: 6px; height: 6px; border-radius: 1px; background: {{u.fg}}"></span>{{u.status}}</span></span>
 <button type="button" aria-label="Opciones de {{u.name}}" aria-haspopup="menu" aria-expanded="{{u.expanded}}" onClick="{{u.toggle}}" style="flex: none; width: 44px; height: 44px; border: 1px solid {{t.control}}; border-radius: 6px; background: {{t.surface}}; color: {{t.ink}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
 <sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{ false }}">
-<div role="menu" aria-label="Acciones sobre {{u.name}}" style="position: absolute; right: 16px; top: 60px; z-index: 3; min-width: 220px; padding: 6px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; flex-direction: column">
+<div role="menu" aria-label="Acciones sobre {{u.name}}" style="position: absolute; right: 16px; {{u.menuPosMob}}; z-index: 20; min-width: 220px; padding: 6px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 8px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex; flex-direction: column">
 <button type="button" role="menuitem" onClick="{{u.edit}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Editar nombre, email o rol</button>
 <button type="button" role="menuitem" onClick="{{u.reset}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: {{t.ink}}; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer">Restablecer contraseña</button>
 <sc-if value="{{u.canBlock}}" hint-placeholder-val="{{ true }}">
@@ -333,7 +294,7 @@ a{color:#B4430F}a:hover{color:#8A320A}
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"plataforma":{"editor":"enum","options":["Web","Escritorio"],"default":"Web"},"conexion":{"editor":"enum","options":["Conectado","Error"],"default":"Conectado"},"primerAcceso":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"plataforma":{"editor":"enum","options":["Web","Escritorio"],"default":"Web"},"primerAcceso":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1100}}'>
 class Component extends DCLogic {
 constructor(props) {
 super(props);
@@ -347,9 +308,8 @@ const st = this.state;
 const t = st.theme === 'oscuro' ? dark : light;
 const sel = (on) => (on ? '2px solid ' + t.accent : '1px solid ' + t.control);
 const isDesktop = (this.props.plataforma ?? 'Web') === 'Escritorio';
-const dbError = (this.props.conexion ?? 'Conectado') === 'Error';
 const firstAdmin = this.props.primerAcceso ?? false;
-const tabs = [['apariencia', 'Apariencia'], ['datos', 'Base de datos'], ['usuarios', 'Usuarios']].map(([id, label]) => ({
+const tabs = [['apariencia', 'Apariencia'], ['usuarios', 'Usuarios']].map(([id, label]) => ({
 label, selected: st.tab === id ? 'true' : 'false',
 bg: st.tab === id ? t.surface : 'transparent', fg: st.tab === id ? t.ink : t.ink2,
 pick: () => this.setState({ tab: id })
@@ -367,9 +327,6 @@ const densities = [['comoda', 'Cómoda'], ['compacta', 'Compacta']].map(([id, la
 label, checked: st.density === id ? 'true' : 'false', border: sel(st.density === id), bg: st.density === id ? t.accentSoft : t.surface,
 pick: () => this.setState({ density: id })
 }));
-const db = dbError
-? { label: 'Error', bg: t.errBg, fg: t.errFg, version: 'No disponible' }
-: { label: 'Conectado', bg: t.okBg, fg: t.okFg, version: '8.0.x' };
 // Roles y matriz: en la aplicación vienen de la base de datos (spec 003, FR-020); aquí, los valores iniciales.
 const roles = [
 ['Administrador', 'Adm.'], ['Comercial', 'Com.'], ['Almacén', 'Alm.'], ['Administración', 'Admón.']
@@ -387,13 +344,15 @@ const base = [
 ['cs', 'CS', 'Carlos Sanz', 'Almacén', '12/08 14:20', false]
 ];
 const blocked = st.blocked;
-const users = firstAdmin ? [] : base.map(([id, initials, name, role, last, isMe]) => {
+const users = firstAdmin ? [] : base.map(([id, initials, name, role, last, isMe], i) => {
+const up = i >= base.length - 2;
 const isBlocked = Boolean(blocked[id]);
 const open = st.menu === id;
 return {
 initials, name, role, last, isMe, email: '[EMAIL]',
 status: isBlocked ? 'Bloqueado' : 'Activo',
 bg: isBlocked ? t.errBg : t.okBg, fg: isBlocked ? t.errFg : t.okFg,
+menuPos: up ? "bottom: 56px" : "top: 56px", menuPosMob: up ? "bottom: 60px" : "top: 60px",
 menuOpen: open, expanded: open ? 'true' : 'false',
 canBlock: !isMe && !isBlocked, canUnblock: isBlocked,
 toggle: () => this.setState({ menu: open ? null : id }),
@@ -410,13 +369,13 @@ const dlg = target
 : { name: '', role: '', onlyAdmin: false };
 return {
 navClass: this.state.navCollapsed ? ' is-collapsed' : '', navExpanded: this.state.navCollapsed ? 'false' : 'true', navToggleLabel: this.state.navCollapsed ? 'Desplegar menú' : 'Plegar menú', toggleNav: () => this.setState({ navCollapsed: !this.state.navCollapsed }), 
-t, tabs, themes, densities, db, roles, perms, users, dlg,
-isDesktop, isWeb: !isDesktop, dbError, firstAdmin, notFirstAdmin: !firstAdmin,
+t, tabs, themes, densities, roles, perms, users, dlg,
+isDesktop, isWeb: !isDesktop, firstAdmin, notFirstAdmin: !firstAdmin,
 platformLabel: isDesktop ? 'Escritorio' : 'Web',
 navUser: firstAdmin ? 'admin (cuenta inicial)' : '[USUARIO]',
 createLabel: firstAdmin ? 'Crear Administrador' : 'Dar de alta',
 userCount: firstAdmin ? '0 usuarios' : users.length + ' usuarios',
-showApariencia: st.tab === 'apariencia', showDatos: st.tab === 'datos', showUsuarios: st.tab === 'usuarios',
+showApariencia: st.tab === 'apariencia', showUsuarios: st.tab === 'usuarios',
 showDialog: Boolean(st.dialog), showEdit: st.dialog === 'edit', showReset: st.dialog === 'reset', showBlock: st.dialog === 'block',
 closeDialog: () => this.setState({ dialog: null }),
 confirmBlock: () => this.setState({ dialog: null, blocked: { ...blocked, [st.target]: true } })

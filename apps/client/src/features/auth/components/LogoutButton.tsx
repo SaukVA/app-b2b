@@ -7,8 +7,9 @@ import { logout } from '../authSlice';
 /** Sin "from": al volver a entrar se va a la pantalla de inicio, no a la última página visitada. */
 export function LogoutButton({
   className,
+  title,
   children = 'Cerrar sesión',
-}: { className?: string; children?: ReactNode } = {}) {
+}: { className?: string; title?: string; children?: ReactNode } = {}) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -18,7 +19,12 @@ export function LogoutButton({
   }
 
   return (
-    <Button variant="tertiary" className={className} onClick={() => void handleClick()}>
+    <Button
+      variant="tertiary"
+      className={className}
+      title={title}
+      onClick={() => void handleClick()}
+    >
       {children}
     </Button>
   );

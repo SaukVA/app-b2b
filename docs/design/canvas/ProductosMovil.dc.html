@@ -27,6 +27,11 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .is-collapsed .nav-user{padding:12px 0 4px!important;align-items:center}
 .is-collapsed .nav-toggle{align-self:center}
 .is-collapsed .nav-toggle svg{transform:rotate(180deg)}
+.nav-toggle:hover,.nav-logout:hover{background:#262B31!important;color:#E8EAE6!important}
+.nav-toggle:focus-visible,.nav-logout:focus-visible{outline:2px solid #F08A5D;outline-offset:2px}
+.is-collapsed .nav-user{flex-direction:column;gap:8px}
+.is-collapsed .nav-logout{margin-left:0!important}
+.is-collapsed .nav-avatar{display:none!important}
 @container app (max-width: 760px){
 .nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
 .nav-brand{padding:0 8px 0 0!important}
@@ -35,6 +40,7 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .nav-push{margin-top:0!important}
 .nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
 .nav-user a{margin:0!important;white-space:nowrap}
+.nav-avatar{display:none!important}
 .nav.is-collapsed{flex:1 1 auto!important}
 .is-collapsed .nav-item{padding:0 12px!important}
 .is-collapsed .nav-label,.is-collapsed .nav-stamp{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip:auto!important}
@@ -45,7 +51,7 @@ a{color:#B4430F}a:hover{color:#8A320A}
 .mob{display:flex!important}
 .sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
 .lg-hero{padding:16px 20px!important;gap:0!important}
-.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+.lg-main{padding:32px 16px 40px!important}
 }
 </style>
 </helmet>

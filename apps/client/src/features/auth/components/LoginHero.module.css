@@ -48,14 +48,9 @@
   color: var(--disabled);
 }
 
+/* Estrecho (LoginMovil, 008): sin panel de presentación; solo el formulario, centrado. */
 @container login (max-width: 760px) {
   .hero {
-    padding: 16px 20px;
-    gap: 0;
-  }
-
-  .claim,
-  .footer {
     display: none;
   }
 }
