@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T18:00:00Z",
-  "updated_at": "2026-10-22T22:45:00Z",
+  "updated_at": "2026-10-22T23:30:00Z",
   "spec": "008-design-alignment",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -8,7 +8,8 @@
   "epic": {
     "key": "AB2B-550",
     "summary": "Ajuste de la aplicación al nuevo diseño del menú y del login",
-    "url": "https://sauk.atlassian.net/browse/AB2B-550"
+    "url": "https://sauk.atlassian.net/browse/AB2B-550",
+    "status": "completed"
   },
   "stories": [
     {
@@ -283,7 +284,7 @@
           "key": "AB2B-582",
           "id": "T025",
           "summary": "T025: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano quickstart.md completo en web (§3) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T022",
             "T023",
@@ -292,7 +293,7 @@
           "url": "https://sauk.atlassian.net/browse/AB2B-582"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "links": [
@@ -425,7 +426,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 25,
-    "completed_tasks": 24,
-    "pending_tasks": 1
+    "completed_tasks": 25,
+    "pending_tasks": 0
   }
 }
