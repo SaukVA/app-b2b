@@ -129,8 +129,35 @@ describe('AppNav · pie', () => {
     expect(within(nav()).getByText('Administrador · Web')).toBeTruthy();
   });
 
-  it('ofrece «Cerrar sesión» (FR-008)', () => {
+  it('ofrece «Cerrar sesión» como botón de icono con title (FR-008, 008 FR-007)', () => {
     renderAppNav();
-    expect(within(nav()).getByRole('button', { name: 'Cerrar sesión' })).toBeTruthy();
+    const logout = within(nav()).getByRole('button', { name: 'Cerrar sesión' });
+    expect(logout.getAttribute('title')).toBe('Cerrar sesión');
+    expect(logout.querySelector('svg')).not.toBeNull();
+  });
+});
+
+describe('AppNav · pie en una fila (008, US2)', () => {
+  const LONG_NAME = 'María de los Ángeles Fernández-Villaverde y Sánchez de la Rosa';
+
+  it('el nombre y «rol · canal» llevan title con su texto completo (FR-006)', () => {
+    renderAppNav();
+    expect(within(nav()).getByText('Ana').getAttribute('title')).toBe('Ana');
+    const role = within(nav()).getByText('Comercial · Web');
+    expect(role.getAttribute('title')).toBe('Comercial · Web');
+  });
+
+  it('el avatar no está en el árbol accesible', () => {
+    renderAppNav();
+    const footerAvatar = nav().querySelector('[aria-hidden="true"] svg');
+    expect(footerAvatar).not.toBeNull();
+    expect(within(nav()).queryByRole('img')).toBeNull();
+  });
+
+  it('un nombre largo se conserva completo: el recorte es solo visual', () => {
+    renderAppNav({ ...user('Comercial', COMERCIAL), name: LONG_NAME });
+    const name = within(nav()).getByText(LONG_NAME);
+    expect(name.textContent).toBe(LONG_NAME);
+    expect(name.getAttribute('title')).toBe(LONG_NAME);
   });
 });

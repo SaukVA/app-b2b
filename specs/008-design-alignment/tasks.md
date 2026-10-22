@@ -91,13 +91,13 @@ description: "Task list for feature 008-design-alignment"
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T009 [P] [US2] Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx` (bloque «AppNav · pie»):
+- [X] T009 [P] [US2] Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx` (bloque «AppNav · pie»):
   - el nombre lleva `title` igual al nombre completo y «`roleName` · Web» lleva `title` con ese texto completo (clarificación 2026-10-22, FR-006);
   - hay un avatar con `aria-hidden="true"` (no aparece en el árbol accesible);
   - el botón «Cerrar sesión» se encuentra por nombre accesible y tiene `title="Cerrar sesión"`; su texto no se ve como texto suelto (está oculto visualmente) — comprobar que existe el `svg` del icono dentro del botón;
   - con un nombre de 60 caracteres el `textContent` del nombre es el nombre completo (el recorte es solo CSS);
   - el canal Escritorio y la cuenta inicial siguen como en 005.
-- [ ] T010 [P] [US2] Ampliar `e2e/navigation.spec.ts`:
+- [X] T010 [P] [US2] Ampliar `e2e/navigation.spec.ts`:
   - en ancho, el pie del `navigation` «Principal» muestra «Administrador · Web» y el botón «Cerrar sesión» está a la derecha del texto (`boundingBox().x` mayor) y mide 44×44;
   - plegado, el pie solo tiene el botón «Cerrar sesión» (el texto «Administrador · Web» no es visible);
   - a 390 px, el botón «Cerrar sesión» sigue visible y funciona, mide 44×44 y su texto no se ve (solo icono, clarificación 2026-10-22);
@@ -105,14 +105,14 @@ description: "Task list for feature 008-design-alignment"
 
 ### Implementación de US2
 
-- [ ] T011 [P] [US2] Añadir `PersonIcon` en `apps/client/src/features/navigation/NavIcons.tsx` (icono de persona de trazo como el del tablero: `circle cx=12 cy=8 r=3.5` + hombros), con el mismo `NavIcon` que el resto.
-- [ ] T012 [P] [US2] Permitir `title` en `apps/client/src/features/auth/components/LogoutButton.tsx` (prop opcional que se pasa a `Button`), sin cambiar su comportamiento ni sus usos actuales.
-- [ ] T013 [US2] Reescribir `NavFooter` en `apps/client/src/features/navigation/components/AppNav.tsx` según contracts/navigation-ui.md §2:
+- [X] T011 [P] [US2] Añadir `PersonIcon` en `apps/client/src/features/navigation/NavIcons.tsx` (icono de persona de trazo como el del tablero: `circle cx=12 cy=8 r=3.5` + hombros), con el mismo `NavIcon` que el resto.
+- [X] T012 [P] [US2] Permitir `title` en `apps/client/src/features/auth/components/LogoutButton.tsx` (prop opcional que se pasa a `Button`), sin cambiar su comportamiento ni sus usos actuales.
+- [X] T013 [US2] Reescribir `NavFooter` en `apps/client/src/features/navigation/components/AppNav.tsx` según contracts/navigation-ui.md §2:
   - `<span className={styles.avatar} aria-hidden="true"><PersonIcon /></span>`;
   - bloque `styles.who` con `<span className={styles.name} title={user.name}>` y `<span className={styles.role} title={roleLine}>` (`roleLine = `${user.roleName} · ${channel}``);
   - `<LogoutButton className={styles.logout} title="Cerrar sesión">` con `<LogoutIcon />` y `<span className={styles.logoutLabel}>Cerrar sesión</span>` (oculto visualmente siempre);
   - subcomponentes pequeños si hace falta (≤ 40 líneas). Depende de T011 y T012.
-- [ ] T014 [US2] Reescribir `apps/client/src/features/navigation/components/AppNav.module.css`:
+- [X] T014 [US2] Reescribir `apps/client/src/features/navigation/components/AppNav.module.css`:
   - `.footer`: fila (`display: flex; align-items: center; gap: 10px; min-width: 0`);
   - `.avatar`: 36×36, radio 6, fondo `--nav-active`, color `--nav-text`, centrado, `flex: none`;
   - `.who`: columna, `flex: 1; min-width: 0`; `.name` 13/600 `--nav-text-active` y `.role` 12/400 `--disabled`, ambos con `overflow: hidden; white-space: nowrap; text-overflow: ellipsis`;

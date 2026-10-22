@@ -100,3 +100,13 @@ export function LogoutIcon() {
     </NavIcon>
   );
 }
+
+/** Avatar genérico del pie del menú (diseño de 008): sin foto ni iniciales. */
+export function PersonIcon() {
+  return (
+    <NavIcon>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 20c.9-3.6 3.7-5.5 7-5.5s6.1 1.9 7 5.5" />
+    </NavIcon>
+  );
+}
