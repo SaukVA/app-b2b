@@ -169,9 +169,9 @@ description: "Task list for feature 008-design-alignment"
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T022 Eliminar `apps/client/src/components/BrandMark.tsx`, `BrandMark.module.css` y `BrandMark.test.tsx`, ya sin usos tras T008 y T017 (research R1). Comprobar con una búsqueda que no queda ninguna referencia a `BrandMark` en `apps/client` ni en `e2e`. Depende de T008 y T017.
-- [ ] T023 [P] Revisar con `playwright-cli` el menú (desplegado, plegado), el pie y el login a 390 px y 1440 px, en claro y en oscuro, comparando con los tableros (SC-006): orden del teclado, foco visible (contorno naranja en plegar y cerrar sesión), objetivos de 44 px, contraste de 4.5:1 en textos, etiquetas flotantes plegado y sin scroll horizontal. Repetir el pie y el elemento de plegar dentro de Electron 34 (Chromium 132) para descartar diferencias de `align-items` en botones.
-- [ ] T024 [P] Revisar que ninguna función nueva o cambiada pasa de 40 líneas efectivas y que no quedan comentarios que mencionen la marca o el `IconButton` de plegar (principio IV).
+- [X] T022 Eliminar `apps/client/src/components/BrandMark.tsx`, `BrandMark.module.css` y `BrandMark.test.tsx`, ya sin usos tras T008 y T017 (research R1). Comprobar con una búsqueda que no queda ninguna referencia a `BrandMark` en `apps/client` ni en `e2e`. Depende de T008 y T017.
+- [X] T023 [P] Revisar con `playwright-cli` el menú (desplegado, plegado), el pie y el login a 390 px y 1440 px, en claro y en oscuro, comparando con los tableros (SC-006): orden del teclado, foco visible (contorno naranja en plegar y cerrar sesión), objetivos de 44 px, contraste de 4.5:1 en textos, etiquetas flotantes plegado y sin scroll horizontal. Repetir el pie y el elemento de plegar dentro de Electron 34 (Chromium 132) para descartar diferencias de `align-items` en botones.
+- [X] T024 [P] Revisar que ninguna función nueva o cambiada pasa de 40 líneas efectivas y que no quedan comentarios que mencionen la marca o el `IconButton` de plegar (principio IV).
 - [ ] T025 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano quickstart.md completo en web (§3) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).
 
 ---
