@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T18:00:00Z",
-  "updated_at": "2026-10-22T19:00:00Z",
+  "updated_at": "2026-10-22T20:00:00Z",
   "spec": "008-design-alignment",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -51,7 +51,7 @@
           "key": "AB2B-560",
           "id": "T003",
           "summary": "T003: Ajustar `apps/client/src/components/NavBar.test.tsx` al contrato N4′–N6′:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-560"
         },
@@ -59,7 +59,7 @@
           "key": "AB2B-561",
           "id": "T004",
           "summary": "T004: Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx`: añadir «no muestra marca» — dentro del `navigation` «Principal» no aparecen «Venta a mayoristas» ni «M» como logotipo, desplegado y plegado (`localStorage['navigation.collapse",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-561"
         },
@@ -67,7 +67,7 @@
           "key": "AB2B-562",
           "id": "T005",
           "summary": "T005: Ajustar `e2e/navigation.spec.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-562"
         },
@@ -75,7 +75,7 @@
           "key": "AB2B-563",
           "id": "T006",
           "summary": "T006: En `apps/client/src/components/NavBar.tsx`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T003"
           ],
@@ -85,7 +85,7 @@
           "key": "AB2B-564",
           "id": "T007",
           "summary": "T007: En `apps/client/src/components/NavBar.module.css`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T006"
           ],
@@ -95,7 +95,7 @@
           "key": "AB2B-565",
           "id": "T008",
           "summary": "T008: En `apps/client/src/features/navigation/components/AppNav.tsx`, dejar de pasar `brand` y `brandCollapsed` y quitar el import de `BrandMark`. Comprobar que T004 pasa y ejecutar `npm run test:e2e -- navigation` para T005.",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T006",
             "T007"
@@ -103,7 +103,7 @@
           "url": "https://sauk.atlassian.net/browse/AB2B-565"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-554",
@@ -425,7 +425,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 25,
-    "completed_tasks": 2,
-    "pending_tasks": 23
+    "completed_tasks": 8,
+    "pending_tasks": 17
   }
 }
