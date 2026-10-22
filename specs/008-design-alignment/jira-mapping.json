@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T18:00:00Z",
-  "updated_at": "2026-10-22T21:00:00Z",
+  "updated_at": "2026-10-22T21:30:00Z",
   "spec": "008-design-alignment",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -176,7 +176,7 @@
           "key": "AB2B-572",
           "id": "T015",
           "summary": "T015: Crear `apps/client/src/features/auth/components/LoginHero.test.tsx`: la región «Presentación» muestra el titular «Todo el ciclo de venta, en una sola hoja.» y no contiene «Venta a mayoristas» ni el logotipo «M».",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-572"
         },
@@ -184,7 +184,7 @@
           "key": "AB2B-573",
           "id": "T016",
           "summary": "T016: Ampliar `e2e/smoke.spec.ts` con dos tests de login:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-573"
         },
@@ -192,7 +192,7 @@
           "key": "AB2B-574",
           "id": "T017",
           "summary": "T017: En `apps/client/src/features/auth/components/LoginHero.tsx`, quitar `BrandMark` y su import, y actualizar el comentario («por debajo de 760 px no se muestra»). Comprobar que T015 pasa.",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T015"
           ],
@@ -202,7 +202,7 @@
           "key": "AB2B-575",
           "id": "T018",
           "summary": "T018: En `apps/client/src/features/auth/components/LoginHero.module.css`, dentro de `@container login (max-width: 760px)`, sustituir la franja (`padding`/`gap` y la ocultación de `.claim`/`.footer`) por `.hero { display: none; }`. Revisar que el reparto v",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T017"
           ],
@@ -212,14 +212,14 @@
           "key": "AB2B-576",
           "id": "T019",
           "summary": "T019: En `apps/client/src/pages/LoginPage.module.css`, quitar `align-items: flex-start` del `.main` dentro de `@container login (max-width: 760px)` (se mantiene `padding: 32px 16px 40px`). Ejecutar `npm run test:e2e -- smoke` y comprobar que T016 pasa.",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T018"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-576"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-556",
@@ -425,7 +425,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 25,
-    "completed_tasks": 14,
-    "pending_tasks": 11
+    "completed_tasks": 19,
+    "pending_tasks": 6
   }
 }
