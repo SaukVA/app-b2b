@@ -157,11 +157,11 @@ description: "Task list for feature 008-design-alignment"
 
 ### Tests de US4 (primero, deben fallar) ⚠️
 
-- [ ] T020 [P] [US4] Ampliar `apps/client/src/pages/SettingsPage.test.tsx`: el subtítulo es exactamente «Preferencias de la aplicación y acceso de usuarios.» y no aparece «conexión de datos».
+- [X] T020 [P] [US4] Ampliar `apps/client/src/pages/SettingsPage.test.tsx`: el subtítulo es exactamente «Preferencias de la aplicación y acceso de usuarios.» y no aparece «conexión de datos».
 
 ### Implementación de US4
 
-- [ ] T021 [US4] En `apps/client/src/pages/SettingsPage.tsx`, cambiar el subtítulo a «Preferencias de la aplicación y acceso de usuarios.» y el comentario de `useSettingsTabs` («la fila «Ajustes» de la matriz cubre la pestaña de Usuarios»). Comprobar que T020 pasa.
+- [X] T021 [US4] En `apps/client/src/pages/SettingsPage.tsx`, cambiar el subtítulo a «Preferencias de la aplicación y acceso de usuarios.» y el comentario de `useSettingsTabs` («la fila «Ajustes» de la matriz cubre la pestaña de Usuarios»). Comprobar que T020 pasa.
 
 **Checkpoint**: las cuatro historias funcionan.
 
