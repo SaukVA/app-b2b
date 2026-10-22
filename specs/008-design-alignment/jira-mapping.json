@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T18:00:00Z",
-  "updated_at": "2026-10-22T20:00:00Z",
+  "updated_at": "2026-10-22T21:00:00Z",
   "spec": "008-design-alignment",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -114,7 +114,7 @@
           "key": "AB2B-566",
           "id": "T009",
           "summary": "T009: Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx` (bloque «AppNav · pie»):",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-566"
         },
@@ -122,7 +122,7 @@
           "key": "AB2B-567",
           "id": "T010",
           "summary": "T010: Ampliar `e2e/navigation.spec.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-567"
         },
@@ -130,7 +130,7 @@
           "key": "AB2B-568",
           "id": "T011",
           "summary": "T011: Añadir `PersonIcon` en `apps/client/src/features/navigation/NavIcons.tsx` (icono de persona de trazo como el del tablero: `circle cx=12 cy=8 r=3.5` + hombros), con el mismo `NavIcon` que el resto.",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-568"
         },
@@ -138,7 +138,7 @@
           "key": "AB2B-569",
           "id": "T012",
           "summary": "T012: Permitir `title` en `apps/client/src/features/auth/components/LogoutButton.tsx` (prop opcional que se pasa a `Button`), sin cambiar su comportamiento ni sus usos actuales.",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-569"
         },
@@ -146,7 +146,7 @@
           "key": "AB2B-570",
           "id": "T013",
           "summary": "T013: Reescribir `NavFooter` en `apps/client/src/features/navigation/components/AppNav.tsx` según contracts/navigation-ui.md §2:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T011",
             "T012"
@@ -157,7 +157,7 @@
           "key": "AB2B-571",
           "id": "T014",
           "summary": "T014: Reescribir `apps/client/src/features/navigation/components/AppNav.module.css`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T007",
             "T013"
@@ -165,7 +165,7 @@
           "url": "https://sauk.atlassian.net/browse/AB2B-571"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-555",
@@ -425,7 +425,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 25,
-    "completed_tasks": 8,
-    "pending_tasks": 17
+    "completed_tasks": 14,
+    "pending_tasks": 11
   }
 }
