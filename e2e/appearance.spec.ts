@@ -105,6 +105,25 @@ test.describe.serial('Tema', () => {
   });
 });
 
+// Bug desktop-theme-previews: el Chromium 132 de Electron 34 da a <button> `align-items: flex-start` por
+// defecto y las miniaturas se quedaban en ~27 px. Se imita esa hoja del navegador para no depender de él.
+test('las miniaturas de tema ocupan el ancho de su tarjeta aunque el navegador no estire los botones', async ({
+  page,
+}) => {
+  await loginAsAdmin(page);
+  await openAppearance(page);
+  await page.addStyleTag({ content: 'button { align-items: flex-start; }' });
+
+  const cards = page.getByRole('radiogroup', { name: 'Tema' }).getByRole('radio');
+  await expect(cards).toHaveCount(3);
+  for (const card of await cards.all()) {
+    const cardBox = await card.boundingBox();
+    const previewBox = await card.locator('span[aria-hidden="true"]').first().boundingBox();
+    // Ancho útil de la tarjeta: sin el padding (12 px) ni el borde (hasta 2 px) de cada lado.
+    expect(previewBox!.width).toBeGreaterThanOrEqual((cardBox!.width - 28) * 0.9);
+  }
+});
+
 // 004 US4. Datos sembrados en la base de datos (support/db.ts), con logins únicos por proyecto porque
 // desktop y mobile comparten servidor.
 const PASSWORD = 'secreto123';
