@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T18:00:00Z",
-  "updated_at": "2026-10-22T21:30:00Z",
+  "updated_at": "2026-10-22T22:00:00Z",
   "spec": "008-design-alignment",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -230,7 +230,7 @@
           "key": "AB2B-577",
           "id": "T020",
           "summary": "T020: Ampliar `apps/client/src/pages/SettingsPage.test.tsx`: el subtítulo es exactamente «Preferencias de la aplicación y acceso de usuarios.» y no aparece «conexión de datos».",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-577"
         },
@@ -238,14 +238,14 @@
           "key": "AB2B-578",
           "id": "T021",
           "summary": "T021: En `apps/client/src/pages/SettingsPage.tsx`, cambiar el subtítulo a «Preferencias de la aplicación y acceso de usuarios.» y el comentario de `useSettingsTabs` («la fila «Ajustes» de la matriz cubre la pestaña de Usuarios»). Comprobar que T020 pasa.",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T020"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-578"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-557",
@@ -425,7 +425,7 @@
   "summary": {
     "total_stories": 7,
     "total_tasks": 25,
-    "completed_tasks": 19,
-    "pending_tasks": 6
+    "completed_tasks": 21,
+    "pending_tasks": 4
   }
 }
