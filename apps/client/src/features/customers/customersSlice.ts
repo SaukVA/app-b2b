@@ -21,6 +21,9 @@ const initialState: CustomersState = {
   requestId: null,
 };
 
+/** Mensaje fijo del error de carga (FR-013): nunca se muestran los detalles técnicos del servidor. */
+export const CUSTOMERS_LOAD_ERROR_MESSAGE = 'No se ha podido cargar el listado de clientes.';
+
 export const loadCustomers = createAsyncThunk<ListPage<CustomerListItem>, CustomerListQuery>(
   'customers/load',
   (query) => fetchCustomers(query),
@@ -34,6 +37,7 @@ const customersSlice = createSlice({
     builder
       .addCase(loadCustomers.pending, (state, action) => {
         state.status = 'loading';
+        state.error = null;
         state.requestId = action.meta.requestId;
       })
       .addCase(loadCustomers.fulfilled, (state, action) => {
@@ -41,6 +45,12 @@ const customersSlice = createSlice({
         state.status = 'succeeded';
         state.items = action.payload.items;
         state.total = action.payload.total;
+      })
+      .addCase(loadCustomers.rejected, (state, action) => {
+        // Una petición abortada (criterios nuevos o pantalla cerrada) no es un error.
+        if (action.meta.aborted || action.meta.requestId !== state.requestId) return;
+        state.status = 'failed';
+        state.error = CUSTOMERS_LOAD_ERROR_MESSAGE;
       });
   },
 });

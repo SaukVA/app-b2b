@@ -1,5 +1,7 @@
+import { Alert } from '../../../components/Alert';
+import { Button } from '../../../components/Button';
 import { EmptyState } from '../../../components/EmptyState';
-import type { CustomersState } from '../customersSlice';
+import { CUSTOMERS_LOAD_ERROR_MESSAGE, type CustomersState } from '../customersSlice';
 import styles from './CustomersListStatus.module.css';
 
 export interface CustomersListStatusProps {
@@ -9,11 +11,23 @@ export interface CustomersListStatusProps {
   onRetry: () => void;
 }
 
+/** Error que se anuncia de inmediato y se distingue de la cartera vacía por su texto (FR-013, FR-014). */
+function LoadError({ onRetry }: Pick<CustomersListStatusProps, 'onRetry'>) {
+  return (
+    <div className={styles.error}>
+      <Alert variant="error">{CUSTOMERS_LOAD_ERROR_MESSAGE}</Alert>
+      <Button variant="secondary" onClick={onRetry}>
+        Reintentar
+      </Button>
+    </div>
+  );
+}
+
 /**
- * Zona de estado bajo las cabeceras del listado: cargando o aviso de cartera pendiente de carga, nunca dos a
- * la vez (FR-011, FR-012). Con clientes no muestra nada.
+ * Zona de estado bajo las cabeceras del listado: cargando, aviso de cartera pendiente de carga o error,
+ * nunca dos a la vez (FR-011 a FR-013). Con clientes no muestra nada.
  */
-export function CustomersListStatus({ status, total }: CustomersListStatusProps) {
+export function CustomersListStatus({ status, total, onRetry }: CustomersListStatusProps) {
   if (status === 'loading') {
     return (
       <p role="status" className={styles.loading}>
@@ -21,6 +35,7 @@ export function CustomersListStatus({ status, total }: CustomersListStatusProps)
       </p>
     );
   }
+  if (status === 'failed') return <LoadError onRetry={onRetry} />;
   if (status === 'succeeded' && total === 0) {
     return (
       <EmptyState title="Todavía no hay clientes">

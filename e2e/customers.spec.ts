@@ -154,3 +154,30 @@ test.describe('Clientes · cartera pendiente de carga (US2)', () => {
     await expect(page.getByRole('alert')).toHaveCount(0);
   });
 });
+
+test.describe('Clientes · error del listado (US3)', () => {
+  test('con el servidor en error se ve el mensaje, no el aviso; «Reintentar» lo resuelve', async ({
+    page,
+  }) => {
+    await page.route('**/api/customers**', (route) =>
+      route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: false, error: { code: 'INTERNAL', message: 'detalle' } }),
+      }),
+    );
+    await loginAsAdmin(page);
+    await mainNav(page)
+      .getByRole('link', { name: /Clientes/ })
+      .click();
+    const error = page.getByRole('alert');
+    await expect(error).toContainText('No se ha podido cargar el listado de clientes.');
+    await expect(error).not.toContainText('detalle');
+    await expect(emptyNotice(page)).toHaveCount(0);
+
+    await page.unroute('**/api/customers**');
+    await page.getByRole('button', { name: 'Reintentar' }).click();
+    await expect(emptyNotice(page)).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+  });
+});

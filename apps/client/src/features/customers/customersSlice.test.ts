@@ -1,7 +1,7 @@
 import type { CustomerListItem, ListPage } from '@app/shared';
 import { setupStore } from '../../store/store';
 import { fetchCustomers } from './customersApi';
-import { loadCustomers } from './customersSlice';
+import { CUSTOMERS_LOAD_ERROR_MESSAGE, loadCustomers } from './customersSlice';
 
 jest.mock('./customersApi', () => ({ fetchCustomers: jest.fn() }));
 
@@ -62,5 +62,47 @@ describe('customersSlice · solo cuenta la última petición (US2, research R9)'
     stale.resolve({ ...EMPTY_PAGE, total: 7 });
     await first;
     expect(store.getState().customers).toMatchObject({ status: 'loading', total: 0 });
+  });
+});
+
+describe('customersSlice · error al cargar (US3, FR-013)', () => {
+  const serverError = Object.assign(new Error('Request failed with status code 500'), {
+    response: {
+      status: 500,
+      data: { success: false, error: { code: 'X', message: 'detalle técnico' } },
+    },
+  });
+
+  it.each([
+    ['sin respuesta del servidor', new Error('Network Error')],
+    ['con un envelope de error del servidor', serverError],
+  ])('%s pasa a failed con el mensaje fijo, nunca el del servidor', async (_case, error) => {
+    mockedFetch.mockRejectedValue(error);
+    const store = setupStore();
+    await store.dispatch(loadCustomers({ page: 1 }));
+    expect(CUSTOMERS_LOAD_ERROR_MESSAGE).toBe('No se ha podido cargar el listado de clientes.');
+    expect(store.getState().customers).toMatchObject({
+      status: 'failed',
+      error: CUSTOMERS_LOAD_ERROR_MESSAGE,
+    });
+  });
+
+  it('un pending posterior limpia el error', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('Network Error'));
+    const store = setupStore();
+    await store.dispatch(loadCustomers({ page: 1 }));
+    mockedFetch.mockReturnValue(new Promise(() => {}));
+    void store.dispatch(loadCustomers({ page: 1 }));
+    expect(store.getState().customers).toMatchObject({ status: 'loading', error: null });
+  });
+
+  it('abortar una petición no la marca como error', async () => {
+    mockedFetch.mockReturnValue(new Promise(() => {}));
+    const store = setupStore();
+    const request = store.dispatch(loadCustomers({ page: 1 }));
+    request.abort();
+    await request;
+    expect(store.getState().customers.status).not.toBe('failed');
+    expect(store.getState().customers.error).toBeNull();
   });
 });

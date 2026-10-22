@@ -365,31 +365,31 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T040 [P] [US3] Ampliar `apps/client/src/features/customers/customersSlice.test.ts`:
+- [X] T040 [P] [US3] Ampliar `apps/client/src/features/customers/customersSlice.test.ts`:
   `loadCustomers.rejected` (sin respuesta y con un envelope de error del servidor) → `status: 'failed'` y
   `error === CUSTOMERS_LOAD_ERROR_MESSAGE` («No se ha podido cargar el listado de clientes.»), nunca el
   mensaje del servidor; un `pending` posterior limpia `error`; un `rejected` por `abort` no cambia el estado.
-- [ ] T041 [P] [US3] Ampliar `apps/client/src/features/customers/components/CustomersListStatus.test.tsx`:
+- [X] T041 [P] [US3] Ampliar `apps/client/src/features/customers/components/CustomersListStatus.test.tsx`:
   - con `status: 'failed'` muestra `role="alert"` con el mensaje y un botón «Reintentar», y no muestra el aviso;
   - pulsar «Reintentar» llama a `onRetry` una vez.
-- [ ] T042 [P] [US3] Ampliar `apps/client/src/pages/CustomersPage.test.tsx`:
+- [X] T042 [P] [US3] Ampliar `apps/client/src/pages/CustomersPage.test.tsx`:
   - con `fetchCustomers` rechazado se ve el error;
   - «Reintentar» llama de nuevo a `fetchCustomers` con los mismos criterios de la dirección y, si resuelve, se
     ve el aviso.
-- [ ] T043 [P] [US3] Ampliar `e2e/customers.spec.ts` (US3): con `page.route('**/api/customers**', …)`
+- [X] T043 [P] [US3] Ampliar `e2e/customers.spec.ts` (US3): con `page.route('**/api/customers**', …)`
   respondiendo 500 se ve el error y no el aviso; tras `page.unroute`, «Reintentar» muestra el aviso.
 
 ### Implementación de US3
 
-- [ ] T044 [P] [US3] En `apps/client/src/features/customers/customersSlice.ts`, definir y exportar
+- [X] T044 [P] [US3] En `apps/client/src/features/customers/customersSlice.ts`, definir y exportar
   `CUSTOMERS_LOAD_ERROR_MESSAGE`. En `rejected` (solo de la última petición, sin contar los `abort`), guardar
   `status: 'failed'` y ese mensaje; en `pending`, limpiar `error`. Comprobar que T040 pasa.
-- [ ] T045 [P] [US3] Añadir el caso `failed` a
+- [X] T045 [P] [US3] Añadir el caso `failed` a
   `apps/client/src/features/customers/components/CustomersListStatus.tsx`: `Alert variant="error"` con el
   mensaje y un `Button` secundario «Reintentar» (prop `onRetry`). Comprobar que T041 pasa.
-- [ ] T046 [US3] En `apps/client/src/pages/CustomersPage.tsx`, pasar `onRetry`, que vuelve a despachar
+- [X] T046 [US3] En `apps/client/src/pages/CustomersPage.tsx`, pasar `onRetry`, que vuelve a despachar
   `loadCustomers` con los criterios actuales. Comprobar que T042 pasa. Depende de T044–T045.
-- [ ] T047 [US3] En `docs/design/README.md`, añadir a «Error de un listado» su uso en Clientes («No se ha podido
+- [X] T047 [US3] En `docs/design/README.md`, añadir a «Error de un listado» su uso en Clientes («No se ha podido
   cargar el listado de clientes.», 007). Ejecutar `npm run test:e2e -- customers` y comprobar que T043 pasa.
 
 **Checkpoint**: las tres historias funcionan; un error nunca se confunde con la cartera vacía.
