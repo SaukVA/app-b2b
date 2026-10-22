@@ -1,0 +1,431 @@
+{
+  "created_at": "2026-10-22T18:00:00Z",
+  "updated_at": "2026-10-22T19:00:00Z",
+  "spec": "008-design-alignment",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-550",
+    "summary": "Ajuste de la aplicación al nuevo diseño del menú y del login",
+    "url": "https://sauk.atlassian.net/browse/AB2B-550"
+  },
+  "stories": [
+    {
+      "key": "AB2B-551",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-551",
+      "tasks": [
+        {
+          "key": "AB2B-558",
+          "id": "T001",
+          "summary": "T001: Comprobar que la rama activa es `008-design-alignment`, que `.specify/feature.json` apunta a `specs/008-design-alignment` y que `npm test --workspace=apps/client`, `npm run lint` y `npm run test:e2e -- navigation smoke` están en verde antes de empez",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-558"
+        },
+        {
+          "key": "AB2B-559",
+          "id": "T002",
+          "summary": "T002: Incorporar la copia actualizada del lienzo que ya está en la carpeta de trabajo (`docs/design/README.md` y los 12 ficheros modificados de `docs/design/canvas/`) en un commit propio `docs(008): actualizar la copia del lienzo «Albarán»` (FR-014, resea",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-559"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "key": "AB2B-552",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-552",
+      "tasks": [],
+      "status": "completed"
+    },
+    {
+      "key": "AB2B-553",
+      "summary": "Phase 3: User Story 1 - Menú sin marca y con «Plegar menú» como un elemento más (Priority: P1) 🎯 MVP",
+      "url": "https://sauk.atlassian.net/browse/AB2B-553",
+      "tasks": [
+        {
+          "key": "AB2B-560",
+          "id": "T003",
+          "summary": "T003: Ajustar `apps/client/src/components/NavBar.test.tsx` al contrato N4′–N6′:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-560"
+        },
+        {
+          "key": "AB2B-561",
+          "id": "T004",
+          "summary": "T004: Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx`: añadir «no muestra marca» — dentro del `navigation` «Principal» no aparecen «Venta a mayoristas» ni «M» como logotipo, desplegado y plegado (`localStorage['navigation.collapse",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-561"
+        },
+        {
+          "key": "AB2B-562",
+          "id": "T005",
+          "summary": "T005: Ajustar `e2e/navigation.spec.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-562"
+        },
+        {
+          "key": "AB2B-563",
+          "id": "T006",
+          "summary": "T006: En `apps/client/src/components/NavBar.tsx`:",
+          "status": "pending",
+          "depends_on": [
+            "T003"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-563"
+        },
+        {
+          "key": "AB2B-564",
+          "id": "T007",
+          "summary": "T007: En `apps/client/src/components/NavBar.module.css`:",
+          "status": "pending",
+          "depends_on": [
+            "T006"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-564"
+        },
+        {
+          "key": "AB2B-565",
+          "id": "T008",
+          "summary": "T008: En `apps/client/src/features/navigation/components/AppNav.tsx`, dejar de pasar `brand` y `brandCollapsed` y quitar el import de `BrandMark`. Comprobar que T004 pasa y ejecutar `npm run test:e2e -- navigation` para T005.",
+          "status": "pending",
+          "depends_on": [
+            "T006",
+            "T007"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-565"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-554",
+      "summary": "Phase 4: User Story 2 - Pie de usuario en una sola fila (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-554",
+      "tasks": [
+        {
+          "key": "AB2B-566",
+          "id": "T009",
+          "summary": "T009: Ajustar `apps/client/src/features/navigation/components/AppNav.test.tsx` (bloque «AppNav · pie»):",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-566"
+        },
+        {
+          "key": "AB2B-567",
+          "id": "T010",
+          "summary": "T010: Ampliar `e2e/navigation.spec.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-567"
+        },
+        {
+          "key": "AB2B-568",
+          "id": "T011",
+          "summary": "T011: Añadir `PersonIcon` en `apps/client/src/features/navigation/NavIcons.tsx` (icono de persona de trazo como el del tablero: `circle cx=12 cy=8 r=3.5` + hombros), con el mismo `NavIcon` que el resto.",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-568"
+        },
+        {
+          "key": "AB2B-569",
+          "id": "T012",
+          "summary": "T012: Permitir `title` en `apps/client/src/features/auth/components/LogoutButton.tsx` (prop opcional que se pasa a `Button`), sin cambiar su comportamiento ni sus usos actuales.",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-569"
+        },
+        {
+          "key": "AB2B-570",
+          "id": "T013",
+          "summary": "T013: Reescribir `NavFooter` en `apps/client/src/features/navigation/components/AppNav.tsx` según contracts/navigation-ui.md §2:",
+          "status": "pending",
+          "depends_on": [
+            "T011",
+            "T012"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-570"
+        },
+        {
+          "key": "AB2B-571",
+          "id": "T014",
+          "summary": "T014: Reescribir `apps/client/src/features/navigation/components/AppNav.module.css`:",
+          "status": "pending",
+          "depends_on": [
+            "T007",
+            "T013"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-571"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-555",
+      "summary": "Phase 5: User Story 3 - Inicio de sesión sin marca y centrado en móvil (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-555",
+      "tasks": [
+        {
+          "key": "AB2B-572",
+          "id": "T015",
+          "summary": "T015: Crear `apps/client/src/features/auth/components/LoginHero.test.tsx`: la región «Presentación» muestra el titular «Todo el ciclo de venta, en una sola hoja.» y no contiene «Venta a mayoristas» ni el logotipo «M».",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-572"
+        },
+        {
+          "key": "AB2B-573",
+          "id": "T016",
+          "summary": "T016: Ampliar `e2e/smoke.spec.ts` con dos tests de login:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-573"
+        },
+        {
+          "key": "AB2B-574",
+          "id": "T017",
+          "summary": "T017: En `apps/client/src/features/auth/components/LoginHero.tsx`, quitar `BrandMark` y su import, y actualizar el comentario («por debajo de 760 px no se muestra»). Comprobar que T015 pasa.",
+          "status": "pending",
+          "depends_on": [
+            "T015"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-574"
+        },
+        {
+          "key": "AB2B-575",
+          "id": "T018",
+          "summary": "T018: En `apps/client/src/features/auth/components/LoginHero.module.css`, dentro de `@container login (max-width: 760px)`, sustituir la franja (`padding`/`gap` y la ocultación de `.claim`/`.footer`) por `.hero { display: none; }`. Revisar que el reparto v",
+          "status": "pending",
+          "depends_on": [
+            "T017"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-575"
+        },
+        {
+          "key": "AB2B-576",
+          "id": "T019",
+          "summary": "T019: En `apps/client/src/pages/LoginPage.module.css`, quitar `align-items: flex-start` del `.main` dentro de `@container login (max-width: 760px)` (se mantiene `padding: 32px 16px 40px`). Ejecutar `npm run test:e2e -- smoke` y comprobar que T016 pasa.",
+          "status": "pending",
+          "depends_on": [
+            "T018"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-576"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-556",
+      "summary": "Phase 6: User Story 4 - Texto de Ajustes sin «conexión de datos» (Priority: P3)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-556",
+      "tasks": [
+        {
+          "key": "AB2B-577",
+          "id": "T020",
+          "summary": "T020: Ampliar `apps/client/src/pages/SettingsPage.test.tsx`: el subtítulo es exactamente «Preferencias de la aplicación y acceso de usuarios.» y no aparece «conexión de datos».",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-577"
+        },
+        {
+          "key": "AB2B-578",
+          "id": "T021",
+          "summary": "T021: En `apps/client/src/pages/SettingsPage.tsx`, cambiar el subtítulo a «Preferencias de la aplicación y acceso de usuarios.» y el comentario de `useSettingsTabs` («la fila «Ajustes» de la matriz cubre la pestaña de Usuarios»). Comprobar que T020 pasa.",
+          "status": "pending",
+          "depends_on": [
+            "T020"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-578"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-557",
+      "summary": "Phase 7: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-557",
+      "tasks": [
+        {
+          "key": "AB2B-579",
+          "id": "T022",
+          "summary": "T022: Eliminar `apps/client/src/components/BrandMark.tsx`, `BrandMark.module.css` y `BrandMark.test.tsx`, ya sin usos tras T008 y T017 (research R1). Comprobar con una búsqueda que no queda ninguna referencia a `BrandMark` en `apps/client` ni en `e2e`. De",
+          "status": "pending",
+          "depends_on": [
+            "T008",
+            "T017"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-579"
+        },
+        {
+          "key": "AB2B-580",
+          "id": "T023",
+          "summary": "T023: Revisar con `playwright-cli` el menú (desplegado, plegado), el pie y el login a 390 px y 1440 px, en claro y en oscuro, comparando con los tableros (SC-006): orden del teclado, foco visible (contorno naranja en plegar y cerrar sesión), objetivos de ",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-580"
+        },
+        {
+          "key": "AB2B-581",
+          "id": "T024",
+          "summary": "T024: Revisar que ninguna función nueva o cambiada pasa de 40 líneas efectivas y que no quedan comentarios que mencionen la marca o el `IconButton` de plegar (principio IV).",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-581"
+        },
+        {
+          "key": "AB2B-582",
+          "id": "T025",
+          "summary": "T025: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano quickstart.md completo en web (§3) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).",
+          "status": "pending",
+          "depends_on": [
+            "T022",
+            "T023",
+            "T024"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-582"
+        }
+      ],
+      "status": "pending"
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-551",
+      "to": "AB2B-553"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-551",
+      "to": "AB2B-554"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-551",
+      "to": "AB2B-555"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-551",
+      "to": "AB2B-556"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-553",
+      "to": "AB2B-557"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-554",
+      "to": "AB2B-557"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-555",
+      "to": "AB2B-557"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-556",
+      "to": "AB2B-557"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-560",
+      "to": "AB2B-563"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-563",
+      "to": "AB2B-564"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-563",
+      "to": "AB2B-565"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-564",
+      "to": "AB2B-565"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-568",
+      "to": "AB2B-570"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-569",
+      "to": "AB2B-570"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-564",
+      "to": "AB2B-571"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-570",
+      "to": "AB2B-571"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-572",
+      "to": "AB2B-574"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-574",
+      "to": "AB2B-575"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-575",
+      "to": "AB2B-576"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-577",
+      "to": "AB2B-578"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-565",
+      "to": "AB2B-579"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-574",
+      "to": "AB2B-579"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-579",
+      "to": "AB2B-582"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-580",
+      "to": "AB2B-582"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-581",
+      "to": "AB2B-582"
+    }
+  ],
+  "summary": {
+    "total_stories": 7,
+    "total_tasks": 25,
+    "completed_tasks": 2,
+    "pending_tasks": 23
+  }
+}
