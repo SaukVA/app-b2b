@@ -24,10 +24,11 @@ test.describe('Menú de navegación', () => {
   }) => {
     await loginAsAdmin(page);
     const items = mainNav(page).getByRole('link');
-    // Los módulos de negocio pendientes terminan su texto en «Pendiente»; Productos ya no (006).
+    // Los módulos de negocio pendientes terminan su texto en «Pendiente»; Productos (006) y Clientes (007)
+    // ya no.
     await expect(items).toHaveText([
       /^Ventas/,
-      /^Clientes/,
+      'Clientes',
       'Productos',
       /^Proveedores/,
       /^Cobros/,

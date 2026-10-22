@@ -7,6 +7,7 @@ import { buildSwaggerSpec } from './docs/swagger';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler';
 import { requireDatabaseReady } from './middlewares/requireDatabaseReady';
 import { authRouter } from './modules/auth/auth.routes';
+import { customerRouter } from './modules/customers/customer.routes';
 import { healthRouter } from './modules/health/health.routes';
 import { preferencesRouter } from './modules/preferences/preferences.routes';
 import { productRouter } from './modules/products/product.routes';
@@ -36,6 +37,7 @@ export function buildApp(options: BuildAppOptions = {}): Express {
   app.use('/api/users', userRouter);
   app.use('/api/preferences', preferencesRouter);
   app.use('/api/products', productRouter);
+  app.use('/api/customers', customerRouter);
   if (options.docs !== false) {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(buildSwaggerSpec()));
   }
