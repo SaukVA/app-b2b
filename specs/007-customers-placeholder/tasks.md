@@ -410,7 +410,7 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 - [X] T050 [P] Revisar que ningún fichero de `apps/server/src/modules/customers/` importa Mongoose, que
   `ProgressBar` no importa `@app/shared` y que ninguna función nueva pasa de 40 líneas efectivas
   (principios IV y VIII).
-- [ ] T051 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
+- [X] T051 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
   quickstart.md completo en web (§3) y en escritorio (§4: `npm run dev --workspace=apps/desktop`).
 
 ---

@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-22T11:55:36Z",
-  "updated_at": "2026-10-22T17:00:00Z",
+  "updated_at": "2026-10-22T17:30:00Z",
   "spec": "007-customers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -8,7 +8,8 @@
   "epic": {
     "key": "AB2B-492",
     "summary": "Pantalla provisional de Clientes",
-    "url": "https://sauk.atlassian.net/browse/AB2B-492"
+    "url": "https://sauk.atlassian.net/browse/AB2B-492",
+    "status": "completed"
   },
   "stories": [
     {
@@ -492,12 +493,12 @@
           "key": "AB2B-549",
           "id": "T051",
           "summary": "T051: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-549"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "links": [
@@ -635,7 +636,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 51,
-    "completed_tasks": 50,
-    "pending_tasks": 1
+    "completed_tasks": 51,
+    "pending_tasks": 0
   }
 }
