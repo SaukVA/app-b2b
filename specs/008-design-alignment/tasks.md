@@ -134,16 +134,16 @@ description: "Task list for feature 008-design-alignment"
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T015 [P] [US3] Crear `apps/client/src/features/auth/components/LoginHero.test.tsx`: la región «Presentación» muestra el titular «Todo el ciclo de venta, en una sola hoja.» y no contiene «Venta a mayoristas» ni el logotipo «M».
-- [ ] T016 [P] [US3] Ampliar `e2e/smoke.spec.ts` con dos tests de login:
+- [X] T015 [P] [US3] Crear `apps/client/src/features/auth/components/LoginHero.test.tsx`: la región «Presentación» muestra el titular «Todo el ciclo de venta, en una sola hoja.» y no contiene «Venta a mayoristas» ni el logotipo «M».
+- [X] T016 [P] [US3] Ampliar `e2e/smoke.spec.ts` con dos tests de login:
   - a 1440×900: la región «Presentación» es visible y no contiene «Venta a mayoristas»;
   - a 390×844: la región «Presentación» no es visible; el formulario (encabezado «Iniciar sesión» + botón «Entrar») está entero en el viewport sin desplazarse y su centro horizontal está a ±16 px del centro de la pantalla, y su centro vertical a ±10 % de la altura (SC-005).
 
 ### Implementación de US3
 
-- [ ] T017 [US3] En `apps/client/src/features/auth/components/LoginHero.tsx`, quitar `BrandMark` y su import, y actualizar el comentario («por debajo de 760 px no se muestra»). Comprobar que T015 pasa.
-- [ ] T018 [US3] En `apps/client/src/features/auth/components/LoginHero.module.css`, dentro de `@container login (max-width: 760px)`, sustituir la franja (`padding`/`gap` y la ocultación de `.claim`/`.footer`) por `.hero { display: none; }`. Revisar que el reparto vertical del hero en ancho (`justify-content`) sigue bien sin la marca arriba.
-- [ ] T019 [US3] En `apps/client/src/pages/LoginPage.module.css`, quitar `align-items: flex-start` del `.main` dentro de `@container login (max-width: 760px)` (se mantiene `padding: 32px 16px 40px`). Ejecutar `npm run test:e2e -- smoke` y comprobar que T016 pasa.
+- [X] T017 [US3] En `apps/client/src/features/auth/components/LoginHero.tsx`, quitar `BrandMark` y su import, y actualizar el comentario («por debajo de 760 px no se muestra»). Comprobar que T015 pasa.
+- [X] T018 [US3] En `apps/client/src/features/auth/components/LoginHero.module.css`, dentro de `@container login (max-width: 760px)`, sustituir la franja (`padding`/`gap` y la ocultación de `.claim`/`.footer`) por `.hero { display: none; }`. Revisar que el reparto vertical del hero en ancho (`justify-content`) sigue bien sin la marca arriba.
+- [X] T019 [US3] En `apps/client/src/pages/LoginPage.module.css`, quitar `align-items: flex-start` del `.main` dentro de `@container login (max-width: 760px)` (se mantiene `padding: 32px 16px 40px`). Ejecutar `npm run test:e2e -- smoke` y comprobar que T016 pasa.
 
 **Checkpoint**: el login coincide con `Login.dc.html` y `LoginMovil.dc.html`.
 
