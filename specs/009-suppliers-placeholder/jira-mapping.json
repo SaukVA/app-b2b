@@ -1,0 +1,573 @@
+{
+  "created_at": "2026-10-23T10:50:16Z",
+  "updated_at": "2026-10-23T10:50:16Z",
+  "spec": "009-suppliers-placeholder",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-583",
+    "summary": "Pantalla provisional de Proveedores",
+    "url": "https://sauk.atlassian.net/browse/AB2B-583",
+    "status": "pending"
+  },
+  "stories": [
+    {
+      "key": "AB2B-584",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-584",
+      "tasks": [
+        {
+          "key": "AB2B-590",
+          "id": "T001",
+          "summary": "T001: Comprobar que la rama activa es `009-suppliers-placeholder`, que `.specify/feature.json` apunta a",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-590"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-585",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-585",
+      "tasks": [
+        {
+          "key": "AB2B-591",
+          "id": "T002",
+          "summary": "T002: Crear `packages/shared/src/types/supplier.ts` con, cada campo con su comentario:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-591"
+        },
+        {
+          "key": "AB2B-592",
+          "id": "T003",
+          "summary": "T003: Crear `packages/shared/src/constants/suppliers.ts` con `SUPPLIER_SEARCH_MAX_LENGTH = 100`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-592"
+        },
+        {
+          "key": "AB2B-593",
+          "id": "T004",
+          "summary": "T004: Exportar desde `packages/shared/src/index.ts` `SupplierListItem`, `SupplierListQuery` y",
+          "status": "pending",
+          "depends_on": [
+            "T002",
+            "T003"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-593"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-586",
+      "summary": "Phase 3: User Story 1 - Abrir Proveedores y ver su estructura (Priority: P1) 🎯 MVP",
+      "url": "https://sauk.atlassian.net/browse/AB2B-586",
+      "tasks": [
+        {
+          "key": "AB2B-594",
+          "id": "T005",
+          "summary": "T005: Crear `apps/server/src/modules/suppliers/supplier.service.test.ts`: `listSuppliers` con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-594"
+        },
+        {
+          "key": "AB2B-595",
+          "id": "T006",
+          "summary": "T006: Crear `apps/server/src/modules/suppliers/supplier.routes.test.ts` con `startTestDb`,",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-595"
+        },
+        {
+          "key": "AB2B-596",
+          "id": "T007",
+          "summary": "T007: Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-596"
+        },
+        {
+          "key": "AB2B-597",
+          "id": "T008",
+          "summary": "T008: Ajustar los tests que usan Proveedores como módulo pendiente (research R11):",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-597"
+        },
+        {
+          "key": "AB2B-598",
+          "id": "T009",
+          "summary": "T009: Crear `apps/client/src/features/suppliers/suppliersSlice.test.ts` (casos de US1):",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-598"
+        },
+        {
+          "key": "AB2B-599",
+          "id": "T010",
+          "summary": "T010: Crear `apps/client/src/features/suppliers/suppliersApi.test.ts` con `httpClient` simulado:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-599"
+        },
+        {
+          "key": "AB2B-600",
+          "id": "T011",
+          "summary": "T011: Crear `apps/client/src/features/suppliers/formatLeadTime.test.ts` (data-model.md › Plazo en",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-600"
+        },
+        {
+          "key": "AB2B-601",
+          "id": "T012",
+          "summary": "T012: Crear `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx`, con la store",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-601"
+        },
+        {
+          "key": "AB2B-602",
+          "id": "T013",
+          "summary": "T013: Crear `apps/client/src/features/suppliers/components/SupplierFilters.test.tsx`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-602"
+        },
+        {
+          "key": "AB2B-603",
+          "id": "T014",
+          "summary": "T014: Crear `apps/client/src/pages/SuppliersPage.test.tsx` (casos de US1), con la store de",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-603"
+        },
+        {
+          "key": "AB2B-604",
+          "id": "T015",
+          "summary": "T015: Crear `e2e/suppliers.spec.ts` (US1), con los helpers de `e2e/customers.spec.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-604"
+        },
+        {
+          "key": "AB2B-605",
+          "id": "T016",
+          "summary": "T016: Crear la API en `apps/server/src/modules/suppliers/` siguiendo `customers/` (research R1–R4):",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-605"
+        },
+        {
+          "key": "AB2B-607",
+          "id": "T017",
+          "summary": "T017: Crear `apps/server/src/modules/suppliers/supplier.routes.ts`:",
+          "status": "pending",
+          "depends_on": [
+            "T016"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-607"
+        },
+        {
+          "key": "AB2B-606",
+          "id": "T018",
+          "summary": "T018: Crear `apps/client/src/features/suppliers/suppliersApi.ts` con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-606"
+        },
+        {
+          "key": "AB2B-608",
+          "id": "T019",
+          "summary": "T019: Añadir `'proveedores'` a `IMPLEMENTED_MODULES` en `packages/shared/src/constants/modules.ts`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-608"
+        },
+        {
+          "key": "AB2B-609",
+          "id": "T020",
+          "summary": "T020: Crear `apps/client/src/features/suppliers/suppliersSlice.ts` con el estado de data-model.md",
+          "status": "pending",
+          "depends_on": [
+            "T018"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-609"
+        },
+        {
+          "key": "AB2B-610",
+          "id": "T021",
+          "summary": "T021: Crear `apps/client/src/features/suppliers/formatLeadTime.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-610"
+        },
+        {
+          "key": "AB2B-613",
+          "id": "T022",
+          "summary": "T022: Crear `apps/client/src/features/suppliers/components/SuppliersTable.tsx` y",
+          "status": "pending",
+          "depends_on": [
+            "T021"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-613"
+        },
+        {
+          "key": "AB2B-611",
+          "id": "T023",
+          "summary": "T023: Crear `apps/client/src/features/suppliers/components/SupplierFilters.tsx` y",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-611"
+        },
+        {
+          "key": "AB2B-622",
+          "id": "T024",
+          "summary": "T024: Crear `apps/client/src/pages/SuppliersPage.tsx` y `SuppliersPage.module.css`:",
+          "status": "pending",
+          "depends_on": [
+            "T020",
+            "T022",
+            "T023"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-622"
+        },
+        {
+          "key": "AB2B-631",
+          "id": "T025",
+          "summary": "T025: Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de `AppLayout`:",
+          "status": "pending",
+          "depends_on": [
+            "T024"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-631"
+        },
+        {
+          "key": "AB2B-612",
+          "id": "T026",
+          "summary": "T026: Ajustar `e2e/navigation.spec.ts` a Proveedores implementado:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-612"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-587",
+      "summary": "Phase 4: User Story 2 - Entender que los proveedores aún no están cargados (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-587",
+      "tasks": [
+        {
+          "key": "AB2B-614",
+          "id": "T027",
+          "summary": "T027: Crear `apps/client/src/features/suppliers/supplierCriteria.test.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-614"
+        },
+        {
+          "key": "AB2B-615",
+          "id": "T028",
+          "summary": "T028: Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-615"
+        },
+        {
+          "key": "AB2B-616",
+          "id": "T029",
+          "summary": "T029: Crear `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx` (casos",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-616"
+        },
+        {
+          "key": "AB2B-617",
+          "id": "T030",
+          "summary": "T030: Ampliar `apps/client/src/pages/SuppliersPage.test.tsx` (con `createMemoryRouter` e",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-617"
+        },
+        {
+          "key": "AB2B-618",
+          "id": "T031",
+          "summary": "T031: Ampliar `e2e/suppliers.spec.ts` (US2):",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-618"
+        },
+        {
+          "key": "AB2B-619",
+          "id": "T032",
+          "summary": "T032: Crear `apps/client/src/features/suppliers/supplierCriteria.ts` con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-619"
+        },
+        {
+          "key": "AB2B-620",
+          "id": "T033",
+          "summary": "T033: En `apps/client/src/features/suppliers/suppliersSlice.ts`, guardar `requestId` en `pending`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-620"
+        },
+        {
+          "key": "AB2B-621",
+          "id": "T034",
+          "summary": "T034: Crear `apps/client/src/features/suppliers/components/SuppliersListStatus.tsx` y",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-621"
+        },
+        {
+          "key": "AB2B-623",
+          "id": "T035",
+          "summary": "T035: Conectar `apps/client/src/pages/SuppliersPage.tsx` con la dirección (research R8, R9), como",
+          "status": "pending",
+          "depends_on": [
+            "T032",
+            "T033",
+            "T034"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-623"
+        },
+        {
+          "key": "AB2B-624",
+          "id": "T036",
+          "summary": "T036: En `docs/design/README.md` › Componentes (FR-017, FR-018):",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-624"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-588",
+      "summary": "Phase 5: User Story 3 - Distinguir un error del listado vacío (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-588",
+      "tasks": [
+        {
+          "key": "AB2B-625",
+          "id": "T037",
+          "summary": "T037: Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-625"
+        },
+        {
+          "key": "AB2B-626",
+          "id": "T038",
+          "summary": "T038: Ampliar `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-626"
+        },
+        {
+          "key": "AB2B-627",
+          "id": "T039",
+          "summary": "T039: Ampliar `apps/client/src/pages/SuppliersPage.test.tsx`:",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-627"
+        },
+        {
+          "key": "AB2B-628",
+          "id": "T040",
+          "summary": "T040: Ampliar `e2e/suppliers.spec.ts` (US3): con `page.route('**/api/suppliers**', …)`",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-628"
+        },
+        {
+          "key": "AB2B-629",
+          "id": "T041",
+          "summary": "T041: En `apps/client/src/features/suppliers/suppliersSlice.ts`, definir y exportar",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-629"
+        },
+        {
+          "key": "AB2B-630",
+          "id": "T042",
+          "summary": "T042: Añadir el caso `failed` a",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-630"
+        },
+        {
+          "key": "AB2B-632",
+          "id": "T043",
+          "summary": "T043: En `apps/client/src/pages/SuppliersPage.tsx`, pasar `onRetry`, que vuelve a despachar",
+          "status": "pending",
+          "depends_on": [
+            "T041",
+            "T042"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-632"
+        },
+        {
+          "key": "AB2B-633",
+          "id": "T044",
+          "summary": "T044: En `docs/design/README.md`, añadir a «Error de un listado» su uso en Proveedores («No se ha",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-633"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-589",
+      "summary": "Phase 6: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-589",
+      "tasks": [
+        {
+          "key": "AB2B-634",
+          "id": "T045",
+          "summary": "T045: Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-634"
+        },
+        {
+          "key": "AB2B-635",
+          "id": "T046",
+          "summary": "T046: Comprobar que `/api-docs` muestra `GET /suppliers` con `q`, `includeInactive` y `page`,",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-635"
+        },
+        {
+          "key": "AB2B-636",
+          "id": "T047",
+          "summary": "T047: Revisar que ningún fichero de `apps/server/src/modules/suppliers/` importa Mongoose, que no se ha",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-636"
+        },
+        {
+          "key": "AB2B-637",
+          "id": "T048",
+          "summary": "T048: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-637"
+        }
+      ],
+      "status": "pending"
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-591",
+      "to": "AB2B-593"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-592",
+      "to": "AB2B-593"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-605",
+      "to": "AB2B-607"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-606",
+      "to": "AB2B-609"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-610",
+      "to": "AB2B-613"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-609",
+      "to": "AB2B-622"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-613",
+      "to": "AB2B-622"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-611",
+      "to": "AB2B-622"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-622",
+      "to": "AB2B-631"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-619",
+      "to": "AB2B-623"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-620",
+      "to": "AB2B-623"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-621",
+      "to": "AB2B-623"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-629",
+      "to": "AB2B-632"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-630",
+      "to": "AB2B-632"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-584",
+      "to": "AB2B-585"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-585",
+      "to": "AB2B-586"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-586",
+      "to": "AB2B-587"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-587",
+      "to": "AB2B-588"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-588",
+      "to": "AB2B-589"
+    }
+  ],
+  "summary": {
+    "total_stories": 6,
+    "total_tasks": 48,
+    "completed_tasks": 0,
+    "pending_tasks": 48
+  }
+}
