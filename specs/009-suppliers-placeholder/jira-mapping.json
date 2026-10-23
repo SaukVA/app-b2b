@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-23T10:50:16Z",
-  "updated_at": "2026-10-23T12:03:47Z",
+  "updated_at": "2026-10-23T12:31:09Z",
   "spec": "009-suppliers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -435,7 +435,7 @@
           "key": "AB2B-634",
           "id": "T045",
           "summary": "T045: Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-634"
         },
@@ -443,7 +443,7 @@
           "key": "AB2B-635",
           "id": "T046",
           "summary": "T046: Comprobar que `/api-docs` muestra `GET /suppliers` con `q`, `includeInactive` y `page`,",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-635"
         },
@@ -451,7 +451,7 @@
           "key": "AB2B-636",
           "id": "T047",
           "summary": "T047: Revisar que ningún fichero de `apps/server/src/modules/suppliers/` importa Mongoose, que no se ha",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-636"
         },
@@ -459,12 +459,12 @@
           "key": "AB2B-637",
           "id": "T048",
           "summary": "T048: Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-637"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "links": [
@@ -567,7 +567,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 48,
-    "completed_tasks": 44,
-    "pending_tasks": 4
+    "completed_tasks": 48,
+    "pending_tasks": 0
   }
 }
