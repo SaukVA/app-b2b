@@ -1,7 +1,7 @@
 # Diseño visual «Albarán»
 
-> Copia del lienzo publicado: https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya (fuente de verdad).
-> Última sincronización: 2026-10-14 (versión `1791974205-d3c3` del lienzo).
+> Copia del lienzo publicado: https://claude.ai/artifact/X2XQnZS79ic8pV4rvk1crS (fuente de verdad).
+> Última sincronización: 2026-10-23 (versión `1792766445-89d2` del lienzo).
 
 La estética toma prestado el lenguaje del albarán y la hoja de pedido: líneas finas, cifras en monoespaciada bien alineadas y sellos de estado. Densa para quien trabaja con ella ocho horas al día; legible a un metro en el puesto del almacén.
 

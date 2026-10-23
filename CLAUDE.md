@@ -157,7 +157,7 @@ El diseño de la interfaz («Albarán») está documentado en `docs/design/`:
 
 - `docs/design/README.md`: tokens de color (claro/oscuro), tipografía, espaciado, estados, reglas responsive y lista de pantallas. Es la referencia para estilos en `apps/client`.
 - `docs/design/canvas/`: copia de los tableros (`*.dc.html`, índice `canvas.json`). Son especificación visual, no código ejecutable: no se abren sueltos en el navegador.
-- Fuente de verdad: el lienzo publicado https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya. Si se modifica, MUST refrescar la copia de `docs/design/canvas/` y actualizar el README en el mismo cambio.
+- Fuente de verdad: el lienzo publicado https://claude.ai/artifact/X2XQnZS79ic8pV4rvk1crS. Si se modifica, MUST refrescar la copia de `docs/design/canvas/` y actualizar el README en el mismo cambio.
 - Pantallas diseñadas: Productos, Clientes, Proveedores, Ajustes y Login (escritorio y móvil). Panel, Ventas, Nueva venta y Cobros están pendientes de diseño.
 
 ## Convenciones
