@@ -399,16 +399,16 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T045 [P] Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con
+- [X] T045 [P] Revisar la pantalla con `playwright-cli` a 390 px y 1440 px, en claro y en oscuro, y con
   densidad Cómoda y Compacta (FR-015):
   - orden del teclado (búsqueda → casilla → «Reintentar») y foco visible;
   - avisos anunciados (`status` / `alert`);
   - objetivos de 44 px (incluida la etiqueta de la casilla) y contraste de 4.5:1;
   - «Plazo» oculta en móvil y sin scroll horizontal de la página.
-- [ ] T046 [P] Comprobar que `/api-docs` muestra `GET /suppliers` con `q`, `includeInactive` y `page`,
+- [X] T046 [P] Comprobar que `/api-docs` muestra `GET /suppliers` con `q`, `includeInactive` y `page`,
   `SupplierListPage` y las respuestas 400/401/403, comparando el spec de `buildSwaggerSpec()` con
   `contracts/suppliers-api.openapi.yaml`.
-- [ ] T047 [P] Revisar que ningún fichero de `apps/server/src/modules/suppliers/` importa Mongoose, que no se ha
+- [X] T047 [P] Revisar que ningún fichero de `apps/server/src/modules/suppliers/` importa Mongoose, que no se ha
   modificado código de producción de 006 ni de 007 y que ninguna función nueva pasa de 40 líneas efectivas
   (principios IV y V).
 - [ ] T048 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde. Validar a mano
