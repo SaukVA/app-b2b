@@ -5,9 +5,9 @@ import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/te
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
 
-// Con la lista real de módulos implementados (005): Ajustes, Productos (006) y Clientes (007), así que de las
-// pantallas de negocio solo Productos y Clientes se pueden elegir como inicio. Va en su propio archivo porque
-// preferences.routes.test.ts simula los módulos.
+// Con la lista real de módulos implementados (005): Ajustes, Productos (006), Clientes (007) y Proveedores
+// (009), así que de las pantallas de negocio solo esas tres se pueden elegir como inicio. Va en su propio
+// archivo porque preferences.routes.test.ts simula los módulos.
 
 setTestEnv();
 
@@ -26,17 +26,13 @@ async function loginAs(login: string, password: string): Promise<string> {
   return res.body.data.accessToken as string;
 }
 
-async function comercialToken(): Promise<string> {
+async function tokenFor(login: string, role: string): Promise<string> {
   const passwordHash = await hashPassword(PASSWORD);
-  await UserModel.create({
-    login: 'ana@empresa.es',
-    name: 'Ana',
-    passwordHash,
-    role: 'Comercial',
-    status: 'Activo',
-  });
-  return loginAs('ana@empresa.es', PASSWORD);
+  await UserModel.create({ login, name: role, passwordHash, role, status: 'Activo' });
+  return loginAs(login, PASSWORD);
 }
+
+const comercialToken = () => tokenFor('ana@empresa.es', 'Comercial');
 
 function patch(token: string, body: object) {
   return request(app())
@@ -62,6 +58,14 @@ describe('PATCH /api/preferences · pantalla de inicio con módulos pendientes',
     const res = await patch(await comercialToken(), { homeScreen: 'clientes' });
     expect(res.status).toBe(200);
     expect(res.body.data.homeScreen).toBe('clientes');
+  });
+
+  it('200 con Proveedores, que ya está implementado (009) y Administración puede ver', async () => {
+    const res = await patch(await tokenFor('eva@empresa.es', 'Administración'), {
+      homeScreen: 'proveedores',
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.data.homeScreen).toBe('proveedores');
   });
 
   it('200 con homeScreen: null', async () => {

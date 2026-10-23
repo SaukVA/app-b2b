@@ -7,6 +7,7 @@ import { navigationReducer } from '../features/navigation/navigationSlice';
 import { preferencesReducer } from '../features/preferences/preferencesSlice';
 import { productsReducer } from '../features/products/productsSlice';
 import { rolesReducer } from '../features/roles/rolesSlice';
+import { suppliersReducer } from '../features/suppliers/suppliersSlice';
 import { usersReducer } from '../features/users/usersSlice';
 import { setAccessTokenGetter, setRefreshHandler } from '../utils/httpClient';
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   preferences: preferencesReducer,
   products: productsReducer,
   roles: rolesReducer,
+  suppliers: suppliersReducer,
   users: usersReducer,
 });
 

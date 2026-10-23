@@ -1,0 +1,21 @@
+/* Nombre y, si está dado de baja, el sello «Baja» a su lado. */
+.name {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mono {
+  font: var(--text-figure);
+  white-space: nowrap;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}

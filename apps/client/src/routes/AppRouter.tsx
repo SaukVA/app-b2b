@@ -6,6 +6,7 @@ import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
 import { CustomersPage } from '../pages/CustomersPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
+import { SuppliersPage } from '../pages/SuppliersPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
 import { isDesktop } from '../utils/desktop';
@@ -62,6 +63,16 @@ const customersRoute = {
   ),
 };
 
+// Ver o editar Proveedores muestran la misma pantalla en 009: no hay acciones de edición (FR-003).
+const suppliersRoute = {
+  path: 'proveedores',
+  element: (
+    <RequireAuth module="proveedores">
+      <SuppliersPage />
+    </RequireAuth>
+  ),
+};
+
 // Pública y solo en escritorio (002 FR-007/FR-008): en web la ruta cae en la protegida /ajustes.
 const desktopRoutes = isDesktop()
   ? [{ path: DATABASE_SETTINGS_PATH.slice(1), element: <DatabaseSettingsPage /> }]
@@ -77,7 +88,10 @@ const router = createBrowserRouter([
       ...desktopRoutes,
       // Pantallas con sesión, con el menú lateral (005 FR-001). Cada módulo de negocio añade aquí su ruta
       // al implementarse (IMPLEMENTED_MODULES); la dirección de un módulo pendiente cae en `*` (FR-011).
-      { element: <AppLayout />, children: [customersRoute, productsRoute, settingsRoute] },
+      {
+        element: <AppLayout />,
+        children: [customersRoute, productsRoute, suppliersRoute, settingsRoute],
+      },
       { path: '*', element: <HomeRedirect /> },
     ],
   },

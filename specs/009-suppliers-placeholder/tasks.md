@@ -98,11 +98,11 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
 
 ### Tests de US1 (primero, deben fallar) ⚠️
 
-- [ ] T005 [P] [US1] Crear `apps/server/src/modules/suppliers/supplier.service.test.ts`: `listSuppliers` con
+- [X] T005 [P] [US1] Crear `apps/server/src/modules/suppliers/supplier.service.test.ts`: `listSuppliers` con
   `{ includeInactive: false, page: 1 }` y con `{ q: 'levante', includeInactive: true, page: 3 }` devuelve
   `{ items: [], total: 0, page, pageSize: 10 }` (la `page` pedida). Comprobar que el servicio no importa
   Mongoose, como en `apps/server/src/modules/customers/customer.service.test.ts`.
-- [ ] T006 [P] [US1] Crear `apps/server/src/modules/suppliers/supplier.routes.test.ts` con `startTestDb`,
+- [X] T006 [P] [US1] Crear `apps/server/src/modules/suppliers/supplier.routes.test.ts` con `startTestDb`,
   `clearTestDb` y `stopTestDb` y los helpers de `apps/server/src/modules/customers/customer.routes.test.ts` como
   referencia:
   - 200 `{ success: true, data: { items: [], total: 0, page: 1, pageSize: 10 } }` para Administrador,
@@ -114,10 +114,10 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
   - 200 vacío con `q=%20%20levante%20` (se recorta), con 100 caracteres rodeados de espacios (FR-008), con
     `q=%20%20%20` (solo espacios = sin búsqueda), con `includeInactive=true`, con `includeInactive=false`, con
     `page=3` (devuelve `page: 3`) y con un parámetro desconocido `foo=bar` (se ignora).
-- [ ] T007 [P] [US1] Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es
+- [X] T007 [P] [US1] Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es
   `['ajustes', 'productos', 'clientes', 'proveedores']`; `isModuleImplemented('proveedores')` es `true`; los
   pendientes pasan a `['ventas', 'cobros']`.
-- [ ] T008 [P] [US1] Ajustar los tests que usan Proveedores como módulo pendiente (research R11):
+- [X] T008 [P] [US1] Ajustar los tests que usan Proveedores como módulo pendiente (research R11):
   - `apps/client/src/features/navigation/navItems.test.ts` («con la lista real…»): `['Proveedores', false]` y
     título con Proveedores (009); el caso «al implementar Clientes…» no cambia (usa su propia lista);
   - `apps/client/src/features/preferences/components/AppearanceForm.pendingModules.test.tsx`: el usuario
@@ -133,18 +133,18 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
     `PATCH /api/preferences` con `homeScreen: 'proveedores'` para un usuario Administración (FR-001); el caso
     400 `PREFERENCES_HOME_SCREEN_NOT_ALLOWED` con un módulo pendiente sigue usando `'ventas'`.
   Tras T019, ejecutar `npm test --workspaces` y ajustar cualquier otro caso que use la lista real.
-- [ ] T009 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersSlice.test.ts` (casos de US1):
+- [X] T009 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersSlice.test.ts` (casos de US1):
   - estado inicial `{ items: [], total: 0, status: 'idle', error: null, requestId: null }`;
   - `loadSuppliers.pending` → `status: 'loading'`;
   - `loadSuppliers.fulfilled` con `{ items: [], total: 0, … }` → `status: 'succeeded'`, `total: 0`.
-- [ ] T010 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersApi.test.ts` con `httpClient` simulado:
+- [X] T010 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersApi.test.ts` con `httpClient` simulado:
   - `{ includeInactive: false, page: 1 }` → `GET /suppliers` con `params` vacío;
   - `{ q: 'levante', includeInactive: true, page: 2 }` → `params` `{ q: 'levante', includeInactive: 'true',
     page: 2 }`;
   - devuelve el `data` del envelope.
-- [ ] T011 [P] [US1] Crear `apps/client/src/features/suppliers/formatLeadTime.test.ts` (data-model.md › Plazo en
+- [X] T011 [P] [US1] Crear `apps/client/src/features/suppliers/formatLeadTime.test.ts` (data-model.md › Plazo en
   pantalla): `null` → `'—'`; `1` → `'1 día'`; `0` → `'0 días'`; `3` → `'3 días'`.
-- [ ] T012 [P] [US1] Crear `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx`, con la store
+- [X] T012 [P] [US1] Crear `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx`, con la store
   de `setupStore` y las preferencias del usuario (formato de importes) como en `CustomersTable.test.tsx`, para que
   `UserMoney` formatee:
   - con `rows=[]`: tabla con `caption` «Proveedores» y cabeceras Proveedor, Plazo y Compras año; sin cabecera de
@@ -154,19 +154,19 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
   - con `active: false`: sello «Baja» (`data-tone="neutral"`) junto al nombre;
   - con `leadTimeDays: null`: «—»;
   - tarjeta móvil (`renderCard`, FR-015): nombre, sello si está de baja y compras del año; sin plazo.
-- [ ] T013 [P] [US1] Crear `apps/client/src/features/suppliers/components/SupplierFilters.test.tsx`:
+- [X] T013 [P] [US1] Crear `apps/client/src/features/suppliers/components/SupplierFilters.test.tsx`:
   - región `role="search"` con nombre «Buscar proveedores»;
   - campo «Buscar» de tipo `search` con `maxLength` 100 y placeholder «Nombre o CIF»;
   - casilla «Mostrar dados de baja» que refleja `includeInactive`;
   - escribir llama a `onSearchChange` con el texto; marcar la casilla llama a `onIncludeInactiveChange(true)`.
-- [ ] T014 [P] [US1] Crear `apps/client/src/pages/SuppliersPage.test.tsx` (casos de US1), con la store de
+- [X] T014 [P] [US1] Crear `apps/client/src/pages/SuppliersPage.test.tsx` (casos de US1), con la store de
   `setupStore` y `fetchSuppliers` simulado (`jest.mock('../features/suppliers/suppliersApi')`):
   - h1 «Proveedores» y «0 activos» tras resolver la petición;
   - casilla «Mostrar dados de baja» desmarcada;
   - sin botón «Nuevo proveedor» ni «Editar proveedor», «Generar pedido de compra» ni «Productos asociados»
     (FR-005);
   - al montar llama a `fetchSuppliers` una vez con `{ includeInactive: false, page: 1 }`.
-- [ ] T015 [P] [US1] Crear `e2e/suppliers.spec.ts` (US1), con los helpers de `e2e/customers.spec.ts`:
+- [X] T015 [P] [US1] Crear `e2e/suppliers.spec.ts` (US1), con los helpers de `e2e/customers.spec.ts`:
   - el Administrador pulsa Proveedores en el menú: enlace sin «Pendiente» que abre `/proveedores` y queda con
     `aria-current="page"`;
   - se ven el h1, «0 activos», la búsqueda, la casilla y las cabeceras del listado (en móvil, sin «Plazo»);
@@ -176,7 +176,7 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
 
 ### Implementación de US1
 
-- [ ] T016 [US1] Crear la API en `apps/server/src/modules/suppliers/` siguiendo `customers/` (research R1–R4):
+- [X] T016 [US1] Crear la API en `apps/server/src/modules/suppliers/` siguiendo `customers/` (research R1–R4):
   - `supplier.validation.ts`: `supplierListQuerySchema` con `q`:
     `z.string().trim().max(SUPPLIER_SEARCH_MAX_LENGTH)` y vacío → `undefined`; `includeInactive`:
     `z.enum(['true', 'false']).default('false').transform((value) => value === 'true')` (como `lowStock` en
@@ -188,7 +188,7 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
   - `supplier.controller.ts`: `supplierController.list`, que lee `req.query as SupplierListQueryInput`, llama a
     `listSuppliers` y responde con `sendSuccess<ListPage<SupplierListItem>>`.
   Comprobar que T005 pasa.
-- [ ] T017 [US1] Crear `apps/server/src/modules/suppliers/supplier.routes.ts`:
+- [X] T017 [US1] Crear `apps/server/src/modules/suppliers/supplier.routes.ts`:
   - `supplierRouter.use(requireAuth, requirePermission('proveedores', 'view'))`;
   - `supplierRouter.get('/', validate({ query: supplierListQuerySchema }), supplierController.list)`;
   - bloque JSDoc `@openapi` equivalente a `contracts/suppliers-api.openapi.yaml`: tag `Suppliers`, parámetros
@@ -198,42 +198,42 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
   Montar en `apps/server/src/app.ts` con `app.use('/api/suppliers', supplierRouter)`, después de
   `/api/customers`. Ejecutar `npm test --workspace=apps/server -- suppliers` y comprobar que T006 pasa.
   Depende de T016.
-- [ ] T018 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersApi.ts` con
+- [X] T018 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersApi.ts` con
   `fetchSuppliers(query: SupplierListQuery): Promise<ListPage<SupplierListItem>>`
   (`httpClient.get('/suppliers', { params })`), omitiendo `page: 1`, `q` ausente e `includeInactive: false`, y
   enviando `includeInactive: 'true'` cuando está activo. Comprobar que T010 pasa.
-- [ ] T019 [US1] Añadir `'proveedores'` a `IMPLEMENTED_MODULES` en `packages/shared/src/constants/modules.ts`
+- [X] T019 [US1] Añadir `'proveedores'` a `IMPLEMENTED_MODULES` en `packages/shared/src/constants/modules.ts`
   (convención de CLAUDE.md). Comprobar que T007 y T008 pasan.
-- [ ] T020 [US1] Crear `apps/client/src/features/suppliers/suppliersSlice.ts` con el estado de data-model.md
+- [X] T020 [US1] Crear `apps/client/src/features/suppliers/suppliersSlice.ts` con el estado de data-model.md
   (`items`, `total`, `status`, `error`, `requestId`) y el thunk `loadSuppliers(query)` sobre `fetchSuppliers`.
   Registrar `suppliers: suppliersReducer` en `apps/client/src/store/store.ts`. Comprobar que T009 pasa.
   Depende de T018.
-- [ ] T021 [P] [US1] Crear `apps/client/src/features/suppliers/formatLeadTime.ts`:
+- [X] T021 [P] [US1] Crear `apps/client/src/features/suppliers/formatLeadTime.ts`:
   `formatLeadTime(days: number | null): string` según data-model.md › Plazo en pantalla («—», «1 día»,
   «N días»). Comprobar que T011 pasa.
-- [ ] T022 [US1] Crear `apps/client/src/features/suppliers/components/SuppliersTable.tsx` y
+- [X] T022 [US1] Crear `apps/client/src/features/suppliers/components/SuppliersTable.tsx` y
   `SuppliersTable.module.css`, que componen `Table` con las columnas de contracts/suppliers-ui.md §Estructura:
   - Proveedor: nombre y, si `active` es `false`, `StatusStamp tone="neutral"` «Baja»; sin subtítulo;
   - Plazo: `formatLeadTime` en Mono, alineado a la derecha;
   - Compras año: `UserMoney`, alineado a la derecha.
   Añadir `renderCard` para móvil según `ProveedoresMovil.dc.html` (sin plazo) y prop `status`/`busy` como
   `CustomersTable`. Comprobar que T012 pasa. Depende de T021.
-- [ ] T023 [P] [US1] Crear `apps/client/src/features/suppliers/components/SupplierFilters.tsx` y
+- [X] T023 [P] [US1] Crear `apps/client/src/features/suppliers/components/SupplierFilters.tsx` y
   `SupplierFilters.module.css`: componente controlado con props `search`, `onSearchChange`, `includeInactive` y
   `onIncludeInactiveChange`, que compone dentro de `<div role="search" aria-label="Buscar proveedores">` un
   `TextField` (`type="search"`, `maxLength={SUPPLIER_SEARCH_MAX_LENGTH}`, placeholder «Nombre o CIF») y un
   `Checkbox` «Mostrar dados de baja», como `ProductFilters`. Comprobar que T013 pasa.
-- [ ] T024 [US1] Crear `apps/client/src/pages/SuppliersPage.tsx` y `SuppliersPage.module.css`:
+- [X] T024 [US1] Crear `apps/client/src/pages/SuppliersPage.tsx` y `SuppliersPage.module.css`:
   - cabecera con h1 «Proveedores» y el contador en Mono: «N activos» / «1 activo» (el texto «N proveedores» con
     el filtro llega en US2);
   - `SupplierFilters` y, dentro de un panel, `SuppliersTable` con `items`;
   - al montar, despacha `loadSuppliers({ includeInactive: false, page: 1 })`. US2 sustituye esta llamada por
     los criterios de la dirección.
   Comprobar que T014 pasa. Depende de T020, T022–T023.
-- [ ] T025 [US1] Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de `AppLayout`:
+- [X] T025 [US1] Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de `AppLayout`:
   `{ path: 'proveedores', element: <RequireAuth module="proveedores"><SuppliersPage /></RequireAuth> }`.
   Depende de T024.
-- [ ] T026 [US1] Ajustar `e2e/navigation.spec.ts` a Proveedores implementado:
+- [X] T026 [US1] Ajustar `e2e/navigation.spec.ts` a Proveedores implementado:
   - «Menú de navegación»: `'Proveedores'` sin «Pendiente» en la lista de enlaces y comentario actualizado;
   - «Módulos pendientes»: el pendiente de ejemplo pasa a ser Cobros (`/cobros`), con el comentario actualizado.
   Ejecutar `npm run test:e2e -- suppliers navigation` y comprobar que T015 pasa.

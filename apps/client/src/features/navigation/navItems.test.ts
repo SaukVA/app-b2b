@@ -71,13 +71,13 @@ function loadNavItems(implemented: readonly string[]): typeof NavItemsModule {
 }
 
 describe('buildNavItems · pendientes', () => {
-  it('con la lista real, Clientes (007), Productos (006) y Ajustes no están pendientes y el resto sí', () => {
+  it('con la lista real, Clientes (007), Productos (006), Proveedores (009) y Ajustes no están pendientes', () => {
     const pending = buildNavItems(ADMIN).map(({ label, pending }) => [label, pending]);
     expect(pending).toEqual([
       ['Ventas', true],
       ['Clientes', false],
       ['Productos', false],
-      ['Proveedores', true],
+      ['Proveedores', false],
       ['Cobros', true],
       ['Ajustes', false],
     ]);

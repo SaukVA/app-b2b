@@ -12,6 +12,7 @@ import { healthRouter } from './modules/health/health.routes';
 import { preferencesRouter } from './modules/preferences/preferences.routes';
 import { productRouter } from './modules/products/product.routes';
 import { roleRouter } from './modules/roles/role.routes';
+import { supplierRouter } from './modules/suppliers/supplier.routes';
 import { userRouter } from './modules/users/user.routes';
 
 export interface BuildAppOptions {
@@ -38,6 +39,7 @@ export function buildApp(options: BuildAppOptions = {}): Express {
   app.use('/api/preferences', preferencesRouter);
   app.use('/api/products', productRouter);
   app.use('/api/customers', customerRouter);
+  app.use('/api/suppliers', supplierRouter);
   if (options.docs !== false) {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(buildSwaggerSpec()));
   }

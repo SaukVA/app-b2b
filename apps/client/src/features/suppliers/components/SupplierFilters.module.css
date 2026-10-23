@@ -1,0 +1,19 @@
+/* Tablero «Proveedores»: búsqueda y, a su lado, la casilla de bajas, alineadas por la base. */
+.filters {
+  display: grid;
+  grid-template-columns: minmax(220px, 420px) auto;
+  justify-content: start;
+  align-items: end;
+  gap: var(--space-3);
+}
+
+.search {
+  min-width: 0;
+}
+
+/* En estrecho, búsqueda a todo el ancho y la casilla debajo (ProveedoresMovil.dc.html). */
+@media (max-width: 759px) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

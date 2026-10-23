@@ -33,13 +33,13 @@ test.describe('Menú de navegación', () => {
   }) => {
     await loginAsAdmin(page);
     const items = mainNav(page).getByRole('link');
-    // Los módulos de negocio pendientes terminan su texto en «Pendiente»; Productos (006) y Clientes (007)
-    // ya no.
+    // Los módulos de negocio pendientes terminan su texto en «Pendiente»; Productos (006), Clientes (007) y
+    // Proveedores (009) ya no.
     await expect(items).toHaveText([
       /^Ventas/,
       'Clientes',
       'Productos',
-      /^Proveedores/,
+      'Proveedores',
       /^Cobros/,
       'Ajustes',
     ]);
@@ -83,20 +83,20 @@ test.describe('Módulos pendientes', () => {
   test('un módulo pendiente se ve como tal y no se abre por ninguna vía (FR-009, FR-011)', async ({
     page,
   }) => {
-    // Productos ya está implementado (006): es la pantalla de inicio y Proveedores, el pendiente de ejemplo.
+    // Productos ya está implementado (006): es la pantalla de inicio y Cobros, el pendiente de ejemplo.
     await loginAsAdmin(page);
     await expect(page).toHaveURL(/\/productos$/);
-    const proveedores = mainNav(page).getByRole('link', { name: /Proveedores/ });
-    await expect(proveedores).toContainText('Pendiente');
+    const cobros = mainNav(page).getByRole('link', { name: /Cobros/ });
+    await expect(cobros).toContainText('Pendiente');
 
     // force: Playwright no pulsa un elemento con aria-disabled; aquí se comprueba justo que no navega.
-    await proveedores.click({ force: true });
+    await cobros.click({ force: true });
     await expect(page).toHaveURL(/\/productos$/);
-    await proveedores.focus();
+    await cobros.focus();
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/productos$/);
 
-    await page.goto('/proveedores');
+    await page.goto('/cobros');
     await expect(page).toHaveURL(/\/productos$/);
     await expect(page.getByRole('heading', { level: 1, name: 'Productos' })).toBeVisible();
   });
