@@ -36,8 +36,8 @@ describe('valores por defecto', () => {
 });
 
 describe('AVAILABLE_HOME_SCREENS', () => {
-  it('con la lista real ofrece Clientes (007) y Productos (006), los módulos de negocio implementados', () => {
-    expect(AVAILABLE_HOME_SCREENS).toEqual(['clientes', 'productos']);
+  it('con la lista real ofrece Clientes (007), Productos (006) y Proveedores (009)', () => {
+    expect(AVAILABLE_HOME_SCREENS).toEqual(['clientes', 'productos', 'proveedores']);
   });
 
   it('son las pantallas de módulos implementados, en el orden del selector y sin el Panel', () => {

@@ -114,6 +114,16 @@ describe('resolveHomeRoute con módulos pendientes (lista real, 005)', () => {
     expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL, 'clientes'), null)).toBe('/clientes');
   });
 
+  it('respeta un origen en Proveedores (009), ya implementado, si el rol lo ve', () => {
+    const conProveedores = user({ ...COMERCIAL, proveedores: 'view' });
+    expect(realHomeRoute.resolveHomeRoute(conProveedores, '/proveedores')).toBe('/proveedores');
+  });
+
+  it('una pantalla de inicio Proveedores guardada de antes de 005 vuelve a funcionar (009)', () => {
+    const conProveedores = user({ ...COMERCIAL, proveedores: 'edit' }, 'proveedores');
+    expect(realHomeRoute.resolveHomeRoute(conProveedores, null)).toBe('/proveedores');
+  });
+
   it('un rol que ve Productos (006) aterriza en /productos', () => {
     expect(realHomeRoute.resolveHomeRoute(user(COMERCIAL), null)).toBe('/productos');
   });
@@ -123,7 +133,7 @@ describe('resolveHomeRoute con módulos pendientes (lista real, 005)', () => {
       ...COMERCIAL,
       clientes: 'none',
       productos: 'none',
-      proveedores: 'edit',
+      cobros: 'edit',
     });
     expect(realHomeRoute.resolveHomeRoute(sinProductos, null)).toBe('/ajustes/apariencia');
   });
