@@ -53,7 +53,7 @@ prioridad: US1 → US2 (P1) → US3 (P2).
 
 **Purpose**: entorno de trabajo
 
-- [ ] T001 Comprobar que la rama activa es `009-suppliers-placeholder`, que `.specify/feature.json` apunta a
+- [X] T001 Comprobar que la rama activa es `009-suppliers-placeholder`, que `.specify/feature.json` apunta a
   `specs/009-suppliers-placeholder` y que `npm test --workspaces` y `npm run lint` están en verde antes de
   empezar (línea base).
 
@@ -69,16 +69,16 @@ historias.
 No hay reglas de negocio en shared (research R5): los tipos se comprueban al compilar y las constantes, en los
 tests de servidor y cliente que las usan.
 
-- [ ] T002 [P] Crear `packages/shared/src/types/supplier.ts` con, cada campo con su comentario:
+- [X] T002 [P] Crear `packages/shared/src/types/supplier.ts` con, cada campo con su comentario:
   - `SupplierListItem` con `id: string`, `name: string`, `leadTimeDays: number | null` («Plazo de entrega en días
     naturales, entero ≥ 0; `null` si no se conoce («—»)»), `yearPurchases: number` («Euros sin IVA con 2
     decimales, del 1 de enero del año en curso hasta hoy; se muestra con `UserMoney`») y `active: boolean`
     («`false` = dado de baja → sello «Baja»»). Sin CIF: solo se usa para buscar (research R6);
   - `SupplierListQuery` con `q?: string` (busca en nombre y CIF), `includeInactive: boolean` y `page: number`.
-- [ ] T003 [P] Crear `packages/shared/src/constants/suppliers.ts` con `SUPPLIER_SEARCH_MAX_LENGTH = 100`
+- [X] T003 [P] Crear `packages/shared/src/constants/suppliers.ts` con `SUPPLIER_SEARCH_MAX_LENGTH = 100`
   (FR-008, sin contar los espacios del principio y del final) y `SUPPLIERS_PAGE_SIZE = 10` (igual que Productos
   y Clientes), con sus comentarios.
-- [ ] T004 Exportar desde `packages/shared/src/index.ts` `SupplierListItem`, `SupplierListQuery` y
+- [X] T004 Exportar desde `packages/shared/src/index.ts` `SupplierListItem`, `SupplierListQuery` y
   `export * from './constants/suppliers'`. Ejecutar `npm run build --workspace=packages/shared` sin errores. Depende de T002–T003.
 
 **Checkpoint**: tipos y constantes del listado disponibles en `@app/shared`.
