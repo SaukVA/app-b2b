@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-23T10:50:16Z",
-  "updated_at": "2026-10-23T11:12:52Z",
+  "updated_at": "2026-10-23T11:27:02Z",
   "spec": "009-suppliers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -72,7 +72,7 @@
           "key": "AB2B-594",
           "id": "T005",
           "summary": "T005: Crear `apps/server/src/modules/suppliers/supplier.service.test.ts`: `listSuppliers` con",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-594"
         },
@@ -80,7 +80,7 @@
           "key": "AB2B-595",
           "id": "T006",
           "summary": "T006: Crear `apps/server/src/modules/suppliers/supplier.routes.test.ts` con `startTestDb`,",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-595"
         },
@@ -88,7 +88,7 @@
           "key": "AB2B-596",
           "id": "T007",
           "summary": "T007: Ajustar `packages/shared/src/constants/modules.test.ts`: `IMPLEMENTED_MODULES` es",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-596"
         },
@@ -96,7 +96,7 @@
           "key": "AB2B-597",
           "id": "T008",
           "summary": "T008: Ajustar los tests que usan Proveedores como módulo pendiente (research R11):",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-597"
         },
@@ -104,7 +104,7 @@
           "key": "AB2B-598",
           "id": "T009",
           "summary": "T009: Crear `apps/client/src/features/suppliers/suppliersSlice.test.ts` (casos de US1):",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-598"
         },
@@ -112,7 +112,7 @@
           "key": "AB2B-599",
           "id": "T010",
           "summary": "T010: Crear `apps/client/src/features/suppliers/suppliersApi.test.ts` con `httpClient` simulado:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-599"
         },
@@ -120,7 +120,7 @@
           "key": "AB2B-600",
           "id": "T011",
           "summary": "T011: Crear `apps/client/src/features/suppliers/formatLeadTime.test.ts` (data-model.md › Plazo en",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-600"
         },
@@ -128,7 +128,7 @@
           "key": "AB2B-601",
           "id": "T012",
           "summary": "T012: Crear `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx`, con la store",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-601"
         },
@@ -136,7 +136,7 @@
           "key": "AB2B-602",
           "id": "T013",
           "summary": "T013: Crear `apps/client/src/features/suppliers/components/SupplierFilters.test.tsx`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-602"
         },
@@ -144,7 +144,7 @@
           "key": "AB2B-603",
           "id": "T014",
           "summary": "T014: Crear `apps/client/src/pages/SuppliersPage.test.tsx` (casos de US1), con la store de",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-603"
         },
@@ -152,7 +152,7 @@
           "key": "AB2B-604",
           "id": "T015",
           "summary": "T015: Crear `e2e/suppliers.spec.ts` (US1), con los helpers de `e2e/customers.spec.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-604"
         },
@@ -160,7 +160,7 @@
           "key": "AB2B-605",
           "id": "T016",
           "summary": "T016: Crear la API en `apps/server/src/modules/suppliers/` siguiendo `customers/` (research R1–R4):",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-605"
         },
@@ -168,7 +168,7 @@
           "key": "AB2B-607",
           "id": "T017",
           "summary": "T017: Crear `apps/server/src/modules/suppliers/supplier.routes.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T016"
           ],
@@ -178,7 +178,7 @@
           "key": "AB2B-606",
           "id": "T018",
           "summary": "T018: Crear `apps/client/src/features/suppliers/suppliersApi.ts` con",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-606"
         },
@@ -186,7 +186,7 @@
           "key": "AB2B-608",
           "id": "T019",
           "summary": "T019: Añadir `'proveedores'` a `IMPLEMENTED_MODULES` en `packages/shared/src/constants/modules.ts`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-608"
         },
@@ -194,7 +194,7 @@
           "key": "AB2B-609",
           "id": "T020",
           "summary": "T020: Crear `apps/client/src/features/suppliers/suppliersSlice.ts` con el estado de data-model.md",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T018"
           ],
@@ -204,7 +204,7 @@
           "key": "AB2B-610",
           "id": "T021",
           "summary": "T021: Crear `apps/client/src/features/suppliers/formatLeadTime.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-610"
         },
@@ -212,7 +212,7 @@
           "key": "AB2B-613",
           "id": "T022",
           "summary": "T022: Crear `apps/client/src/features/suppliers/components/SuppliersTable.tsx` y",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T021"
           ],
@@ -222,7 +222,7 @@
           "key": "AB2B-611",
           "id": "T023",
           "summary": "T023: Crear `apps/client/src/features/suppliers/components/SupplierFilters.tsx` y",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-611"
         },
@@ -230,7 +230,7 @@
           "key": "AB2B-622",
           "id": "T024",
           "summary": "T024: Crear `apps/client/src/pages/SuppliersPage.tsx` y `SuppliersPage.module.css`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T020",
             "T022",
@@ -242,7 +242,7 @@
           "key": "AB2B-631",
           "id": "T025",
           "summary": "T025: Añadir la ruta en `apps/client/src/routes/AppRouter.tsx`, dentro de los hijos de `AppLayout`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T024"
           ],
@@ -252,12 +252,12 @@
           "key": "AB2B-612",
           "id": "T026",
           "summary": "T026: Ajustar `e2e/navigation.spec.ts` a Proveedores implementado:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-612"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-587",
@@ -567,7 +567,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 48,
-    "completed_tasks": 4,
-    "pending_tasks": 44
+    "completed_tasks": 26,
+    "pending_tasks": 22
   }
 }
