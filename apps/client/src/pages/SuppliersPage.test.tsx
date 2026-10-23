@@ -192,3 +192,23 @@ describe('SuppliersPage · dirección cambiada desde fuera (US2, FR-007a)', () =
     expect(lastQuery()).toEqual({ q: 'bar', includeInactive: true, page: 1 });
   });
 });
+
+describe('SuppliersPage · error del listado (US3)', () => {
+  it('si la petición falla muestra el error y no el aviso de proveedores pendientes', async () => {
+    mockedFetch.mockRejectedValue(new Error('Network Error'));
+    renderPage('/proveedores?q=levante');
+    expect(await screen.findByRole('alert')).toBeTruthy();
+    expect(screen.queryByText('Todavía no hay proveedores')).toBeNull();
+  });
+
+  it('«Reintentar» vuelve a pedir con los mismos criterios y, si responde, muestra el aviso', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('Network Error'));
+    renderPage('/proveedores?q=levante&includeInactive=true&page=2');
+    await screen.findByRole('alert');
+    await userEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
+    expect(await screen.findByText('Todavía no hay proveedores')).toBeTruthy();
+    expect(mockedFetch).toHaveBeenCalledTimes(2);
+    expect(lastQuery()).toEqual({ q: 'levante', includeInactive: true, page: 2 });
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+});

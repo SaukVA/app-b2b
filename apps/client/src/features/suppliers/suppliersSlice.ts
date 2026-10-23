@@ -21,6 +21,9 @@ const initialState: SuppliersState = {
   requestId: null,
 };
 
+/** Mensaje fijo del error de carga (FR-013): nunca se muestran los detalles técnicos del servidor. */
+export const SUPPLIERS_LOAD_ERROR_MESSAGE = 'No se ha podido cargar el listado de proveedores.';
+
 export const loadSuppliers = createAsyncThunk<ListPage<SupplierListItem>, SupplierListQuery>(
   'suppliers/load',
   (query) => fetchSuppliers(query),
@@ -34,6 +37,7 @@ const suppliersSlice = createSlice({
     builder
       .addCase(loadSuppliers.pending, (state, action) => {
         state.status = 'loading';
+        state.error = null;
         state.requestId = action.meta.requestId;
       })
       .addCase(loadSuppliers.fulfilled, (state, action) => {
@@ -41,6 +45,12 @@ const suppliersSlice = createSlice({
         state.status = 'succeeded';
         state.items = action.payload.items;
         state.total = action.payload.total;
+      })
+      .addCase(loadSuppliers.rejected, (state, action) => {
+        // Una petición abortada (criterios nuevos o pantalla cerrada) no es un error.
+        if (action.meta.aborted || action.meta.requestId !== state.requestId) return;
+        state.status = 'failed';
+        state.error = SUPPLIERS_LOAD_ERROR_MESSAGE;
       });
   },
 });

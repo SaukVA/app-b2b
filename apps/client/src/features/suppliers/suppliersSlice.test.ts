@@ -1,7 +1,7 @@
 import type { ListPage, SupplierListItem } from '@app/shared';
 import { setupStore } from '../../store/store';
 import { fetchSuppliers } from './suppliersApi';
-import { loadSuppliers } from './suppliersSlice';
+import { SUPPLIERS_LOAD_ERROR_MESSAGE, loadSuppliers } from './suppliersSlice';
 
 jest.mock('./suppliersApi', () => ({ fetchSuppliers: jest.fn() }));
 
@@ -63,5 +63,47 @@ describe('suppliersSlice · solo cuenta la última petición (US2, research R9)'
     stale.resolve({ ...EMPTY_PAGE, total: 7 });
     await first;
     expect(store.getState().suppliers).toMatchObject({ status: 'loading', total: 0 });
+  });
+});
+
+describe('suppliersSlice · error al cargar (US3, FR-013)', () => {
+  const serverError = Object.assign(new Error('Request failed with status code 500'), {
+    response: {
+      status: 500,
+      data: { success: false, error: { code: 'X', message: 'detalle técnico' } },
+    },
+  });
+
+  it.each([
+    ['sin respuesta del servidor', new Error('Network Error')],
+    ['con un envelope de error del servidor', serverError],
+  ])('%s pasa a failed con el mensaje fijo, nunca el del servidor', async (_case, error) => {
+    mockedFetch.mockRejectedValue(error);
+    const store = setupStore();
+    await store.dispatch(loadSuppliers(DEFAULT_QUERY));
+    expect(SUPPLIERS_LOAD_ERROR_MESSAGE).toBe('No se ha podido cargar el listado de proveedores.');
+    expect(store.getState().suppliers).toMatchObject({
+      status: 'failed',
+      error: SUPPLIERS_LOAD_ERROR_MESSAGE,
+    });
+  });
+
+  it('un pending posterior limpia el error', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('Network Error'));
+    const store = setupStore();
+    await store.dispatch(loadSuppliers(DEFAULT_QUERY));
+    mockedFetch.mockReturnValue(new Promise(() => {}));
+    void store.dispatch(loadSuppliers(DEFAULT_QUERY));
+    expect(store.getState().suppliers).toMatchObject({ status: 'loading', error: null });
+  });
+
+  it('abortar una petición no la marca como error', async () => {
+    mockedFetch.mockReturnValue(new Promise(() => {}));
+    const store = setupStore();
+    const request = store.dispatch(loadSuppliers(DEFAULT_QUERY));
+    request.abort();
+    await request;
+    expect(store.getState().suppliers.status).not.toBe('failed');
+    expect(store.getState().suppliers.error).toBeNull();
   });
 });

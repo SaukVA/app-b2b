@@ -365,31 +365,31 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T037 [P] [US3] Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:
+- [X] T037 [P] [US3] Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:
   `loadSuppliers.rejected` (sin respuesta y con un envelope de error del servidor) → `status: 'failed'` y
   `error === SUPPLIERS_LOAD_ERROR_MESSAGE` («No se ha podido cargar el listado de proveedores.»), nunca el
   mensaje del servidor; un `pending` posterior limpia `error`; un `rejected` por `abort` no cambia el estado.
-- [ ] T038 [P] [US3] Ampliar `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx`:
+- [X] T038 [P] [US3] Ampliar `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx`:
   - con `status: 'failed'` muestra `role="alert"` con el mensaje y un botón «Reintentar», y no muestra el aviso;
   - pulsar «Reintentar» llama a `onRetry` una vez.
-- [ ] T039 [P] [US3] Ampliar `apps/client/src/pages/SuppliersPage.test.tsx`:
+- [X] T039 [P] [US3] Ampliar `apps/client/src/pages/SuppliersPage.test.tsx`:
   - con `fetchSuppliers` rechazado se ve el error;
   - «Reintentar» llama de nuevo a `fetchSuppliers` con los mismos criterios de la dirección (incluido
     `includeInactive`) y, si resuelve, se ve el aviso.
-- [ ] T040 [P] [US3] Ampliar `e2e/suppliers.spec.ts` (US3): con `page.route('**/api/suppliers**', …)`
+- [X] T040 [P] [US3] Ampliar `e2e/suppliers.spec.ts` (US3): con `page.route('**/api/suppliers**', …)`
   respondiendo 500 se ve el error y no el aviso; tras `page.unroute`, «Reintentar» muestra el aviso.
 
 ### Implementación de US3
 
-- [ ] T041 [P] [US3] En `apps/client/src/features/suppliers/suppliersSlice.ts`, definir y exportar
+- [X] T041 [P] [US3] En `apps/client/src/features/suppliers/suppliersSlice.ts`, definir y exportar
   `SUPPLIERS_LOAD_ERROR_MESSAGE`. En `rejected` (solo de la última petición, sin contar los `abort`), guardar
   `status: 'failed'` y ese mensaje; en `pending`, limpiar `error`. Comprobar que T037 pasa.
-- [ ] T042 [P] [US3] Añadir el caso `failed` a
+- [X] T042 [P] [US3] Añadir el caso `failed` a
   `apps/client/src/features/suppliers/components/SuppliersListStatus.tsx`: `Alert variant="error"` con el
   mensaje y un `Button` secundario «Reintentar» (prop `onRetry`). Comprobar que T038 pasa.
-- [ ] T043 [US3] En `apps/client/src/pages/SuppliersPage.tsx`, pasar `onRetry`, que vuelve a despachar
+- [X] T043 [US3] En `apps/client/src/pages/SuppliersPage.tsx`, pasar `onRetry`, que vuelve a despachar
   `loadSuppliers` con los criterios actuales. Comprobar que T039 pasa. Depende de T041–T042.
-- [ ] T044 [US3] En `docs/design/README.md`, añadir a «Error de un listado» su uso en Proveedores («No se ha
+- [X] T044 [US3] En `docs/design/README.md`, añadir a «Error de un listado» su uso en Proveedores («No se ha
   podido cargar el listado de proveedores.», 009). Ejecutar `npm run test:e2e -- suppliers` y comprobar que
   T040 pasa.
 

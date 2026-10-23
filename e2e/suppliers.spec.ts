@@ -194,3 +194,30 @@ test.describe('Proveedores · filtro de bajas (US2, FR-004a)', () => {
     await expect(emptyNotice(page)).toBeVisible();
   });
 });
+
+test.describe('Proveedores · error del listado (US3)', () => {
+  test('con el servidor en error se ve el mensaje, no el aviso; «Reintentar» lo resuelve', async ({
+    page,
+  }) => {
+    await page.route('**/api/suppliers**', (route) =>
+      route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: false, error: { code: 'INTERNAL', message: 'detalle' } }),
+      }),
+    );
+    await loginAsAdmin(page);
+    await mainNav(page)
+      .getByRole('link', { name: /Proveedores/ })
+      .click();
+    const error = page.getByRole('alert');
+    await expect(error).toContainText('No se ha podido cargar el listado de proveedores.');
+    await expect(error).not.toContainText('detalle');
+    await expect(emptyNotice(page)).toHaveCount(0);
+
+    await page.unroute('**/api/suppliers**');
+    await page.getByRole('button', { name: 'Reintentar' }).click();
+    await expect(emptyNotice(page)).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+  });
+});
