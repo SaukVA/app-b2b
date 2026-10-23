@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-23T10:50:16Z",
-  "updated_at": "2026-10-23T11:46:05Z",
+  "updated_at": "2026-10-23T12:03:47Z",
   "spec": "009-suppliers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -360,7 +360,7 @@
           "key": "AB2B-625",
           "id": "T037",
           "summary": "T037: Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-625"
         },
@@ -368,7 +368,7 @@
           "key": "AB2B-626",
           "id": "T038",
           "summary": "T038: Ampliar `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-626"
         },
@@ -376,7 +376,7 @@
           "key": "AB2B-627",
           "id": "T039",
           "summary": "T039: Ampliar `apps/client/src/pages/SuppliersPage.test.tsx`:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-627"
         },
@@ -384,7 +384,7 @@
           "key": "AB2B-628",
           "id": "T040",
           "summary": "T040: Ampliar `e2e/suppliers.spec.ts` (US3): con `page.route('**/api/suppliers**', …)`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-628"
         },
@@ -392,7 +392,7 @@
           "key": "AB2B-629",
           "id": "T041",
           "summary": "T041: En `apps/client/src/features/suppliers/suppliersSlice.ts`, definir y exportar",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-629"
         },
@@ -400,7 +400,7 @@
           "key": "AB2B-630",
           "id": "T042",
           "summary": "T042: Añadir el caso `failed` a",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-630"
         },
@@ -408,7 +408,7 @@
           "key": "AB2B-632",
           "id": "T043",
           "summary": "T043: En `apps/client/src/pages/SuppliersPage.tsx`, pasar `onRetry`, que vuelve a despachar",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T041",
             "T042"
@@ -419,12 +419,12 @@
           "key": "AB2B-633",
           "id": "T044",
           "summary": "T044: En `docs/design/README.md`, añadir a «Error de un listado» su uso en Proveedores («No se ha",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-633"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-589",
@@ -567,7 +567,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 48,
-    "completed_tasks": 36,
-    "pending_tasks": 12
+    "completed_tasks": 44,
+    "pending_tasks": 4
   }
 }
