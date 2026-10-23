@@ -112,3 +112,85 @@ test.describe('Proveedores · acceso por rol (US1, FR-002, FR-003)', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Proveedores' })).toHaveCount(0);
   });
 });
+
+const searchBox = (page: Page) => page.getByRole('searchbox', { name: 'Buscar' });
+const inactiveBox = (page: Page) => page.getByRole('checkbox', { name: 'Mostrar dados de baja' });
+const emptyNotice = (page: Page) => page.getByText('Todavía no hay proveedores');
+
+/** Espera la petición del listado cuyos parámetros cumplen la condición. */
+function waitForList(page: Page, matches: (params: URLSearchParams) => boolean) {
+  return page.waitForRequest((req) => {
+    const url = new URL(req.url());
+    return url.pathname === '/api/suppliers' && matches(url.searchParams);
+  });
+}
+
+/** Escribe en la búsqueda y espera la petición que se lanza tras dejar de teclear. */
+async function searchFor(page: Page, text: string): Promise<void> {
+  const requested = waitForList(page, (params) => params.get('q') === text);
+  await searchBox(page).fill(text);
+  await requested;
+}
+
+/** Entra como Administrador en Proveedores y espera el aviso de proveedores pendientes. */
+async function openWithNotice(page: Page): Promise<void> {
+  await loginAsAdmin(page);
+  await openSuppliers(page);
+  await expect(emptyNotice(page)).toBeVisible();
+}
+
+/** Marca la casilla de bajas (controlada por la dirección) y espera la petición con includeInactive. */
+async function showInactive(page: Page): Promise<void> {
+  const requested = waitForList(page, (params) => params.get('includeInactive') === 'true');
+  await inactiveBox(page).click();
+  await requested;
+  await expect(inactiveBox(page)).toBeChecked();
+}
+
+test.describe('Proveedores · pendientes de carga (US2)', () => {
+  test.beforeEach(async ({ page }) => openWithNotice(page));
+
+  test('se ve el aviso y la búsqueda pide el listado y cambia la dirección', async ({ page }) => {
+    await expect(
+      page.getByText('Los proveedores se cargarán desde el sistema anterior.'),
+    ).toBeVisible();
+    await searchFor(page, 'levante');
+    await expect(page).toHaveURL(/\/proveedores\?q=levante$/);
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+
+  test('una dirección con valores no válidos se corrige y muestra el aviso, sin error', async ({
+    page,
+  }) => {
+    await page.goto('/proveedores?page=abc&includeInactive=si');
+    await expect(page).toHaveURL(/\/proveedores$/);
+    await expect(emptyNotice(page)).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+  });
+});
+
+test.describe('Proveedores · filtro de bajas (US2, FR-004a)', () => {
+  test.beforeEach(async ({ page }) => openWithNotice(page));
+
+  test('pide el listado, cambia el contador y «Atrás» lo desmarca', async ({ page }) => {
+    await showInactive(page);
+    await expect(page).toHaveURL(/\/proveedores\?includeInactive=true$/);
+    await expect(page.getByText('0 proveedores')).toBeVisible();
+    await expect(emptyNotice(page)).toBeVisible();
+
+    await page.goBack();
+    await expect(page).toHaveURL(/\/proveedores$/);
+    await expect(inactiveBox(page)).not.toBeChecked();
+    await expect(page.getByText('0 activos')).toBeVisible();
+  });
+
+  test('recargar conserva la búsqueda y el filtro de bajas', async ({ page }) => {
+    await searchFor(page, 'levante');
+    await showInactive(page);
+    await expect(page).toHaveURL(/\/proveedores\?q=levante&includeInactive=true$/);
+    await page.reload();
+    await expect(searchBox(page)).toHaveValue('levante');
+    await expect(inactiveBox(page)).toBeChecked();
+    await expect(emptyNotice(page)).toBeVisible();
+  });
+});

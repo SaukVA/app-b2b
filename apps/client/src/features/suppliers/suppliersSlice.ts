@@ -37,6 +37,7 @@ const suppliersSlice = createSlice({
         state.requestId = action.meta.requestId;
       })
       .addCase(loadSuppliers.fulfilled, (state, action) => {
+        if (action.meta.requestId !== state.requestId) return;
         state.status = 'succeeded';
         state.items = action.payload.items;
         state.total = action.payload.total;

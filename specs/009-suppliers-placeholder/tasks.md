@@ -264,7 +264,7 @@ a «0 proveedores» y «Atrás» lo desmarca. `/proveedores?page=abc&q=&includeI
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T027 [P] [US2] Crear `apps/client/src/features/suppliers/supplierCriteria.test.ts`:
+- [X] T027 [P] [US2] Crear `apps/client/src/features/suppliers/supplierCriteria.test.ts`:
   - `parseSupplierCriteria(new URLSearchParams(''))` → `{ includeInactive: false, page: 1 }`;
   - con `q=%20levante%20&includeInactive=true&page=2` → `{ q: 'levante', includeInactive: true, page: 2 }`;
   - valores no válidos se ignoran y quedan por defecto: `q` de 101 caracteres, `q=%20%20`, `page=0`,
@@ -272,17 +272,17 @@ a «0 proveedores» y «Atrás» lo desmarca. `/proveedores?page=abc&q=&includeI
   - parámetros ajenos (`lowStock=true`) se ignoran;
   - `serializeSupplierCriteria` omite los valores por defecto (`{ includeInactive: false, page: 1 }` → `''`) y
     es la inversa de `parseSupplierCriteria` para criterios válidos.
-- [ ] T028 [P] [US2] Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:
+- [X] T028 [P] [US2] Ampliar `apps/client/src/features/suppliers/suppliersSlice.test.ts`:
   - un `fulfilled` cuyo `meta.requestId` no es el último `requestId` se ignora;
   - un `pending` posterior sustituye `requestId`.
-- [ ] T029 [P] [US2] Crear `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx` (casos
+- [X] T029 [P] [US2] Crear `apps/client/src/features/suppliers/components/SuppliersListStatus.test.tsx` (casos
   de US2):
   - con `status: 'loading'` muestra «Cargando proveedores…» con `role="status"` y no muestra el aviso ni el
     error;
   - con `status: 'succeeded'` y `total: 0` muestra el `EmptyState` «Todavía no hay proveedores» / «Los
     proveedores se cargarán desde el sistema anterior.»;
   - con `succeeded` y elementos no muestra nada.
-- [ ] T030 [P] [US2] Ampliar `apps/client/src/pages/SuppliersPage.test.tsx` (con `createMemoryRouter` e
+- [X] T030 [P] [US2] Ampliar `apps/client/src/pages/SuppliersPage.test.tsx` (con `createMemoryRouter` e
   `initialEntries`):
   - con `/proveedores` se ve el aviso y no se ve paginación;
   - con `/proveedores?q=levante` el campo muestra el valor y `fetchSuppliers` recibe
@@ -297,7 +297,7 @@ a «0 proveedores» y «Atrás» lo desmarca. `/proveedores?page=abc&q=&includeI
     (montar no reescribe la dirección); teclear otra búsqueda o marcar el filtro vuelve a `page: 1`;
   - con la dirección cambiada desde fuera (navegar a `/proveedores?q=bar&includeInactive=true`), el campo y la
     casilla se resincronizan y el valor con debounce anterior no deshace la navegación.
-- [ ] T031 [P] [US2] Ampliar `e2e/suppliers.spec.ts` (US2):
+- [X] T031 [P] [US2] Ampliar `e2e/suppliers.spec.ts` (US2):
   - se ve el aviso de proveedores pendientes;
   - al escribir «levante» se hace una petición `GET /api/suppliers?q=levante` (`page.waitForRequest`) y la
     dirección cambia;
@@ -308,19 +308,19 @@ a «0 proveedores» y «Atrás» lo desmarca. `/proveedores?page=abc&q=&includeI
 
 ### Implementación de US2
 
-- [ ] T032 [P] [US2] Crear `apps/client/src/features/suppliers/supplierCriteria.ts` con
+- [X] T032 [P] [US2] Crear `apps/client/src/features/suppliers/supplierCriteria.ts` con
   `DEFAULT_SUPPLIER_CRITERIA = { includeInactive: false, page: 1 }`,
   `parseSupplierCriteria(params: URLSearchParams): SupplierListQuery` (recorta `q`, lo descarta si queda vacío o
   pasa de `SUPPLIER_SEARCH_MAX_LENGTH`; `includeInactive` solo si es exactamente `'true'`; `page` entero ≥ 1 o
   1) y `serializeSupplierCriteria(query): URLSearchParams` (omite los valores por defecto), con la forma de
   `features/products/productCriteria.ts`. Comprobar que T027 pasa.
-- [ ] T033 [P] [US2] En `apps/client/src/features/suppliers/suppliersSlice.ts`, guardar `requestId` en `pending`
+- [X] T033 [P] [US2] En `apps/client/src/features/suppliers/suppliersSlice.ts`, guardar `requestId` en `pending`
   e ignorar `fulfilled` y `rejected` de peticiones que no son la última (research R9). Comprobar que T028 pasa.
-- [ ] T034 [P] [US2] Crear `apps/client/src/features/suppliers/components/SuppliersListStatus.tsx` y
+- [X] T034 [P] [US2] Crear `apps/client/src/features/suppliers/components/SuppliersListStatus.tsx` y
   `SuppliersListStatus.module.css`, que según `status` y `total` muestran el estado de carga («Cargando
   proveedores…», `role="status"`) o el `EmptyState` con los textos del aviso. El caso `failed` llega en US3.
   Comprobar que T029 pasa.
-- [ ] T035 [US2] Conectar `apps/client/src/pages/SuppliersPage.tsx` con la dirección (research R8, R9), como
+- [X] T035 [US2] Conectar `apps/client/src/pages/SuppliersPage.tsx` con la dirección (research R8, R9), como
   `ProductsPage.tsx`:
   - leer los criterios con `useSearchParams` + `parseSupplierCriteria` y normalizar la dirección con `replace`
     si no coincide con `serializeSupplierCriteria`;
@@ -337,7 +337,7 @@ a «0 proveedores» y «Atrás» lo desmarca. `/proveedores?page=abc&q=&includeI
   - extraer a hooks o funciones auxiliares (`useSupplierCriteria`, `useLoadSuppliers`, `supplierCountLabel`)
     para no pasar de 40 líneas.
   Comprobar que T030 pasa. Depende de T032–T034.
-- [ ] T036 [US2] En `docs/design/README.md` › Componentes (FR-017, FR-018):
+- [X] T036 [US2] En `docs/design/README.md` › Componentes (FR-017, FR-018):
   - añadir a `EmptyState` su uso en Proveedores («Todavía no hay proveedores · Los proveedores se cargarán desde
     el sistema anterior.», 009);
   - documentar el filtro «Mostrar dados de baja» (mismo `Checkbox` que «Solo stock bajo», desmarcado por

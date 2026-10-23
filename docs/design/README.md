@@ -62,7 +62,7 @@ Tema seleccionable en Ajustes: **Claro**, **Oscuro** o **Según el sistema**; se
 
 | Estado | Claro | Oscuro |
 |---|---|---|
-| Borrador | `#EEF0EC` / `#4A5058` | — |
+| Borrador · Baja | `#EEF0EC` / `#4A5058` | — |
 | Pendiente · Stock bajo · Invitado | `#FDF3D7` / `#7A5300` | `#3A3014` / `#E8C66A` |
 | Servido | `#E3ECFA` / `#1E4C9A` | — |
 | Facturado · Disponible · Activo · Conectado | `#E2F1E8` / `#1F6B3F` | `#1B3326` / `#7FD3A0` |
@@ -70,6 +70,8 @@ Tema seleccionable en Ajustes: **Claro**, **Oscuro** o **Según el sistema**; se
 | Vencido · Sin stock · Bloqueado · Error | `#FBE4E1` / `#A12A1C` | `#3A1D1A` / `#F09A8E` |
 
 «—» = el lienzo no define variante oscura todavía.
+
+«Baja» (proveedor dado de baja, 009) usa el sello neutro (`StatusStamp tone="neutral"`), junto al nombre en la fila y en la tarjeta: no es una alerta. *Aún no está en el lienzo publicado.*
 
 Anatomía del sello: alto 24 px, padding 0 8 px, radio 4 px, Plex Mono 11/600, `letter-spacing: 0.06em`, mayúsculas, cuadradito de 6×6 px (radio 1) del color del texto delante de la etiqueta.
 
@@ -109,8 +111,9 @@ Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src
 - **Input**: alto 44, padding 0 12, borde 1 px `control`, radio 6. Foco: borde 2 px `accent`. Error: borde 1 px `#A12A1C` + mensaje 12 px en el mismo color. Inputs numéricos en Mono y alineados a la derecha.
 - **Etiqueta de campo**: estilo «Etiqueta» encima del control, gap 6.
 - **Tabla**: dentro de panel blanco con borde y radio 10; cabecera en `surface2`; filas separadas por `borderRow`; fila seleccionada en `accentSoft`. En móvil se sustituye por tarjetas (`article`). La zona de estado del listado (cargando, sin datos, error) va bajo las filas, dentro del mismo panel (separada por `borderRow`); en móvil, en una tarjeta propia bajo las demás. Mientras carga, el listado lleva `aria-busy`.
-- **EmptyState** (sin datos en un listado): título Sans 18/600 `ink` + texto 14/400 `ink2`, centrados, padding 32, sin color de estado ni icono; `role="status"` para que se anuncie al aparecer. Primer uso: Productos, «Todavía no hay productos · El catálogo se cargará desde el sistema anterior.» (006). También en Clientes, «Todavía no hay clientes · La cartera se cargará desde el sistema anterior.» (007). *Aún no está en el lienzo publicado.*
+- **EmptyState** (sin datos en un listado): título Sans 18/600 `ink` + texto 14/400 `ink2`, centrados, padding 32, sin color de estado ni icono; `role="status"` para que se anuncie al aparecer. Primer uso: Productos, «Todavía no hay productos · El catálogo se cargará desde el sistema anterior.» (006). También en Clientes, «Todavía no hay clientes · La cartera se cargará desde el sistema anterior.» (007), y en Proveedores, «Todavía no hay proveedores · Los proveedores se cargarán desde el sistema anterior.» (009). *Aún no está en el lienzo publicado.*
 - **Error de un listado**: en la zona de estado del panel, `Alert` de error (`role="alert"`, se anuncia de inmediato) con un mensaje sin detalles técnicos y, debajo, botón secundario «Reintentar» que vuelve a pedir el listado con los mismos criterios; padding 16, gap 12, alineado a la izquierda. Nunca a la vez que el EmptyState. Primer uso: «No se ha podido cargar el listado de productos.» (006). También en Clientes, «No se ha podido cargar el listado de clientes.» (007). *Aún no está en el lienzo publicado.*
+- **Filtro de bajas** (Proveedores, 009): casilla «Mostrar dados de baja» a la derecha de la búsqueda, con el mismo `Checkbox` que «Solo stock bajo» de Productos; desmarcada por defecto. Marcada, el listado incluye los proveedores dados de baja y el contador pasa de «N activos» a «N proveedores». En estrecho, debajo de la búsqueda. La búsqueda de Proveedores usa el placeholder «Nombre o CIF» (en el lienzo, «Nombre del proveedor»). *Aún no está en el lienzo publicado.*
 - **Barra de progreso** (stock / riesgo, componente `ProgressBar`): 4 px de alto, pista `surface2`, relleno del color del umbral (el mismo que el texto de los sellos). `role="meter"` con el porcentaje en `aria-valuetext`; el relleno se limita a 0–100 % aunque el valor lo supere. Siempre acompaña a la cifra en Mono: el color nunca es la única señal. Primer uso: «Riesgo usado» de Clientes (007); un cliente sin riesgo máximo muestra el texto «Sin límite» (`ink2`), sin barra ni color.
 - **Tarjeta KPI**: panel blanco, etiqueta + cifra Mono 32 + línea de alerta en rojo.
 - **Paginación**: texto Mono `1–8 de N`, botones secundarios «Anterior»/«Siguiente», deshabilitados en `#9AA1A9`.
@@ -150,7 +153,7 @@ Las pantallas de escritorio son fluidas (anchura de referencia 1440 px); las ver
 | Sistema visual | `Main.dc.html` | — | Tokens, tipografía, componentes |
 | Productos | `Productos.dc.html` | `ProductosMovil.dc.html` | Filtros (búsqueda, categoría, subcategoría, proveedor, solo stock bajo), tabla con stock/mín., precio y estado, importar CSV |
 | Clientes | `Clientes.dc.html` | `ClientesMovil.dc.html` | Listado con riesgo usado y saldo + ficha lateral con historial reciente |
-| Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Listado con plazo y compras del año + productos asociados y pedido de compra sugerido |
+| Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Listado con plazo y compras del año + productos asociados y pedido de compra sugerido. Implementado (009): listado provisional, sin ficha lateral |
 | Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio) y Usuarios (alta directa con contraseña inicial, listado Activo/Bloqueado, menú por fila con editar, restablecer contraseña y bloquear/desbloquear, diálogos de confirmación, aviso de primer Administrador y matriz de permisos de solo lectura). Ajustes del tablero: `plataforma` (Web/Escritorio) y `primerAcceso` (cuenta inicial «admin») |
 | Login | `Login.dc.html` | `LoginMovil.dc.html` | Hero oscuro + formulario, estado de error, indicador de servidor |
 
