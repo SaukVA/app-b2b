@@ -128,7 +128,10 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
   - `apps/client/src/routes/homeRoute.test.ts` (bloque «con módulos pendientes (lista real, 005)»): en «un rol
     sin Productos ni otra pantalla implementada…» cambiar `proveedores: 'edit'` por `cobros: 'edit'`; añadir
     «un origen en Proveedores (009) se respeta» (`/proveedores` con un rol que lo ve → `/proveedores`) y «una
-    pantalla de inicio Proveedores guardada de antes de 005 vuelve a funcionar (009)».
+    pantalla de inicio Proveedores guardada de antes de 005 vuelve a funcionar (009)»;
+  - `apps/server/src/modules/preferences/preferences.pendingModules.test.ts`: añadir un caso 200 de
+    `PATCH /api/preferences` con `homeScreen: 'proveedores'` para un usuario Administración (FR-001); el caso
+    400 `PREFERENCES_HOME_SCREEN_NOT_ALLOWED` con un módulo pendiente sigue usando `'ventas'`.
   Tras T019, ejecutar `npm test --workspaces` y ajustar cualquier otro caso que use la lista real.
 - [ ] T009 [P] [US1] Crear `apps/client/src/features/suppliers/suppliersSlice.test.ts` (casos de US1):
   - estado inicial `{ items: [], total: 0, status: 'idle', error: null, requestId: null }`;
@@ -141,7 +144,9 @@ servidor (quickstart §3.1, §3.2, §3.10–§3.12, §3.14, §3.15).
   - devuelve el `data` del envelope.
 - [ ] T011 [P] [US1] Crear `apps/client/src/features/suppliers/formatLeadTime.test.ts` (data-model.md › Plazo en
   pantalla): `null` → `'—'`; `1` → `'1 día'`; `0` → `'0 días'`; `3` → `'3 días'`.
-- [ ] T012 [P] [US1] Crear `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx`:
+- [ ] T012 [P] [US1] Crear `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx`, con la store
+  de `setupStore` y las preferencias del usuario (formato de importes) como en `CustomersTable.test.tsx`, para que
+  `UserMoney` formatee:
   - con `rows=[]`: tabla con `caption` «Proveedores» y cabeceras Proveedor, Plazo y Compras año; sin cabecera de
     acciones; sin filas;
   - con una fila activa de ejemplo (`leadTimeDays: 3`, `yearPurchases: 48210`): nombre sin subtítulo, «3 días»
@@ -443,7 +448,7 @@ ve el mensaje de error (no el aviso). «Reintentar» con el servidor disponible 
 
 ```text
 Tests a la vez:
-  T005 supplier.service.test   T006 supplier.routes.test   T007 modules.test   T008 tests pendientes (x3)
+  T005 supplier.service.test   T006 supplier.routes.test   T007 modules.test   T008 tests pendientes (x4)
   T009 suppliersSlice.test     T010 suppliersApi.test      T011 formatLeadTime.test
   T012 SuppliersTable.test     T013 SupplierFilters.test   T014 SuppliersPage.test   T015 e2e/suppliers.spec
 Implementación:

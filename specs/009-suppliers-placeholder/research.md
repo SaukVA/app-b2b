@@ -119,6 +119,8 @@ provisional. Este documento recoge las decisiones de diseño y qué se reutiliza
   - `apps/client/src/features/preferences/components/AppearanceForm.pendingModules.test.tsx` (usuario
     `PROVEEDORES_ONLY` → solo Cobros).
   - `apps/client/src/routes/homeRoute.test.ts` (casos «módulos pendientes» con la lista real).
+  - `apps/server/src/modules/preferences/preferences.pendingModules.test.ts` (caso 200 con
+    `homeScreen: 'proveedores'`, FR-001).
   - `e2e/navigation.spec.ts` (lista de módulos y ejemplo de pendiente).
 - **Rationale**: regla de 005 (FR-010) y convención de CLAUDE.md.
 - **Comprobación al implementar**: los tests que solo citan `proveedores` en un `PermissionSet` (p. ej.

@@ -180,8 +180,8 @@ con el servidor de nuevo disponible, aparece el aviso de proveedores pendientes.
   «Mostrar dados de baja» desactivado por defecto y el listado con las columnas del diseño «Albarán»: proveedor, plazo de entrega
   y compras del año (importe sin IVA comprado al proveedor desde el 1 de enero del año en curso hasta hoy).
 - **FR-004a**: Con el filtro desactivado, el listado MUST incluir solo proveedores activos y el contador MUST
-  decir «N activos». Con el filtro activado, MUST incluir también los dados de baja, el contador MUST decir
-  «N proveedores» y cada proveedor dado de baja MUST mostrar la marca «Baja», en la fila y en la tarjeta móvil.
+  decir «N activos» («1 activo» en singular). Con el filtro activado, MUST incluir también los dados de baja, el
+  contador MUST decir «N proveedores» («1 proveedor» en singular) y cada proveedor dado de baja MUST mostrar la marca «Baja», en la fila y en la tarjeta móvil.
 - **FR-005**: La pantalla NEVER MUST mostrar «Nuevo proveedor», la ficha lateral de proveedor ni sus acciones
   («Editar proveedor», productos asociados, pedido de compra sugerido y «Generar pedido de compra»).
 - **FR-006**: Con el listado vacío, la paginación NEVER MUST mostrarse.

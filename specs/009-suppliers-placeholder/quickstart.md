@@ -32,7 +32,8 @@ Cobertura esperada:
   ignorada), `formatLeadTime` («—», «1 día», «N días»), `SupplierFilters`, `SuppliersTable` (sello «Baja»,
   plazo y compras) y la página (contador «activos»/«proveedores», cargando, vacío, error y «Reintentar»).
 - Ajustados: `modules.test`, `navItems.test`, `AppearanceForm.pendingModules`, `homeRoute.test` y
-  `e2e/navigation.spec`, que ya no usan Proveedores como pendiente.
+  `e2e/navigation.spec`, que ya no usan Proveedores como pendiente; `preferences.pendingModules` acepta
+  `homeScreen: 'proveedores'`.
 - E2E: `e2e/suppliers.spec.ts` nuevo.
 
 ## 3. Comprobación manual (web)

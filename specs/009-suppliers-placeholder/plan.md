@@ -73,10 +73,10 @@ el listado al momento.
 **Scale/Scope**:
 - 1 endpoint.
 - 1 feature de cliente nueva y 1 página.
-- 2 ficheros nuevos en shared (más su test).
-- Ajustes en `AppRouter`, `store`, `app.ts`, `modules.ts`, `index.ts` de shared, el README de diseño y 5
+- 2 ficheros nuevos en shared, sin test propio: solo tipos y constantes (research R5).
+- Ajustes en `AppRouter`, `store`, `app.ts`, `modules.ts`, `index.ts` de shared, el README de diseño y 6
   ficheros de tests existentes (`modules.test`, `navItems.test`, `AppearanceForm.pendingModules`,
-  `homeRoute.test` y `e2e/navigation.spec`).
+  `homeRoute.test`, `preferences.pendingModules` y `e2e/navigation.spec`).
 
 ## Constitution Check
 
@@ -133,6 +133,7 @@ apps/server/src/
     ├── supplier.validation.ts         # supplierListQuerySchema
     ├── supplier.service.test.ts
     └── supplier.routes.test.ts
+apps/server/src/modules/preferences/preferences.pendingModules.test.ts   # ajustado: 200 con 'proveedores'
 
 apps/client/src/
 ├── features/suppliers/                                                 # nuevo
