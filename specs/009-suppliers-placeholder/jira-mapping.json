@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-23T10:50:16Z",
-  "updated_at": "2026-10-23T10:50:16Z",
+  "updated_at": "2026-10-23T11:12:52Z",
   "spec": "009-suppliers-placeholder",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -21,12 +21,12 @@
           "key": "AB2B-590",
           "id": "T001",
           "summary": "T001: Comprobar que la rama activa es `009-suppliers-placeholder`, que `.specify/feature.json` apunta a",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-590"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-585",
@@ -37,7 +37,7 @@
           "key": "AB2B-591",
           "id": "T002",
           "summary": "T002: Crear `packages/shared/src/types/supplier.ts` con, cada campo con su comentario:",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-591"
         },
@@ -45,7 +45,7 @@
           "key": "AB2B-592",
           "id": "T003",
           "summary": "T003: Crear `packages/shared/src/constants/suppliers.ts` con `SUPPLIER_SEARCH_MAX_LENGTH = 100`",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-592"
         },
@@ -53,7 +53,7 @@
           "key": "AB2B-593",
           "id": "T004",
           "summary": "T004: Exportar desde `packages/shared/src/index.ts` `SupplierListItem`, `SupplierListQuery` y",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T002",
             "T003"
@@ -61,7 +61,7 @@
           "url": "https://sauk.atlassian.net/browse/AB2B-593"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-586",
@@ -567,7 +567,7 @@
   "summary": {
     "total_stories": 6,
     "total_tasks": 48,
-    "completed_tasks": 0,
-    "pending_tasks": 48
+    "completed_tasks": 4,
+    "pending_tasks": 44
   }
 }
