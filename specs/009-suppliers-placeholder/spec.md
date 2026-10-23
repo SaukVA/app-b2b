@@ -29,14 +29,30 @@ de entrega del proveedor o el plazo de pago acordado?, y ¿en qué unidad se exp
 y edición de proveedores, ficha lateral con productos asociados, pedido de compra sugerido y «Generar pedido de
 compra», compras y migración de datos."
 
+## Clarifications
+
+### Session 2026-10-23
+
+- Q: ¿La columna «Plazo» del listado de proveedores es el plazo de entrega del proveedor, en días? → A: Sí: plazo
+  de entrega en días naturales, como número entero; se muestra «N días», o «—» si no se conoce.
+- Q: ¿Las «Compras año» del listado son las del año natural en curso o las de los últimos 12 meses? → A: Año
+  natural en curso (del 1 de enero hasta hoy), importe sin IVA.
+- Q: ¿El listado debe incluir ya el nº de productos asociados y el nº bajo mínimos para el subtítulo de la fila? →
+  A: No: la fila muestra solo el nombre del proveedor; el subtítulo llegará con la ficha de proveedor.
+- Q: ¿El listado muestra solo los proveedores activos o también los dados de baja? → A: Todos, con un filtro
+  «Mostrar dados de baja» desactivado por defecto; con el filtro activado, los dados de baja aparecen marcados
+  como «Baja».
+- Q: ¿Sobre qué datos del proveedor buscará el texto de la búsqueda? → A: Nombre o CIF; el texto de ayuda de la
+  búsqueda es «Nombre o CIF».
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Abrir Proveedores y ver su estructura (Priority: P1) 🎯 MVP
 
 Un usuario cuyo rol tiene acceso a Proveedores (Administrador y Administración pueden editar; Almacén solo ver,
 según la matriz de permisos) pulsa Proveedores en el menú, que ya no aparece como «Pendiente», y llega a la
-pantalla de Proveedores. Ve el título, el número de proveedores activos, la búsqueda de proveedores y el listado con
-sus columnas (proveedor, plazo de entrega y compras del año), tal como los define el diseño «Albarán». Al entrar, la
+pantalla de Proveedores. Ve el título, el número de proveedores activos, la búsqueda de proveedores, el filtro
+«Mostrar dados de baja» (desactivado) y el listado con sus columnas (proveedor, plazo de entrega y compras del año), tal como los define el diseño «Albarán». Al entrar, la
 pantalla pide el listado al servidor.
 
 **Why this priority**: es la base de la feature. Sin una pantalla accesible no hay dónde mostrar los avisos ni dónde
@@ -53,7 +69,8 @@ hecho la petición del listado al servidor. Con un usuario Comercial se comprueb
 2. **Given** ese usuario, **When** pulsa Proveedores, **Then** se abre la pantalla de Proveedores y el menú marca
    Proveedores como activo.
 3. **Given** la pantalla de Proveedores, **When** termina de cargar, **Then** se ven el título, el número de
-   proveedores activos (0), la búsqueda de proveedores y las cabeceras del listado (Proveedor, Plazo y Compras año).
+   proveedores activos (0), la búsqueda de proveedores, el filtro «Mostrar dados de baja» desactivado y las
+   cabeceras del listado (Proveedor, Plazo y Compras año).
 4. **Given** la pantalla de Proveedores, **When** el usuario mira las acciones, **Then** no aparecen «Nuevo
    proveedor», la ficha lateral ni sus acciones («Editar proveedor», «Generar pedido de compra»).
 5. **Given** un usuario cuyo rol puede ver Proveedores, **When** va a Ajustes › Apariencia, **Then** puede elegir
@@ -68,8 +85,8 @@ hecho la petición del listado al servidor. Con un usuario Comercial se comprueb
 ### User Story 2 - Entender que los proveedores aún no están cargados (Priority: P1)
 
 Con el listado vacío, el usuario ve en lugar de las filas un aviso claro: todavía no hay proveedores porque se
-cargarán desde el sistema anterior. Puede escribir una búsqueda: la pantalla vuelve a pedir el listado al servidor
-con ese texto y el resultado sigue vacío, con el mismo aviso.
+cargarán desde el sistema anterior. Puede escribir una búsqueda o activar «Mostrar dados de baja»: la pantalla vuelve
+a pedir el listado al servidor con esos criterios y el resultado sigue vacío, con el mismo aviso.
 
 **Why this priority**: sin el aviso, una pantalla vacía parece un fallo o unos datos borrados. Es lo que hace que la
 pantalla provisional sea comprensible.
@@ -84,6 +101,8 @@ busca un texto y se comprueba que se pide el listado al servidor con ese texto y
    paginación.
 2. **Given** la pantalla con el aviso, **When** el usuario escribe en la búsqueda, **Then** la pantalla pide el
    listado al servidor con ese texto y sigue mostrando el mismo aviso (no el de «ningún proveedor coincide»).
+2a. **Given** la pantalla con el aviso, **When** el usuario activa o desactiva «Mostrar dados de baja», **Then** la
+   pantalla pide el listado al servidor con ese criterio, vuelve a la página 1 y sigue mostrando el mismo aviso.
 3. **Given** la petición en curso, **When** el usuario mira la pantalla, **Then** ve que se está cargando, sin que
    aparezca antes de tiempo el aviso de «sin datos».
 4. **Given** un lector de pantalla, **When** termina la carga, **Then** se anuncia el aviso de proveedores
@@ -126,6 +145,7 @@ con el servidor de nuevo disponible, aparece el aviso de proveedores pendientes.
   un error de validación y la pantalla muestra el mensaje de error de la historia 3.
 - Criterios no válidos escritos a mano en la dirección (`?page=abc`, búsqueda demasiado larga…): la pantalla los
   sustituye por los valores por defecto y corrige la dirección antes de pedir el listado (FR-007a), sin error.
+  Lo mismo con un valor del filtro de bajas que no sea «sí» o «no»: se toma como desactivado.
 - Varias peticiones seguidas al escribir rápido: la pantalla muestra solo el resultado de la última y no lanza una
   petición por cada tecla.
 - La sesión caduca mientras se pide el listado: se aplica el comportamiento de sesión caducada de 001-user-login.
@@ -155,31 +175,37 @@ con el servidor de nuevo disponible, aparece el aviso de proveedores pendientes.
 
 **Estructura de la pantalla**
 
-- **FR-004**: La pantalla MUST mostrar el título «Proveedores», el número de proveedores activos del listado, una
-  búsqueda de proveedores por texto y el listado con las columnas del diseño «Albarán»: proveedor, plazo de entrega
-  y compras del año.
+- **FR-004**: La pantalla MUST mostrar el título «Proveedores», el contador del listado, una búsqueda de proveedores
+  por nombre o CIF (texto de ayuda «Nombre o CIF», en lugar del «Nombre del proveedor» del lienzo), un filtro
+  «Mostrar dados de baja» desactivado por defecto y el listado con las columnas del diseño «Albarán»: proveedor, plazo de entrega
+  y compras del año (importe sin IVA comprado al proveedor desde el 1 de enero del año en curso hasta hoy).
+- **FR-004a**: Con el filtro desactivado, el listado MUST incluir solo proveedores activos y el contador MUST
+  decir «N activos». Con el filtro activado, MUST incluir también los dados de baja, el contador MUST decir
+  «N proveedores» y cada proveedor dado de baja MUST mostrar la marca «Baja», en la fila y en la tarjeta móvil.
 - **FR-005**: La pantalla NEVER MUST mostrar «Nuevo proveedor», la ficha lateral de proveedor ni sus acciones
   («Editar proveedor», productos asociados, pedido de compra sugerido y «Generar pedido de compra»).
 - **FR-006**: Con el listado vacío, la paginación NEVER MUST mostrarse.
 
 **Listado y criterios**
 
-- **FR-007**: Al abrir la pantalla, y cada vez que el usuario cambia la búsqueda, la pantalla MUST pedir el listado
-  al servidor con los criterios elegidos: texto de búsqueda y página. Al escribir en la búsqueda, MUST esperar a que
+- **FR-007**: Al abrir la pantalla, y cada vez que el usuario cambia la búsqueda o el filtro de bajas, la pantalla
+  MUST pedir el listado al servidor con los criterios elegidos: texto de búsqueda, mostrar dados de baja (sí/no) y
+  página. Al escribir en la búsqueda, MUST esperar a que
   el usuario deje de teclear antes de pedirlo, y MUST mostrar solo el resultado de la última petición.
-- **FR-007a**: La búsqueda y la página MUST formar parte de la dirección de la pantalla, de modo que se conserven al
-  recargar, al usar «Atrás» y al compartir el enlace; al abrir una dirección con criterios, la pantalla MUST
-  mostrarlos en la búsqueda y pedir el listado con ellos. Cambiar la búsqueda MUST volver a la página 1. Un valor no
-  válido en la dirección (página no entera o no positiva, búsqueda de más de 100 caracteres) MUST ignorarse,
-  sustituirse por el valor por defecto (sin búsqueda, página 1) y corregirse en la dirección, sin mostrar error.
+- **FR-007a**: La búsqueda, el filtro de bajas y la página MUST formar parte de la dirección de la pantalla, de modo
+  que se conserven al recargar, al usar «Atrás» y al compartir el enlace; al abrir una dirección con criterios, la
+  pantalla MUST mostrarlos en la búsqueda y el filtro y pedir el listado con ellos. Cambiar la búsqueda o el filtro
+  MUST volver a la página 1. Un valor no válido en la dirección (página no entera o no positiva, búsqueda de más de
+  100 caracteres, filtro distinto de sí/no) MUST ignorarse, sustituirse por el valor por defecto (sin búsqueda,
+  filtro desactivado, página 1) y corregirse en la dirección, sin mostrar error.
 - **FR-008**: El servidor MUST exigir sesión iniciada y permiso de ver Proveedores para responder al listado, y MUST
   validar los criterios recibidos: texto de búsqueda de 100 caracteres como máximo (sin contar los espacios del
-  principio y del final) y página entera positiva. Los criterios no válidos MUST rechazarse con un error de
+  principio y del final), filtro de bajas sí/no (desactivado si no se envía) y página entera positiva. Los criterios no válidos MUST rechazarse con un error de
   validación.
 - **FR-009**: En esta entrega, el servidor MUST responder siempre a una petición válida con un listado vacío y un
   total de 0 proveedores, sin leer ni escribir proveedores en la base de datos.
 - **FR-010**: La respuesta del listado MUST tener ya la forma definitiva: los proveedores de la página (con los
-  datos de las columnas de FR-004), el total de proveedores, la página y el tamaño de página (10). Así, cargar los
+  datos de las columnas de FR-004 y si están activos o dados de baja), el total de proveedores, la página y el tamaño de página (10). Así, cargar los
   proveedores reales no cambiará lo que recibe la pantalla.
 
 **Estados de la pantalla**
@@ -202,18 +228,23 @@ con el servidor de nuevo disponible, aparece el aviso de proveedores pendientes.
   (listado en tarjetas, sin la columna «Plazo»). Los controles MUST ser operables con teclado y tener un objetivo
   táctil mínimo de 44 px.
 - **FR-016**: Cuando el listado tenga proveedores (futuro), las compras del año MUST mostrarse con el formato de
-  importes del usuario (004-appearance-preferences), y el plazo de entrega como un número de días («3 días»), nunca
-  como importe. Un proveedor sin plazo de entrega conocido MUST mostrar la columna vacía, con un guion.
+  importes del usuario (004-appearance-preferences), y el plazo de entrega como un número entero de días
+  naturales seguido de «días» («3 días»), nunca como importe. Un proveedor sin plazo de entrega conocido MUST
+  mostrar «—» en esa columna.
 - **FR-017**: El aviso de pantalla vacía y el mensaje de error MUST reutilizar el EmptyState y el error de listado
   documentados por 006-products-placeholder en `docs/design/README.md`, cambiando solo el texto, y
   `docs/design/README.md` MUST registrar su uso en Proveedores en el mismo cambio.
+- **FR-018**: El filtro «Mostrar dados de baja» y la marca «Baja» no están en el lienzo «Albarán»: el filtro MUST
+  reutilizar el control del filtro «Solo stock bajo» de Productos y la marca, el sello de estado del sistema visual
+  con texto (no solo color). `docs/design/README.md` MUST registrar ambos en el mismo cambio.
 
 ### Key Entities
 
 - **Proveedor (listado)**: proveedor tal como aparece en el listado. Atributos: nombre, plazo de entrega en días
-  (opcional) y compras del año en curso (importe). En esta entrega no hay ninguno; se define para fijar el contrato
-  del listado.
-- **Criterios del listado**: texto de búsqueda y página.
+  naturales (entero, opcional), compras del año natural en curso (importe sin IVA) y estado (activo o dado de
+  baja). La búsqueda se aplica también a su CIF, que no forma parte del listado. En esta entrega no hay ninguno;
+  se define para fijar el contrato del listado.
+- **Criterios del listado**: texto de búsqueda, mostrar dados de baja (sí/no, por defecto no) y página.
 - **Página de resultados**: proveedores de la página, total de proveedores, página y tamaño de página.
 - **Usuario, rol y permisos**: definidos en 001-user-login y 003-user-management; aquí solo se lee el permiso de ver
   Proveedores.
@@ -224,8 +255,8 @@ con el servidor de nuevo disponible, aparece el aviso de proveedores pendientes.
 
 - **SC-001**: Un usuario con acceso llega a la pantalla de Proveedores desde cualquier pantalla con un solo clic o
   toque en el menú.
-- **SC-002**: El 100 % de las veces que se abre Proveedores, o que se cambia la búsqueda, se pide el listado al
-  servidor con los criterios elegidos.
+- **SC-002**: El 100 % de las veces que se abre Proveedores, o que se cambia la búsqueda o el filtro de bajas, se
+  pide el listado al servidor con los criterios elegidos.
 - **SC-003**: En el 100 % de los casos, el usuario ve el aviso de proveedores pendientes de carga o el mensaje de
   error, nunca los dos a la vez ni una pantalla en blanco.
 - **SC-004**: Con el servidor disponible, el aviso de proveedores pendientes aparece en menos de 2 segundos desde
@@ -243,14 +274,16 @@ con el servidor de nuevo disponible, aparece el aviso de proveedores pendientes.
   la regla de módulo implementado son los de 005-app-navigation.
 - El escritorio usa su backend local (002-desktop-local-backend); la pantalla se comporta igual en web y escritorio.
 - «Plazo» es el **plazo de entrega** del proveedor en días: el tablero `Proveedores.dc.html` lo muestra como
-  «3 días» en la fila y como «Entrega en 3 días» en la ficha. Esto resuelve la duda planteada en la descripción.
-- El número de la cabecera cuenta los proveedores activos; en esta entrega todos los del listado lo son y no hay
-  proveedores inactivos ni filtro de estado.
+  «3 días» en la fila y como «Entrega en 3 días» en la ficha (confirmado en la clarificación del 2026-10-23).
+- El contador de la cabecera es el total del listado con los criterios elegidos: «N activos» con el filtro de bajas
+  desactivado y «N proveedores» con él activado (clarificación del 2026-10-23). Dar de baja o reactivar un
+  proveedor queda para la spec de alta y edición.
 - El subtítulo de cada fila del diseño (número de productos asociados y cuántos están bajo mínimos) depende de los
-  productos asociados y se añadirá con la ficha de proveedor; en esta entrega no forma parte del listado.
+  productos asociados y se añadirá con la ficha de proveedor; en esta entrega no forma parte del listado y la fila muestra solo el nombre (clarificación del 2026-10-23).
 - El tamaño de página es de 10 proveedores, igual que Productos y Clientes, aunque en esta entrega no se llega a
   usar.
-- La búsqueda se aplicará en el futuro sobre el nombre del proveedor; en esta entrega solo se valida.
+- La búsqueda se aplicará en el futuro sobre el nombre y el CIF del proveedor (clarificación del 2026-10-23); en
+  esta entrega solo se valida. El CIF no se muestra en el listado: es un dato de la ficha.
 - 006-products-placeholder y 007-customers-placeholder ya están en `develop`: Proveedores sigue su mismo patrón de
   pantalla provisional (aviso, error, criterios en la dirección y contrato del listado).
 - Los proveedores se cargarán en una spec futura de migración desde la base de datos antigua.
