@@ -43,7 +43,7 @@ Monorepo gestionado con **npm workspaces** (`apps/*`, `packages/*`). Todo el có
 |---|---|---|
 | Express | 5.1.x | Framework HTTP |
 | Mongoose | 8.24.x | ODM sobre MongoDB |
-| MongoDB Server | 8.0.x (Community) | Base de datos (local vía Docker en dev) |
+| MongoDB Server | 8.0.x (Community) | Base de datos. En Docker de dev, temporalmente `mongo:7.0` (volumen `mongo-data-7`): la 8.0 no arranca con kernels Linux ≥ 6.19 (SERVER-121912) |
 | zod | 3.24.x | Validación de payloads de entrada |
 | jsonwebtoken | 9.0.x | Autenticación con access/refresh token |
 | bcryptjs | 2.4.x | Hash de contraseñas (JS puro, sin binarios nativos que compliquen el empaquetado de Electron) |
@@ -227,7 +227,8 @@ Ejecutar siempre desde la raíz del repo (workspaces de npm):
 | Comando | Qué hace |
 |---|---|
 | `npm install` | Instala dependencias de todos los workspaces |
-| `docker compose up -d` | Levanta MongoDB local para desarrollo |
+| `docker compose up -d` | Levanta MongoDB local y carga los datos de demo (`docker/mongo-seed/seed.js`, base `wholesale`). Usuarios `admin@`, `comercial@`, `almacen@`, `administracion@` y `bloqueado@demo.local`, contraseña `Demo1234!` |
+| `docker compose run --rm mongo-seed` | Vuelve a cargar los datos de demo (idempotente; no borra lo que no sea de la demo) |
 | `npm run dev --workspace=apps/server` | Backend en modo watch (ts-node-dev / tsx) |
 | `npm run dev --workspace=apps/client` | Frontend con Vite en modo dev |
 | `npm run dev --workspace=apps/desktop` | Electron apuntando al client en modo dev |

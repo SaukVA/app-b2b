@@ -4,7 +4,9 @@ import { hashPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { RoleModel } from '../roles/role.model';
+import { SupplierModel } from '../suppliers/supplier.model';
 import { UserModel } from '../users/user.model';
+import { ProductModel } from './product.model';
 
 setTestEnv();
 
@@ -109,5 +111,41 @@ describe('GET /api/products · criterios (FR-009, FR-010)', () => {
     const res = await getProducts(await tokenFor('Comercial'), '?page=3');
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({ ...EMPTY_PAGE, page: 3 });
+  });
+});
+
+describe('GET /api/products · con catálogo', () => {
+  it('200 con las filas en la forma del contrato', async () => {
+    const supplier = await SupplierModel.create({ name: 'Aceites del Sur', cif: 'B11111111' });
+    const product = await ProductModel.create({
+      code: 'ACE-001',
+      name: 'Aceite de oliva 5 L',
+      categoryId: 'alimentacion',
+      category: 'Alimentación',
+      supplier: supplier._id,
+      stock: 2,
+      minStock: 10,
+      price: 32.5,
+    });
+    const res = await getProducts(await tokenFor('Almacén'), '?lowStock=true');
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual({
+      ...EMPTY_PAGE,
+      total: 1,
+      items: [
+        {
+          id: String(product._id),
+          code: 'ACE-001',
+          name: 'Aceite de oliva 5 L',
+          supplierName: 'Aceites del Sur',
+          category: 'Alimentación',
+          subcategory: null,
+          stock: 2,
+          minStock: 10,
+          price: 32.5,
+          status: 'Stock bajo',
+        },
+      ],
+    });
   });
 });

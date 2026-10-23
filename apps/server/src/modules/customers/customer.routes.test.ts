@@ -4,6 +4,7 @@ import { hashPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
+import { CustomerModel } from './customer.model';
 
 setTestEnv();
 
@@ -85,5 +86,34 @@ describe('GET /api/customers · criterios (FR-008, FR-009)', () => {
     const res = await getCustomers(await tokenFor('Comercial'), '?page=3');
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({ ...EMPTY_PAGE, page: 3 });
+  });
+});
+
+describe('GET /api/customers · con cartera', () => {
+  it('200 con las filas en la forma del contrato', async () => {
+    const customer = await CustomerModel.create({
+      name: 'Bar Casa Pepe',
+      city: 'Gandia',
+      maxRisk: 2000,
+      balance: 500,
+      lastOrderDate: new Date('2026-10-20'),
+    });
+    const res = await getCustomers(await tokenFor('Comercial'), '?q=pepe');
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual({
+      ...EMPTY_PAGE,
+      total: 1,
+      items: [
+        {
+          id: String(customer._id),
+          name: 'Bar Casa Pepe',
+          city: 'Gandia',
+          maxRisk: 2000,
+          balance: 500,
+          riskUsed: 25,
+          lastOrderDate: '2026-10-20',
+        },
+      ],
+    });
   });
 });

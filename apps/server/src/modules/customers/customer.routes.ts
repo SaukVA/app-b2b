@@ -59,8 +59,8 @@ customerRouter.use(requireAuth, requirePermission('clientes', 'view'));
  *     tags: [Customers]
  *     summary: Lista los clientes con búsqueda y paginación
  *     description: >
- *       Provisional: devuelve siempre items vacío y total 0 sin leer la base de datos (FR-009); la forma de
- *       la respuesta ya es la definitiva (FR-010). Los parámetros desconocidos se ignoran.
+ *       Ordenado por nombre. Campos provisionales hasta cerrar la migración (FR-009); la forma de la
+ *       respuesta ya es la definitiva (FR-010). Los parámetros desconocidos se ignoran.
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - name: q

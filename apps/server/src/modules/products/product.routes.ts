@@ -57,8 +57,8 @@ productRouter.use(requireAuth, requirePermission('productos', 'view'));
  *     tags: [Products]
  *     summary: Lista los productos del catálogo con búsqueda, filtros y paginación
  *     description: >
- *       Provisional: devuelve siempre items vacío y total 0 sin leer la base de datos (FR-010); la forma de
- *       la respuesta ya es la definitiva (FR-011). Un identificador de filtro bien formado que no corresponde
+ *       Ordenado por código. Campos provisionales hasta cerrar la migración (FR-010); la forma de la
+ *       respuesta ya es la definitiva (FR-011). Un identificador de filtro bien formado que no corresponde
  *       a ningún dato no es un error. Los parámetros desconocidos se ignoran.
  *     security: [{ bearerAuth: [] }]
  *     parameters:

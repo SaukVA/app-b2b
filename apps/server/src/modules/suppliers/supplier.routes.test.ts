@@ -4,6 +4,7 @@ import { hashPassword } from '../../utils/password';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { ensureDefaultRoles } from '../roles/role.service';
 import { UserModel } from '../users/user.model';
+import { SupplierModel } from './supplier.model';
 
 setTestEnv();
 
@@ -89,5 +90,32 @@ describe('GET /api/suppliers · criterios (FR-008, FR-009)', () => {
     const res = await getSuppliers(await tokenFor('Administración'), '?page=3');
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({ ...EMPTY_PAGE, page: 3 });
+  });
+});
+
+describe('GET /api/suppliers · con proveedores', () => {
+  it('200 con las filas en la forma del contrato, sin el CIF', async () => {
+    const supplier = await SupplierModel.create({
+      name: 'Conservas Levante',
+      cif: 'B22222222',
+      leadTimeDays: 3,
+      yearPurchases: 12500.4,
+    });
+    await SupplierModel.create({ name: 'Bebidas Antiguas', cif: 'B44444444', active: false });
+    const res = await getSuppliers(await tokenFor('Administrador'));
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual({
+      ...EMPTY_PAGE,
+      total: 1,
+      items: [
+        {
+          id: String(supplier._id),
+          name: 'Conservas Levante',
+          leadTimeDays: 3,
+          yearPurchases: 12500.4,
+          active: true,
+        },
+      ],
+    });
   });
 });
