@@ -18,10 +18,15 @@ supplierRouter.use(requireAuth, requirePermission('proveedores', 'view'));
  *   schemas:
  *     SupplierListItem:
  *       type: object
- *       required: [id, name, leadTimeDays, yearPurchases, active]
+ *       required: [id, name, cif, city, leadTimeDays, quarterPurchases, yearPurchases, active]
  *       properties:
  *         id: { type: string }
  *         name: { type: string }
+ *         cif: { type: string, description: 'Normalizado: mayúsculas, sin espacios, puntos ni guiones.' }
+ *         city: { type: string }
+ *         quarterPurchases:
+ *           type: number
+ *           description: Compras sin IVA en euros del trimestre pedido en quarter (0 hasta el módulo de compras).
  *         leadTimeDays:
  *           type: integer
  *           minimum: 0
@@ -50,15 +55,17 @@ supplierRouter.use(requireAuth, requirePermission('proveedores', 'view'));
  * /suppliers:
  *   get:
  *     tags: [Suppliers]
- *     summary: Lista los proveedores con búsqueda, filtro de bajas y paginación
+ *     summary: Lista los proveedores con búsqueda, filtro de bajas, trimestre y paginación
  *     description: >
- *       Provisional: devuelve siempre items vacío y total 0 sin leer la base de datos (FR-009); la forma de
- *       la respuesta ya es la definitiva (FR-010). Los parámetros desconocidos se ignoran.
+ *       Orden alfabético por nombre, sin distinguir mayúsculas ni acentos. Las compras valen 0 hasta que
+ *       exista el módulo de compras (FR-021). Los parámetros desconocidos se ignoran.
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - name: q
  *         in: query
- *         description: Texto de búsqueda (nombre o CIF). Se recorta; vacío equivale a ausente.
+ *         description: >
+ *           Texto de búsqueda. Se recorta; vacío equivale a ausente. Busca en el nombre (sin distinguir
+ *           mayúsculas ni acentos) y en el CIF normalizado.
  *         schema: { type: string, maxLength: 100 }
  *       - name: includeInactive
  *         in: query
@@ -66,6 +73,10 @@ supplierRouter.use(requireAuth, requirePermission('proveedores', 'view'));
  *           true incluye también los proveedores dados de baja; false (por defecto), solo los activos.
  *           total cuenta los proveedores incluidos.
  *         schema: { type: string, enum: ['true', 'false'], default: 'false' }
+ *       - name: quarter
+ *         in: query
+ *         description: Trimestre del año en curso para quarterPurchases. Por defecto, el trimestre en curso.
+ *         schema: { type: integer, enum: [1, 2, 3, 4] }
  *       - name: page
  *         in: query
  *         schema: { type: integer, minimum: 1, default: 1 }

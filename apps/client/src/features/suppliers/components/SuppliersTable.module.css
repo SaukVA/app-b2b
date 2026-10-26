@@ -1,4 +1,11 @@
-/* Nombre y, si está dado de baja, el sello «Baja» a su lado. */
+/* Nombre (con el sello «Baja» si lo está) y, debajo, la población. */
+.who {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 .name {
   display: inline-flex;
   flex-wrap: wrap;
@@ -6,6 +13,11 @@
   gap: var(--space-2);
   font-weight: 600;
   color: var(--ink);
+}
+
+.city {
+  font-size: 12px;
+  color: var(--ink3);
 }
 
 .mono {

@@ -2,7 +2,7 @@ import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter, useLocation, useNavigate, type NavigateFunction } from 'react-router';
-import type { ListPage, SupplierListItem } from '@app/shared';
+import { currentQuarter, type ListPage, type SupplierListItem } from '@app/shared';
 import { fetchSuppliers } from '../features/suppliers/suppliersApi';
 import { setupStore } from '../store/store';
 import { SuppliersPage } from './SuppliersPage';
@@ -10,6 +10,7 @@ import { SuppliersPage } from './SuppliersPage';
 jest.mock('../features/suppliers/suppliersApi', () => ({ fetchSuppliers: jest.fn() }));
 
 const mockedFetch = jest.mocked(fetchSuppliers);
+const QUARTER = currentQuarter(new Date());
 const EMPTY_PAGE: ListPage<SupplierListItem> = { items: [], total: 0, page: 1, pageSize: 10 };
 
 beforeEach(() => {
@@ -80,7 +81,7 @@ describe('SuppliersPage (US1)', () => {
     renderPage();
     await screen.findByText('0 activos');
     expect(mockedFetch).toHaveBeenCalledTimes(1);
-    expect(mockedFetch).toHaveBeenCalledWith({ includeInactive: false, page: 1 });
+    expect(mockedFetch).toHaveBeenCalledWith({ includeInactive: false, quarter: QUARTER, page: 1 });
   });
 });
 
@@ -96,14 +97,19 @@ describe('SuppliersPage · aviso y criterios en la dirección (US2)', () => {
     renderPage('/proveedores?q=levante');
     await screen.findByText('Todavía no hay proveedores');
     expect((searchBox() as HTMLInputElement).value).toBe('levante');
-    expect(mockedFetch).toHaveBeenCalledWith({ q: 'levante', includeInactive: false, page: 1 });
+    expect(mockedFetch).toHaveBeenCalledWith({
+      q: 'levante',
+      includeInactive: false,
+      quarter: QUARTER,
+      page: 1,
+    });
   });
 
   it('lee el filtro de bajas de la dirección: casilla marcada y «N proveedores»', async () => {
     renderPage('/proveedores?includeInactive=true');
     expect(await screen.findByText('0 proveedores')).toBeTruthy();
     expect(inactiveBox().checked).toBe(true);
-    expect(lastQuery()).toEqual({ includeInactive: true, page: 1 });
+    expect(lastQuery()).toEqual({ includeInactive: true, quarter: QUARTER, page: 1 });
   });
 });
 
@@ -114,7 +120,7 @@ describe('SuppliersPage · filtro de bajas (US2, FR-004a)', () => {
     await userEvent.click(inactiveBox());
     expect(await screen.findByText('0 proveedores')).toBeTruthy();
     expect(url()).toBe('/proveedores?includeInactive=true');
-    expect(lastQuery()).toEqual({ includeInactive: true, page: 1 });
+    expect(lastQuery()).toEqual({ includeInactive: true, quarter: QUARTER, page: 1 });
     expect(screen.getByText('Todavía no hay proveedores')).toBeTruthy();
 
     await act(async () => void (await navigate(-1)));
@@ -130,14 +136,19 @@ describe('SuppliersPage · normalización de la dirección (US2, FR-007a)', () =
     await screen.findByText('Todavía no hay proveedores');
     expect(url()).toBe('/proveedores');
     expect(screen.queryByRole('alert')).toBeNull();
-    expect(lastQuery()).toEqual({ includeInactive: false, page: 1 });
+    expect(lastQuery()).toEqual({ includeInactive: false, quarter: QUARTER, page: 1 });
   });
 
   it('al montar conserva la página de la dirección', async () => {
     const { url } = renderPage('/proveedores?q=levante&page=2');
     await screen.findByText('Todavía no hay proveedores');
     expect(url()).toBe('/proveedores?q=levante&page=2');
-    expect(lastQuery()).toEqual({ q: 'levante', includeInactive: false, page: 2 });
+    expect(lastQuery()).toEqual({
+      q: 'levante',
+      includeInactive: false,
+      quarter: QUARTER,
+      page: 2,
+    });
   });
 });
 
@@ -158,7 +169,7 @@ describe('SuppliersPage · búsqueda con espera (US2, FR-007)', () => {
     expect(mockedFetch).not.toHaveBeenCalled();
     await wait(1);
     expect(mockedFetch).toHaveBeenCalledTimes(1);
-    expect(lastQuery()).toEqual({ q: 'café', includeInactive: false, page: 1 });
+    expect(lastQuery()).toEqual({ q: 'café', includeInactive: false, quarter: QUARTER, page: 1 });
     expect(url()).toBe('/proveedores?q=caf%C3%A9');
   });
 
@@ -170,7 +181,7 @@ describe('SuppliersPage · búsqueda con espera (US2, FR-007)', () => {
     await user.type(searchBox(), 'bazar');
     await wait(300);
     expect(url()).toBe('/proveedores?q=bazar&includeInactive=true');
-    expect(lastQuery()).toEqual({ q: 'bazar', includeInactive: true, page: 1 });
+    expect(lastQuery()).toEqual({ q: 'bazar', includeInactive: true, quarter: QUARTER, page: 1 });
   });
 });
 
@@ -189,7 +200,7 @@ describe('SuppliersPage · dirección cambiada desde fuera (US2, FR-007a)', () =
     expect((searchBox() as HTMLInputElement).value).toBe('bar');
     expect(inactiveBox().checked).toBe(true);
     expect(url()).toBe('/proveedores?q=bar&includeInactive=true');
-    expect(lastQuery()).toEqual({ q: 'bar', includeInactive: true, page: 1 });
+    expect(lastQuery()).toEqual({ q: 'bar', includeInactive: true, quarter: QUARTER, page: 1 });
   });
 });
 
@@ -208,7 +219,7 @@ describe('SuppliersPage · error del listado (US3)', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
     expect(await screen.findByText('Todavía no hay proveedores')).toBeTruthy();
     expect(mockedFetch).toHaveBeenCalledTimes(2);
-    expect(lastQuery()).toEqual({ q: 'levante', includeInactive: true, page: 2 });
+    expect(lastQuery()).toEqual({ q: 'levante', includeInactive: true, quarter: QUARTER, page: 2 });
     expect(screen.queryByRole('alert')).toBeNull();
   });
 });

@@ -2,7 +2,18 @@
 export type { ApiSuccess, ApiError, ApiResponse, ListPage } from './types/api';
 export type { ProductStatus, ProductListItem, ProductListQuery } from './types/product';
 export type { CustomerRiskLevel, CustomerListItem, CustomerListQuery } from './types/customer';
-export type { SupplierListItem, SupplierListQuery } from './types/supplier';
+export type {
+  PaymentMethod,
+  Quarter,
+  SupplierContact,
+  AuditUser,
+  SupplierListItem,
+  SupplierListQuery,
+  SupplierInput,
+  SupplierUpdateInput,
+  SupplierStatusInput,
+  SupplierDetail,
+} from './types/supplier';
 export type {
   Role,
   UserStatus,
@@ -45,3 +56,5 @@ export * from './constants/customers';
 export * from './constants/suppliers';
 export type { ParsedMongoUri, ParseMongoUriResult } from './utils/mongoUri';
 export { parseMongoUri } from './utils/mongoUri';
+export { normalizeTaxId, isValidSpanishTaxId } from './utils/taxId';
+export { normalizeIban, isValidIban, formatIban } from './utils/iban';

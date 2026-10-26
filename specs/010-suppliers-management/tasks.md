@@ -49,7 +49,7 @@ alta termina abriéndola (FR-009) y porque se puede probar sola con proveedores 
 
 **Purpose**: entorno de trabajo
 
-- [ ] T001 Comprobar que la rama activa es `010-suppliers-management`, que `.specify/feature.json` apunta a
+- [X] T001 Comprobar que la rama activa es `010-suppliers-management`, que `.specify/feature.json` apunta a
   `specs/010-suppliers-management` y que `npm test --workspaces` y `npm run lint` están en verde antes de empezar
   (línea base).
 
@@ -64,58 +64,58 @@ genéricos nuevos.
 
 ### Tests de la base (primero, deben fallar) ⚠️
 
-- [ ] T002 [P] Tests de `isValidSpanishTaxId` y `normalizeTaxId` en `packages/shared/src/utils/taxId.test.ts`:
+- [X] T002 [P] Tests de `isValidSpanishTaxId` y `normalizeTaxId` en `packages/shared/src/utils/taxId.test.ts`:
   NIF válido (`12345678Z`) e inválido (`12345678A`); NIE válido (`X1234567L`) e inválido; CIF válidos con control numérico
   (letra inicial A, B…) y con control letra (P, Q, S…), calculados en el propio test, y los mismos con el control
   cambiado; normalización de
   `b-12.345.678` a `B12345678`; vacío y longitudes incorrectas → `false`.
-- [ ] T003 [P] Tests de `isValidIban`, `normalizeIban` y `formatIban` en `packages/shared/src/utils/iban.test.ts`:
+- [X] T003 [P] Tests de `isValidIban`, `normalizeIban` y `formatIban` en `packages/shared/src/utils/iban.test.ts`:
   `ES91 2100 0418 4502 0005 1332` válido; el mismo con un dígito cambiado → `false`; longitud española incorrecta
   → `false`; país desconocido con 15–34 caracteres y módulo 97 correcto → `true`; `formatIban` en grupos de 4.
-- [ ] T004 [P] Reescribir `apps/server/src/modules/suppliers/supplier.service.test.ts` (el de 009 exige «sin
+- [X] T004 [P] Reescribir `apps/server/src/modules/suppliers/supplier.service.test.ts` (el de 009 exige «sin
   Mongoose», que ya no aplica) con mongodb-memory-server para `listSuppliers`: orden alfabético con collation `es`
   («Ávila» junto a «Avila»); `includeInactive` false/true; búsqueda por nombre sin acentos ni mayúsculas y por CIF
   escrito con otro formato; paginación de `SUPPLIERS_PAGE_SIZE`; `quarterPurchases` y `yearPurchases` a 0;
   `cif` y `city` en cada item; el modelo tiene los índices `cif` (único), `name` (collation `es`, fuerza 1) y
   `active` (`SupplierModel.listIndexes()`); con 1.000 proveedores sembrados, `listSuppliers` con búsqueda responde
   en menos de 500 ms (SC-006, research R1).
-- [ ] T005 [P] Tests de `toSupplierListItem` y `toSupplierDetail` en
+- [X] T005 [P] Tests de `toSupplierListItem` y `toSupplierDetail` en
   `apps/server/src/modules/suppliers/supplier.mapper.test.ts`: no se filtra ningún campo interno (`_id`, `__v`),
   `id` como string, fechas ISO, `quarterPurchases` de 4 posiciones que suman `yearPurchases`.
-- [ ] T006 [P] Ampliar `apps/server/src/modules/suppliers/supplier.routes.test.ts` para el listado con datos
+- [X] T006 [P] Ampliar `apps/server/src/modules/suppliers/supplier.routes.test.ts` para el listado con datos
   sembrados: `quarter` válido (1–4) y no válido (`5`, `abc` → 400 `VALIDATION_ERROR`); sin `quarter` → el
   trimestre en curso de cada petición (cambiando la fecha con `jest.useFakeTimers().setSystemTime(...)` entre dos
   peticiones); respuesta con `cif`,
   `city`, `quarterPurchases`; 401 y 403 (Comercial) como en 009.
-- [ ] T007 [P] Tests de `BackLink` en `apps/client/src/components/BackLink.test.tsx`: enlace con flecha, texto,
+- [X] T007 [P] Tests de `BackLink` en `apps/client/src/components/BackLink.test.tsx`: enlace con flecha, texto,
   `aria-label`, `to` con query y `state`; alto mínimo 44 px por clase.
-- [ ] T008 [P] Tests de `TextArea` en `apps/client/src/components/TextArea.test.tsx`: etiqueta asociada, `error`
+- [X] T008 [P] Tests de `TextArea` en `apps/client/src/components/TextArea.test.tsx`: etiqueta asociada, `error`
   con `aria-invalid` y `aria-describedby`, `maxLength`, `rows`.
-- [ ] T009 [P] Ampliar `apps/client/src/features/suppliers/supplierCriteria.test.ts`: `quarter` 1–4 leído de la
+- [X] T009 [P] Ampliar `apps/client/src/features/suppliers/supplierCriteria.test.ts`: `quarter` 1–4 leído de la
   dirección; omitido o no válido → trimestre en curso; se serializa solo si no es el en curso.
-- [ ] T010 [P] Ampliar `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx` y
+- [X] T010 [P] Ampliar `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx` y
   `SupplierFilters.test.tsx`: columnas CIF, Plazo, «Gasto <T>», Compras año, población bajo el nombre, sello
   «Baja»; selector «Gasto por trimestre · <año>» con 1T–4T y `aria-pressed`; en estrecho solo Proveedor y Compras
   año.
 
 ### Implementación de la base
 
-- [ ] T011 Ampliar `packages/shared/src/types/supplier.ts` con los tipos de data-model.md: `PaymentMethod`,
+- [X] T011 Ampliar `packages/shared/src/types/supplier.ts` con los tipos de data-model.md: `PaymentMethod`,
   `Quarter`, `SupplierContact`, `AuditUser`, `SupplierInput`, `SupplierUpdateInput`, `SupplierStatusInput`,
   `SupplierDetail`; `SupplierListItem` gana `cif`, `city` y `quarterPurchases`; `SupplierListQuery` gana
   `quarter: Quarter`. Borrar el comentario de 009 que dice que el CIF no va en el listado.
-- [ ] T012 Ampliar `packages/shared/src/constants/suppliers.ts` con `SUPPLIER_LIMITS` (`name` 120, `address` 200,
+- [X] T012 Ampliar `packages/shared/src/constants/suppliers.ts` con `SUPPLIER_LIMITS` (`name` 120, `address` 200,
   `city` 100, `contactPerson` 120, `contactLabel` 40, `notes` 2000, `maxContacts` 5, `leadTimeDaysMax` 365,
   `foreignTaxId` 3–20, `foreignPostalCode` 3–10, `phone` 6–20), `PAYMENT_METHODS` (`TRANSFER_30` «Transferencia 30
   días», `TRANSFER_60` «Transferencia 60 días», `DIRECT_DEBIT` «Domiciliación bancaria», `PROMISSORY_NOTE`
   «Pagaré», `CASH` «Contado»), `DEFAULT_PAYMENT_METHOD = 'TRANSFER_30'`, `SUPPLIER_ERROR_CODES` (`notFound`,
   `cifTaken`, `versionConflict`) y `currentQuarter(date)`.
-- [ ] T013 [P] Implementar `packages/shared/src/utils/taxId.ts` (`normalizeTaxId`, `isValidSpanishTaxId`: NIF,
+- [X] T013 [P] Implementar `packages/shared/src/utils/taxId.ts` (`normalizeTaxId`, `isValidSpanishTaxId`: NIF,
   NIE y CIF con su control, research R3) hasta poner en verde T002.
-- [ ] T014 [P] Implementar `packages/shared/src/utils/iban.ts` (`normalizeIban`, `isValidIban` con longitud por
+- [X] T014 [P] Implementar `packages/shared/src/utils/iban.ts` (`normalizeIban`, `isValidIban` con longitud por
   país conocida o 15–34 y módulo 97, `formatIban`) hasta poner en verde T003.
-- [ ] T015 Exportar los tipos, constantes y utilidades nuevos en `packages/shared/src/index.ts`.
-- [ ] T016 Crear `apps/server/src/modules/suppliers/supplier.model.ts` (`SupplierModel`, colección `suppliers`,
+- [X] T015 Exportar los tipos, constantes y utilidades nuevos en `packages/shared/src/index.ts`.
+- [X] T016 Crear `apps/server/src/modules/suppliers/supplier.model.ts` (`SupplierModel`, colección `suppliers`,
   `{ timestamps: true }`) con los campos de data-model.md: `name` «Obligatorio, 1–120»; `cif` «normalizado …
   **Único**»; `foreign` (por defecto `false`); `address` «Obligatorio, 1–200»; `postalCode`; `city` «Obligatorio,
   1–100»; `contactPerson` «Hasta 120» o `null`; `phones` y `emails` como `{ label, value }[]`; `paymentMethod` enum
@@ -123,31 +123,31 @@ genéricos nuevos.
   `web`, `leadTimeDays`, `minOrder`, `notes` nullables; `active` (por defecto `true`); `version` (empieza en 0);
   `createdBy` y `updatedBy` `{ id, login }`. Índices: `cif` único, `name` con collation
   `{ locale: 'es', strength: 1 }`, `active`. Sin `versionKey` de Mongoose.
-- [ ] T017 [P] Crear `apps/server/src/modules/suppliers/supplierPurchases.ts` con
+- [X] T017 [P] Crear `apps/server/src/modules/suppliers/supplierPurchases.ts` con
   `getPurchaseTotals(ids, year)` que devuelve, por id, `{ year: 0, quarters: [0, 0, 0, 0] }` (costura del módulo
   de compras, research R7).
-- [ ] T018 Crear `apps/server/src/modules/suppliers/supplier.mapper.ts` con `toSupplierListItem(doc, totals,
+- [X] T018 Crear `apps/server/src/modules/suppliers/supplier.mapper.ts` con `toSupplierListItem(doc, totals,
   quarter)` y `toSupplierDetail(doc, totals)` hasta poner en verde T005.
-- [ ] T019 Ampliar `supplierListQuerySchema` en `apps/server/src/modules/suppliers/supplier.validation.ts` con
+- [X] T019 Ampliar `supplierListQuerySchema` en `apps/server/src/modules/suppliers/supplier.validation.ts` con
   `quarter`: `z.coerce.number().int().min(1).max(4)`, por defecto el trimestre en curso calculado en cada petición,
   `.default(() => currentQuarter(new Date()))` (NUNCA un valor fijado al cargar el módulo); y añadir
   `supplierIdParams` (`id` de 24 hex, como `userIdParams`).
-- [ ] T020 Reescribir `listSuppliers` en `apps/server/src/modules/suppliers/supplier.service.ts`: filtro de
+- [X] T020 Reescribir `listSuppliers` en `apps/server/src/modules/suppliers/supplier.service.ts`: filtro de
   `active`, búsqueda (`name` con regex escapada, insensible a mayúsculas, y `cif` contiene `normalizeTaxId(q)`),
   orden por `name` con collation `es`, `skip`/`limit` con `SUPPLIERS_PAGE_SIZE`, `countDocuments` y totales de
   `getPurchaseTotals`, hasta poner en verde T004 y T006. Actualizar el `@openapi` del `GET /` en
   `supplier.routes.ts` (parámetro `quarter`, campos nuevos del item) según contracts/suppliers-api.openapi.yaml.
-- [ ] T021 [P] Crear `apps/client/src/components/BackLink.tsx` (+ `BackLink.module.css`): `Link` de React Router
+- [X] T021 [P] Crear `apps/client/src/components/BackLink.tsx` (+ `BackLink.module.css`): `Link` de React Router
   con flecha SVG de trazo 22 px, texto, `aria-label`, `to` y `state`; fondo `surface2` al pasar; hasta poner en
   verde T007.
-- [ ] T022 [P] Crear `apps/client/src/components/TextArea.tsx` (+ `TextArea.module.css`) con la misma etiqueta,
+- [X] T022 [P] Crear `apps/client/src/components/TextArea.tsx` (+ `TextArea.module.css`) con la misma etiqueta,
   error y estilos que `TextField`, hasta poner en verde T008.
-- [ ] T023 Ampliar `apps/client/src/features/suppliers/supplierCriteria.ts` con `quarter` (hasta poner en verde
+- [X] T023 Ampliar `apps/client/src/features/suppliers/supplierCriteria.ts` con `quarter` (hasta poner en verde
   T009) y `suppliersApi.ts` para enviar `quarter` (actualizar `suppliersApi.test.ts`).
-- [ ] T024 Ampliar `apps/client/src/features/suppliers/components/SupplierFilters.tsx` (selector de trimestre con
+- [X] T024 Ampliar `apps/client/src/features/suppliers/components/SupplierFilters.tsx` (selector de trimestre con
   `aria-pressed`) y `SuppliersTable.tsx` (CIF, población, «Gasto <T>» con `UserMoney`), y conectar el trimestre en
   `apps/client/src/pages/SuppliersPage.tsx`, hasta poner en verde T010.
-- [ ] T025 [P] Añadir `seedSuppliers(list)` y `removeSuppliers()` en `e2e/support/db.ts` con el patrón de
+- [X] T025 [P] Añadir `seedSuppliers(list)` y `removeSuppliers()` en `e2e/support/db.ts` con el patrón de
   `seedUsers` (importa `SupplierModel`, `insertMany` con `version: 0` y `createdBy`/`updatedBy` del admin).
 
 **Checkpoint**: `npm test --workspaces` en verde; el listado muestra proveedores sembrados.

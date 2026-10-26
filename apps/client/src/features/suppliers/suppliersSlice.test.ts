@@ -7,7 +7,7 @@ jest.mock('./suppliersApi', () => ({ fetchSuppliers: jest.fn() }));
 
 const mockedFetch = jest.mocked(fetchSuppliers);
 const EMPTY_PAGE: ListPage<SupplierListItem> = { items: [], total: 0, page: 1, pageSize: 10 };
-const DEFAULT_QUERY = { includeInactive: false, page: 1 };
+const DEFAULT_QUERY = { includeInactive: false, quarter: 1 as const, page: 1 };
 
 beforeEach(() => mockedFetch.mockReset());
 

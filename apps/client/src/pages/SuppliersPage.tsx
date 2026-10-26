@@ -102,9 +102,13 @@ export function SuppliersPage() {
         onIncludeInactiveChange={(includeInactive) =>
           update({ includeInactive }, { replace: false })
         }
+        quarter={criteria.quarter}
+        year={new Date().getFullYear()}
+        onQuarterChange={(quarter) => update({ quarter }, { replace: false })}
       />
       <SuppliersTable
         rows={items}
+        quarter={criteria.quarter}
         busy={status === 'loading'}
         status={<SuppliersListStatus status={status} total={total} onRetry={retry} />}
       />
