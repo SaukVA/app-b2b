@@ -1,0 +1,315 @@
+openapi: 3.0.3
+info:
+  title: App B2B · Proveedores
+  version: 2.0.0
+  description: >
+    Contrato de la feature 010-suppliers-management. Sustituye al de 009 (listado provisional). En la
+    implementación cada ruta lleva su bloque JSDoc @openapi equivalente en
+    apps/server/src/modules/suppliers/supplier.routes.ts y se sirve en /api-docs.
+    Todas exigen sesión (bearerAuth) y permiso de ver «proveedores»; las escrituras exigen además permiso de
+    editar. No existe DELETE: un proveedor nunca se borra (FR-018).
+    Las compras valen 0 hasta que exista el módulo de compras (FR-021, FR-021a).
+    SuccessEnvelope, ErrorEnvelope y las respuestas ValidationError, Unauthenticated y Forbidden son las de
+    contracts/auth-api.openapi.yaml de 001 y contracts/users-api.openapi.yaml de 003.
+servers:
+  - url: /api
+tags:
+  - name: Suppliers
+security:
+  - bearerAuth: []
+paths:
+  /suppliers:
+    get:
+      tags: [Suppliers]
+      summary: Lista los proveedores con búsqueda, filtro de bajas, trimestre y paginación
+      description: Orden alfabético por nombre. Los parámetros desconocidos se ignoran.
+      parameters:
+        - name: q
+          in: query
+          description: >
+            Texto de búsqueda. Se recorta; vacío equivale a ausente. Busca en el nombre (sin distinguir
+            mayúsculas ni acentos) y en el CIF normalizado.
+          schema: { type: string, maxLength: 100 }
+        - name: includeInactive
+          in: query
+          schema: { type: string, enum: ['true', 'false'], default: 'false' }
+        - name: quarter
+          in: query
+          description: Trimestre del año en curso para quarterPurchases. Por defecto, el trimestre en curso.
+          schema: { type: integer, enum: [1, 2, 3, 4] }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+      responses:
+        '200':
+          description: Página del listado
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/SupplierListPage' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Suppliers]
+      summary: Da de alta un proveedor (permiso de editar)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SupplierInput' }
+      responses:
+        '201':
+          description: Proveedor creado, activo y con version 0
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/SupplierDetail' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/CifTaken' }
+  /suppliers/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: '^[a-f0-9]{24}$' }
+    get:
+      tags: [Suppliers]
+      summary: Ficha de un proveedor (activo o dado de baja)
+      responses:
+        '200':
+          description: Ficha
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/SupplierDetail' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    put:
+      tags: [Suppliers]
+      summary: Edita todos los datos de un proveedor (permiso de editar)
+      description: >
+        version debe ser la que devolvió la última lectura. Si otro usuario lo ha cambiado desde entonces,
+        responde 409 SUPPLIER_VERSION_CONFLICT y no guarda nada (FR-011).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SupplierInput'
+                - type: object
+                  required: [version]
+                  properties:
+                    version: { type: integer, minimum: 0 }
+      responses:
+        '200':
+          description: Proveedor actualizado, con version + 1
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/SupplierDetail' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: SUPPLIER_CIF_TAKEN o SUPPLIER_VERSION_CONFLICT
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+              examples:
+                cif:
+                  value: { success: false, error: { code: SUPPLIER_CIF_TAKEN, message: 'Ya existe un proveedor con este CIF: Aceites del Sur.' } }
+                version:
+                  value: { success: false, error: { code: SUPPLIER_VERSION_CONFLICT, message: 'Otro usuario ha cambiado este proveedor.' } }
+  /suppliers/{id}/status:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: '^[a-f0-9]{24}$' }
+    patch:
+      tags: [Suppliers]
+      summary: Da de baja o reactiva un proveedor (permiso de editar)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [active, version]
+              properties:
+                active: { type: boolean }
+                version: { type: integer, minimum: 0 }
+      responses:
+        '200':
+          description: Estado cambiado; sus datos no se tocan
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessEnvelope'
+                  - type: object
+                    properties:
+                      data: { $ref: '#/components/schemas/SupplierDetail' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '401': { $ref: '#/components/responses/Unauthenticated' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: SUPPLIER_VERSION_CONFLICT
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  responses:
+    ValidationError:
+      description: 'VALIDATION_ERROR (mensaje «ruta: motivo; …»)'
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+          example: { success: false, error: { code: VALIDATION_ERROR, message: 'postalCode: El código postal español tiene 5 cifras' } }
+    Unauthenticated:
+      description: AUTH_UNAUTHENTICATED
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    Forbidden:
+      description: AUTH_FORBIDDEN (sin permiso de ver, o de editar en las escrituras)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    NotFound:
+      description: SUPPLIER_NOT_FOUND
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+    CifTaken:
+      description: SUPPLIER_CIF_TAKEN (activo o dado de baja; el mensaje incluye su nombre)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  schemas:
+    Contact:
+      type: object
+      required: [label, value]
+      properties:
+        label: { type: string, maxLength: 40, nullable: true }
+        value: { type: string }
+    AuditUser:
+      type: object
+      required: [id, login]
+      properties:
+        id: { type: string }
+        login: { type: string }
+    SupplierInput:
+      type: object
+      required: [name, cif, foreign, address, postalCode, city, contactPerson, phones, emails, paymentMethod, iban, web, leadTimeDays, minOrder, notes]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        cif:
+          type: string
+          description: Se normaliza. NIF/CIF español válido salvo foreign; extranjero 3–20 letras y números.
+        foreign: { type: boolean }
+        address: { type: string, minLength: 1, maxLength: 200 }
+        postalCode: { type: string, description: '5 cifras si es español; 3–10 caracteres si es extranjero' }
+        city: { type: string, minLength: 1, maxLength: 100 }
+        contactPerson: { type: string, maxLength: 120, nullable: true }
+        phones:
+          type: array
+          maxItems: 5
+          items: { $ref: '#/components/schemas/Contact' }
+        emails:
+          type: array
+          maxItems: 5
+          items: { $ref: '#/components/schemas/Contact' }
+        paymentMethod:
+          type: string
+          enum: [TRANSFER_30, TRANSFER_60, DIRECT_DEBIT, PROMISSORY_NOTE, CASH]
+        iban: { type: string, nullable: true, description: 'IBAN válido; se guarda sin espacios' }
+        web: { type: string, nullable: true, description: 'Sin protocolo se guarda con https://' }
+        leadTimeDays: { type: integer, minimum: 0, maximum: 365, nullable: true }
+        minOrder: { type: number, exclusiveMinimum: true, minimum: 0, nullable: true, description: 'Euros, 2 decimales; null = sin pedido mínimo' }
+        notes: { type: string, maxLength: 2000, nullable: true }
+    SupplierDetail:
+      allOf:
+        - $ref: '#/components/schemas/SupplierInput'
+        - type: object
+          required: [id, active, version, yearPurchases, quarterPurchases, createdBy, createdAt, updatedBy, updatedAt]
+          properties:
+            id: { type: string }
+            active: { type: boolean }
+            version: { type: integer, minimum: 0 }
+            yearPurchases: { type: number, description: 'Sin IVA, año en curso' }
+            quarterPurchases:
+              type: array
+              minItems: 4
+              maxItems: 4
+              items: { type: number }
+              description: 'Sin IVA, 1T a 4T del año en curso; suman yearPurchases'
+            createdBy: { $ref: '#/components/schemas/AuditUser' }
+            createdAt: { type: string, format: date-time }
+            updatedBy: { $ref: '#/components/schemas/AuditUser' }
+            updatedAt: { type: string, format: date-time }
+    SupplierListItem:
+      type: object
+      required: [id, name, cif, city, leadTimeDays, quarterPurchases, yearPurchases, active]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        cif: { type: string }
+        city: { type: string }
+        leadTimeDays: { type: integer, minimum: 0, nullable: true }
+        quarterPurchases: { type: number, description: 'Sin IVA, trimestre pedido en quarter' }
+        yearPurchases: { type: number }
+        active: { type: boolean }
+    SupplierListPage:
+      type: object
+      required: [items, total, page, pageSize]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/SupplierListItem' }
+        total: { type: integer, minimum: 0 }
+        page: { type: integer, minimum: 1 }
+        pageSize: { type: integer, enum: [10] }
+    SuccessEnvelope:
+      type: object
+      required: [success, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        data: {}
+    ErrorEnvelope:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, enum: [false] }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
