@@ -1,7 +1,10 @@
 # Diseño visual «Albarán»
 
-> Copia del lienzo publicado: https://claude.ai/artifact/X2XQnZS79ic8pV4rvk1crS (fuente de verdad).
-> Última sincronización: 2026-10-23 (versión `1792766445-89d2` del lienzo).
+> Copia del lienzo publicado: https://claude.ai/artifact/8tNZ1JTHbiRh11kfnay9Ya (fuente de verdad, cuenta de la
+> organización; el mismo que cita `CLAUDE.md`).
+> Última sincronización: 2026-10-26 (versión `1793034141-8cb8` del lienzo).
+> El lienzo https://claude.ai/artifact/X2XQnZS79ic8pV4rvk1crS (otra cuenta) se conserva como histórico: se sincronizó
+> con él el 2026-10-26 (versión `1792960403-1706`) y no tiene la nueva página de Proveedores.
 
 La estética toma prestado el lenguaje del albarán y la hoja de pedido: líneas finas, cifras en monoespaciada bien alineadas y sellos de estado. Densa para quien trabaja con ella ocho horas al día; legible a un metro en el puesto del almacén.
 
@@ -121,7 +124,7 @@ Formato de importes por defecto: `1.248,50 €` (`formatMoney`, `apps/client/src
 - **Iconos**: SVG de trazo inline 18 px, `stroke-width: 1.8`; nunca emoji.
 - **Sin marca**: las pantallas de la aplicación no muestran logotipo, nombre de empresa ni el lema «Venta a mayoristas» (ni en la barra lateral ni en el login).
 - **Barra lateral** (tablero «Sistema visual», sección «Barra lateral»):
-  - Orden: Ventas, Clientes, Productos, Proveedores y Cobros; Ajustes separado al final (`margin-top: auto`). Solo se muestran los módulos que el rol puede ver.
+  - Orden: Ventas, Clientes, Productos, Proveedores, Cobros y Acciones (icono de rayo); Ajustes separado al final (`margin-top: auto`). Solo se muestran los módulos que el rol puede ver.
   - Elemento: alto mínimo 44, padding 0 12, gap 12, radio 6, Sans 14/500 en `navText`. Activo: fondo `navActive`, texto `navTextActive` 14/600, icono en `navIconActive`.
   - Iconos de trazo 18 px, `stroke-width: 1.8`; Ventas (albarán con líneas) y Cobros (pila de monedas) son nuevos.
   - **Pendiente** (módulo sin implementar): etiqueta en `disabled` (`#9AA1A9`, 6,8:1 en claro y 7,5:1 en oscuro), enfocable pero sin navegar, y sello «Pendiente» sobre `--nav` con los colores oscuros del sello de aviso en los dos temas (`#3A3014` / `#E8C66A`, 7,9:1), Mono 10/600, alto 20, padding 0 6, radio 4. Versión reducida para el menú plegado: punto de 8 px `#E8C66A` en la esquina del icono con anillo de 2 px del color `nav` (10,7:1 en claro y 11,8:1 en oscuro); el texto «Pendiente» se conserva oculto visualmente.
@@ -153,7 +156,8 @@ Las pantallas de escritorio son fluidas (anchura de referencia 1440 px); las ver
 | Sistema visual | `Main.dc.html` | — | Tokens, tipografía, componentes |
 | Productos | `Productos.dc.html` | `ProductosMovil.dc.html` | Filtros (búsqueda, categoría, subcategoría, proveedor, solo stock bajo), tabla con stock/mín., precio y estado, importar CSV |
 | Clientes | `Clientes.dc.html` | `ClientesMovil.dc.html` | Listado con riesgo usado y saldo + ficha lateral con historial reciente |
-| Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Listado con plazo y compras del año + productos asociados y pedido de compra sugerido. Implementado (009): listado provisional, sin ficha lateral |
+| Proveedores | `Proveedores.dc.html` | `ProveedoresMovil.dc.html` | Diseño de la spec 010 (sustituye al tablero anterior). Listado a ancho completo: búsqueda «Nombre o CIF», «Mostrar dados de baja», selector «Gasto por trimestre» (1T–4T), columnas proveedor (con población y sello «Baja»), CIF, plazo, gasto del trimestre y compras del año, paginación de 10; estados de carga, error con «Reintentar», sin proveedores, sin coincidencias y enlace a un proveedor inexistente. Al pulsar un proveedor, la ficha ocupa toda la pantalla con la flecha de retorno «Proveedores»: datos fiscales, contacto (persona, teléfonos y correos con etiqueta), pago (forma de pago e IBAN en grupos de 4), compras 2026 por trimestre sin IVA, pedidos (web, plazo, pedido mínimo), observaciones y pie «Creado por / Modificado por»; «Editar proveedor», «Dar de baja» con diálogo y «Reactivar». Alta y edición a pantalla completa con flecha de retorno, campos obligatorios (nombre, CIF, dirección, código postal, población), «Proveedor extranjero», pedido mínimo como importe opcional, errores por campo con resumen, conflicto de edición, error al guardar y diálogo «¿Descartar los cambios?». Ajustes del tablero: `rol` y `escena`. Implementado: 009 (listado provisional) |
+| Acciones | `Acciones.dc.html` | `AccionesMovil.dc.html` | Página de acciones masivas: Exportar (facturas de clientes, facturas de proveedores, albaranes), Registrar (ingresar factura con base, IVA y adjunto) e Informes (resumen de IVA trimestral, libro de facturas), con historial «Últimas acciones». Sin implementar |
 | Ajustes | `Ajustes.dc.html` | `AjustesMovil.dc.html` | Tabs Apariencia (tema, densidad, formato, inicio) y Usuarios (alta directa con contraseña inicial, listado Activo/Bloqueado, menú por fila con editar, restablecer contraseña y bloquear/desbloquear, diálogos de confirmación, aviso de primer Administrador y matriz de permisos de solo lectura). Ajustes del tablero: `plataforma` (Web/Escritorio) y `primerAcceso` (cuenta inicial «admin») |
 | Login | `Login.dc.html` | `LoginMovil.dc.html` | Hero oscuro + formulario, estado de error, indicador de servidor |
 

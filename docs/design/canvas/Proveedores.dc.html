@@ -13,93 +13,115 @@
 <style>
 body{margin:0}
 a{color:#B4430F}a:hover{color:#8A320A}
-.mob{display:none}
-.nav-dot,.nav-out-icon{display:none}
-.nav-toggle svg{transition:transform .15s}
-.nav.is-collapsed{flex:0 0 72px!important}
-.is-collapsed .nav-brand{padding:4px 4px 24px!important}
-.is-collapsed .nav-brand-text,.is-collapsed .nav-user-info{display:none!important}
-.is-collapsed .nav-item{position:relative;padding:0!important;justify-content:center}
-.is-collapsed .nav-label,.is-collapsed .nav-stamp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0!important;padding:0!important}
-.is-collapsed .nav-item:hover .nav-label,.is-collapsed .nav-item:focus-visible .nav-label{left:56px;top:50%;transform:translateY(-50%);width:auto;height:auto;overflow:visible;clip:auto;padding:6px 10px!important;border-radius:6px;background:#262B31;color:#E8EAE6;font-size:13px;font-weight:500;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.25)}
-.is-collapsed .nav-dot{display:block}
-.is-collapsed .nav-out-icon{display:block}
-.is-collapsed .nav-user{padding:12px 0 4px!important;align-items:center}
-.is-collapsed .nav-toggle{align-self:center}
-.is-collapsed .nav-toggle svg{transform:rotate(180deg)}
-.nav-toggle:hover,.nav-logout:hover{background:#262B31!important;color:#E8EAE6!important}
-.nav-toggle:focus-visible,.nav-logout:focus-visible{outline:2px solid #F08A5D;outline-offset:2px}
-.is-collapsed .nav-user{flex-direction:column;gap:8px}
-.is-collapsed .nav-logout{margin-left:0!important}
-.is-collapsed .nav-avatar{display:none!important}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #B4430F;outline-offset:2px}
+.pv-row:hover{background:#F7F8F5!important}
+.pv-back:hover{background:#EEF0EC!important}
 @container app (max-width: 760px){
 .nav{flex-direction:row!important;align-items:center!important;overflow-x:auto;padding:8px 12px!important;gap:4px!important;position:sticky;top:0;z-index:5}
-.nav-brand{padding:0 8px 0 0!important}
-.nav-brand-text,.nav-user-info,.hide-m{display:none!important}
+.nav-user-info,.hide-m{display:none!important}
 .nav>a{flex:none;white-space:nowrap}
 .nav-push{margin-top:0!important}
 .nav-user{flex:none;margin:0!important;padding:0 0 0 12px!important;border-top:0!important;border-left:1px solid #2C3238}
-.nav-user a{margin:0!important;white-space:nowrap}
 .nav-avatar{display:none!important}
-.nav.is-collapsed{flex:1 1 auto!important}
-.is-collapsed .nav-item{padding:0 12px!important}
-.is-collapsed .nav-label,.is-collapsed .nav-stamp{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip:auto!important}
-.is-collapsed .nav-stamp{margin-left:8px!important;padding:0 6px!important}
-.is-collapsed .nav-dot,.is-collapsed .nav-out-icon{display:none!important}
 .main{padding:16px 16px 32px!important;gap:16px!important}
-.desk{display:none!important}
-.mob{display:flex!important}
-.sup-row{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
-.lg-hero{padding:16px 20px!important;gap:0!important}
-.lg-main{padding:32px 16px 40px!important;align-items:flex-start!important}
+.pv-row,.pv-head{grid-template-columns:minmax(0,1fr) auto!important;padding-left:16px!important;padding-right:16px!important}
+.pv-pad{padding:16px!important}
+.pv-cols,.pv-formrow,.pv-q4{grid-template-columns:minmax(0,1fr)!important}
+.pv-dl{grid-template-columns:minmax(0,1fr)!important;gap:2px!important;padding:8px 0}
 }
 </style>
 </helmet>
 <div class="app" style="min-height: 100vh; container-type: inline-size; container-name: app; display: flex; flex-wrap: wrap; background: #F3F4F1; color: #16191D; font-family: 'IBM Plex Sans', system-ui, sans-serif">
 
-<nav id="nav-principal" class="nav{{navClass}}" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: #16191D; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
-<a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><span style="position: relative; display: inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg><span class="nav-dot" aria-hidden="true" style="position: absolute; top: -3px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: #E8C66A; box-shadow: 0 0 0 2px #16191D"></span></span><span class="nav-label">Ventas</span><span class="nav-stamp" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
+<nav id="nav-principal" class="nav" aria-label="Principal" style="flex: 1 1 232px; box-sizing: border-box; padding: 20px 14px; background: #16191D; color: #E8EAE6; display: flex; flex-direction: column; gap: 4px">
+<a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg><span class="nav-label">Ventas</span><span class="hide-m" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
 <a class="nav-item" href="Clientes.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg><span class="nav-label">Clientes</span></a>
 <a class="nav-item" href="Productos.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="M3 7.5 12 12l9-4.5M12 12v9"></path></svg><span class="nav-label">Productos</span></a>
 <a class="nav-item" href="Proveedores.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; background: #262B31; color: #E8EAE6; font-weight: 600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F08A5D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 10h4l4 3v3h-8"></path><circle cx="6" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg><span class="nav-label">Proveedores</span></a>
-<a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><span style="position: relative; display: inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"></path><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path></svg><span class="nav-dot" aria-hidden="true" style="position: absolute; top: -3px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: #E8C66A; box-shadow: 0 0 0 2px #16191D"></span></span><span class="nav-label">Cobros</span><span class="nav-stamp" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
+<a class="nav-item" role="link" aria-disabled="true" tabindex="0" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #9AA1A9; font-weight: 500; cursor: default"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"></path><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path></svg><span class="nav-label">Cobros</span><span class="hide-m" style="margin-left: auto; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 4px; background: #3A3014; color: #E8C66A; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase">Pendiente</span></a>
+<a class="nav-item" href="Acciones.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"></path></svg><span class="nav-label">Acciones</span></a>
 <a class="nav-item nav-push" href="Ajustes.dc.html" style="margin-top: auto; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; text-decoration: none; font-size: 14px; color: #C9CDD2; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"></path><circle cx="16" cy="6" r="2"></circle><circle cx="10" cy="12" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg><span class="nav-label">Ajustes</span></a>
-<button type="button" class="nav-item nav-toggle hide-m" aria-controls="nav-principal" aria-expanded="{{navExpanded}}" title="{{navToggleLabel}}" onClick="{{toggleNav}}" style="display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: #9AA1A9; font: 500 14px 'IBM Plex Sans', sans-serif; text-align: left; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"></path></svg><span class="nav-label">{{navToggleLabel}}</span></button>
-<div class="nav-user" style="margin-top: 8px; padding: 12px 4px 0; border-top: 1px solid #2C3238; display: flex; align-items: center; gap: 10px"><span class="nav-avatar" aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: #262B31; color: #C9CDD2; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.9-3.6 3.7-5.5 7-5.5s6.1 1.9 7 5.5"></path></svg></span><span class="nav-user-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600; color: #E8EAE6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[USUARIO]</span><span style="font-size: 12px; color: #9AA1A9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Compras · Web</span></span><a class="nav-logout" href="Login.dc.html" aria-label="Cerrar sesión" title="Cerrar sesión" style="flex: none; margin-left: auto; width: 44px; height: 44px; border-radius: 6px; color: #C9CDD2; display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"></path><path d="m10 16-4-4 4-4M6 12h10"></path></svg></a></div>
+<div class="nav-user" style="margin-top: 8px; padding: 12px 4px 0; border-top: 1px solid #2C3238; display: flex; align-items: center; gap: 10px"><span class="nav-avatar" aria-hidden="true" style="flex: none; width: 36px; height: 36px; border-radius: 6px; background: #262B31; color: #C9CDD2; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c.9-3.6 3.7-5.5 7-5.5s6.1 1.9 7 5.5"></path></svg></span><span class="nav-user-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600; color: #E8EAE6">[USUARIO]</span><span style="font-size: 12px; color: #9AA1A9">{{rolTxt}} · Web</span></span><a class="nav-logout" href="Login.dc.html" aria-label="Cerrar sesión" style="flex: none; margin-left: auto; width: 44px; height: 44px; border-radius: 6px; color: #C9CDD2; display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"></path><path d="m10 16-4-4 4-4M6 12h10"></path></svg></a></div>
 </nav>
 
 <main class="main" style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between">
 <div style="display: flex; align-items: baseline; gap: 12px">
 <h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Proveedores</h1>
-<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5058">[N] activos</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4A5058">{{countTxt}}</span>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
-<button type="button" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: {{accent}}; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Nuevo proveedor</button>
-</div>
+<sc-if value="{{canEdit}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{openNew}}" style="display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 0; border-radius: 6px; background: #B4430F; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Nuevo proveedor</button>
+</sc-if>
 </div>
 
-<div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
-<section aria-label="Listado de proveedores" style="flex: 2 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden">
-<div style="padding: 16px 20px; border-bottom: 1px solid #D9DCD5; display: flex; flex-direction: column; gap: 6px">
+<sc-if value="{{notFound}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 6px; background: #FDF3D7; color: #7A5300; font-size: 14px; font-weight: 500">
+<span>El enlace apunta a un proveedor que no existe. Busca el proveedor en el listado.</span>
+<button type="button" onClick="{{dismissNotFound}}" style="height: 36px; padding: 0 12px; border: 1px solid #7A5300; border-radius: 6px; background: #FFFFFF; color: #7A5300; font: 600 13px 'IBM Plex Sans', sans-serif; cursor: pointer">Entendido</button>
+</div>
+</sc-if>
+
+<section aria-label="Listado de proveedores" aria-busy="{{busy}}" style="background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden">
+<div style="padding: 16px 20px; border-bottom: 1px solid #D9DCD5; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end">
+<div style="flex: 1 1 260px; max-width: 420px; display: flex; flex-direction: column; gap: 6px">
 <label for="pv-q" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Buscar proveedor</label>
 <div style="position: relative; display: flex; align-items: center">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B717A" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; pointer-events: none"><circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path></svg>
-<input id="pv-q" type="search" placeholder="Nombre del proveedor" value="{{q}}" onChange="{{onSearch}}" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 12px 0 40px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+<input id="pv-q" type="search" maxlength="100" placeholder="Nombre o CIF" value="{{q}}" onChange="{{onSearch}}" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 12px 0 40px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
 </div>
 </div>
-<div class="sup-row" style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 120px; gap: 12px; padding: 12px 20px; background: #EEF0EC; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058"><span>Proveedor</span><span class="hide-m" style="text-align: right">Plazo</span><span style="text-align: right">Compras año</span></div>
-<sc-for list="{{suppliers}}" as="s" hint-placeholder-count="6">
-<button class="sup-row" type="button" onClick="{{s.pick}}" style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 120px; gap: 12px; align-items: center; min-height: 64px; padding: 10px 20px; border: 0; border-top: 1px solid #E4E6E1; background: {{s.rowBg}}; text-align: left; font: inherit; color: #16191D; cursor: pointer">
-<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{s.name}}</span><span style="font-size: 12px; color: {{s.noteColor}}; font-weight: 500">{{s.note}}</span></span>
-<span class="hide-m" style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">{{s.lead}}</span>
-<span style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500">{{s.yearTxt}}</span>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{showBajas}}" onChange="{{toggleBajas}}" style="width: 20px; height: 20px; margin: 0; accent-color: #B4430F">Mostrar dados de baja</label>
+<div style="margin-left: auto; display: flex; flex-direction: column; gap: 6px">
+<span id="pv-trim" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Gasto por trimestre · 2026</span>
+<div role="group" aria-labelledby="pv-trim" style="display: flex; gap: 6px">
+<sc-for list="{{quarterSeg}}" as="o" hint-placeholder-count="4">
+<button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="height: 44px; min-width: 48px; padding: 0 10px; border: {{o.border}}; border-radius: 6px; background: {{o.bg}}; color: {{o.color}}; font: 500 13px 'IBM Plex Mono', monospace; cursor: pointer">{{o.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+<div class="pv-head" style="display: grid; grid-template-columns: minmax(0, 1fr) 130px 80px 130px 130px; gap: 16px; padding: 10px 20px; background: #EEF0EC; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058"><span>Proveedor</span><span class="hide-m">CIF</span><span class="hide-m" style="text-align: right">Plazo</span><span class="hide-m" style="text-align: right">Gasto {{quarter}}</span><span style="text-align: right">Compras año</span></div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<button type="button" class="pv-row" onClick="{{r.open}}" style="display: grid; grid-template-columns: minmax(0, 1fr) 130px 80px 130px 130px; gap: 16px; align-items: center; min-height: 60px; padding: 10px 20px; border: 0; border-top: 1px solid #E4E6E1; background: #FFFFFF; text-align: left; font: inherit; color: #16191D; cursor: pointer">
+<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-size: 14px; font-weight: 600">{{r.name}}</span>
+<sc-if value="{{r.baja}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 4px; background: #EEF0EC; color: #4A5058; font: 600 11px 'IBM Plex Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 1px; background: #4A5058"></span>Baja</span></sc-if>
+</span>
+<span style="font-size: 12px; color: #6B717A">{{r.city}}</span>
+</span>
+<span class="hide-m" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">{{r.cif}}</span>
+<span class="hide-m" style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">{{r.lead}}</span>
+<span class="hide-m" style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600">{{r.qTxt}}</span>
+<span style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: #4A5058">{{r.year}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA1A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></span>
 </button>
 </sc-for>
-<sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
-<div style="padding: 40px 20px; text-align: center; font-size: 14px; color: #4A5058">Ningún proveedor coincide con «{{q}}».</div>
+<sc-if value="{{isLoading}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 32px 20px; border-top: 1px solid #E4E6E1; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; color: #4A5058"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"></path></svg>Cargando proveedores…</div>
 </sc-if>
-<div style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid #D9DCD5; font-size: 13px; color: #4A5058">
+<sc-if value="{{isError}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 20px; border-top: 1px solid #E4E6E1; display: flex; flex-direction: column; align-items: flex-start; gap: 12px">
+<div role="alert" style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 6px; background: #FBE4E1; color: #A12A1C; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>No se ha podido cargar el listado de proveedores.</div>
+<button type="button" onClick="{{retry}}" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Reintentar</button>
+</div>
+</sc-if>
+<sc-if value="{{noMatch}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 32px 20px; border-top: 1px solid #E4E6E1; display: flex; flex-direction: column; gap: 6px; text-align: center">
+<span style="font-size: 18px; font-weight: 600">Ningún proveedor coincide con la búsqueda</span>
+<span style="font-size: 14px; color: #4A5058">Prueba con otra parte del nombre o con el CIF, o marca «Mostrar dados de baja».</span>
+</div>
+</sc-if>
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 32px 20px; border-top: 1px solid #E4E6E1; display: flex; flex-direction: column; gap: 6px; text-align: center">
+<span style="font-size: 18px; font-weight: 600">Todavía no hay proveedores</span>
+<span style="font-size: 14px; color: #4A5058">Los proveedores se cargarán desde el sistema anterior.</span>
+<sc-if value="{{canEdit}}" hint-placeholder-val="{{ true }}"><span style="font-size: 14px; color: #4A5058">Mientras tanto, puedes dar de alta uno con «Nuevo proveedor».</span></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{showPager}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid #D9DCD5; font-size: 13px; color: #4A5058">
 <span style="font-family: 'IBM Plex Mono', monospace">{{rangeTxt}}</span>
 <div style="display: flex; align-items: center; gap: 8px">
 <button type="button" onClick="{{prev}}" disabled="{{prevDisabled}}" style="height: 44px; padding: 0 14px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{prevColor}}; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Anterior</button>
@@ -107,122 +129,431 @@ a{color:#B4430F}a:hover{color:#8A320A}
 <button type="button" onClick="{{next}}" disabled="{{nextDisabled}}" style="height: 44px; padding: 0 14px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{nextColor}}; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Siguiente</button>
 </div>
 </div>
+</sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{isDetail}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<button type="button" class="pv-back" onClick="{{backToList}}" aria-label="Volver al listado de proveedores" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 8px; border: 0; border-radius: 6px; background: transparent; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>Proveedores</button>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; padding-bottom: 16px; border-bottom: 2px solid #16191D">
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">{{sel.name}}</h1>
+<sc-if value="{{sel.baja}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; border-radius: 4px; background: #EEF0EC; color: #4A5058; font: 600 11px 'IBM Plex Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 1px; background: #4A5058"></span>Baja</span></sc-if>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">CIF {{sel.cif}}{{sel.foreignTxt}}</span>
+</div>
+<sc-if value="{{canEdit}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" onClick="{{openEdit}}" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Editar proveedor</button>
+<button type="button" onClick="{{sel.statusAction}}" style="height: 44px; padding: 0 12px; border: 0; background: transparent; color: #4A5058; font: 500 14px 'IBM Plex Sans', sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">{{sel.statusLabel}}</button>
+</div>
+</sc-if>
+</div>
+
+<div class="pv-cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<sc-for list="{{sel.leftBlocks}}" as="b" hint-placeholder-count="3">
+<section style="background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; padding: 16px 20px 8px">
+<h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 600">{{b.title}}</h2>
+<dl style="margin: 0">
+<sc-for list="{{b.rows}}" as="f" hint-placeholder-count="3">
+<div class="pv-dl" style="display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; align-items: center; min-height: 44px; border-top: 1px solid #E4E6E1">
+<dt style="font-size: 13px; color: #4A5058">{{f.label}}</dt>
+<dd style="margin: 0; font-family: {{f.font}}; font-size: 14px; font-weight: 500; overflow-wrap: anywhere"><sc-if value="{{f.isLink}}" hint-placeholder-val="{{ false }}"><a href="{{f.href}}">{{f.value}}</a></sc-if><sc-if value="{{f.isText}}" hint-placeholder-val="{{ true }}">{{f.value}}</sc-if></dd>
+</div>
+</sc-for>
+</dl>
+</section>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px">
+<section style="background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; padding: 16px 20px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Compras 2026</h2>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 500">{{sel.yearTxt}}</span>
+</div>
+<span style="display: block; margin-top: 2px; font-size: 12px; color: #6B717A">Importes sin IVA</span>
+<div class="pv-q4" style="margin-top: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{sel.quarters}}" as="qq" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 6px; background: #F3F4F1">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5058">{{qq.label}}</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600">{{qq.txt}}</span>
+</div>
+</sc-for>
+</div>
 </section>
 
-<section aria-label="Detalle del proveedor" style="flex: 3 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; display: flex; flex-direction: column">
-<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; padding: 20px; border-bottom: 2px solid #16191D">
-<div style="display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Productos asociados</span>
-<h2 style="margin: 0; font-size: 22px; font-weight: 600">{{sel.name}}</h2>
-<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4A5058">CIF [CIF] · Entrega en {{sel.lead}} · Pedido mínimo {{sel.minTxt}}</span>
+<section style="background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; padding: 16px 20px 8px">
+<h2 style="margin: 0 0 4px; font-size: 18px; font-weight: 600">Pedidos</h2>
+<dl style="margin: 0">
+<sc-for list="{{sel.orders}}" as="f" hint-placeholder-count="3">
+<div class="pv-dl" style="display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; align-items: center; min-height: 44px; border-top: 1px solid #E4E6E1">
+<dt style="font-size: 13px; color: #4A5058">{{f.label}}</dt>
+<dd style="margin: 0; font-family: {{f.font}}; font-size: 14px; font-weight: 500; overflow-wrap: anywhere"><sc-if value="{{f.isLink}}" hint-placeholder-val="{{ false }}"><a href="{{f.href}}" target="_blank" rel="noopener">{{f.value}}</a></sc-if><sc-if value="{{f.isText}}" hint-placeholder-val="{{ true }}">{{f.value}}</sc-if></dd>
 </div>
-<button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Editar proveedor</button>
-</div>
-<div class="desk" style="overflow-x: auto">
-<table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 14px">
-<thead>
-<tr style="background: #EEF0EC; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">
-<th style="padding: 10px 20px; font-weight: 600; width: 44px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Incluir en pedido</span></th><th style="padding: 10px 12px; font-weight: 600">Producto</th><th style="padding: 10px 12px; font-weight: 600; text-align: right">Stock / mín.</th><th style="padding: 10px 12px; font-weight: 600; text-align: right">Coste</th><th style="padding: 10px 20px; font-weight: 600; text-align: right">A pedir</th>
-</tr>
-</thead>
-<tbody>
-<sc-for list="{{sel.products}}" as="p" hint-placeholder-count="4">
-<tr style="border-top: 1px solid #E4E6E1">
-<td style="padding: 8px 20px"><input type="checkbox" checked="{{p.low}}" aria-label="Incluir en el pedido de compra" style="width: 20px; height: 20px; margin: 0; accent-color: {{accent}}"></td>
-<td style="padding: 12px"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">{{p.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">{{p.sku}}</span></div></td>
-<td style="padding: 12px; text-align: right; font-family: 'IBM Plex Mono', monospace; color: {{p.stockColor}}; font-weight: 500">{{p.stock}} / {{p.min}}</td>
-<td style="padding: 12px; text-align: right; font-family: 'IBM Plex Mono', monospace">{{p.costTxt}}</td>
-<td style="padding: 12px 20px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-weight: 600">{{p.suggest}}</td>
-</tr>
 </sc-for>
-</tbody>
-</table>
-</div>
-<div class="mob" style="flex-direction: column">
-<sc-for list="{{sel.products}}" as="p" hint-placeholder-count="3">
-<article style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-top: 1px solid #E4E6E1">
-<input type="checkbox" checked="{{p.low}}" aria-label="Incluir en el pedido de compra" style="flex: none; width: 22px; height: 22px; margin: 2px 0 0; accent-color: {{accent}}">
-<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{p.name}}</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">{{p.sku}}</span></div>
-<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Stock / mín.</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: {{p.stockColor}}">{{p.stock}} / {{p.min}}</span></div>
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Coste</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">{{p.costTxt}}</span></div>
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">A pedir</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600">{{p.suggest}}</span></div>
-</div>
-</div>
-</article>
-</sc-for>
-</div>
-<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; padding: 16px 20px; margin-top: auto; border-top: 1px solid #D9DCD5">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; color: #6B717A">Pedido de compra sugerido (stock bajo mínimos)</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 500">{{sel.orderTxt}}</span></div>
-<button type="button" style="height: 44px; padding: 0 20px; border: 0; border-radius: 6px; background: {{accent}}; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Generar pedido de compra</button>
-</div>
+</dl>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #D9DCD5; border-radius: 10px; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Observaciones</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{sel.notesColor}}; white-space: pre-line">{{sel.notes}}</p>
 </section>
 </div>
-</main>
 </div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 12px; color: #6B717A">
+<span>Creado por [USUARIO] el <span style="font-family: 'IBM Plex Mono', monospace">{{sel.created}}</span></span>
+<span>Modificado por [USUARIO] el <span style="font-family: 'IBM Plex Mono', monospace">{{sel.updated}}</span></span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isForm}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{save}}" novalidate style="display: flex; flex-direction: column; gap: 16px">
+<button type="button" class="pv-back" onClick="{{cancelForm}}" aria-label="{{backFormLabel}}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 8px; border: 0; border-radius: 6px; background: transparent; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>{{backFormTxt}}</button>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 16px; border-bottom: 2px solid #16191D">
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">{{formTitle}}</h1>
+<span style="font-size: 14px; color: #4A5058">{{formSub}}</span>
+</div>
+
+<sc-if value="{{hasConflict}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: 6px; background: #FDF3D7; color: #7A5300; font-size: 14px; font-weight: 500">
+<span>Otro usuario ha cambiado este proveedor mientras lo editabas. Carga los datos actuales y repite tus cambios.</span>
+<button type="button" onClick="{{reloadCurrent}}" style="height: 36px; padding: 0 12px; border: 1px solid #7A5300; border-radius: 6px; background: #FFFFFF; color: #7A5300; font: 600 13px 'IBM Plex Sans', sans-serif; cursor: pointer">Cargar datos actuales</button>
+</div>
+</sc-if>
+<sc-if value="{{hasSaveError}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 6px; background: #FBE4E1; color: #A12A1C; font-size: 14px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>No se ha podido guardar el proveedor. Lo que has escrito sigue aquí; vuelve a intentarlo.</div>
+</sc-if>
+<sc-if value="{{hasErrors}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="padding: 12px 14px; border-radius: 6px; background: #FBE4E1; color: #A12A1C; font-size: 14px; font-weight: 500">{{errorSummary}}</div>
+</sc-if>
+
+<div class="pv-cols" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<sc-for list="{{fieldsets}}" as="fs" hint-placeholder-count="3">
+<fieldset class="pv-pad" style="margin: 0; padding: 16px 20px 20px; border: 1px solid #D9DCD5; border-radius: 10px; background: #FFFFFF; display: flex; flex-direction: column; gap: 16px">
+<legend style="float: left; width: 100%; padding: 0; font-size: 18px; font-weight: 600">{{fs.title}}</legend>
+<sc-if value="{{fs.hasHelp}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #4A5058">{{fs.help}}</span></sc-if>
+<div class="pv-formrow" style="display: grid; grid-template-columns: {{fs.cols}}; gap: 16px">
+<sc-for list="{{fs.fields}}" as="fd" hint-placeholder-count="2">
+<div style="grid-column: {{fd.span}}; display: flex; flex-direction: column; gap: 6px">
+<label for="{{fd.id}}" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">{{fd.label}}</label>
+<sc-if value="{{fd.isSelect}}" hint-placeholder-val="{{ false }}">
+<select id="{{fd.id}}" value="{{fd.value}}" onChange="{{fd.onChange}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF"><option>Transferencia 30 días</option><option>Transferencia 60 días</option><option>Domiciliación bancaria</option><option>Pagaré</option><option>Contado</option></select>
+</sc-if>
+<sc-if value="{{fd.isInput}}" hint-placeholder-val="{{ true }}">
+<input id="{{fd.id}}" type="{{fd.type}}" inputmode="{{fd.inputmode}}" placeholder="{{fd.ph}}" value="{{fd.value}}" onChange="{{fd.onChange}}" aria-invalid="{{fd.invalid}}" aria-describedby="{{fd.errId}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: {{fd.border}}; border-radius: 6px; font: 400 14px {{fd.font}}; color: #16191D; background: #FFFFFF; text-align: {{fd.align}}">
+</sc-if>
+<sc-if value="{{fd.hasHint}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #6B717A">{{fd.hint}}</span></sc-if>
+<sc-if value="{{fd.hasError}}" hint-placeholder-val="{{ false }}"><span id="{{fd.errId}}" style="font-size: 12px; color: #A12A1C">{{fd.error}}</span></sc-if>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{fs.hasForeign}}" hint-placeholder-val="{{ false }}">
+<label style="display: flex; align-items: flex-start; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{form.foreign}}" onChange="{{toggleForeign}}" style="flex: none; width: 20px; height: 20px; margin: 0; accent-color: #B4430F"><span style="display: flex; flex-direction: column; gap: 2px"><span>Proveedor extranjero</span><span style="font-size: 13px; color: #4A5058">Acepta un identificador fiscal y un código postal de otro país.</span></span></label>
+</sc-if>
+</fieldset>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px">
+<fieldset class="pv-pad" style="margin: 0; padding: 16px 20px 20px; border: 1px solid #D9DCD5; border-radius: 10px; background: #FFFFFF; display: flex; flex-direction: column; gap: 12px">
+<legend style="float: left; width: 100%; padding: 0; font-size: 18px; font-weight: 600">Contacto</legend>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="pf-person" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Persona de contacto</label>
+<input id="pf-person" type="text" maxlength="120" placeholder="Nombre y apellidos" value="{{form.person}}" onChange="{{f.person}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+</div>
+<sc-for list="{{contactGroups}}" as="g" hint-placeholder-count="2">
+<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 8px">
+<span style="font-size: 14px; font-weight: 600">{{g.title}}</span>
+<sc-for list="{{g.items}}" as="it" hint-placeholder-count="1">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div class="pv-formrow" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) 44px; gap: 8px; align-items: end">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="{{it.labelId}}" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">Etiqueta</label>
+<input id="{{it.labelId}}" type="text" maxlength="40" placeholder="{{g.labelPh}}" value="{{it.label}}" onChange="{{it.onLabel}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="{{it.valueId}}" style="font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5058">{{g.valueLabel}}</label>
+<input id="{{it.valueId}}" type="{{g.type}}" placeholder="{{g.valuePh}}" value="{{it.value}}" onChange="{{it.onValue}}" aria-invalid="{{it.invalid}}" aria-describedby="{{it.errId}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: {{it.border}}; border-radius: 6px; font: 400 14px {{g.font}}; color: #16191D; background: #FFFFFF">
+</div>
+<button type="button" onClick="{{it.remove}}" aria-label="{{it.removeLabel}}" style="width: 44px; height: 44px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #4A5058; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+</div>
+<sc-if value="{{it.hasError}}" hint-placeholder-val="{{ false }}"><span id="{{it.errId}}" style="font-size: 12px; color: #A12A1C">{{it.error}}</span></sc-if>
+</div>
+</sc-for>
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" onClick="{{g.add}}" disabled="{{g.full}}" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 12px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: {{g.addColor}}; font: 600 13px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>{{g.addLabel}}</button>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6B717A">{{g.countTxt}}</span>
+</div>
+</div>
+</sc-for>
+</fieldset>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="pf-notes" style="font-size: 18px; font-weight: 600">Observaciones</label>
+<textarea id="pf-notes" rows="4" maxlength="2000" placeholder="Representante, horario de reparto, condiciones…" value="{{form.notes}}" onChange="{{f.notes}}" style="box-sizing: border-box; padding: 10px 12px; border: 1px solid #C5C9C1; border-radius: 6px; font: 400 14px/1.5 'IBM Plex Sans', sans-serif; color: #16191D; background: #FFFFFF; resize: vertical"></textarea>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid #D9DCD5">
+<span style="font-size: 13px; color: #4A5058">* Obligatorio</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" onClick="{{cancelForm}}" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">Cancelar</button>
+<button type="submit" style="height: 44px; padding: 0 20px; border: 0; border-radius: 6px; background: #B4430F; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">{{saveLabel}}</button>
+</div>
+</div>
+</form>
+</sc-if>
+</main>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 40; padding: 12px 16px; border-radius: 6px; background: #16191D; color: #E8EAE6; font-size: 14px; font-weight: 500; box-shadow: 0 8px 24px rgba(22, 25, 29, 0.25)">{{toast}}</div>
+</sc-if>
+</div>
+
+<sc-if value="{{dialogOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #16191D">
+<div onClick="{{dialog.cancel}}" aria-hidden="true" style="position: absolute; inset: 0; background: rgba(22, 25, 29, 0.55)"></div>
+<div role="alertdialog" aria-modal="true" aria-labelledby="pd-title" aria-describedby="pd-desc" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; background: #FFFFFF; border-radius: 10px; border-top: 4px solid #16191D">
+<h2 id="pd-title" style="margin: 0; font-size: 22px; font-weight: 600">{{dialog.title}}</h2>
+<p id="pd-desc" style="margin: 0; font-size: 14px; line-height: 1.5; color: #4A5058">{{dialog.text}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end">
+<button type="button" onClick="{{dialog.cancel}}" style="height: 44px; padding: 0 18px; border: 1px solid #C5C9C1; border-radius: 6px; background: #FFFFFF; color: #16191D; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">{{dialog.cancelLabel}}</button>
+<button type="button" onClick="{{dialog.confirm}}" style="height: 44px; padding: 0 20px; border: 0; border-radius: 6px; background: #16191D; color: #FFFFFF; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer">{{dialog.confirmLabel}}</button>
+</div>
+</div>
+</div>
+</sc-if>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#B4430F","options":["#B4430F","#1E4C9A","#1F6B3F","#16191D"]},"$preview":{"width":1440,"height":1060}}'>
+<script type="text/x-dc" data-dc-script data-props='{"rol":{"editor":"enum","options":["Administrador","Administración","Almacén"],"default":"Administrador"},"escena":{"editor":"enum","options":["Listado","Cargando","Error al cargar","Sin proveedores","Proveedor no existe","Ficha","Dar de baja","Alta","Alta con errores","Edición","Edición con conflicto","Error al guardar","Descartar cambios"],"default":"Listado"},"$preview":{"width":1440,"height":1100}}'>
 class Component extends DCLogic {
 constructor(props) {
 super(props);
-this.state = { navCollapsed: false, picked: 0, page: 0, q: '' };
+this.state = { list: null, picked: 1, q: '', showBajas: false, quarter: '4T', page: 0, view: null, form: null, base: null, errors: null, toast: '', load: null, notFound: null, conflict: null, saveError: null, dialog: null };
+}
+seed() {
+return [
+{ id: 1, name: 'Aceites del Sur', cif: 'B46000001', foreign: false, person: '[CONTACTO]', address: 'Polígono Fuente del Jarro, calle 12', cp: '46988', city: 'Paterna', phones: [['Pedidos', '961 000 001'], ['Representante', '600 000 001']], emails: [['Facturación', 'facturacion@aceitesdelsur.example'], ['Pedidos', 'pedidos@aceitesdelsur.example']], payment: 'Transferencia 30 días', iban: 'ES9121000418450200051332', web: 'https://pedidos.aceitesdelsur.example', lead: 3, min: '300', year: 48210, notes: 'Reparto martes y jueves por la mañana.', active: true, created: '08/10/2026 09:12', updated: '21/10/2026 17:40' },
+{ id: 2, name: 'Bebidas Mediterráneo', cif: 'B46000002', foreign: false, person: '', address: 'Avenida del Puerto, 88', cp: '46023', city: 'Valencia', phones: [['Central', '963 000 002']], emails: [['Facturación', 'admin@bebidasmed.example']], payment: 'Transferencia 60 días', iban: '', web: '', lead: 2, min: '400', year: 132900, notes: '', active: true, created: '08/10/2026 09:20', updated: '08/10/2026 09:20' },
+{ id: 3, name: 'Cafés Torrefactos Mar', cif: 'B46000003', foreign: false, person: '', address: 'Calle de la Torre, 4', cp: '46400', city: 'Cullera', phones: [['Pedidos', '962 000 003']], emails: [], payment: 'Domiciliación bancaria', iban: '', web: 'https://cafesmar.example', lead: 5, min: '200', year: 21640, notes: '', active: true, created: '14/10/2026 12:05', updated: '14/10/2026 12:05' },
+{ id: 4, name: 'Conservas Atlántico', cif: 'B15000004', foreign: false, person: '', address: 'Rúa do Porto, 21', cp: '15001', city: 'A Coruña', phones: [], emails: [['Pedidos', 'pedidos@conservasatlantico.example']], payment: 'Pagaré', iban: '', web: '', lead: 4, min: '', year: 27310, notes: 'El pedido mínimo depende de la campaña.', active: true, created: '15/10/2026 10:30', updated: '20/10/2026 08:15' },
+{ id: 5, name: 'Distribuciones Levante', cif: 'B03000005', foreign: false, person: '[CONTACTO]', address: 'Calle Mayor, 40', cp: '03001', city: 'Alicante', phones: [['Central', '965 000 005']], emails: [['Información', 'info@distlevante.example'], ['Facturación', 'facturas@distlevante.example']], payment: 'Transferencia 30 días', iban: '', web: '', lead: null, min: '500', year: 96380, notes: 'Plazo variable: confirmar por teléfono en cada pedido.', active: true, created: '16/10/2026 16:02', updated: '16/10/2026 16:02' },
+{ id: 6, name: 'Envases y Menaje Ruiz', cif: 'B46000006', foreign: false, person: '', address: 'Calle Alfarería, 15', cp: '46470', city: 'Catarroja', phones: [['Pedidos', '961 000 006']], emails: [], payment: 'Contado', iban: '', web: '', lead: 6, min: '150', year: 12480, notes: '', active: true, created: '16/10/2026 16:20', updated: '16/10/2026 16:20' },
+{ id: 7, name: 'Higiene Profesional Norte', cif: 'B48000007', foreign: false, person: '', address: 'Calle Industria, 7', cp: '48001', city: 'Bilbao', phones: [['Central', '944 000 007']], emails: [], payment: 'Transferencia 30 días', iban: '', web: '', lead: 4, min: '250', year: 18750, notes: '', active: false, created: '08/10/2026 09:31', updated: '22/10/2026 11:48' },
+{ id: 8, name: 'Lácteos Valle Verde', cif: 'B33000008', foreign: false, person: '', address: 'Carretera General, km 3', cp: '33001', city: 'Oviedo', phones: [['Pedidos', '985 000 008']], emails: [['Pedidos', 'pedidos@valleverde.example']], payment: 'Domiciliación bancaria', iban: '', web: 'https://valleverde.example/profesionales', lead: 1, min: '', year: 58940, notes: '', active: true, created: '17/10/2026 09:00', updated: '17/10/2026 09:00' },
+{ id: 9, name: "Sapori d'Italia S.r.l.", cif: 'IT00000000009', foreign: true, person: '', address: 'Via Roma, 10', cp: '40121', city: 'Bolonia (Italia)', phones: [['Exportación', '+39 051 000 0009']], emails: [['Ordini', 'ordini@saporiditalia.example']], payment: 'Transferencia 30 días', iban: '', web: 'https://saporiditalia.example', lead: 10, min: '1000', year: 9870, notes: 'Pedidos en inglés o italiano.', active: true, created: '19/10/2026 13:45', updated: '19/10/2026 13:45' },
+{ id: 10, name: 'Vinos y Licores Turia', cif: 'B46000010', foreign: false, person: '', address: 'Camino Viejo, 3', cp: '46015', city: 'Valencia', phones: [['Pedidos', '963 000 010']], emails: [['Facturación', 'facturas@vinosturia.example']], payment: 'Transferencia 60 días', iban: '', web: '', lead: 4, min: '350', year: 36450, notes: '', active: true, created: '20/10/2026 10:10', updated: '20/10/2026 10:10' }
+];
+}
+emptyForm() {
+return { name: '', cif: '', foreign: false, person: '', address: '', cp: '', city: '', phones: [['', '']], emails: [['', '']], payment: 'Transferencia 30 días', iban: '', web: '', lead: '', min: '', notes: '' };
+}
+toForm(s) {
+const copy = (a) => (a.length ? a.map((p) => [p[0], p[1]]) : [['', '']]);
+return { name: s.name, cif: s.cif, foreign: s.foreign, person: s.person, address: s.address, cp: s.cp, city: s.city, phones: copy(s.phones), emails: copy(s.emails), payment: s.payment, iban: s.iban, web: s.web, lead: s.lead == null ? '' : String(s.lead), min: s.min, notes: s.notes };
+}
+ibanOk(v) {
+const s = String(v).toUpperCase().replace(/\s/g, '');
+if (!/^[A-Z]{2}[0-9]{2}[A-Z0-9]{10,30}$/.test(s)) return false;
+const r = (s.slice(4) + s.slice(0, 4)).split('').map((c) => (/[A-Z]/.test(c) ? String(c.charCodeAt(0) - 55) : c)).join('');
+let m = 0;
+for (let i = 0; i < r.length; i++) m = (m * 10 + Number(r[i])) % 97;
+return m === 1;
 }
 renderVals() {
-const accent = this.props.accent ?? '#B4430F';
-const fmt = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-const data = [
-{ name: 'Aceites del Sur', lead: '3 días', min: 300, year: 48210, products: [['SKU 10233', 'Aceite de oliva virgen extra 5 L', 12, 40, 26.8], ['SKU 10240', 'Aceite de girasol 5 L', 55, 30, 11.2]] },
-{ name: 'Cafés Torrefactos Mar', lead: '5 días', min: 200, year: 21640, products: [['SKU 20871', 'Café en grano 1 kg', 8, 25, 12.9], ['SKU 20880', 'Café molido 500 g', 34, 20, 6.1], ['SKU 20902', 'Azúcar en sobres (caja 1000)', 18, 10, 9.4]] },
-{ name: 'Distribuciones Levante', lead: '2 días', min: 500, year: 96380, products: [['SKU 10410', 'Arroz redondo 1 kg', 0, 60, 0.98], ['SKU 10077', 'Harina de trigo 25 kg', 46, 20, 14.3]] },
-{ name: 'Bebidas Mediterráneo', lead: '2 días', min: 400, year: 132900, products: [['SKU 30112', 'Cerveza lata 33 cl (pack 24)', 140, 80, 11.6], ['SKU 30020', 'Agua mineral 1,5 L (pack 6)', 320, 150, 2.05]] },
-{ name: 'Higiene Profesional Norte', lead: '4 días', min: 250, year: 18750, products: [['SKU 40201', 'Detergente industrial 10 L', 18, 15, 17.9], ['SKU 40215', 'Lejía 5 L (caja 3)', 54, 30, 4.4]] },
-{ name: 'Envases y Menaje Ruiz', lead: '6 días', min: 150, year: 12480, products: [['SKU 50410', 'Servilletas 30×30 (caja 2400)', 3, 10, 16.5], ['SKU 50033', 'Vaso desechable 200 ml (1000 u.)', 22, 12, 13.8]] },
-{ name: 'Conservas Atlántico', lead: '4 días', min: 200, year: 27310, products: [['SKU 11020', 'Atún en aceite (pack 6)', 24, 20, 5.9], ['SKU 11035', 'Tomate triturado 1 kg', 9, 30, 0.85]] },
-{ name: 'Lácteos Valle Verde', lead: '1 día', min: 150, year: 58940, products: [['SKU 12001', 'Leche entera 1 L (pack 6)', 60, 40, 4.8], ['SKU 12015', 'Nata para cocinar 1 L', 14, 12, 2.6]] },
-{ name: 'Refrescos Costa', lead: '3 días', min: 300, year: 41200, products: [['SKU 30210', 'Refresco de cola 2 L (pack 6)', 38, 50, 6.3]] },
-{ name: 'Vinos y Licores Turia', lead: '4 días', min: 350, year: 36450, products: [['SKU 31010', 'Vino tinto crianza 75 cl (caja 6)', 30, 18, 21.5], ['SKU 31022', 'Vino blanco 75 cl (caja 6)', 12, 18, 16.9]] },
-{ name: 'Papelera Industrial Sur', lead: '5 días', min: 200, year: 9870, products: [['SKU 50500', 'Papel secamanos (caja 20)', 6, 8, 18.2]] },
-{ name: 'Frutos Secos Ruzafa', lead: '3 días', min: 120, year: 8430, products: [['SKU 14010', 'Almendra tostada 1 kg', 11, 8, 9.7]] }
+const st = this.state;
+const rol = this.props.rol ?? 'Administrador';
+const escena = this.props.escena ?? 'Listado';
+const canEdit = rol !== 'Almacén';
+const list = st.list || (escena === 'Sin proveedores' ? [] : this.seed());
+const sceneView = { 'Ficha': 'detail', 'Dar de baja': 'detail', 'Alta': 'new', 'Alta con errores': 'new', 'Error al guardar': 'new', 'Descartar cambios': 'edit', 'Edición': 'edit', 'Edición con conflicto': 'edit' }[escena] || 'list';
+let view = st.view || sceneView;
+if (!canEdit && (view === 'new' || view === 'edit')) view = 'detail';
+const load = st.load || ({ 'Cargando': 'loading', 'Error al cargar': 'error' }[escena] || 'ok');
+const notFound = st.notFound != null ? st.notFound : escena === 'Proveedor no existe';
+const conflict = st.conflict != null ? st.conflict : escena === 'Edición con conflicto';
+const saveError = st.saveError != null ? st.saveError : escena === 'Error al guardar';
+const fmt = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const norm = (c) => String(c || '').toUpperCase().replace(/[\s.\-]/g, '');
+const leadTxt = (l) => (l == null ? '—' : l + (l === 1 ? ' día' : ' días'));
+const ibanTxt = (v) => (v ? v.replace(/(.{4})/g, '$1 ').trim() : '');
+const QS = ['1T', '2T', '3T', '4T'];
+const qi = Math.max(0, QS.indexOf(st.quarter));
+const W = [[0.26, 0.24, 0.30, 0.20], [0.24, 0.27, 0.28, 0.21], [0.28, 0.25, 0.24, 0.23], [0.22, 0.28, 0.31, 0.19]];
+const parts = (s) => { const w = W[s.id % 4]; const a = [0, 1, 2].map((k) => Math.round(s.year * w[k] * 100) / 100); return a.concat([Math.round((s.year - a[0] - a[1] - a[2]) * 100) / 100]); };
+
+const needle = st.q.trim().toLowerCase();
+const needleCif = norm(st.q);
+const sorted = list.slice().sort((a, b) => a.name.localeCompare(b.name, 'es'));
+const filtered = load === 'ok' ? sorted.filter((s) => (st.showBajas || s.active) && (!needle || s.name.toLowerCase().includes(needle) || (needleCif && norm(s.cif).includes(needleCif)))) : [];
+const PER = 10;
+const pages = Math.max(1, Math.ceil(filtered.length / PER));
+const page = Math.min(st.page, pages - 1);
+const start = page * PER;
+const rows = filtered.slice(start, start + PER).map((s) => ({
+name: s.name, cif: s.cif, city: s.city, baja: !s.active, lead: leadTxt(s.lead), qTxt: fmt(parts(s)[qi]), year: fmt(s.year),
+open: () => this.setState({ picked: s.id, view: 'detail', toast: '', notFound: false })
+}));
+const activeCount = list.filter((s) => s.active).length;
+const countTxt = st.showBajas ? list.length + (list.length === 1 ? ' proveedor' : ' proveedores') : activeCount + (activeCount === 1 ? ' activo' : ' activos');
+const quarterSeg = QS.map((label, k) => ({ label, pressed: k === qi ? 'true' : 'false', border: k === qi ? '1px solid #16191D' : '1px solid #C5C9C1', bg: k === qi ? '#16191D' : '#FFFFFF', color: k === qi ? '#FFFFFF' : '#16191D', pick: () => this.setState({ quarter: label }) }));
+
+const s = list.find((x) => x.id === st.picked) || sorted[0] || null;
+const row = (label, value, opts) => ({ label, value: value || '—', font: (opts && opts.mono) ? "'IBM Plex Mono', monospace" : "'IBM Plex Sans', sans-serif", isLink: !!(opts && opts.href && value), isText: !(opts && opts.href && value), href: (opts && opts.href) || '' });
+let sel = { name: '', cif: '', foreignTxt: '', baja: false, leftBlocks: [], orders: [], quarters: [], yearTxt: '', notes: '', notesColor: '#4A5058', created: '', updated: '', statusLabel: '', statusAction: null };
+if (s) {
+const contactRows = [row('Persona de contacto', s.person)].concat(s.phones.map((p) => row('Teléfono · ' + (p[0] || 'sin etiqueta'), p[1], { mono: true, href: 'tel:' + p[1].replace(/\s/g, '') }))).concat(s.emails.map((e) => row('Correo · ' + (e[0] || 'sin etiqueta'), e[1], { href: 'mailto:' + e[1] })));
+sel = {
+name: s.name, cif: s.cif, foreignTxt: s.foreign ? ' (extranjero)' : '', baja: !s.active,
+leftBlocks: [
+{ title: 'Datos fiscales', rows: [row('Nombre', s.name), row('CIF', s.cif + (s.foreign ? ' (extranjero)' : ''), { mono: true }), row('Dirección', s.address), row('Código postal', s.cp, { mono: true }), row('Población', s.city)] },
+{ title: 'Contacto', rows: contactRows },
+{ title: 'Pago', rows: [row('Forma de pago', s.payment), row('IBAN', ibanTxt(s.iban), { mono: true })] }
+],
+orders: [row('Web', s.web.replace(/^https?:\/\//, ''), { href: s.web }), row('Plazo de entrega', leadTxt(s.lead), { mono: true }), row('Pedido mínimo', String(s.min).trim() ? fmt(parseFloat(String(s.min).replace(',', '.'))) : 'Sin pedido mínimo', { mono: true })],
+quarters: parts(s).map((v, k) => ({ label: QS[k], txt: fmt(v) })), yearTxt: fmt(s.year),
+notes: s.notes || 'Sin observaciones.', notesColor: s.notes ? '#16191D' : '#4A5058',
+created: s.created, updated: s.updated,
+statusLabel: s.active ? 'Dar de baja' : 'Reactivar',
+statusAction: s.active ? () => this.setState({ dialog: 'baja' }) : () => this.setState({ list: list.map((x) => (x.id === s.id ? { ...x, active: true, updated: '26/10/2026 10:30' } : x)), toast: s.name + ' reactivado.' })
+};
+}
+
+const errSeed = { ...this.emptyForm(), cif: 'b-46.000.001', address: 'Calle Nueva, 1', cp: '4600', city: 'Valencia', phones: [['Pedidos', '960 000 099']], emails: [['Facturación', 'facturas.proveedor.es']], iban: 'ES00 1234 5678' };
+const formSeed = view === 'edit' && s ? this.toForm(s) : (escena === 'Alta con errores' ? errSeed : this.emptyForm());
+const form = st.form || formSeed;
+const base = st.base || formSeed;
+const dirty = JSON.stringify(form) !== JSON.stringify(base);
+const setForm = (patch) => this.setState({ form: { ...form, ...patch }, base, view });
+const f = {};
+['name', 'cif', 'person', 'address', 'cp', 'city', 'payment', 'iban', 'web', 'lead', 'min', 'notes'].forEach((k) => { f[k] = (e) => setForm({ [k]: e.target.value }); });
+
+const validate = () => {
+const e = {};
+const req = (k, msg) => { if (!String(form[k] || '').trim()) e[k] = msg; };
+req('name', 'Escribe el nombre del proveedor.');
+const c = norm(form.cif);
+if (!c) e.cif = 'Escribe el CIF.';
+else if (!form.foreign && !/^[A-Z0-9][0-9]{7}[A-Z0-9]$/.test(c)) e.cif = 'No es un NIF o CIF español válido. Si el proveedor es extranjero, marca «Proveedor extranjero».';
+else {
+const dup = list.find((x) => norm(x.cif) === c && !(view === 'edit' && s && x.id === s.id));
+if (dup) e.cif = 'Ya existe un proveedor con este CIF: ' + dup.name + '.';
+}
+req('address', 'Escribe la dirección.');
+req('city', 'Escribe la población.');
+const cp = String(form.cp).trim();
+if (!cp) e.cp = 'Escribe el código postal.';
+else if (!form.foreign && !/^[0-9]{5}$/.test(cp)) e.cp = 'El código postal español tiene 5 cifras.';
+if (String(form.iban).trim() && !this.ibanOk(form.iban)) e.iban = 'El IBAN no es válido. Revisa que esté completo y bien escrito.';
+if (String(form.web).trim() && !/^(https?:\/\/)?[^\s.]+\.[^\s]+$/.test(form.web.trim())) e.web = 'Escribe una dirección web, por ejemplo www.proveedor.es.';
+const lead = String(form.lead).trim();
+if (lead && !(/^[0-9]+$/.test(lead) && Number(lead) <= 365)) e.lead = 'Escribe un número de días entre 0 y 365.';
+const min = String(form.min).trim();
+if (min && !(/^[0-9]+([.,][0-9]{1,2})?$/.test(min) && parseFloat(min.replace(',', '.')) > 0)) e.min = 'Escribe un importe mayor que 0, con 2 decimales como mucho.';
+form.phones.forEach((p, i) => { if (String(p[1]).trim() && !/^[0-9+()\-\s]{6,20}$/.test(p[1].trim())) e['phones' + i] = 'Escribe un teléfono de 6 a 20 cifras.'; });
+form.emails.forEach((p, i) => { if (String(p[1]).trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p[1].trim())) e['emails' + i] = 'Escribe un correo válido, por ejemplo nombre@proveedor.es.'; });
+return e;
+};
+const errors = st.errors || (escena === 'Alta con errores' && !st.form ? validate() : {});
+const errCount = Object.keys(errors).length;
+const fld = (k, label, ph, o) => {
+const opt = o || {};
+const msg = errors[k] || '';
+return { id: 'pf-' + k, label, ph: ph || '', value: form[k] || '', onChange: f[k], type: opt.type || 'text', inputmode: opt.inputmode || 'text', font: opt.mono ? "'IBM Plex Mono', monospace" : "'IBM Plex Sans', sans-serif", align: opt.right ? 'right' : 'left', span: opt.full ? '1 / -1' : 'auto', isSelect: !!opt.select, isInput: !opt.select, hasHint: !!opt.hint, hint: opt.hint || '', hasError: !!msg, error: msg, errId: 'pf-' + k + '-err', invalid: msg ? 'true' : 'false', border: msg ? '1px solid #A12A1C' : '1px solid #C5C9C1' };
+};
+const fieldsets = [
+{ title: 'Identificación', hasHelp: false, help: '', hasForeign: true, cols: 'minmax(0, 2fr) minmax(0, 1fr)', fields: [fld('name', 'Nombre *', 'Distribuciones Levante S.L.'), fld('cif', 'CIF *', 'B12345678', { mono: true })] },
+{ title: 'Dirección fiscal', hasHelp: true, help: 'Hace falta para las facturas.', hasForeign: false, cols: 'minmax(0, 1fr) minmax(0, 2fr)', fields: [fld('address', 'Dirección *', 'Calle y número', { full: true }), fld('cp', 'Código postal *', '46001', { mono: true, inputmode: 'numeric' }), fld('city', 'Población *', 'Valencia')] },
+{ title: 'Pago', hasHelp: false, help: '', hasForeign: false, cols: 'minmax(0, 1fr) minmax(0, 2fr)', fields: [fld('payment', 'Forma de pago', '', { select: true }), fld('iban', 'IBAN', 'ES00 0000 0000 0000 0000 0000', { mono: true })] },
+{ title: 'Pedidos', hasHelp: false, help: '', hasForeign: false, cols: 'repeat(2, minmax(0, 1fr))', fields: [fld('web', 'Web donde se hacen los pedidos', 'www.proveedor.es', { full: true, type: 'url' }), fld('lead', 'Plazo de entrega (días)', '', { mono: true, right: true, inputmode: 'numeric', hint: 'Déjalo vacío si varía de un pedido a otro.' }), fld('min', 'Pedido mínimo (€)', '0,00', { mono: true, right: true, inputmode: 'decimal', hint: 'Déjalo vacío si no tiene.' })] }
 ];
-const PER_PAGE = 6;
-const q = this.state.q;
-const needle = q.trim().toLowerCase();
-const filtered = data.map((s, i) => ({ s, i })).filter(({ s }) => !needle || s.name.toLowerCase().includes(needle));
-const pages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-const page = Math.min(this.state.page, pages - 1);
-const start = page * PER_PAGE;
-const suppliers = filtered.slice(start, start + PER_PAGE).map(({ s, i }) => {
-const low = s.products.filter((p) => p[2] < p[3]).length;
+const groupDefs = [
+{ key: 'phones', title: 'Teléfonos', valueLabel: 'Número', type: 'tel', font: "'IBM Plex Mono', monospace", labelPh: 'Pedidos', valuePh: '600 000 000', add: 'Añadir teléfono', noun: 'teléfono' },
+{ key: 'emails', title: 'Correos', valueLabel: 'Correo', type: 'email', font: "'IBM Plex Sans', sans-serif", labelPh: 'Facturación', valuePh: 'pedidos@proveedor.es', add: 'Añadir correo', noun: 'correo' }
+];
+const contactGroups = groupDefs.map((g) => {
+const arr = form[g.key];
 return {
-name: s.name, lead: s.lead, yearTxt: fmt(s.year),
-note: low ? low + (low > 1 ? ' productos bajo mínimos' : ' producto bajo mínimos') : s.products.length + (s.products.length > 1 ? ' productos' : ' producto') + ' · stock correcto',
-noteColor: low ? '#7A5300' : '#6B717A',
-rowBg: i === this.state.picked ? '#FBEDE5' : '#FFFFFF',
-pick: () => this.setState({ picked: i })
+title: g.title, valueLabel: g.valueLabel, type: g.type, font: g.font, labelPh: g.labelPh, valuePh: g.valuePh,
+items: arr.map((p, i) => {
+const msg = errors[g.key + i] || '';
+return {
+labelId: 'pf-' + g.key + '-l' + i, valueId: 'pf-' + g.key + '-v' + i, errId: 'pf-' + g.key + '-e' + i, label: p[0], value: p[1], removeLabel: 'Quitar ' + g.noun + ' ' + (i + 1),
+hasError: !!msg, error: msg, invalid: msg ? 'true' : 'false', border: msg ? '1px solid #A12A1C' : '1px solid #C5C9C1',
+onLabel: (e) => setForm({ [g.key]: arr.map((q, j) => (j === i ? [e.target.value, q[1]] : q)) }),
+onValue: (e) => setForm({ [g.key]: arr.map((q, j) => (j === i ? [q[0], e.target.value] : q)) }),
+remove: () => setForm({ [g.key]: arr.filter((q, j) => j !== i) })
+};
+}),
+full: arr.length >= 5, addColor: arr.length >= 5 ? '#9AA1A9' : '#16191D', addLabel: g.add, countTxt: arr.length + ' de 5',
+add: () => { if (arr.length < 5) setForm({ [g.key]: arr.concat([['', '']]) }); }
 };
 });
-const pager = {
-q,
-onSearch: (e) => this.setState({ q: e.target.value, page: 0 }),
-noResults: filtered.length === 0,
-rangeTxt: filtered.length ? (start + 1) + '–' + Math.min(start + PER_PAGE, filtered.length) + ' de ' + filtered.length : '0 de 0',
-pageTxt: (page + 1) + ' / ' + pages,
-prevDisabled: page === 0, nextDisabled: page >= pages - 1,
+
+const save = (ev) => {
+if (ev && ev.preventDefault) ev.preventDefault();
+if (conflict || saveError) return;
+const e = validate();
+if (Object.keys(e).length) { this.setState({ errors: e, form, base, view }); return; }
+const clean = (a) => a.filter((p) => String(p[1]).trim());
+const lead = String(form.lead).trim() === '' ? null : parseInt(form.lead, 10);
+const w = form.web.trim();
+const data = { name: form.name.trim(), cif: norm(form.cif), foreign: form.foreign, person: form.person.trim(), address: form.address.trim(), cp: form.cp.trim(), city: form.city.trim(), phones: clean(form.phones), emails: clean(form.emails), payment: form.payment, iban: String(form.iban).toUpperCase().replace(/\s/g, ''), web: w && !/^https?:\/\//.test(w) ? 'https://' + w : w, lead, min: String(form.min).trim(), notes: form.notes, updated: '26/10/2026 10:30' };
+if (view === 'edit' && s) {
+this.setState({ list: list.map((x) => (x.id === s.id ? { ...x, ...data } : x)), view: 'detail', form: null, base: null, errors: null, toast: 'Cambios guardados.' });
+} else {
+const id = Math.max(0, ...list.map((x) => x.id)) + 1;
+this.setState({ list: list.concat([{ id, active: true, year: 0, created: '26/10/2026 10:30', ...data }]), picked: id, view: 'detail', form: null, base: null, errors: null, q: '', toast: 'Proveedor creado.' });
+}
+};
+const leaveForm = () => this.setState({ view: view === 'edit' ? 'detail' : 'list', form: null, base: null, errors: null, dialog: null, conflict: false, saveError: false });
+const dialogKind = st.dialog != null ? st.dialog : (canEdit ? ({ 'Dar de baja': 'baja', 'Descartar cambios': 'discard' }[escena] || null) : null);
+const dialogs = {
+baja: { title: '¿Dar de baja a ' + sel.name + '?', text: 'Dejará de aparecer en el listado. No se borra ningún dato: podrás verlo con «Mostrar dados de baja» y reactivarlo cuando quieras.', cancelLabel: 'Cancelar', confirmLabel: 'Dar de baja', cancel: () => this.setState({ dialog: false, view: 'detail' }), confirm: () => this.setState({ list: list.map((x) => (s && x.id === s.id ? { ...x, active: false, updated: '26/10/2026 10:30' } : x)), dialog: false, view: 'detail', toast: sel.name + ' dado de baja.' }) },
+discard: { title: '¿Descartar los cambios?', text: 'Lo que has escrito en el formulario se perderá.', cancelLabel: 'Seguir editando', confirmLabel: 'Descartar cambios', cancel: () => this.setState({ dialog: false, form, base, view }), confirm: leaveForm }
+};
+const isForm = canEdit && (view === 'new' || view === 'edit');
+const isDetail = !isForm && view === 'detail' && !!s;
+const errorNames = { name: 'nombre', cif: 'CIF', address: 'dirección', cp: 'código postal', city: 'población', iban: 'IBAN', web: 'web', lead: 'plazo', min: 'pedido mínimo' };
+const errList = Object.keys(errors).map((k) => errorNames[k] || (k.indexOf('phones') === 0 ? 'teléfono' : 'correo')).filter((v, i, a) => a.indexOf(v) === i);
+return {
+rolTxt: rol, canEdit, countTxt, rows, quarterSeg, quarter: QS[qi],
+q: st.q, onSearch: (e) => this.setState({ q: e.target.value, page: 0 }),
+showBajas: st.showBajas, toggleBajas: () => this.setState({ showBajas: !st.showBajas, page: 0 }),
+busy: load === 'loading' ? 'true' : 'false', isLoading: load === 'loading', isError: load === 'error', retry: () => this.setState({ load: 'ok' }),
+noMatch: load === 'ok' && list.length > 0 && filtered.length === 0, isEmpty: load === 'ok' && list.length === 0,
+showPager: load === 'ok' && filtered.length > 0,
+notFound: notFound && !isDetail && !isForm, dismissNotFound: () => this.setState({ notFound: false }),
+rangeTxt: filtered.length ? (start + 1) + '–' + Math.min(start + PER, filtered.length) + ' de ' + filtered.length : '0 de 0',
+pageTxt: (page + 1) + ' / ' + pages, prevDisabled: page === 0, nextDisabled: page >= pages - 1,
 prevColor: page === 0 ? '#9AA1A9' : '#16191D', nextColor: page >= pages - 1 ? '#9AA1A9' : '#16191D',
-prev: () => this.setState({ page: Math.max(0, page - 1) }),
-next: () => this.setState({ page: Math.min(pages - 1, page + 1) })
+prev: () => this.setState({ page: Math.max(0, page - 1) }), next: () => this.setState({ page: Math.min(pages - 1, page + 1) }),
+isList: !isForm && !isDetail, isDetail, isForm, sel,
+backToList: () => this.setState({ view: 'list', toast: '' }),
+openNew: () => this.setState({ view: 'new', form: this.emptyForm(), base: this.emptyForm(), errors: null, toast: '', conflict: false, saveError: false }),
+openEdit: () => this.setState({ view: 'edit', form: s ? this.toForm(s) : this.emptyForm(), base: s ? this.toForm(s) : this.emptyForm(), errors: null, toast: '', conflict: false, saveError: false }),
+cancelForm: () => (dirty ? this.setState({ dialog: 'discard', form, base, view }) : leaveForm()),
+hasConflict: isForm && conflict, reloadCurrent: () => this.setState({ conflict: false, form: s ? this.toForm(s) : form, base: s ? this.toForm(s) : base, errors: null, view, toast: 'Datos actuales cargados.' }),
+hasSaveError: isForm && saveError,
+hasErrors: isForm && errCount > 0, errorSummary: 'Revisa ' + (errList.length === 1 ? 'este campo: ' : 'estos campos: ') + errList.join(', ') + '.',
+backFormTxt: view === 'edit' && s ? s.name : 'Proveedores',
+backFormLabel: view === 'edit' ? 'Volver a la ficha del proveedor' : 'Volver al listado de proveedores',
+formTitle: view === 'edit' ? 'Editar proveedor' : 'Nuevo proveedor',
+formSub: view === 'edit' && s ? s.name : 'Los campos con * son obligatorios.',
+saveLabel: view === 'edit' ? 'Guardar cambios' : 'Crear proveedor',
+form, f, fieldsets, contactGroups, save,
+toggleForeign: () => setForm({ foreign: !form.foreign }),
+dialogOpen: !!dialogKind && (dialogKind === 'baja' ? isDetail : isForm), dialog: dialogKind ? dialogs[dialogKind] : dialogs.baja,
+hasToast: !!st.toast, toast: st.toast
 };
-const s = data[this.state.picked];
-let order = 0;
-const products = s.products.map(([sku, name, stock, min, cost]) => {
-const low = stock < min;
-const suggest = low ? min * 2 - stock : 0;
-order += suggest * cost;
-return { sku, name, stock, min, low, costTxt: fmt(cost), suggest: suggest || '—', stockColor: stock === 0 ? '#A12A1C' : low ? '#7A5300' : '#16191D' };
-});
-const sel = { name: s.name, lead: s.lead, minTxt: fmt(s.min), products, orderTxt: fmt(order) };
-return { navClass: this.state.navCollapsed ? ' is-collapsed' : '', navExpanded: this.state.navCollapsed ? 'false' : 'true', navToggleLabel: this.state.navCollapsed ? 'Desplegar menú' : 'Plegar menú', toggleNav: () => this.setState({ navCollapsed: !this.state.navCollapsed }), accent, suppliers, sel, ...pager };
 }
 }
 </script>
