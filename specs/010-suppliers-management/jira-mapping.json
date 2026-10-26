@@ -1,0 +1,1023 @@
+{
+  "created_at": "2026-10-26T18:02:09Z",
+  "updated_at": "2026-10-26T18:03:46Z",
+  "spec": "010-suppliers-management",
+  "project": "AB2B",
+  "jira_base_url": "https://sauk.atlassian.net",
+  "mode": "3-level",
+  "epic": {
+    "key": "AB2B-638",
+    "summary": "Gestión de proveedores",
+    "url": "https://sauk.atlassian.net/browse/AB2B-638",
+    "status": "pending"
+  },
+  "stories": [
+    {
+      "key": "AB2B-639",
+      "summary": "Phase 1: Setup (Shared Infrastructure)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-639",
+      "tasks": [
+        {
+          "key": "AB2B-646",
+          "id": "T001",
+          "summary": "T001: Comprobar rama, feature.json y línea base de lint y tests",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-646"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "key": "AB2B-640",
+      "summary": "Phase 2: Foundational (Blocking Prerequisites)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-640",
+      "tasks": [
+        {
+          "key": "AB2B-647",
+          "id": "T002",
+          "summary": "T002: Tests de isValidSpanishTaxId y normalizeTaxId (NIF, NIE y CIF)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-647"
+        },
+        {
+          "key": "AB2B-648",
+          "id": "T003",
+          "summary": "T003: Tests de isValidIban, normalizeIban y formatIban",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-648"
+        },
+        {
+          "key": "AB2B-649",
+          "id": "T004",
+          "summary": "T004: Reescribir supplier.service.test.ts para listSuppliers con datos, índices y rendimiento",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-649"
+        },
+        {
+          "key": "AB2B-650",
+          "id": "T005",
+          "summary": "T005: Tests de toSupplierListItem y toSupplierDetail",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-650"
+        },
+        {
+          "key": "AB2B-651",
+          "id": "T006",
+          "summary": "T006: Ampliar supplier.routes.test.ts para el listado con datos y quarter",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-651"
+        },
+        {
+          "key": "AB2B-652",
+          "id": "T007",
+          "summary": "T007: Tests de BackLink",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-652"
+        },
+        {
+          "key": "AB2B-653",
+          "id": "T008",
+          "summary": "T008: Tests de TextArea",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-653"
+        },
+        {
+          "key": "AB2B-654",
+          "id": "T009",
+          "summary": "T009: Ampliar supplierCriteria.test.ts con el trimestre",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-654"
+        },
+        {
+          "key": "AB2B-655",
+          "id": "T010",
+          "summary": "T010: Ampliar tests de SuppliersTable y SupplierFilters (columnas y trimestre)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-655"
+        },
+        {
+          "key": "AB2B-656",
+          "id": "T011",
+          "summary": "T011: Ampliar packages/shared/src/types/supplier.ts con los tipos de data-model.md",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-656"
+        },
+        {
+          "key": "AB2B-657",
+          "id": "T012",
+          "summary": "T012: Ampliar packages/shared/src/constants/suppliers.ts (límites, formas de pago, códigos de error, currentQuarter)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-657"
+        },
+        {
+          "key": "AB2B-658",
+          "id": "T013",
+          "summary": "T013: Implementar packages/shared/src/utils/taxId.ts",
+          "status": "completed",
+          "depends_on": [
+            "T002"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-658"
+        },
+        {
+          "key": "AB2B-659",
+          "id": "T014",
+          "summary": "T014: Implementar packages/shared/src/utils/iban.ts",
+          "status": "completed",
+          "depends_on": [
+            "T003"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-659"
+        },
+        {
+          "key": "AB2B-660",
+          "id": "T015",
+          "summary": "T015: Exportar tipos, constantes y utilidades nuevos en packages/shared/src/index.ts",
+          "status": "completed",
+          "depends_on": [
+            "T011",
+            "T012",
+            "T013",
+            "T014"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-660"
+        },
+        {
+          "key": "AB2B-661",
+          "id": "T016",
+          "summary": "T016: Crear supplier.model.ts (SupplierModel, colección suppliers, índices)",
+          "status": "completed",
+          "depends_on": [
+            "T011",
+            "T012"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-661"
+        },
+        {
+          "key": "AB2B-662",
+          "id": "T017",
+          "summary": "T017: Crear supplierPurchases.ts (costura de compras a 0)",
+          "status": "completed",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-662"
+        },
+        {
+          "key": "AB2B-663",
+          "id": "T018",
+          "summary": "T018: Crear supplier.mapper.ts (toSupplierListItem, toSupplierDetail)",
+          "status": "completed",
+          "depends_on": [
+            "T005",
+            "T016",
+            "T017"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-663"
+        },
+        {
+          "key": "AB2B-664",
+          "id": "T019",
+          "summary": "T019: Ampliar supplierListQuerySchema con quarter (por petición) y añadir supplierIdParams",
+          "status": "completed",
+          "depends_on": [
+            "T006",
+            "T012"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-664"
+        },
+        {
+          "key": "AB2B-665",
+          "id": "T020",
+          "summary": "T020: Reescribir listSuppliers con datos reales y actualizar el @openapi de GET /",
+          "status": "completed",
+          "depends_on": [
+            "T004",
+            "T006",
+            "T016",
+            "T017",
+            "T018",
+            "T019"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-665"
+        },
+        {
+          "key": "AB2B-666",
+          "id": "T021",
+          "summary": "T021: Crear el componente genérico BackLink",
+          "status": "completed",
+          "depends_on": [
+            "T007"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-666"
+        },
+        {
+          "key": "AB2B-667",
+          "id": "T022",
+          "summary": "T022: Crear el componente genérico TextArea",
+          "status": "completed",
+          "depends_on": [
+            "T008"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-667"
+        },
+        {
+          "key": "AB2B-668",
+          "id": "T023",
+          "summary": "T023: Añadir quarter a supplierCriteria.ts y suppliersApi.ts",
+          "status": "completed",
+          "depends_on": [
+            "T009",
+            "T015"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-668"
+        },
+        {
+          "key": "AB2B-669",
+          "id": "T024",
+          "summary": "T024: Selector de trimestre y columnas nuevas en SupplierFilters, SuppliersTable y SuppliersPage",
+          "status": "completed",
+          "depends_on": [
+            "T010",
+            "T023"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-669"
+        },
+        {
+          "key": "AB2B-670",
+          "id": "T025",
+          "summary": "T025: Añadir seedSuppliers y removeSuppliers en e2e/support/db.ts",
+          "status": "completed",
+          "depends_on": [
+            "T016"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-670"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "key": "AB2B-641",
+      "summary": "Phase 3: User Story 2 - Consultar la ficha de un proveedor (Priority: P1) 🎯 MVP (1/2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-641",
+      "tasks": [
+        {
+          "key": "AB2B-671",
+          "id": "T026",
+          "summary": "T026: Tests de getSupplier en supplier.service.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-671"
+        },
+        {
+          "key": "AB2B-672",
+          "id": "T027",
+          "summary": "T027: Tests de GET /api/suppliers/:id en supplier.routes.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-672"
+        },
+        {
+          "key": "AB2B-673",
+          "id": "T028",
+          "summary": "T028: Tests del thunk loadSupplier en suppliersSlice.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-673"
+        },
+        {
+          "key": "AB2B-674",
+          "id": "T029",
+          "summary": "T029: Tests del componente SupplierDetailView",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-674"
+        },
+        {
+          "key": "AB2B-675",
+          "id": "T030",
+          "summary": "T030: Tests de la página SupplierDetailPage",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-675"
+        },
+        {
+          "key": "AB2B-676",
+          "id": "T031",
+          "summary": "T031: Ampliar tests de SuppliersPage y SuppliersTable (filas enlace, foco al volver, aviso notFound)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-676"
+        },
+        {
+          "key": "AB2B-677",
+          "id": "T032",
+          "summary": "T032: Implementar getSupplier(id) en supplier.service.ts",
+          "status": "pending",
+          "depends_on": [
+            "T026"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-677"
+        },
+        {
+          "key": "AB2B-678",
+          "id": "T033",
+          "summary": "T033: Añadir controlador get y ruta GET /api/suppliers/:id con @openapi",
+          "status": "pending",
+          "depends_on": [
+            "T027"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-678"
+        },
+        {
+          "key": "AB2B-679",
+          "id": "T034",
+          "summary": "T034: Añadir fetchSupplier en suppliersApi.ts y estado detail con thunk loadSupplier",
+          "status": "pending",
+          "depends_on": [
+            "T028"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-679"
+        },
+        {
+          "key": "AB2B-680",
+          "id": "T035",
+          "summary": "T035: Crear el componente SupplierDetailView",
+          "status": "pending",
+          "depends_on": [
+            "T029"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-680"
+        },
+        {
+          "key": "AB2B-681",
+          "id": "T036",
+          "summary": "T036: Crear la página SupplierDetailPage con BackLink y estados de carga y error",
+          "status": "pending",
+          "depends_on": [
+            "T030"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-681"
+        },
+        {
+          "key": "AB2B-682",
+          "id": "T037",
+          "summary": "T037: Ruta proveedores/:id, filas enlace en SuppliersTable, foco al volver y aviso notFound",
+          "status": "pending",
+          "depends_on": [
+            "T031"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-682"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-642",
+      "summary": "Phase 4: User Story 1 - Dar de alta un proveedor (Priority: P1) 🎯 MVP (2/2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-642",
+      "tasks": [
+        {
+          "key": "AB2B-683",
+          "id": "T038",
+          "summary": "T038: Tests de supplierInputSchema en supplier.validation.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-683"
+        },
+        {
+          "key": "AB2B-684",
+          "id": "T039",
+          "summary": "T039: Tests de createSupplier en supplier.service.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-684"
+        },
+        {
+          "key": "AB2B-685",
+          "id": "T040",
+          "summary": "T040: Tests de POST /api/suppliers en supplier.routes.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-685"
+        },
+        {
+          "key": "AB2B-686",
+          "id": "T041",
+          "summary": "T041: Tests de supplierForm.ts (toSupplierInput, fromSupplierDetail, validateSupplierForm)",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-686"
+        },
+        {
+          "key": "AB2B-687",
+          "id": "T042",
+          "summary": "T042: Tests del componente SupplierContactsField",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-687"
+        },
+        {
+          "key": "AB2B-688",
+          "id": "T043",
+          "summary": "T043: Tests del componente SupplierForm",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-688"
+        },
+        {
+          "key": "AB2B-689",
+          "id": "T044",
+          "summary": "T044: Tests del thunk createSupplier y de SupplierFormPage en modo alta",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-689"
+        },
+        {
+          "key": "AB2B-690",
+          "id": "T045",
+          "summary": "T045: Tests de parseValidationMessage en supplierForm.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-690"
+        },
+        {
+          "key": "AB2B-691",
+          "id": "T046",
+          "summary": "T046: Añadir supplierInputSchema en supplier.validation.ts",
+          "status": "pending",
+          "depends_on": [
+            "T038"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-691"
+        },
+        {
+          "key": "AB2B-692",
+          "id": "T047",
+          "summary": "T047: Implementar createSupplier en supplier.service.ts con mapeo de CIF duplicado",
+          "status": "pending",
+          "depends_on": [
+            "T039"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-692"
+        },
+        {
+          "key": "AB2B-693",
+          "id": "T048",
+          "summary": "T048: Añadir controlador create y ruta POST /api/suppliers con @openapi",
+          "status": "pending",
+          "depends_on": [
+            "T040"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-693"
+        },
+        {
+          "key": "AB2B-694",
+          "id": "T049",
+          "summary": "T049: Crear supplierForm.ts en el cliente",
+          "status": "pending",
+          "depends_on": [
+            "T041"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-694"
+        },
+        {
+          "key": "AB2B-695",
+          "id": "T050",
+          "summary": "T050: Crear el componente SupplierContactsField",
+          "status": "pending",
+          "depends_on": [
+            "T042"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-695"
+        },
+        {
+          "key": "AB2B-696",
+          "id": "T051",
+          "summary": "T051: Crear el componente SupplierForm según el tablero Proveedores",
+          "status": "pending",
+          "depends_on": [
+            "T043"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-696"
+        },
+        {
+          "key": "AB2B-697",
+          "id": "T052",
+          "summary": "T052: createSupplier en API y slice, y página SupplierFormPage en modo alta",
+          "status": "pending",
+          "depends_on": [
+            "T044"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-697"
+        },
+        {
+          "key": "AB2B-698",
+          "id": "T053",
+          "summary": "T053: Implementar parseValidationMessage en supplierForm.ts",
+          "status": "pending",
+          "depends_on": [
+            "T045"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-698"
+        },
+        {
+          "key": "AB2B-699",
+          "id": "T054",
+          "summary": "T054: Ruta proveedores/nuevo, botón «Nuevo proveedor» y aviso «Proveedor creado.»",
+          "status": "pending",
+          "depends_on": [
+            "T052"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-699"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-643",
+      "summary": "Phase 5: User Story 3 - Editar un proveedor (Priority: P1)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-643",
+      "tasks": [
+        {
+          "key": "AB2B-700",
+          "id": "T055",
+          "summary": "T055: Tests de updateSupplier en supplier.service.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-700"
+        },
+        {
+          "key": "AB2B-701",
+          "id": "T056",
+          "summary": "T056: Tests de PUT /api/suppliers/:id en supplier.routes.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-701"
+        },
+        {
+          "key": "AB2B-702",
+          "id": "T057",
+          "summary": "T057: Tests del thunk updateSupplier y de SupplierFormPage en modo edición",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-702"
+        },
+        {
+          "key": "AB2B-703",
+          "id": "T058",
+          "summary": "T058: Añadir supplierUpdateSchema e implementar updateSupplier con control de versión",
+          "status": "pending",
+          "depends_on": [
+            "T055"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-703"
+        },
+        {
+          "key": "AB2B-704",
+          "id": "T059",
+          "summary": "T059: Añadir controlador update y ruta PUT /api/suppliers/:id con @openapi",
+          "status": "pending",
+          "depends_on": [
+            "T056"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-704"
+        },
+        {
+          "key": "AB2B-705",
+          "id": "T060",
+          "summary": "T060: updateSupplier en API y slice, modo edición de SupplierFormPage y ruta de edición",
+          "status": "pending",
+          "depends_on": [
+            "T057"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-705"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-644",
+      "summary": "Phase 6: User Story 4 - Dar de baja y reactivar un proveedor (Priority: P2)",
+      "url": "https://sauk.atlassian.net/browse/AB2B-644",
+      "tasks": [
+        {
+          "key": "AB2B-706",
+          "id": "T061",
+          "summary": "T061: Tests de setSupplierActive en supplier.service.test.ts",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-706"
+        },
+        {
+          "key": "AB2B-707",
+          "id": "T062",
+          "summary": "T062: Tests de PATCH /api/suppliers/:id/status y ausencia de DELETE",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-707"
+        },
+        {
+          "key": "AB2B-708",
+          "id": "T063",
+          "summary": "T063: Tests de SupplierStatusDialog y de baja/reactivación en la ficha",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-708"
+        },
+        {
+          "key": "AB2B-709",
+          "id": "T064",
+          "summary": "T064: Añadir supplierStatusSchema e implementar setSupplierActive",
+          "status": "pending",
+          "depends_on": [
+            "T061"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-709"
+        },
+        {
+          "key": "AB2B-710",
+          "id": "T065",
+          "summary": "T065: Añadir controlador setStatus y ruta PATCH /api/suppliers/:id/status con @openapi",
+          "status": "pending",
+          "depends_on": [
+            "T062"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-710"
+        },
+        {
+          "key": "AB2B-711",
+          "id": "T066",
+          "summary": "T066: setSupplierStatus en API y slice, SupplierStatusDialog y botones de baja/reactivar",
+          "status": "pending",
+          "depends_on": [
+            "T063"
+          ],
+          "url": "https://sauk.atlassian.net/browse/AB2B-711"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "key": "AB2B-645",
+      "summary": "Phase 7: Polish & Cross-Cutting Concerns",
+      "url": "https://sauk.atlassian.net/browse/AB2B-645",
+      "tasks": [
+        {
+          "key": "AB2B-712",
+          "id": "T067",
+          "summary": "T067: Reescribir el E2E e2e/suppliers.spec.ts con el flujo completo de proveedores",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-712"
+        },
+        {
+          "key": "AB2B-713",
+          "id": "T068",
+          "summary": "T068: Documentar BackLink y TextArea en docs/design/README.md",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-713"
+        },
+        {
+          "key": "AB2B-714",
+          "id": "T069",
+          "summary": "T069: Comprobar en /api-docs que los 5 endpoints coinciden con el contrato OpenAPI",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-714"
+        },
+        {
+          "key": "AB2B-715",
+          "id": "T070",
+          "summary": "T070: Revisar tamaño y responsabilidad única de funciones y ausencia de UI duplicada",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-715"
+        },
+        {
+          "key": "AB2B-716",
+          "id": "T071",
+          "summary": "T071: Ejecutar lint, tests y E2E en verde y recorrer la prueba manual del quickstart",
+          "status": "pending",
+          "depends_on": [],
+          "url": "https://sauk.atlassian.net/browse/AB2B-716"
+        }
+      ],
+      "status": "pending"
+    }
+  ],
+  "links": [
+    {
+      "type": "Blocks",
+      "from": "AB2B-647",
+      "to": "AB2B-658"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-648",
+      "to": "AB2B-659"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-656",
+      "to": "AB2B-660"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-657",
+      "to": "AB2B-660"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-658",
+      "to": "AB2B-660"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-659",
+      "to": "AB2B-660"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-656",
+      "to": "AB2B-661"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-657",
+      "to": "AB2B-661"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-650",
+      "to": "AB2B-663"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-661",
+      "to": "AB2B-663"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-662",
+      "to": "AB2B-663"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-651",
+      "to": "AB2B-664"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-657",
+      "to": "AB2B-664"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-649",
+      "to": "AB2B-665"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-651",
+      "to": "AB2B-665"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-661",
+      "to": "AB2B-665"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-662",
+      "to": "AB2B-665"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-663",
+      "to": "AB2B-665"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-664",
+      "to": "AB2B-665"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-652",
+      "to": "AB2B-666"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-653",
+      "to": "AB2B-667"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-654",
+      "to": "AB2B-668"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-660",
+      "to": "AB2B-668"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-655",
+      "to": "AB2B-669"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-668",
+      "to": "AB2B-669"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-661",
+      "to": "AB2B-670"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-671",
+      "to": "AB2B-677"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-672",
+      "to": "AB2B-678"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-673",
+      "to": "AB2B-679"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-674",
+      "to": "AB2B-680"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-675",
+      "to": "AB2B-681"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-676",
+      "to": "AB2B-682"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-683",
+      "to": "AB2B-691"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-684",
+      "to": "AB2B-692"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-685",
+      "to": "AB2B-693"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-686",
+      "to": "AB2B-694"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-687",
+      "to": "AB2B-695"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-688",
+      "to": "AB2B-696"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-689",
+      "to": "AB2B-697"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-690",
+      "to": "AB2B-698"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-697",
+      "to": "AB2B-699"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-700",
+      "to": "AB2B-703"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-701",
+      "to": "AB2B-704"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-702",
+      "to": "AB2B-705"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-706",
+      "to": "AB2B-709"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-707",
+      "to": "AB2B-710"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-708",
+      "to": "AB2B-711"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-639",
+      "to": "AB2B-640"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-640",
+      "to": "AB2B-641"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-640",
+      "to": "AB2B-642"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-640",
+      "to": "AB2B-643"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-640",
+      "to": "AB2B-644"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-641",
+      "to": "AB2B-642"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-641",
+      "to": "AB2B-644"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-642",
+      "to": "AB2B-643"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-641",
+      "to": "AB2B-645"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-642",
+      "to": "AB2B-645"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-643",
+      "to": "AB2B-645"
+    },
+    {
+      "type": "Blocks",
+      "from": "AB2B-644",
+      "to": "AB2B-645"
+    }
+  ],
+  "summary": {
+    "total_stories": 7,
+    "total_tasks": 71,
+    "completed_tasks": 25,
+    "pending_tasks": 46
+  }
+}
