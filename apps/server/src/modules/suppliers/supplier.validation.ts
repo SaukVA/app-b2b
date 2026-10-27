@@ -29,3 +29,5 @@ export const supplierListQuerySchema = z.object({
 export type SupplierListQueryInput = z.infer<typeof supplierListQuerySchema>;
 
 export const supplierIdParams = z.object({ id: z.string().regex(/^[a-f0-9]{24}$/) });
+
+export type SupplierIdParams = z.infer<typeof supplierIdParams>;

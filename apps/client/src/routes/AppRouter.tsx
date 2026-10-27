@@ -6,6 +6,7 @@ import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
 import { CustomersPage } from '../pages/CustomersPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
+import { SupplierDetailPage } from '../pages/SupplierDetailPage';
 import { SuppliersPage } from '../pages/SuppliersPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
@@ -63,14 +64,27 @@ const customersRoute = {
   ),
 };
 
-// Ver o editar Proveedores muestran la misma pantalla en 009: no hay acciones de edición (FR-003).
+// Listado y ficha a pantalla completa de Proveedores (010); la ficha solo exige ver (FR-002).
 const suppliersRoute = {
   path: 'proveedores',
-  element: (
-    <RequireAuth module="proveedores">
-      <SuppliersPage />
-    </RequireAuth>
-  ),
+  children: [
+    {
+      index: true,
+      element: (
+        <RequireAuth module="proveedores">
+          <SuppliersPage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: ':id',
+      element: (
+        <RequireAuth module="proveedores">
+          <SupplierDetailPage />
+        </RequireAuth>
+      ),
+    },
+  ],
 };
 
 // Pública y solo en escritorio (002 FR-007/FR-008): en web la ruta cae en la protegida /ajustes.

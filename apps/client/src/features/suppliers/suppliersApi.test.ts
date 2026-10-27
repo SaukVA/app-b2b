@@ -1,6 +1,6 @@
-import type { ListPage, SupplierListItem } from '@app/shared';
+import type { ListPage, SupplierDetail, SupplierListItem } from '@app/shared';
 import { httpClient } from '../../utils/httpClient';
-import { fetchSuppliers } from './suppliersApi';
+import { fetchSupplier, fetchSuppliers } from './suppliersApi';
 
 jest.mock('../../utils/httpClient', () => ({ httpClient: { get: jest.fn() } }));
 
@@ -33,5 +33,14 @@ describe('fetchSuppliers', () => {
     await expect(fetchSuppliers({ includeInactive: false, quarter: 2, page: 1 })).resolves.toEqual(
       EMPTY_PAGE,
     );
+  });
+});
+
+describe('fetchSupplier', () => {
+  it('pide GET /suppliers/:id y devuelve el data del envelope', async () => {
+    const detail = { id: 's1', name: 'Aceites del Sur' } as SupplierDetail;
+    mockedGet.mockResolvedValue({ data: { success: true, data: detail } });
+    await expect(fetchSupplier('s1')).resolves.toEqual(detail);
+    expect(mockedGet).toHaveBeenCalledWith('/suppliers/s1');
   });
 });

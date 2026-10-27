@@ -1,12 +1,15 @@
 import type { FilterQuery } from 'mongoose';
 import {
   normalizeTaxId,
+  SUPPLIER_ERROR_CODES,
   SUPPLIERS_PAGE_SIZE,
   type ListPage,
+  type SupplierDetail,
   type SupplierListItem,
   type SupplierListQuery,
 } from '@app/shared';
-import { toSupplierListItem } from './supplier.mapper';
+import { AppError } from '../../utils/AppError';
+import { toSupplierDetail, toSupplierListItem } from './supplier.mapper';
 import { SupplierModel, type SupplierFields } from './supplier.model';
 import { getPurchaseTotals } from './supplierPurchases';
 
@@ -60,4 +63,12 @@ export async function listSuppliers(
     toSupplierListItem(doc, totals.get(doc._id.toString())!, criteria.quarter),
   );
   return { items, total, page: criteria.page, pageSize: SUPPLIERS_PAGE_SIZE };
+}
+
+/** Ficha de un proveedor, activo o dado de baja (FR-012, FR-019). */
+export async function getSupplier(id: string): Promise<SupplierDetail> {
+  const doc = await SupplierModel.findById(id);
+  if (!doc) throw new AppError(SUPPLIER_ERROR_CODES.notFound, 404, 'El proveedor no existe.');
+  const totals = await getPurchaseTotals([id]);
+  return toSupplierDetail(doc, totals.get(id)!);
 }

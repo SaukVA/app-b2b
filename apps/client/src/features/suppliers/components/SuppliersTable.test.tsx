@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router';
 import type { SupplierListItem } from '@app/shared';
 import { setupStore } from '../../../store/store';
 import { formatMoney } from '../../../utils/money';
@@ -16,10 +17,17 @@ const ACEITES: SupplierListItem = {
   active: true,
 };
 
-function renderTable(rows: SupplierListItem[]) {
+function renderTable(rows: SupplierListItem[], props: { search?: string; focusId?: string } = {}) {
   render(
     <Provider store={setupStore()}>
-      <SuppliersTable rows={rows} quarter={2} />
+      <MemoryRouter>
+        <SuppliersTable
+          rows={rows}
+          quarter={2}
+          search={props.search ?? ''}
+          focusId={props.focusId}
+        />
+      </MemoryRouter>
     </Provider>,
   );
   return screen.getByRole('table', { name: 'Proveedores' });
@@ -75,5 +83,38 @@ describe('SuppliersTable · tarjeta móvil (FR-021b)', () => {
   it('un proveedor dado de baja muestra el sello «Baja»', () => {
     renderTable([{ ...ACEITES, active: false }]);
     expect(within(screen.getByRole('article')).getByText('Baja')).toBeTruthy();
+  });
+});
+
+describe('SuppliersTable · enlace a la ficha (010 FR-012, FR-014)', () => {
+  it('el nombre de cada fila enlaza con su ficha, con la query del listado', () => {
+    const row = firstRow(renderTable([ACEITES], { search: 'q=aceite&page=2' }));
+    expect(within(row).getByRole('link', { name: 'Aceites del Sur' }).getAttribute('href')).toBe(
+      '/proveedores/s1?q=aceite&page=2',
+    );
+  });
+
+  it('sin criterios el enlace no lleva query', () => {
+    const row = firstRow(renderTable([ACEITES]));
+    expect(within(row).getByRole('link', { name: 'Aceites del Sur' }).getAttribute('href')).toBe(
+      '/proveedores/s1',
+    );
+  });
+
+  it('la tarjeta móvil también enlaza con la ficha', () => {
+    renderTable([ACEITES]);
+    const card = screen.getByRole('article');
+    expect(
+      within(card)
+        .getByRole('link', { name: /Aceites del Sur/ })
+        .getAttribute('href'),
+    ).toBe('/proveedores/s1');
+  });
+
+  it('enfoca al montar el enlace de la fila indicada en focusId', () => {
+    const table = renderTable([ACEITES, { ...ACEITES, id: 's2', name: 'Bebidas' }], {
+      focusId: 's2',
+    });
+    expect(document.activeElement).toBe(within(table).getByRole('link', { name: 'Bebidas' }));
   });
 });

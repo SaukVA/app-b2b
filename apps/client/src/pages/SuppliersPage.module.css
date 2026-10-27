@@ -24,6 +24,13 @@
   color: var(--ink2);
 }
 
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 @media (max-width: 759px) {
   .page {
     padding: var(--space-4) var(--space-4) var(--space-8);

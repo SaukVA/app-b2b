@@ -1,15 +1,24 @@
-import type { ListPage, SupplierListItem } from '@app/shared';
+import type { ListPage, SupplierDetail, SupplierListItem } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { fetchSuppliers } from './suppliersApi';
-import { SUPPLIERS_LOAD_ERROR_MESSAGE, loadSuppliers } from './suppliersSlice';
+import { fetchSupplier, fetchSuppliers } from './suppliersApi';
+import {
+  SUPPLIERS_LOAD_ERROR_MESSAGE,
+  closeSupplier,
+  loadSupplier,
+  loadSuppliers,
+} from './suppliersSlice';
 
-jest.mock('./suppliersApi', () => ({ fetchSuppliers: jest.fn() }));
+jest.mock('./suppliersApi', () => ({ fetchSuppliers: jest.fn(), fetchSupplier: jest.fn() }));
 
 const mockedFetch = jest.mocked(fetchSuppliers);
+const mockedFetchOne = jest.mocked(fetchSupplier);
 const EMPTY_PAGE: ListPage<SupplierListItem> = { items: [], total: 0, page: 1, pageSize: 10 };
 const DEFAULT_QUERY = { includeInactive: false, quarter: 1 as const, page: 1 };
 
-beforeEach(() => mockedFetch.mockReset());
+beforeEach(() => {
+  mockedFetch.mockReset();
+  mockedFetchOne.mockReset();
+});
 
 describe('suppliersSlice', () => {
   it('arranca sin elementos, en idle y sin petición en curso', () => {
@@ -19,6 +28,7 @@ describe('suppliersSlice', () => {
       status: 'idle',
       error: null,
       requestId: null,
+      detail: { status: 'idle', data: null },
     });
   });
 
@@ -105,5 +115,63 @@ describe('suppliersSlice · error al cargar (US3, FR-013)', () => {
     await request;
     expect(store.getState().suppliers.status).not.toBe('failed');
     expect(store.getState().suppliers.error).toBeNull();
+  });
+});
+
+const DETAIL = { id: 's1', name: 'Aceites del Sur' } as SupplierDetail;
+const httpError = (status: number) =>
+  Object.assign(new Error(`Request failed with status code ${status}`), {
+    response: { status, data: { success: false, error: { code: 'X', message: 'detalle' } } },
+  });
+
+describe('suppliersSlice · ficha (US2, FR-012, FR-014)', () => {
+  it('loadSupplier.pending pasa la ficha a loading', () => {
+    mockedFetchOne.mockReturnValue(new Promise(() => {}));
+    const store = setupStore();
+    void store.dispatch(loadSupplier('s1'));
+    expect(store.getState().suppliers.detail.status).toBe('loading');
+    expect(mockedFetchOne).toHaveBeenCalledWith('s1');
+  });
+
+  it('loadSupplier.fulfilled pasa a ready con la ficha', async () => {
+    mockedFetchOne.mockResolvedValue(DETAIL);
+    const store = setupStore();
+    await store.dispatch(loadSupplier('s1'));
+    expect(store.getState().suppliers.detail).toEqual({ status: 'ready', data: DETAIL });
+  });
+});
+
+describe('suppliersSlice · ficha inexistente, error y cierre (US2, FR-015)', () => {
+  it('un 404 pasa a notFound sin ficha', async () => {
+    mockedFetchOne.mockRejectedValue(httpError(404));
+    const store = setupStore();
+    await store.dispatch(loadSupplier('s1'));
+    expect(store.getState().suppliers.detail).toEqual({ status: 'notFound', data: null });
+  });
+
+  it.each([
+    ['sin respuesta del servidor', new Error('Network Error')],
+    ['con un 500', httpError(500)],
+  ])('%s pasa a error', async (_case, error) => {
+    mockedFetchOne.mockRejectedValue(error);
+    const store = setupStore();
+    await store.dispatch(loadSupplier('s1'));
+    expect(store.getState().suppliers.detail.status).toBe('error');
+  });
+
+  it('abrir otra ficha conserva el id de la anterior hasta que llega la nueva (foco al volver)', async () => {
+    mockedFetchOne.mockResolvedValueOnce(DETAIL).mockReturnValueOnce(new Promise(() => {}));
+    const store = setupStore();
+    await store.dispatch(loadSupplier('s1'));
+    void store.dispatch(loadSupplier('s2'));
+    expect(store.getState().suppliers.detail).toEqual({ status: 'loading', data: DETAIL });
+  });
+
+  it('closeSupplier vuelve a idle conservando la última ficha', async () => {
+    mockedFetchOne.mockResolvedValue(DETAIL);
+    const store = setupStore();
+    await store.dispatch(loadSupplier('s1'));
+    store.dispatch(closeSupplier());
+    expect(store.getState().suppliers.detail).toEqual({ status: 'idle', data: DETAIL });
   });
 });

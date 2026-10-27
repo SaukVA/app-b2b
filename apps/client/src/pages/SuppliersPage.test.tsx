@@ -1,9 +1,15 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter, useLocation, useNavigate, type NavigateFunction } from 'react-router';
-import { currentQuarter, type ListPage, type SupplierListItem } from '@app/shared';
+import {
+  currentQuarter,
+  type ListPage,
+  type SupplierDetail,
+  type SupplierListItem,
+} from '@app/shared';
 import { fetchSuppliers } from '../features/suppliers/suppliersApi';
+import { loadSupplier } from '../features/suppliers/suppliersSlice';
 import { setupStore } from '../store/store';
 import { SuppliersPage } from './SuppliersPage';
 
@@ -221,5 +227,82 @@ describe('SuppliersPage · error del listado (US3)', () => {
     expect(mockedFetch).toHaveBeenCalledTimes(2);
     expect(lastQuery()).toEqual({ q: 'levante', includeInactive: true, quarter: QUARTER, page: 2 });
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
+
+// Ficha del proveedor (010 US2): filas enlazadas, foco al volver y aviso de proveedor inexistente.
+const ROWS: SupplierListItem[] = ['s1', 's2'].map((id, i) => ({
+  id,
+  name: `Proveedor ${i + 1}`,
+  cif: `B0000000${i}`,
+  city: 'Valencia',
+  leadTimeDays: null,
+  quarterPurchases: 0,
+  yearPurchases: 0,
+  active: true,
+}));
+
+function renderWith(
+  entry: { pathname: string; search?: string; state?: unknown },
+  lastId?: string,
+) {
+  const store = setupStore();
+  if (lastId) {
+    store.dispatch(loadSupplier.fulfilled({ id: lastId } as SupplierDetail, 'request', lastId));
+  }
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[entry]}>
+        <SuppliersPage />
+      </MemoryRouter>
+    </Provider>,
+  );
+}
+
+const rowLink = (name: string) =>
+  within(screen.getByRole('table', { name: 'Proveedores' })).getByRole('link', { name });
+
+describe('SuppliersPage · enlace a la ficha y foco al volver (010 FR-012, FR-014)', () => {
+  beforeEach(() => mockedFetch.mockResolvedValue({ ...EMPTY_PAGE, items: ROWS, total: 2 }));
+
+  it('cada fila enlaza con la ficha conservando los criterios del listado', async () => {
+    renderWith({ pathname: '/proveedores', search: '?q=prov&includeInactive=true' });
+    await screen.findByText('2 proveedores');
+    expect(rowLink('Proveedor 2').getAttribute('href')).toBe(
+      '/proveedores/s2?q=prov&includeInactive=true',
+    );
+  });
+
+  it('al volver de una ficha el foco queda en la fila de ese proveedor', async () => {
+    renderWith({ pathname: '/proveedores' }, 's2');
+    await screen.findByText('2 activos');
+    expect(document.activeElement).toBe(rowLink('Proveedor 2'));
+  });
+
+  it('sin una ficha abierta antes no mueve el foco', async () => {
+    renderWith({ pathname: '/proveedores' });
+    await screen.findByText('2 activos');
+    expect(document.activeElement).toBe(document.body);
+  });
+});
+
+describe('SuppliersPage · proveedor inexistente (010 FR-015)', () => {
+  beforeEach(() => mockedFetch.mockResolvedValue({ ...EMPTY_PAGE, items: ROWS, total: 2 }));
+
+  it('un enlace a un proveedor inexistente muestra el aviso, que se cierra con «Entendido»', async () => {
+    renderWith({ pathname: '/proveedores', state: { notFound: true } });
+    expect(
+      await screen.findByText(
+        'El enlace apunta a un proveedor que no existe. Busca el proveedor en el listado.',
+      ),
+    ).toBeTruthy();
+    await userEvent.click(screen.getByRole('button', { name: 'Entendido' }));
+    expect(screen.queryByText(/El enlace apunta a un proveedor que no existe/)).toBeNull();
+  });
+
+  it('sin el aviso en la navegación no lo muestra', async () => {
+    renderWith({ pathname: '/proveedores' });
+    await screen.findByText('2 activos');
+    expect(screen.queryByText(/El enlace apunta a un proveedor que no existe/)).toBeNull();
   });
 });

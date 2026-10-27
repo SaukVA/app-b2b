@@ -25,9 +25,45 @@
   white-space: nowrap;
 }
 
+/* El enlace del nombre cubre toda la fila (010 FR-012). */
+:global(tr):has(.rowLink) {
+  position: relative;
+}
+
+:global(tr):has(.rowLink):hover {
+  background: var(--surface2);
+}
+
+.rowLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rowLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.rowLink:focus-visible {
+  outline: none;
+}
+
+.rowLink:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
 .card {
+  color: inherit;
+  text-decoration: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--space-4);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

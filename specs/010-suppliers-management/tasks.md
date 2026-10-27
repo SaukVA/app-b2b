@@ -164,23 +164,23 @@ acciones de edición y vuelve con la flecha a la misma búsqueda, filtro, trimes
 
 ### Tests de US2 (primero, deben fallar) ⚠️
 
-- [ ] T026 [P] [US2] Tests de `getSupplier` en `supplier.service.test.ts`: devuelve el detalle de un activo y de
+- [X] T026 [P] [US2] Tests de `getSupplier` en `supplier.service.test.ts`: devuelve el detalle de un activo y de
   uno dado de baja; id inexistente → `AppError` `SUPPLIER_NOT_FOUND` 404.
-- [ ] T027 [P] [US2] Tests de `GET /api/suppliers/:id` en `supplier.routes.test.ts`: 200 con el contrato de
+- [X] T027 [P] [US2] Tests de `GET /api/suppliers/:id` en `supplier.routes.test.ts`: 200 con el contrato de
   `SupplierDetail`; 404; id mal formado → 400; 401; 403 Comercial; 200 Almacén.
-- [ ] T028 [P] [US2] Tests de `loadSupplier` en `apps/client/src/features/suppliers/suppliersSlice.test.ts`:
+- [X] T028 [P] [US2] Tests de `loadSupplier` en `apps/client/src/features/suppliers/suppliersSlice.test.ts`:
   `detail.status` `loading` → `ready` / `notFound` (404) / `error`.
-- [ ] T029 [P] [US2] Tests de `SupplierDetailView` en
+- [X] T029 [P] [US2] Tests de `SupplierDetailView` en
   `apps/client/src/features/suppliers/components/SupplierDetailView.test.tsx`: secciones «Datos fiscales»,
   «Contacto» (`tel:` / `mailto:`, «sin etiqueta»), «Pago» (IBAN en grupos de 4), «Compras <año>» con 4 trimestres,
   «Pedidos» (web externa, «N días» / «1 día» / «—», `UserMoney` o «Sin pedido mínimo»), «Observaciones» o «Sin
   observaciones.», pie «Creado por … el …» / «Modificado por … el …», sello «Baja», «— » en datos vacíos; sin
   botones de edición cuando `canEdit` es `false`.
-- [ ] T030 [P] [US2] Tests de `SupplierDetailPage` en `apps/client/src/pages/SupplierDetailPage.test.tsx`: carga
+- [X] T030 [P] [US2] Tests de `SupplierDetailPage` en `apps/client/src/pages/SupplierDetailPage.test.tsx`: carga
   por `:id`; mientras carga, `aria-busy="true"` y «Cargando proveedor…»; `BackLink` a `/proveedores` con la misma
   query; 404 → navega a `/proveedores` con `state.notFound`; error «No se ha podido cargar el proveedor.» con
   «Reintentar».
-- [ ] T031 [P] [US2] Ampliar `SuppliersPage.test.tsx` y `SuppliersTable.test.tsx`: cada fila es un enlace a
+- [X] T031 [P] [US2] Ampliar `SuppliersPage.test.tsx` y `SuppliersTable.test.tsx`: cada fila es un enlace a
   `/proveedores/:id?<query actual>`; al volver (con la flecha o con «Atrás» del navegador) el foco queda en la fila
   del último proveedor abierto (`detail.data.id` del slice); `state.notFound`
   muestra el aviso «El enlace apunta a un proveedor que no existe. Busca el proveedor en el listado.» con
@@ -188,18 +188,18 @@ acciones de edición y vuelve con la flecha a la misma búsqueda, filtro, trimes
 
 ### Implementación de US2
 
-- [ ] T032 [US2] Implementar `getSupplier(id)` en `supplier.service.ts` (usa `toSupplierDetail` y
+- [X] T032 [US2] Implementar `getSupplier(id)` en `supplier.service.ts` (usa `toSupplierDetail` y
   `getPurchaseTotals`) hasta poner en verde T026.
-- [ ] T033 [US2] Añadir `get` en `supplier.controller.ts` y `GET /:id` con `validate({ params: supplierIdParams })`
+- [X] T033 [US2] Añadir `get` en `supplier.controller.ts` y `GET /:id` con `validate({ params: supplierIdParams })`
   y su `@openapi` en `supplier.routes.ts`, hasta poner en verde T027.
-- [ ] T034 [US2] Añadir `fetchSupplier(id)` en `suppliersApi.ts` y el estado `detail` con el thunk
+- [X] T034 [US2] Añadir `fetchSupplier(id)` en `suppliersApi.ts` y el estado `detail` con el thunk
   `loadSupplier` en `suppliersSlice.ts`, hasta poner en verde T028.
-- [ ] T035 [P] [US2] Crear `apps/client/src/features/suppliers/components/SupplierDetailView.tsx`
+- [X] T035 [P] [US2] Crear `apps/client/src/features/suppliers/components/SupplierDetailView.tsx`
   (+ `.module.css`): dos columnas (una en estrecho), según el tablero «Proveedores», hasta poner en verde T029.
-- [ ] T036 [US2] Crear `apps/client/src/pages/SupplierDetailPage.tsx` (+ `.module.css`) con `BackLink`
+- [X] T036 [US2] Crear `apps/client/src/pages/SupplierDetailPage.tsx` (+ `.module.css`) con `BackLink`
   («Proveedores», `aria-label` «Volver al listado de proveedores»), estados de carga y error, cabecera y
   `SupplierDetailView`, hasta poner en verde T030.
-- [ ] T037 [US2] Añadir la ruta `proveedores/:id` (ver) en `apps/client/src/routes/AppRouter.tsx`, convertir las
+- [X] T037 [US2] Añadir la ruta `proveedores/:id` (ver) en `apps/client/src/routes/AppRouter.tsx`, convertir las
   filas de `SuppliersTable` en enlaces con la query actual, enfocar al montar la fila del último proveedor abierto
   (`detail.data.id`) y mostrar el aviso de `notFound` en `SuppliersPage.tsx`,
   hasta poner en verde T031.

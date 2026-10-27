@@ -2,6 +2,7 @@ import {
   currentQuarter,
   type ApiSuccess,
   type ListPage,
+  type SupplierDetail,
   type SupplierListItem,
   type SupplierListQuery,
 } from '@app/shared';
@@ -29,5 +30,11 @@ export async function fetchSuppliers(
   const { data } = await httpClient.get<ApiSuccess<ListPage<SupplierListItem>>>('/suppliers', {
     params: toParams(query),
   });
+  return data.data;
+}
+
+/** Ficha de un proveedor (GET /suppliers/:id). */
+export async function fetchSupplier(id: string): Promise<SupplierDetail> {
+  const { data } = await httpClient.get<ApiSuccess<SupplierDetail>>(`/suppliers/${id}`);
   return data.data;
 }

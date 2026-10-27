@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useLocation, useSearchParams } from 'react-router';
 import type { SupplierListQuery } from '@app/shared';
+import { Alert } from '../components/Alert';
+import { Button } from '../components/Button';
 import { SupplierFilters } from '../features/suppliers/components/SupplierFilters';
 import { SuppliersListStatus } from '../features/suppliers/components/SuppliersListStatus';
 import { SuppliersTable } from '../features/suppliers/components/SuppliersTable';
@@ -80,9 +82,29 @@ function supplierCountLabel(total: number, includeInactive: boolean): string {
   return total === 1 ? '1 activo' : `${total} activos`;
 }
 
-/** Proveedores (009): estructura del diseño «Albarán»; los proveedores aún no están cargados (FR-009). */
+/** Aviso de un enlace a un proveedor que no existe (010 FR-015); se cierra con «Entendido». */
+function NotFoundNotice() {
+  const { state } = useLocation();
+  const [visible, setVisible] = useState(
+    Boolean((state as { notFound?: boolean } | null)?.notFound),
+  );
+  if (!visible) return null;
+  return (
+    <div className={styles.notice}>
+      <Alert variant="info">
+        El enlace apunta a un proveedor que no existe. Busca el proveedor en el listado.
+      </Alert>
+      <Button variant="secondary" onClick={() => setVisible(false)}>
+        Entendido
+      </Button>
+    </div>
+  );
+}
+
+/** Proveedores: listado con búsqueda, filtro de bajas y trimestre; cada fila abre su ficha (010). */
 export function SuppliersPage() {
   const { items, total, status } = useAppSelector((state) => state.suppliers);
+  const lastOpenedId = useAppSelector((state) => state.suppliers.detail.data?.id);
   const { criteria, update } = useSupplierCriteria();
   const [search, setSearch] = useSearchField(criteria.q, update);
   const retry = useLoadSuppliers(criteria);
@@ -95,6 +117,7 @@ export function SuppliersPage() {
         </h1>
         <span className={styles.count}>{supplierCountLabel(total, criteria.includeInactive)}</span>
       </header>
+      <NotFoundNotice />
       <SupplierFilters
         search={search}
         includeInactive={criteria.includeInactive}
@@ -109,6 +132,8 @@ export function SuppliersPage() {
       <SuppliersTable
         rows={items}
         quarter={criteria.quarter}
+        search={serializeSupplierCriteria(criteria).toString()}
+        focusId={lastOpenedId}
         busy={status === 'loading'}
         status={<SuppliersListStatus status={status} total={total} onRetry={retry} />}
       />

@@ -1,7 +1,7 @@
-import { SUPPLIERS_PAGE_SIZE, type SupplierListQuery } from '@app/shared';
+import { SUPPLIER_ERROR_CODES, SUPPLIERS_PAGE_SIZE, type SupplierListQuery } from '@app/shared';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { SupplierModel, type SupplierFields } from './supplier.model';
-import { listSuppliers } from './supplier.service';
+import { getSupplier, listSuppliers } from './supplier.service';
 
 setTestEnv();
 
@@ -141,4 +141,48 @@ describe('listSuppliers · rendimiento (SC-006, research R1)', () => {
     expect(performance.now() - start).toBeLessThan(500);
     expect(page.total).toBe(11);
   }, 30_000);
+});
+
+const FULL_SUPPLIER: Partial<SupplierFields> = {
+  name: 'Aceites del Sur',
+  cif: 'B12345674',
+  phones: [{ label: 'Pedidos', value: '961 234 567' }],
+  emails: [{ label: null, value: 'pedidos@aceites.es' }],
+  leadTimeDays: 3,
+  minOrder: 150,
+};
+
+describe('getSupplier (FR-012, FR-013)', () => {
+  it('devuelve la ficha completa de un proveedor activo', async () => {
+    const doc = await SupplierModel.create(supplierData(FULL_SUPPLIER));
+    const detail = await getSupplier(doc._id.toString());
+    expect(detail).toMatchObject({
+      id: doc._id.toString(),
+      name: 'Aceites del Sur',
+      cif: 'B12345674',
+      phones: [{ label: 'Pedidos', value: '961 234 567' }],
+      emails: [{ label: null, value: 'pedidos@aceites.es' }],
+      leadTimeDays: 3,
+      minOrder: 150,
+      active: true,
+      version: 0,
+      yearPurchases: 0,
+      quarterPurchases: [0, 0, 0, 0],
+      createdBy: ADMIN,
+      updatedBy: ADMIN,
+    });
+    expect(detail).not.toHaveProperty('_id');
+  });
+
+  it('devuelve también la ficha de un proveedor dado de baja (FR-019)', async () => {
+    const doc = await SupplierModel.create(supplierData({ name: 'De baja', active: false }));
+    expect(await getSupplier(doc._id.toString())).toMatchObject({ name: 'De baja', active: false });
+  });
+
+  it('lanza SUPPLIER_NOT_FOUND 404 si no existe', async () => {
+    await expect(getSupplier('0123456789abcdef01234567')).rejects.toMatchObject({
+      code: SUPPLIER_ERROR_CODES.notFound,
+      status: 404,
+    });
+  });
 });

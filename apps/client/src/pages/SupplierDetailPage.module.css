@@ -1,0 +1,50 @@
+.page {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  /* Contenido principal del diseño: 24 32 48 (la zona de contenido de AppLayout ya lo limita). */
+  padding: var(--space-6) var(--space-8) var(--space-12);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.title {
+  margin: 0;
+  font: var(--text-screen-title);
+  letter-spacing: -0.01em;
+}
+
+.cif {
+  font: var(--text-figure);
+  color: var(--ink2);
+}
+
+.loading {
+  margin: 0;
+  color: var(--ink2);
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+@media (max-width: 759px) {
+  .page {
+    padding: var(--space-4) var(--space-4) var(--space-8);
+  }
+}

@@ -171,3 +171,87 @@ describe('supplierListQuerySchema · trimestre por defecto (research R4)', () =>
     expect(supplierListQuerySchema.parse({}).quarter).toBe(4);
   });
 });
+
+async function seedForDetail(): Promise<string> {
+  const [saved] = await SupplierModel.insertMany(SAVED_SUPPLIERS);
+  return saved._id.toString();
+}
+
+const getSupplierById = (token: string, supplierId: string) =>
+  request(app()).get(`/api/suppliers/${supplierId}`).set('Authorization', `Bearer ${token}`);
+
+describe('GET /api/suppliers/:id · contrato (FR-012, FR-013)', () => {
+  let id: string;
+  beforeEach(async () => {
+    id = await seedForDetail();
+  });
+
+  it('200 con la ficha según el contrato de SupplierDetail', async () => {
+    const res = await getSupplierById(await tokenFor('Administración'), id);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      success: true,
+      data: {
+        id,
+        name: 'Bebidas Mediterráneo',
+        cif: 'B46000002',
+        foreign: false,
+        address: 'Calle Mayor, 1',
+        postalCode: '46023',
+        city: 'Valencia',
+        contactPerson: null,
+        phones: [],
+        emails: [],
+        paymentMethod: 'TRANSFER_30',
+        iban: null,
+        web: null,
+        leadTimeDays: null,
+        minOrder: null,
+        notes: null,
+        active: true,
+        version: 0,
+        yearPurchases: 0,
+        quarterPurchases: [0, 0, 0, 0],
+        createdBy: ADMIN,
+        createdAt: expect.any(String),
+        updatedBy: ADMIN,
+        updatedAt: expect.any(String),
+      },
+    });
+  });
+});
+
+describe('GET /api/suppliers/:id · acceso y errores (FR-002, FR-015)', () => {
+  let id: string;
+  beforeEach(async () => {
+    id = await seedForDetail();
+  });
+
+  it('200 para Almacén, que solo puede ver', async () => {
+    const res = await getSupplierById(await tokenFor('Almacén'), id);
+    expect(res.status).toBe(200);
+  });
+
+  it('404 SUPPLIER_NOT_FOUND si no existe', async () => {
+    const res = await getSupplierById(await tokenFor('Administración'), '0123456789abcdef01234567');
+    expect(res.status).toBe(404);
+    expect(res.body.error.code).toBe('SUPPLIER_NOT_FOUND');
+  });
+
+  it('400 VALIDATION_ERROR con un id mal formado', async () => {
+    const res = await getSupplierById(await tokenFor('Administración'), 'no-es-un-id');
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('401 sin token', async () => {
+    const res = await request(app()).get(`/api/suppliers/${id}`);
+    expect(res.status).toBe(401);
+  });
+
+  it('403 AUTH_FORBIDDEN con Comercial', async () => {
+    const res = await getSupplierById(await tokenFor('Comercial'), id);
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('AUTH_FORBIDDEN');
+  });
+});
