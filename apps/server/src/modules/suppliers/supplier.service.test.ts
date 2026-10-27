@@ -1,7 +1,12 @@
-import { SUPPLIER_ERROR_CODES, SUPPLIERS_PAGE_SIZE, type SupplierListQuery } from '@app/shared';
+import {
+  SUPPLIER_ERROR_CODES,
+  SUPPLIERS_PAGE_SIZE,
+  type SupplierInput,
+  type SupplierListQuery,
+} from '@app/shared';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { SupplierModel, type SupplierFields } from './supplier.model';
-import { getSupplier, listSuppliers } from './supplier.service';
+import { createSupplier, getSupplier, listSuppliers } from './supplier.service';
 
 setTestEnv();
 
@@ -184,5 +189,70 @@ describe('getSupplier (FR-012, FR-013)', () => {
       code: SUPPLIER_ERROR_CODES.notFound,
       status: 404,
     });
+  });
+});
+
+const ACTOR = { id: '000000000000000000000002', login: 'marta' };
+
+/** Alta ya validada por supplierInputSchema (CIF normalizado). */
+function input(overrides: Partial<SupplierInput> = {}): SupplierInput {
+  return {
+    name: 'Aceites del Sur',
+    cif: 'B12345674',
+    foreign: false,
+    address: 'Calle Mayor, 1',
+    postalCode: '46001',
+    city: 'Valencia',
+    contactPerson: null,
+    phones: [{ label: 'Pedidos', value: '961 234 567' }],
+    emails: [],
+    paymentMethod: 'CASH',
+    iban: null,
+    web: 'https://www.aceites.es',
+    leadTimeDays: 3,
+    minOrder: 150,
+    notes: null,
+    ...overrides,
+  };
+}
+
+describe('createSupplier (FR-004, FR-010, FR-012b)', () => {
+  beforeEach(() => SupplierModel.init());
+
+  it('crea el proveedor activo, en la versión 0, con quien lo da de alta', async () => {
+    const detail = await createSupplier(input(), ACTOR);
+    expect(detail).toMatchObject({
+      ...input(),
+      id: expect.any(String),
+      active: true,
+      version: 0,
+      createdBy: ACTOR,
+      updatedBy: ACTOR,
+    });
+    expect(await SupplierModel.countDocuments()).toBe(1);
+  });
+
+  it.each([
+    ['activo', true],
+    ['dado de baja', false],
+  ])('un CIF ya usado por un proveedor %s responde 409 con su nombre', async (_case, active) => {
+    await seed({ name: 'Distribuciones Levante', cif: 'B12345674', active });
+    await expect(createSupplier(input(), ACTOR)).rejects.toMatchObject({
+      code: SUPPLIER_ERROR_CODES.cifTaken,
+      status: 409,
+      message: 'Ya existe un proveedor con este CIF: Distribuciones Levante.',
+    });
+  });
+
+  it('de dos altas simultáneas con el mismo CIF solo se guarda una', async () => {
+    const results = await Promise.allSettled([
+      createSupplier(input({ name: 'Uno' }), ACTOR),
+      createSupplier(input({ name: 'Dos' }), ACTOR),
+    ]);
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    expect(results.find((r) => r.status === 'rejected')).toMatchObject({
+      reason: { code: SUPPLIER_ERROR_CODES.cifTaken },
+    });
+    expect(await SupplierModel.countDocuments()).toBe(1);
   });
 });

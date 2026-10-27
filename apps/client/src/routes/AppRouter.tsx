@@ -7,6 +7,7 @@ import { CustomersPage } from '../pages/CustomersPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
 import { SupplierDetailPage } from '../pages/SupplierDetailPage';
+import { SupplierFormPage } from '../pages/SupplierFormPage';
 import { SuppliersPage } from '../pages/SuppliersPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
@@ -64,7 +65,8 @@ const customersRoute = {
   ),
 };
 
-// Listado y ficha a pantalla completa de Proveedores (010); la ficha solo exige ver (FR-002).
+// Listado, ficha y alta a pantalla completa de Proveedores (010): ver para la ficha, editar para el alta
+// (FR-002); sin permiso, la pantalla de acceso denegado de 005.
 const suppliersRoute = {
   path: 'proveedores',
   children: [
@@ -73,6 +75,14 @@ const suppliersRoute = {
       element: (
         <RequireAuth module="proveedores">
           <SuppliersPage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: 'nuevo',
+      element: (
+        <RequireAuth module="proveedores" level="edit">
+          <SupplierFormPage />
         </RequireAuth>
       ),
     },

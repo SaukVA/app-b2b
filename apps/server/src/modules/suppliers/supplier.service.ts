@@ -3,8 +3,10 @@ import {
   normalizeTaxId,
   SUPPLIER_ERROR_CODES,
   SUPPLIERS_PAGE_SIZE,
+  type AuditUser,
   type ListPage,
   type SupplierDetail,
+  type SupplierInput,
   type SupplierListItem,
   type SupplierListQuery,
 } from '@app/shared';
@@ -71,4 +73,31 @@ export async function getSupplier(id: string): Promise<SupplierDetail> {
   if (!doc) throw new AppError(SUPPLIER_ERROR_CODES.notFound, 404, 'El proveedor no existe.');
   const totals = await getPurchaseTotals([id]);
   return toSupplierDetail(doc, totals.get(id)!);
+}
+
+const DUPLICATE_KEY = 11000;
+
+/**
+ * Índice único de `cif` (FR-005): un E11000 es un CIF ya usado, por un proveedor activo o dado de baja. El
+ * mensaje lleva su nombre para que se pueda encontrar (contracts/suppliers-ui.md).
+ */
+async function toCifTakenError(err: unknown, cif: string): Promise<unknown> {
+  if ((err as { code?: unknown } | null)?.code !== DUPLICATE_KEY) return err;
+  const owner = await SupplierModel.findOne({ cif }, { name: 1 });
+  const message = `Ya existe un proveedor con este CIF: ${owner?.name ?? cif}.`;
+  return new AppError(SUPPLIER_ERROR_CODES.cifTaken, 409, message);
+}
+
+/** Alta: el proveedor queda activo, en la versión 0, con quien lo da de alta (FR-010, FR-012b). */
+export async function createSupplier(
+  input: SupplierInput,
+  actor: AuditUser,
+): Promise<SupplierDetail> {
+  try {
+    const doc = await SupplierModel.create({ ...input, createdBy: actor, updatedBy: actor });
+    const totals = await getPurchaseTotals([doc._id.toString()]);
+    return toSupplierDetail(doc, totals.get(doc._id.toString())!);
+  } catch (err) {
+    throw await toCifTakenError(err, input.cif);
+  }
 }

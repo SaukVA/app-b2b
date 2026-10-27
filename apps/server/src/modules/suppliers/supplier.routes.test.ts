@@ -255,3 +255,78 @@ describe('GET /api/suppliers/:id · acceso y errores (FR-002, FR-015)', () => {
     expect(res.body.error.code).toBe('AUTH_FORBIDDEN');
   });
 });
+
+const NEW_SUPPLIER = {
+  name: 'Lácteos Valle Verde',
+  cif: 'b-33.000.001',
+  address: 'Polígono Norte, 4',
+  postalCode: '33001',
+  city: 'Oviedo',
+  web: 'www.valleverde.es',
+  minOrder: 80,
+};
+
+const postSupplier = (token: string, body: unknown) =>
+  request(app()).post('/api/suppliers').set('Authorization', `Bearer ${token}`).send(body);
+
+describe('POST /api/suppliers · alta (FR-004, FR-005, FR-010)', () => {
+  it('201 con la ficha del proveedor creado, normalizado y auditado', async () => {
+    const res = await postSupplier(await tokenFor('Administración'), NEW_SUPPLIER);
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data).toMatchObject({
+      id: expect.any(String),
+      name: 'Lácteos Valle Verde',
+      cif: 'B33000001',
+      web: 'https://www.valleverde.es',
+      minOrder: 80,
+      paymentMethod: 'TRANSFER_30',
+      active: true,
+      version: 0,
+      createdBy: { login: 'administración@empresa.es' },
+      updatedBy: { login: 'administración@empresa.es' },
+    });
+    expect(await SupplierModel.countDocuments()).toBe(1);
+  });
+
+  it('400 VALIDATION_ERROR con la ruta y el motivo de cada campo', async () => {
+    const res = await postSupplier(await tokenFor('Administración'), {
+      ...NEW_SUPPLIER,
+      postalCode: '3300',
+    });
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+    expect(res.body.error.message).toContain(
+      'postalCode: El código postal español tiene 5 cifras.',
+    );
+  });
+});
+
+describe('POST /api/suppliers · CIF repetido (FR-005)', () => {
+  it('409 SUPPLIER_CIF_TAKEN si el CIF ya existe, escrito en otro formato', async () => {
+    await SupplierModel.insertMany(SAVED_SUPPLIERS);
+    const res = await postSupplier(await tokenFor('Administración'), {
+      ...NEW_SUPPLIER,
+      cif: 'B-12.345.674',
+    });
+    expect(res.status).toBe(409);
+    expect(res.body.error).toEqual({
+      code: 'SUPPLIER_CIF_TAKEN',
+      message: 'Ya existe un proveedor con este CIF: Aceites del Sur.',
+    });
+  });
+});
+
+describe('POST /api/suppliers · acceso (FR-002)', () => {
+  it.each(['Almacén', 'Comercial'])('403 AUTH_FORBIDDEN para %s', async (role) => {
+    const res = await postSupplier(await tokenFor(role), NEW_SUPPLIER);
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('AUTH_FORBIDDEN');
+    expect(await SupplierModel.countDocuments()).toBe(0);
+  });
+
+  it('401 sin token', async () => {
+    const res = await request(app()).post('/api/suppliers').send(NEW_SUPPLIER);
+    expect(res.status).toBe(401);
+  });
+});

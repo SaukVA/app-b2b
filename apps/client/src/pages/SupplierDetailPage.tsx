@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Navigate, useLocation, useParams } from 'react-router';
 import type { SupplierDetail } from '@app/shared';
 import { Alert } from '../components/Alert';
@@ -6,7 +6,7 @@ import { BackLink } from '../components/BackLink';
 import { Button } from '../components/Button';
 import { StatusStamp } from '../components/StatusStamp';
 import { SupplierDetailView } from '../features/suppliers/components/SupplierDetailView';
-import { closeSupplier, loadSupplier } from '../features/suppliers/suppliersSlice';
+import { clearSaveNotice, closeSupplier, loadSupplier } from '../features/suppliers/suppliersSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import styles from './SupplierDetailPage.module.css';
 
@@ -26,6 +26,20 @@ function useLoadSupplier(id: string): () => void {
     };
   }, [dispatch, id]);
   return useCallback(() => void dispatch(loadSupplier(id)), [dispatch, id]);
+}
+
+/**
+ * Aviso breve tras guardar («Proveedor creado.», FR-009): se recoge al abrir la ficha y se borra de la store
+ * para que no se repita. Con StrictMode el estado local sobrevive al montaje doble.
+ */
+function useSaveNotice(): string | null {
+  const dispatch = useAppDispatch();
+  const pending = useAppSelector((state) => state.suppliers.save.notice);
+  const [notice] = useState(pending);
+  useEffect(() => {
+    if (pending) dispatch(clearSaveNotice());
+  }, [dispatch, pending]);
+  return notice;
 }
 
 function SupplierHeader({ supplier }: { supplier: SupplierDetail }) {
@@ -63,6 +77,7 @@ export function SupplierDetailPage() {
   const { search } = useLocation();
   const { status, data } = useAppSelector((state) => state.suppliers.detail);
   const retry = useLoadSupplier(id);
+  const notice = useSaveNotice();
   const listUrl = `/proveedores${search}`;
 
   if (status === 'notFound') return <Navigate to={listUrl} replace state={{ notFound: true }} />;
@@ -75,6 +90,7 @@ export function SupplierDetailPage() {
       <BackLink to={listUrl} label="Volver al listado de proveedores">
         Proveedores
       </BackLink>
+      {notice && <Alert variant="info">{notice}</Alert>}
       {loading && (
         <p role="status" className={styles.loading}>
           Cargando proveedor…

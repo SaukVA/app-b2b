@@ -3,7 +3,11 @@ import { requireAuth } from '../../middlewares/requireAuth';
 import { requirePermission } from '../../middlewares/requirePermission';
 import { validate } from '../../middlewares/validate';
 import { supplierController } from './supplier.controller';
-import { supplierIdParams, supplierListQuerySchema } from './supplier.validation';
+import {
+  supplierIdParams,
+  supplierInputSchema,
+  supplierListQuerySchema,
+} from './supplier.validation';
 
 export const supplierRouter = Router();
 
@@ -22,6 +26,11 @@ supplierRouter.use(requireAuth, requirePermission('proveedores', 'view'));
  *       required: true
  *       schema: { type: string, pattern: '^[a-f0-9]{24}$' }
  *   responses:
+ *     SupplierCifTaken:
+ *       description: SUPPLIER_CIF_TAKEN (activo o dado de baja; el mensaje incluye su nombre)
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/ErrorEnvelope' }
  *     SupplierNotFound:
  *       description: SUPPLIER_NOT_FOUND
  *       content:
@@ -216,3 +225,45 @@ supplierRouter.get('/', validate({ query: supplierListQuerySchema }), supplierCo
  *       '404': { $ref: '#/components/responses/SupplierNotFound' }
  */
 supplierRouter.get('/:id', validate({ params: supplierIdParams }), supplierController.get);
+
+/**
+ * @openapi
+ * /suppliers:
+ *   post:
+ *     tags: [Suppliers]
+ *     summary: Da de alta un proveedor (activo)
+ *     description: >
+ *       Exige permiso de editar Proveedores. El CIF se normaliza y es único entre activos y dados de baja;
+ *       la web sin protocolo se guarda con https://; las filas de contacto sin valor se descartan.
+ *     security: [{ bearerAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/SupplierInput' }
+ *     responses:
+ *       '201':
+ *         description: Creado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/SupplierDetail' }
+ *       '400': { $ref: '#/components/responses/ValidationError' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403':
+ *         description: AUTH_FORBIDDEN (el rol no puede editar Proveedores)
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *       '409': { $ref: '#/components/responses/SupplierCifTaken' }
+ */
+supplierRouter.post(
+  '/',
+  requirePermission('proveedores', 'edit'),
+  validate({ body: supplierInputSchema }),
+  supplierController.create,
+);

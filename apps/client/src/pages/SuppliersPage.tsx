@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router';
+import { Link, useLocation, useSearchParams } from 'react-router';
 import type { SupplierListQuery } from '@app/shared';
 import { Alert } from '../components/Alert';
 import { Button } from '../components/Button';
@@ -11,6 +11,7 @@ import {
   serializeSupplierCriteria,
 } from '../features/suppliers/supplierCriteria';
 import { loadSuppliers } from '../features/suppliers/suppliersSlice';
+import { selectCan } from '../features/auth/authSelectors';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import styles from './SuppliersPage.module.css';
@@ -101,22 +102,39 @@ function NotFoundNotice() {
   );
 }
 
+/** Título, contador y, con permiso de editar, «Nuevo proveedor» con los criterios del listado (010 FR-002). */
+function SuppliersHeader({ countLabel, newUrl }: { countLabel: string; newUrl: string | null }) {
+  return (
+    <header className={styles.header}>
+      <h1 id="suppliers-title" className={styles.title}>
+        Proveedores
+      </h1>
+      <span className={styles.count}>{countLabel}</span>
+      {newUrl && (
+        <Link to={newUrl} className={styles.newButton}>
+          Nuevo proveedor
+        </Link>
+      )}
+    </header>
+  );
+}
+
 /** Proveedores: listado con búsqueda, filtro de bajas y trimestre; cada fila abre su ficha (010). */
 export function SuppliersPage() {
   const { items, total, status } = useAppSelector((state) => state.suppliers);
   const lastOpenedId = useAppSelector((state) => state.suppliers.detail.data?.id);
+  const canEdit = useAppSelector(selectCan('proveedores', 'edit'));
   const { criteria, update } = useSupplierCriteria();
+  const listQuery = serializeSupplierCriteria(criteria).toString();
   const [search, setSearch] = useSearchField(criteria.q, update);
   const retry = useLoadSuppliers(criteria);
 
   return (
     <section aria-labelledby="suppliers-title" className={styles.page}>
-      <header className={styles.header}>
-        <h1 id="suppliers-title" className={styles.title}>
-          Proveedores
-        </h1>
-        <span className={styles.count}>{supplierCountLabel(total, criteria.includeInactive)}</span>
-      </header>
+      <SuppliersHeader
+        countLabel={supplierCountLabel(total, criteria.includeInactive)}
+        newUrl={canEdit ? `/proveedores/nuevo${listQuery ? `?${listQuery}` : ''}` : null}
+      />
       <NotFoundNotice />
       <SupplierFilters
         search={search}
@@ -132,10 +150,12 @@ export function SuppliersPage() {
       <SuppliersTable
         rows={items}
         quarter={criteria.quarter}
-        search={serializeSupplierCriteria(criteria).toString()}
+        search={listQuery}
         focusId={lastOpenedId}
         busy={status === 'loading'}
-        status={<SuppliersListStatus status={status} total={total} onRetry={retry} />}
+        status={
+          <SuppliersListStatus status={status} total={total} onRetry={retry} canEdit={canEdit} />
+        }
       />
     </section>
   );

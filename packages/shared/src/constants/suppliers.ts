@@ -39,6 +39,49 @@ export const SUPPLIER_ERROR_CODES = {
   versionConflict: 'SUPPLIER_VERSION_CONFLICT',
 } as const;
 
+/**
+ * Formatos que comprueban igual el servidor (zod) y el formulario (FR-004). El CIF español y el IBAN tienen
+ * sus propios validadores (utils/taxId, utils/iban).
+ */
+export const SUPPLIER_PATTERNS = {
+  /** Identificador fiscal extranjero ya normalizado: 3–20 letras y números. */
+  foreignTaxId: /^[A-Z0-9]{3,20}$/,
+  spanishPostalCode: /^\d{5}$/,
+  /** 3–10 letras, números, espacios o guiones. */
+  foreignPostalCode: /^[A-Za-z0-9 -]{3,10}$/,
+  /** 6–20 dígitos, espacios, «+», «-» o paréntesis. */
+  phone: /^[\d\s+()-]{6,20}$/,
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  /** Dirección web con o sin http(s)://: un dominio con punto y, opcionalmente, una ruta. */
+  web: /^(https?:\/\/)?[^\s./]+(\.[^\s./]+)+(\/\S*)?$/i,
+  leadTimeDays: /^\d+$/,
+} as const;
+
+/** Textos de error de los datos del proveedor (contracts/suppliers-ui.md), comunes a servidor y cliente. */
+export const SUPPLIER_MESSAGES = {
+  nameRequired: 'Escribe el nombre del proveedor.',
+  cifRequired: 'Escribe el CIF.',
+  cifInvalid:
+    'No es un NIF o CIF español válido. Si el proveedor es extranjero, marca «Proveedor extranjero».',
+  foreignCifInvalid: 'Escribe un identificador fiscal de 3 a 20 letras y números.',
+  addressRequired: 'Escribe la dirección.',
+  postalCodeRequired: 'Escribe el código postal.',
+  postalCodeSpanish: 'El código postal español tiene 5 cifras.',
+  postalCodeForeign: 'Escribe un código postal de 3 a 10 letras, números, espacios o guiones.',
+  cityRequired: 'Escribe la población.',
+  ibanInvalid: 'El IBAN no es válido. Revisa que esté completo y bien escrito.',
+  webInvalid: 'Escribe una dirección web, por ejemplo www.proveedor.es.',
+  leadTimeInvalid: 'Escribe un número de días entre 0 y 365.',
+  minOrderInvalid: 'Escribe un importe mayor que 0, con 2 decimales como mucho.',
+  phoneInvalid: 'Escribe un teléfono de 6 a 20 cifras.',
+  emailInvalid: 'Escribe un correo válido, por ejemplo nombre@proveedor.es.',
+} as const;
+
+/** Importe con 2 decimales como mucho y mayor que 0 (pedido mínimo, FR-004). */
+export function isValidMinOrder(value: number): boolean {
+  return value > 0 && Math.abs(Math.round(value * 100) - value * 100) < 1e-6;
+}
+
 /** Trimestre (1–4) de una fecha. Se calcula en cada uso, nunca al cargar el módulo (research R4). */
 export function currentQuarter(date: Date): Quarter {
   return (Math.floor(date.getMonth() / 3) + 1) as Quarter;

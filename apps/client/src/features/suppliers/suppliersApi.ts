@@ -3,6 +3,7 @@ import {
   type ApiSuccess,
   type ListPage,
   type SupplierDetail,
+  type SupplierInput,
   type SupplierListItem,
   type SupplierListQuery,
 } from '@app/shared';
@@ -36,5 +37,11 @@ export async function fetchSuppliers(
 /** Ficha de un proveedor (GET /suppliers/:id). */
 export async function fetchSupplier(id: string): Promise<SupplierDetail> {
   const { data } = await httpClient.get<ApiSuccess<SupplierDetail>>(`/suppliers/${id}`);
+  return data.data;
+}
+
+/** Alta de un proveedor (POST /suppliers); devuelve su ficha. */
+export async function createSupplier(input: SupplierInput): Promise<SupplierDetail> {
+  const { data } = await httpClient.post<ApiSuccess<SupplierDetail>>('/suppliers', input);
   return data.data;
 }

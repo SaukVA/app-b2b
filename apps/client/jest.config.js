@@ -1,6 +1,6 @@
 /** @type {import('jest').Config} */
 export default {
-  testEnvironment: 'jsdom',
+  testEnvironment: '<rootDir>/test/jsdomEnvironment.cjs',
   setupFiles: ['<rootDir>/test/setupTests.cjs'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   transform: {

@@ -4,7 +4,9 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, useLocation, useNavigate, type NavigateFunction } from 'react-router';
 import {
   currentQuarter,
+  type AppModule,
   type ListPage,
+  type PermissionLevel,
   type SupplierDetail,
   type SupplierListItem,
 } from '@app/shared';
@@ -304,5 +306,70 @@ describe('SuppliersPage · proveedor inexistente (010 FR-015)', () => {
     renderWith({ pathname: '/proveedores' });
     await screen.findByText('2 activos');
     expect(screen.queryByText(/El enlace apunta a un proveedor que no existe/)).toBeNull();
+  });
+});
+
+const NO_PERMISSIONS: Record<AppModule, PermissionLevel> = {
+  ventas: 'none',
+  clientes: 'none',
+  productos: 'none',
+  proveedores: 'none',
+  cobros: 'none',
+  ajustes: 'none',
+};
+
+/** Listado con un usuario cuyo permiso en Proveedores es `level`. */
+function renderAs(level: 'view' | 'edit') {
+  const store = setupStore({
+    auth: {
+      user: {
+        id: '1',
+        login: 'marta@empresa.es',
+        name: 'Marta',
+        role: 'Administración',
+        roleName: 'Administración',
+        permissions: { ...NO_PERMISSIONS, proveedores: level },
+        isBootstrap: false,
+        preferences: {
+          theme: 'light',
+          tableDensity: 'comfortable',
+          moneyFormat: 'es',
+          homeScreen: null,
+        },
+      },
+      accessToken: 'jwt',
+      status: 'succeeded',
+      error: null,
+    },
+  });
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={['/proveedores?q=ace']}>
+        <SuppliersPage />
+      </MemoryRouter>
+    </Provider>,
+  );
+}
+
+describe('SuppliersPage · alta con permiso de editar (010 US1, FR-002, FR-022)', () => {
+  it('con permiso de editar muestra «Nuevo proveedor», que conserva los criterios', async () => {
+    renderAs('edit');
+    const link = await screen.findByRole('link', { name: 'Nuevo proveedor' });
+    expect(link.getAttribute('href')).toBe('/proveedores/nuevo?q=ace');
+  });
+
+  it('con permiso de editar el aviso vacío invita a dar de alta uno', async () => {
+    mockedFetch.mockResolvedValue(EMPTY_PAGE);
+    renderAs('edit');
+    expect(
+      await screen.findByText('Mientras tanto, puedes dar de alta uno con «Nuevo proveedor».'),
+    ).toBeTruthy();
+  });
+
+  it('solo con permiso de ver no muestra «Nuevo proveedor» ni la invitación', async () => {
+    renderAs('view');
+    await screen.findByText('Todavía no hay proveedores');
+    expect(screen.queryByRole('link', { name: 'Nuevo proveedor' })).toBeNull();
+    expect(screen.queryByText(/puedes dar de alta uno/)).toBeNull();
   });
 });

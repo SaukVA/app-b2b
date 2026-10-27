@@ -1,23 +1,32 @@
 import type { ListPage, SupplierDetail, SupplierListItem } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { fetchSupplier, fetchSuppliers } from './suppliersApi';
+import { createSupplier as postSupplier, fetchSupplier, fetchSuppliers } from './suppliersApi';
+import { EMPTY_SUPPLIER_FORM, type SupplierFormValues } from './supplierForm';
 import {
   SUPPLIERS_LOAD_ERROR_MESSAGE,
   closeSupplier,
+  createSupplier,
+  resetSave,
   loadSupplier,
   loadSuppliers,
 } from './suppliersSlice';
 
-jest.mock('./suppliersApi', () => ({ fetchSuppliers: jest.fn(), fetchSupplier: jest.fn() }));
+jest.mock('./suppliersApi', () => ({
+  fetchSuppliers: jest.fn(),
+  fetchSupplier: jest.fn(),
+  createSupplier: jest.fn(),
+}));
 
 const mockedFetch = jest.mocked(fetchSuppliers);
 const mockedFetchOne = jest.mocked(fetchSupplier);
+const mockedPost = jest.mocked(postSupplier);
 const EMPTY_PAGE: ListPage<SupplierListItem> = { items: [], total: 0, page: 1, pageSize: 10 };
 const DEFAULT_QUERY = { includeInactive: false, quarter: 1 as const, page: 1 };
 
 beforeEach(() => {
   mockedFetch.mockReset();
   mockedFetchOne.mockReset();
+  mockedPost.mockReset();
 });
 
 describe('suppliersSlice', () => {
@@ -29,6 +38,7 @@ describe('suppliersSlice', () => {
       error: null,
       requestId: null,
       detail: { status: 'idle', data: null },
+      save: { status: 'idle', error: null, fieldErrors: {}, otherErrors: [], notice: null },
     });
   });
 
@@ -173,5 +183,104 @@ describe('suppliersSlice · ficha inexistente, error y cierre (US2, FR-015)', ()
     await store.dispatch(loadSupplier('s1'));
     store.dispatch(closeSupplier());
     expect(store.getState().suppliers.detail).toEqual({ status: 'idle', data: DETAIL });
+  });
+});
+
+const FORM: SupplierFormValues = {
+  ...EMPTY_SUPPLIER_FORM,
+  name: 'Aceites del Sur',
+  cif: 'b-12.345.674',
+  address: 'Calle Mayor, 1',
+  postalCode: '46001',
+  city: 'Valencia',
+  phones: [
+    { label: '', value: '' },
+    { label: '', value: '123' },
+  ],
+};
+
+const apiError = (status: number, code: string, message: string) =>
+  Object.assign(new Error(`Request failed with status code ${status}`), {
+    response: { status, data: { success: false, error: { code, message } } },
+  });
+
+describe('suppliersSlice · alta (US1, FR-009, FR-010)', () => {
+  it('envía el alta normalizada y pasa a saving', () => {
+    mockedPost.mockReturnValue(new Promise(() => {}));
+    const store = setupStore();
+    void store.dispatch(createSupplier(FORM));
+    expect(store.getState().suppliers.save.status).toBe('saving');
+    expect(mockedPost).toHaveBeenCalledWith(
+      expect.objectContaining({ cif: 'B12345674', phones: [{ label: null, value: '123' }] }),
+    );
+  });
+
+  it('al guardar deja la ficha lista y el aviso «Proveedor creado.»', async () => {
+    mockedPost.mockResolvedValue(DETAIL);
+    const store = setupStore();
+    await store.dispatch(createSupplier(FORM));
+    expect(store.getState().suppliers.save).toMatchObject({
+      status: 'saved',
+      notice: 'Proveedor creado.',
+    });
+    expect(store.getState().suppliers.detail).toEqual({ status: 'ready', data: DETAIL });
+  });
+});
+
+describe('suppliersSlice · alta con errores (US1, FR-006, FR-010)', () => {
+  it('un CIF duplicado va al error del campo CIF', async () => {
+    const message = 'Ya existe un proveedor con este CIF: Levante.';
+    mockedPost.mockRejectedValue(apiError(409, 'SUPPLIER_CIF_TAKEN', message));
+    const store = setupStore();
+    await store.dispatch(createSupplier(FORM));
+    expect(store.getState().suppliers.save).toMatchObject({
+      status: 'error',
+      error: null,
+      fieldErrors: { cif: message },
+    });
+  });
+
+  it('un 400 se reparte entre los campos con la fila del formulario', async () => {
+    mockedPost.mockRejectedValue(
+      apiError(400, 'VALIDATION_ERROR', 'phones.0.value: Escribe un teléfono de 6 a 20 cifras.'),
+    );
+    const store = setupStore();
+    await store.dispatch(createSupplier(FORM));
+    expect(store.getState().suppliers.save.fieldErrors).toEqual({
+      'phones.1.value': 'Escribe un teléfono de 6 a 20 cifras.',
+    });
+  });
+});
+
+describe('suppliersSlice · fallos al guardar y reinicio (US1, FR-010)', () => {
+  it.each([
+    [apiError(403, 'AUTH_FORBIDDEN', 'x'), 'Ya no tienes permiso para editar proveedores.'],
+    [
+      new Error('Network Error'),
+      'No se ha podido guardar el proveedor. Lo que has escrito sigue aquí; vuelve a intentarlo.',
+    ],
+    [
+      apiError(500, 'INTERNAL', 'detalle'),
+      'No se ha podido guardar el proveedor. Lo que has escrito sigue aquí; vuelve a intentarlo.',
+    ],
+  ])('un fallo muestra su mensaje fijo (%#)', async (error, message) => {
+    mockedPost.mockRejectedValue(error);
+    const store = setupStore();
+    await store.dispatch(createSupplier(FORM));
+    expect(store.getState().suppliers.save).toMatchObject({ status: 'error', error: message });
+  });
+
+  it('resetSave vuelve al estado inicial del guardado', async () => {
+    mockedPost.mockResolvedValue(DETAIL);
+    const store = setupStore();
+    await store.dispatch(createSupplier(FORM));
+    store.dispatch(resetSave());
+    expect(store.getState().suppliers.save).toEqual({
+      status: 'idle',
+      error: null,
+      fieldErrors: {},
+      otherErrors: [],
+      notice: null,
+    });
   });
 });

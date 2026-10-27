@@ -219,63 +219,63 @@ nombre; Almacén no ve «Nuevo proveedor».
 
 ### Tests de US1 (primero, deben fallar) ⚠️
 
-- [ ] T038 [P] [US1] Tests de `supplierInputSchema` en
+- [X] T038 [P] [US1] Tests de `supplierInputSchema` en
   `apps/server/src/modules/suppliers/supplier.validation.test.ts`: obligatorios (`name`, `cif`, `address`,
   `postalCode`, `city`); límites de `SUPPLIER_LIMITS`; CIF español inválido rechazado salvo `foreign`; código
   postal «5 cifras» si es español y 3–10 si es extranjero; IBAN inválido; web sin protocolo → `https://…`;
   `leadTimeDays` 0–365; `minOrder` > 0 con 2 decimales o `null`; filas de contacto sin valor descartadas antes de
   contar el máximo de 5; teléfono «6–20 de dígitos, espacios, `+`, `-`, `()`»; correo válido; `paymentMethod` del
   enum.
-- [ ] T039 [P] [US1] Tests de `createSupplier` en `supplier.service.test.ts`: crea activo, `version` 0,
+- [X] T039 [P] [US1] Tests de `createSupplier` en `supplier.service.test.ts`: crea activo, `version` 0,
   `createdBy` = `updatedBy` = actor; CIF ya usado por un activo o por un dado de baja → `SUPPLIER_CIF_TAKEN` 409
   con «Ya existe un proveedor con este CIF: <nombre>.»; dos altas simultáneas con el mismo CIF → solo una.
-- [ ] T040 [P] [US1] Tests de `POST /api/suppliers` en `supplier.routes.test.ts`: 201 con `SupplierDetail`; 400;
+- [X] T040 [P] [US1] Tests de `POST /api/suppliers` en `supplier.routes.test.ts`: 201 con `SupplierDetail`; 400;
   409; 403 Almacén y Comercial; 401.
-- [ ] T041 [P] [US1] Tests de `supplierForm.ts` en `apps/client/src/features/suppliers/supplierForm.test.ts`:
+- [X] T041 [P] [US1] Tests de `supplierForm.ts` en `apps/client/src/features/suppliers/supplierForm.test.ts`:
   `toSupplierInput` (recorta, normaliza CIF e IBAN, números, descarta filas vacías), `fromSupplierDetail` y
   `validateSupplierForm` con cada texto de error de contracts/suppliers-ui.md.
-- [ ] T042 [P] [US1] Tests de `SupplierContactsField` en
+- [X] T042 [P] [US1] Tests de `SupplierContactsField` en
   `apps/client/src/features/suppliers/components/SupplierContactsField.test.tsx`: añadir, quitar
   («Quitar teléfono N»), etiquetar, contador «N de 5», botón deshabilitado al llegar a 5, error por fila.
-- [ ] T043 [P] [US1] Tests de `SupplierForm` en
+- [X] T043 [P] [US1] Tests de `SupplierForm` en
   `apps/client/src/features/suppliers/components/SupplierForm.test.tsx`: secciones y campos con sus textos; casilla
   «Proveedor extranjero»; `UserMoneyField` en pedido mínimo; `TextArea` en Observaciones; errores junto al campo
   con `aria-invalid`, resumen «Revisa estos campos: …» y foco en el primero con error; error de CIF del servidor
   en el campo CIF.
-- [ ] T044 [P] [US1] Tests de `createSupplier` (thunk) en `suppliersSlice.test.ts` y de `SupplierFormPage` en
+- [X] T044 [P] [US1] Tests de `createSupplier` (thunk) en `suppliersSlice.test.ts` y de `SupplierFormPage` en
   modo alta en `apps/client/src/pages/SupplierFormPage.test.tsx`: guardar navega a `/proveedores/:id` y la ficha
   muestra «Proveedor creado.» con `role="status"`; error de red → «No se ha podido guardar el proveedor. Lo que has
   escrito sigue aquí; vuelve a intentarlo.»; 403 → «Ya no tienes permiso para editar proveedores.» sin perder lo
   escrito; 400 del servidor → errores junto a cada campo; salir con cambios (flecha, «Cancelar» o navegación) abre «¿Descartar los
   cambios?» con «Seguir editando» / «Descartar cambios»; sin cambios sale directamente.
-- [ ] T045 [P] [US1] Tests de `parseValidationMessage` en `apps/client/src/features/suppliers/supplierForm.test.ts`:
+- [X] T045 [P] [US1] Tests de `parseValidationMessage` en `apps/client/src/features/suppliers/supplierForm.test.ts`:
   `postalCode: El código postal español tiene 5 cifras; phones.1.value: …` se convierte en errores de `postalCode`
   y de la fila 2 de teléfonos; una ruta que no es un campo del formulario va al resumen (FR-006, research R4).
 
 ### Implementación de US1
 
-- [ ] T046 [US1] Añadir `supplierInputSchema` en `supplier.validation.ts` con las reglas de data-model.md y
+- [X] T046 [US1] Añadir `supplierInputSchema` en `supplier.validation.ts` con las reglas de data-model.md y
   `superRefine` para CIF y código postal según `foreign`, usando los validadores de `@app/shared`, hasta poner en
   verde T038.
-- [ ] T047 [US1] Implementar `createSupplier(input, actor)` en `supplier.service.ts` con el mapeo de E11000 a
+- [X] T047 [US1] Implementar `createSupplier(input, actor)` en `supplier.service.ts` con el mapeo de E11000 a
   `SUPPLIER_CIF_TAKEN` (busca el nombre del dueño del CIF; patrón `toEmailTakenError` de usuarios), hasta poner en
   verde T039.
-- [ ] T048 [US1] Añadir `create` en `supplier.controller.ts` (actor `AuditUser` desde `req.auth`, respuesta 201)
+- [X] T048 [US1] Añadir `create` en `supplier.controller.ts` (actor `AuditUser` desde `req.auth`, respuesta 201)
   y `POST /` con `requirePermission('proveedores', 'edit')`, `validate({ body: supplierInputSchema })` y su
   `@openapi`, hasta poner en verde T040.
-- [ ] T049 [P] [US1] Crear `apps/client/src/features/suppliers/supplierForm.ts` hasta poner en verde T041.
-- [ ] T050 [P] [US1] Crear `SupplierContactsField.tsx` en `apps/client/src/features/suppliers/components/` hasta
+- [X] T049 [P] [US1] Crear `apps/client/src/features/suppliers/supplierForm.ts` hasta poner en verde T041.
+- [X] T050 [P] [US1] Crear `SupplierContactsField.tsx` en `apps/client/src/features/suppliers/components/` hasta
   poner en verde T042.
-- [ ] T051 [US1] Crear `SupplierForm.tsx` (+ `.module.css`) en `apps/client/src/features/suppliers/components/`
+- [X] T051 [US1] Crear `SupplierForm.tsx` (+ `.module.css`) en `apps/client/src/features/suppliers/components/`
   según el tablero «Proveedores» (dos columnas, una en estrecho), hasta poner en verde T043.
-- [ ] T052 [US1] Añadir `createSupplier` en `suppliersApi.ts`, el estado `save` y el thunk `createSupplier` en
+- [X] T052 [US1] Añadir `createSupplier` en `suppliersApi.ts`, el estado `save` y el thunk `createSupplier` en
   `suppliersSlice.ts` (CIF duplicado al error del campo; 403 → mensaje de permiso en `save.error`; 400 → errores
   por campo con `parseValidationMessage`), y crear `apps/client/src/pages/SupplierFormPage.tsx`
   (+ `.module.css`) en modo alta con `BackLink` al listado, `useBlocker` y `Dialog` de descartar, hasta poner en
   verde T044.
-- [ ] T053 [US1] Implementar `parseValidationMessage` en `apps/client/src/features/suppliers/supplierForm.ts`
+- [X] T053 [US1] Implementar `parseValidationMessage` en `apps/client/src/features/suppliers/supplierForm.ts`
   hasta poner en verde T045.
-- [ ] T054 [US1] Añadir la ruta `proveedores/nuevo` con `RequireAuth module="proveedores" level="edit"` en
+- [X] T054 [US1] Añadir la ruta `proveedores/nuevo` con `RequireAuth module="proveedores" level="edit"` en
   `AppRouter.tsx`, el botón «Nuevo proveedor» (solo con permiso de editar) en `SuppliersPage.tsx`, el texto
   adicional del aviso vacío para quien puede editar (FR-022) y el aviso «Proveedor creado.» en
   `SupplierDetailPage.tsx`.
