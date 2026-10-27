@@ -294,12 +294,12 @@ el CIF de otro proveedor da error; guardar con una versión antigua muestra el a
 
 ### Tests de US3 (primero, deben fallar) ⚠️
 
-- [ ] T055 [P] [US3] Tests de `updateSupplier` en `supplier.service.test.ts`: con la `version` correcta guarda,
+- [X] T055 [P] [US3] Tests de `updateSupplier` en `supplier.service.test.ts`: con la `version` correcta guarda,
   sube `version` y cambia `updatedBy`; con una antigua → `SUPPLIER_VERSION_CONFLICT` 409 y no guarda; id
   inexistente → 404; CIF de otro → 409 `SUPPLIER_CIF_TAKEN`; editable estando dado de baja (FR-019).
-- [ ] T056 [P] [US3] Tests de `PUT /api/suppliers/:id` en `supplier.routes.test.ts`: 200; 400 (sin `version` o
+- [X] T056 [P] [US3] Tests de `PUT /api/suppliers/:id` en `supplier.routes.test.ts`: 200; 400 (sin `version` o
   datos no válidos); 404; 409 (los dos códigos); 403 Almacén.
-- [ ] T057 [P] [US3] Tests del thunk `updateSupplier` en `suppliersSlice.test.ts` y de `SupplierFormPage` en modo
+- [X] T057 [P] [US3] Tests del thunk `updateSupplier` en `suppliersSlice.test.ts` y de `SupplierFormPage` en modo
   edición: datos actuales cargados; guardar vuelve a la ficha con «Cambios guardados.» (`role="status"`); 409 de versión muestra
   «Otro usuario ha cambiado este proveedor mientras lo editabas. Carga los datos actuales y repite tus cambios.»
   con «Cargar datos actuales», sin perder lo escrito hasta pulsarlo; 403 muestra «Ya no tienes permiso para
@@ -307,13 +307,13 @@ el CIF de otro proveedor da error; guardar con una versión antigua muestra el a
 
 ### Implementación de US3
 
-- [ ] T058 [US3] Añadir `supplierUpdateSchema` (`supplierInputSchema` + `version` entero ≥ 0) en
+- [X] T058 [US3] Añadir `supplierUpdateSchema` (`supplierInputSchema` + `version` entero ≥ 0) en
   `supplier.validation.ts` e implementar `updateSupplier(id, input, actor)` en `supplier.service.ts` con
   `findOneAndUpdate({ _id, version }, { …, $inc: { version: 1 } })` y la distinción 404 / 409 de research R6, hasta
   poner en verde T055.
-- [ ] T059 [US3] Añadir `update` en `supplier.controller.ts` y `PUT /:id` (editar) con su `@openapi` en
+- [X] T059 [US3] Añadir `update` en `supplier.controller.ts` y `PUT /:id` (editar) con su `@openapi` en
   `supplier.routes.ts`, hasta poner en verde T056.
-- [ ] T060 [US3] Añadir `updateSupplier` en `suppliersApi.ts` y el thunk con `save.conflict` en
+- [X] T060 [US3] Añadir `updateSupplier` en `suppliersApi.ts` y el thunk con `save.conflict` en
   `suppliersSlice.ts`; modo edición en `SupplierFormPage.tsx` (precarga, `BackLink` a la ficha, avisos de
   conflicto y de permiso); ruta `proveedores/:id/editar` (`level="edit"`) en `AppRouter.tsx`; botón «Editar
   proveedor» en `SupplierDetailPage.tsx`; hasta poner en verde T057.

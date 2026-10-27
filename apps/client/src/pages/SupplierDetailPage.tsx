@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Navigate, useLocation, useParams } from 'react-router';
+import { Link, Navigate, useLocation, useParams } from 'react-router';
 import type { SupplierDetail } from '@app/shared';
 import { Alert } from '../components/Alert';
 import { BackLink } from '../components/BackLink';
 import { Button } from '../components/Button';
 import { StatusStamp } from '../components/StatusStamp';
+import { selectCan } from '../features/auth/authSelectors';
 import { SupplierDetailView } from '../features/suppliers/components/SupplierDetailView';
 import { clearSaveNotice, closeSupplier, loadSupplier } from '../features/suppliers/suppliersSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -42,7 +43,14 @@ function useSaveNotice(): string | null {
   return notice;
 }
 
-function SupplierHeader({ supplier }: { supplier: SupplierDetail }) {
+/** Nombre, sello «Baja», CIF y, con permiso de editar, «Editar proveedor» (contracts/suppliers-ui.md). */
+function SupplierHeader({
+  supplier,
+  editUrl,
+}: {
+  supplier: SupplierDetail;
+  editUrl: string | null;
+}) {
   return (
     <header className={styles.header}>
       <div className={styles.titleRow}>
@@ -53,6 +61,13 @@ function SupplierHeader({ supplier }: { supplier: SupplierDetail }) {
         CIF {supplier.cif}
         {supplier.foreign && ' (extranjero)'}
       </span>
+      {editUrl && (
+        <div className={styles.actions}>
+          <Link to={editUrl} className={styles.editButton}>
+            Editar proveedor
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
@@ -78,6 +93,7 @@ export function SupplierDetailPage() {
   const { status, data } = useAppSelector((state) => state.suppliers.detail);
   const retry = useLoadSupplier(id);
   const notice = useSaveNotice();
+  const canEdit = useAppSelector(selectCan('proveedores', 'edit'));
   const listUrl = `/proveedores${search}`;
 
   if (status === 'notFound') return <Navigate to={listUrl} replace state={{ notFound: true }} />;
@@ -99,7 +115,10 @@ export function SupplierDetailPage() {
       {status === 'error' && <LoadError onRetry={retry} />}
       {ready && (
         <>
-          <SupplierHeader supplier={data} />
+          <SupplierHeader
+            supplier={data}
+            editUrl={canEdit ? `/proveedores/${id}/editar${search}` : null}
+          />
           <SupplierDetailView supplier={data} year={new Date().getFullYear()} />
         </>
       )}

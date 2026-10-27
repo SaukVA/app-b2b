@@ -145,3 +145,10 @@ function checkTaxIdAndPostalCode(input: SupplierFieldsInput, ctx: z.RefinementCt
 export const supplierInputSchema = supplierFields.superRefine(checkTaxIdAndPostalCode);
 
 export type SupplierInputBody = z.infer<typeof supplierInputSchema>;
+
+/** Edición: los mismos datos y la `version` de la última lectura (research R6). */
+export const supplierUpdateSchema = supplierFields
+  .extend({ version: z.number().int().min(0) })
+  .superRefine(checkTaxIdAndPostalCode);
+
+export type SupplierUpdateBody = z.infer<typeof supplierUpdateSchema>;

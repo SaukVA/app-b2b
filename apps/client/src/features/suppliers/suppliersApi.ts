@@ -4,6 +4,7 @@ import {
   type ListPage,
   type SupplierDetail,
   type SupplierInput,
+  type SupplierUpdateInput,
   type SupplierListItem,
   type SupplierListQuery,
 } from '@app/shared';
@@ -43,5 +44,14 @@ export async function fetchSupplier(id: string): Promise<SupplierDetail> {
 /** Alta de un proveedor (POST /suppliers); devuelve su ficha. */
 export async function createSupplier(input: SupplierInput): Promise<SupplierDetail> {
   const { data } = await httpClient.post<ApiSuccess<SupplierDetail>>('/suppliers', input);
+  return data.data;
+}
+
+/** Edición (PUT /suppliers/:id) con la `version` leída; devuelve la ficha con la versión siguiente. */
+export async function updateSupplier(
+  id: string,
+  input: SupplierUpdateInput,
+): Promise<SupplierDetail> {
+  const { data } = await httpClient.put<ApiSuccess<SupplierDetail>>(`/suppliers/${id}`, input);
   return data.data;
 }

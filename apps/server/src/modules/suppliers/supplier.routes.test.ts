@@ -330,3 +330,87 @@ describe('POST /api/suppliers · acceso (FR-002)', () => {
     expect(res.status).toBe(401);
   });
 });
+
+const UPDATE = {
+  name: 'Bebidas Mediterráneo S.L.',
+  cif: 'B46000006',
+  address: 'Calle Mayor, 1',
+  postalCode: '46023',
+  city: 'Valencia',
+  leadTimeDays: 5,
+};
+
+const putSupplier = (token: string, supplierId: string, body: unknown) =>
+  request(app())
+    .put(`/api/suppliers/${supplierId}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send(body);
+
+describe('PUT /api/suppliers/:id · edición (FR-007, FR-011)', () => {
+  let id: string;
+  beforeEach(async () => {
+    id = await seedForDetail();
+  });
+
+  it('200 con la ficha guardada y la versión siguiente', async () => {
+    const res = await putSupplier(await tokenFor('Administración'), id, { ...UPDATE, version: 0 });
+    expect(res.status).toBe(200);
+    expect(res.body.data).toMatchObject({
+      id,
+      name: 'Bebidas Mediterráneo S.L.',
+      leadTimeDays: 5,
+      version: 1,
+      createdBy: ADMIN,
+      updatedBy: { login: 'administración@empresa.es' },
+    });
+  });
+
+  it.each([
+    ['sin version', UPDATE],
+    ['con datos no válidos', { ...UPDATE, postalCode: '460', version: 0 }],
+  ])('400 VALIDATION_ERROR %s', async (_case, body) => {
+    const res = await putSupplier(await tokenFor('Administración'), id, body);
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('409 SUPPLIER_VERSION_CONFLICT con una versión antigua', async () => {
+    const token = await tokenFor('Administración');
+    await putSupplier(token, id, { ...UPDATE, version: 0 });
+    const res = await putSupplier(token, id, { ...UPDATE, name: 'Otro', version: 0 });
+    expect(res.status).toBe(409);
+    expect(res.body.error.code).toBe('SUPPLIER_VERSION_CONFLICT');
+  });
+});
+
+describe('PUT /api/suppliers/:id · CIF, existencia y acceso (FR-002, FR-005)', () => {
+  let id: string;
+  beforeEach(async () => {
+    id = await seedForDetail();
+  });
+
+  it('409 SUPPLIER_CIF_TAKEN con el CIF de otro proveedor', async () => {
+    const res = await putSupplier(await tokenFor('Administración'), id, {
+      ...UPDATE,
+      cif: 'B12345674',
+      version: 0,
+    });
+    expect(res.status).toBe(409);
+    expect(res.body.error.code).toBe('SUPPLIER_CIF_TAKEN');
+  });
+
+  it('404 SUPPLIER_NOT_FOUND si no existe', async () => {
+    const res = await putSupplier(await tokenFor('Administración'), '0123456789abcdef01234567', {
+      ...UPDATE,
+      version: 0,
+    });
+    expect(res.status).toBe(404);
+    expect(res.body.error.code).toBe('SUPPLIER_NOT_FOUND');
+  });
+
+  it('403 AUTH_FORBIDDEN para Almacén, sin guardar', async () => {
+    const res = await putSupplier(await tokenFor('Almacén'), id, { ...UPDATE, version: 0 });
+    expect(res.status).toBe(403);
+    expect((await SupplierModel.findById(id))?.version).toBe(0);
+  });
+});

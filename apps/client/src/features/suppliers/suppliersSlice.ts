@@ -13,7 +13,12 @@ import {
   type SupplierFormErrors,
   type SupplierFormValues,
 } from './supplierForm';
-import { createSupplier as postSupplier, fetchSupplier, fetchSuppliers } from './suppliersApi';
+import {
+  createSupplier as postSupplier,
+  fetchSupplier,
+  fetchSuppliers,
+  updateSupplier as putSupplier,
+} from './suppliersApi';
 
 // Los criterios no viven aquí: la dirección de la pantalla es su fuente de verdad (research R8).
 
@@ -40,6 +45,8 @@ export interface SuppliersState {
     fieldErrors: SupplierFormErrors;
     otherErrors: string[];
     notice: string | null;
+    /** 409 de versión: otro usuario cambió el proveedor mientras se editaba (FR-011). */
+    conflict: boolean;
   };
 }
 
@@ -49,6 +56,7 @@ const INITIAL_SAVE: SuppliersState['save'] = {
   fieldErrors: {},
   otherErrors: [],
   notice: null,
+  conflict: false,
 };
 
 const initialState: SuppliersState = {
@@ -89,13 +97,17 @@ export const SUPPLIER_SAVE_ERROR_MESSAGE =
   'No se ha podido guardar el proveedor. Lo que has escrito sigue aquí; vuelve a intentarlo.';
 export const SUPPLIER_FORBIDDEN_MESSAGE = 'Ya no tienes permiso para editar proveedores.';
 
-type SaveFailure = Pick<SuppliersState['save'], 'error' | 'fieldErrors' | 'otherErrors'>;
+type SaveFailure = Pick<
+  SuppliersState['save'],
+  'error' | 'fieldErrors' | 'otherErrors' | 'conflict'
+>;
 
 /** Respuesta de error → lo que muestra el formulario, sin perder lo escrito (FR-006, FR-010). */
 function toSaveFailure(err: unknown, values: SupplierFormValues): SaveFailure {
   const response = (err as { response?: { status?: number; data?: ApiError } }).response;
   const error = response?.data?.error;
-  const none = { error: null, fieldErrors: {}, otherErrors: [] };
+  const none = { error: null, fieldErrors: {}, otherErrors: [], conflict: false };
+  if (error?.code === SUPPLIER_ERROR_CODES.versionConflict) return { ...none, conflict: true };
   if (error?.code === SUPPLIER_ERROR_CODES.cifTaken) {
     return { ...none, fieldErrors: { cif: error.message } };
   }
@@ -115,6 +127,19 @@ export const createSupplier = createAsyncThunk<
 >('suppliers/create', async (values, { rejectWithValue }) => {
   try {
     return await postSupplier(toSupplierInput(values));
+  } catch (err) {
+    return rejectWithValue(toSaveFailure(err, values));
+  }
+});
+
+/** Edición con la versión leída (FR-007, FR-011). */
+export const updateSupplier = createAsyncThunk<
+  SupplierDetail,
+  { id: string; version: number; values: SupplierFormValues },
+  { rejectValue: SaveFailure }
+>('suppliers/update', async ({ id, version, values }, { rejectWithValue }) => {
+  try {
+    return await putSupplier(id, { ...toSupplierInput(values), version });
   } catch (err) {
     return rejectWithValue(toSaveFailure(err, values));
   }
@@ -158,19 +183,26 @@ function addDetailCases(builder: Builder): void {
     });
 }
 
+const SAVE_NOTICES = { create: 'Proveedor creado.', update: 'Cambios guardados.' } as const;
+
 function addSaveCases(builder: Builder): void {
-  builder
-    .addCase(createSupplier.pending, (state) => {
-      state.save = { ...INITIAL_SAVE, status: 'saving' };
-    })
-    .addCase(createSupplier.fulfilled, (state, action) => {
-      state.save = { ...INITIAL_SAVE, status: 'saved', notice: 'Proveedor creado.' };
-      state.detail = { status: 'ready', data: action.payload };
-    })
-    .addCase(createSupplier.rejected, (state, action) => {
-      const failure = action.payload ?? { ...INITIAL_SAVE, error: SUPPLIER_SAVE_ERROR_MESSAGE };
-      state.save = { ...INITIAL_SAVE, ...failure, status: 'error' };
-    });
+  for (const [thunk, notice] of [
+    [createSupplier, SAVE_NOTICES.create],
+    [updateSupplier, SAVE_NOTICES.update],
+  ] as const) {
+    builder
+      .addCase(thunk.pending, (state) => {
+        state.save = { ...INITIAL_SAVE, status: 'saving' };
+      })
+      .addCase(thunk.fulfilled, (state, action) => {
+        state.save = { ...INITIAL_SAVE, status: 'saved', notice };
+        state.detail = { status: 'ready', data: action.payload };
+      })
+      .addCase(thunk.rejected, (state, action) => {
+        const failure = action.payload ?? { error: SUPPLIER_SAVE_ERROR_MESSAGE };
+        state.save = { ...INITIAL_SAVE, ...failure, status: 'error' };
+      });
+  }
 }
 
 const suppliersSlice = createSlice({

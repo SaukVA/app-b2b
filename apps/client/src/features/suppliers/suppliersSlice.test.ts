@@ -1,12 +1,18 @@
 import type { ListPage, SupplierDetail, SupplierListItem } from '@app/shared';
 import { setupStore } from '../../store/store';
-import { createSupplier as postSupplier, fetchSupplier, fetchSuppliers } from './suppliersApi';
+import {
+  createSupplier as postSupplier,
+  fetchSupplier,
+  fetchSuppliers,
+  updateSupplier as putSupplier,
+} from './suppliersApi';
 import { EMPTY_SUPPLIER_FORM, type SupplierFormValues } from './supplierForm';
 import {
   SUPPLIERS_LOAD_ERROR_MESSAGE,
   closeSupplier,
   createSupplier,
   resetSave,
+  updateSupplier,
   loadSupplier,
   loadSuppliers,
 } from './suppliersSlice';
@@ -15,11 +21,13 @@ jest.mock('./suppliersApi', () => ({
   fetchSuppliers: jest.fn(),
   fetchSupplier: jest.fn(),
   createSupplier: jest.fn(),
+  updateSupplier: jest.fn(),
 }));
 
 const mockedFetch = jest.mocked(fetchSuppliers);
 const mockedFetchOne = jest.mocked(fetchSupplier);
 const mockedPost = jest.mocked(postSupplier);
+const mockedPut = jest.mocked(putSupplier);
 const EMPTY_PAGE: ListPage<SupplierListItem> = { items: [], total: 0, page: 1, pageSize: 10 };
 const DEFAULT_QUERY = { includeInactive: false, quarter: 1 as const, page: 1 };
 
@@ -27,6 +35,7 @@ beforeEach(() => {
   mockedFetch.mockReset();
   mockedFetchOne.mockReset();
   mockedPost.mockReset();
+  mockedPut.mockReset();
 });
 
 describe('suppliersSlice', () => {
@@ -38,7 +47,14 @@ describe('suppliersSlice', () => {
       error: null,
       requestId: null,
       detail: { status: 'idle', data: null },
-      save: { status: 'idle', error: null, fieldErrors: {}, otherErrors: [], notice: null },
+      save: {
+        status: 'idle',
+        error: null,
+        fieldErrors: {},
+        otherErrors: [],
+        notice: null,
+        conflict: false,
+      },
     });
   });
 
@@ -281,6 +297,60 @@ describe('suppliersSlice · fallos al guardar y reinicio (US1, FR-010)', () => {
       fieldErrors: {},
       otherErrors: [],
       notice: null,
+      conflict: false,
+    });
+  });
+});
+
+const EDIT = { id: 's1', version: 3, values: FORM };
+
+describe('suppliersSlice · edición (US3, FR-007, FR-009)', () => {
+  it('envía el id, la versión leída y los datos normalizados', () => {
+    mockedPut.mockReturnValue(new Promise(() => {}));
+    const store = setupStore();
+    void store.dispatch(updateSupplier(EDIT));
+    expect(store.getState().suppliers.save.status).toBe('saving');
+    expect(mockedPut).toHaveBeenCalledWith(
+      's1',
+      expect.objectContaining({ cif: 'B12345674', version: 3 }),
+    );
+  });
+
+  it('al guardar deja la ficha nueva y el aviso «Cambios guardados.»', async () => {
+    mockedPut.mockResolvedValue({ ...DETAIL, version: 4 });
+    const store = setupStore();
+    await store.dispatch(updateSupplier(EDIT));
+    expect(store.getState().suppliers.save).toMatchObject({
+      status: 'saved',
+      notice: 'Cambios guardados.',
+      conflict: false,
+    });
+    expect(store.getState().suppliers.detail.data).toMatchObject({ version: 4 });
+  });
+});
+
+describe('suppliersSlice · edición con conflicto o sin permiso (US3, FR-011)', () => {
+  it('un 409 de versión marca el conflicto, sin error general ni de campo', async () => {
+    mockedPut.mockRejectedValue(
+      apiError(409, 'SUPPLIER_VERSION_CONFLICT', 'Otro usuario ha cambiado este proveedor.'),
+    );
+    const store = setupStore();
+    await store.dispatch(updateSupplier(EDIT));
+    expect(store.getState().suppliers.save).toMatchObject({
+      status: 'error',
+      conflict: true,
+      error: null,
+      fieldErrors: {},
+    });
+  });
+
+  it('un 403 muestra que ya no hay permiso', async () => {
+    mockedPut.mockRejectedValue(apiError(403, 'AUTH_FORBIDDEN', 'x'));
+    const store = setupStore();
+    await store.dispatch(updateSupplier(EDIT));
+    expect(store.getState().suppliers.save).toMatchObject({
+      error: 'Ya no tienes permiso para editar proveedores.',
+      conflict: false,
     });
   });
 });

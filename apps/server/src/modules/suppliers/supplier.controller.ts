@@ -2,11 +2,12 @@ import type { Request, Response } from 'express';
 import type { AuditUser, ListPage, SupplierDetail, SupplierListItem } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { sendSuccess } from '../../utils/sendSuccess';
-import { createSupplier, getSupplier, listSuppliers } from './supplier.service';
+import { createSupplier, getSupplier, listSuppliers, updateSupplier } from './supplier.service';
 import type {
   SupplierIdParams,
   SupplierInputBody,
   SupplierListQueryInput,
+  SupplierUpdateBody,
 } from './supplier.validation';
 
 /** Usuario de la sesión, para la auditoría del proveedor (FR-012b). */
@@ -29,5 +30,11 @@ export const supplierController = {
   async create(req: Request, res: Response): Promise<void> {
     const detail = await createSupplier(req.body as SupplierInputBody, actorOf(req));
     sendSuccess<SupplierDetail>(res, detail, 201);
+  },
+
+  async update(req: Request, res: Response): Promise<void> {
+    const { id } = req.params as SupplierIdParams;
+    const detail = await updateSupplier(id, req.body as SupplierUpdateBody, actorOf(req));
+    sendSuccess<SupplierDetail>(res, detail);
   },
 };

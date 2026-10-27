@@ -7,6 +7,7 @@ import {
   supplierIdParams,
   supplierInputSchema,
   supplierListQuerySchema,
+  supplierUpdateSchema,
 } from './supplier.validation';
 
 export const supplierRouter = Router();
@@ -28,6 +29,11 @@ supplierRouter.use(requireAuth, requirePermission('proveedores', 'view'));
  *   responses:
  *     SupplierCifTaken:
  *       description: SUPPLIER_CIF_TAKEN (activo o dado de baja; el mensaje incluye su nombre)
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *     SupplierWriteConflict:
+ *       description: SUPPLIER_CIF_TAKEN o SUPPLIER_VERSION_CONFLICT (otro usuario lo cambió antes)
  *       content:
  *         application/json:
  *           schema: { $ref: '#/components/schemas/ErrorEnvelope' }
@@ -266,4 +272,55 @@ supplierRouter.post(
   requirePermission('proveedores', 'edit'),
   validate({ body: supplierInputSchema }),
   supplierController.create,
+);
+
+/**
+ * @openapi
+ * /suppliers/{id}:
+ *   put:
+ *     tags: [Suppliers]
+ *     summary: Edita todos los datos de un proveedor (permiso de editar)
+ *     description: >
+ *       version debe ser la que devolvió la última lectura. Si otro usuario lo ha cambiado desde entonces,
+ *       responde 409 SUPPLIER_VERSION_CONFLICT y no guarda nada (FR-011). También en proveedores dados de baja.
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - $ref: '#/components/parameters/SupplierId'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             allOf:
+ *               - $ref: '#/components/schemas/SupplierInput'
+ *               - type: object
+ *                 required: [version]
+ *                 properties:
+ *                   version: { type: integer, minimum: 0 }
+ *     responses:
+ *       '200':
+ *         description: Proveedor actualizado, con version + 1
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/SupplierDetail' }
+ *       '400': { $ref: '#/components/responses/ValidationError' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403':
+ *         description: AUTH_FORBIDDEN (el rol no puede editar Proveedores)
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *       '404': { $ref: '#/components/responses/SupplierNotFound' }
+ *       '409': { $ref: '#/components/responses/SupplierWriteConflict' }
+ */
+supplierRouter.put(
+  '/:id',
+  requirePermission('proveedores', 'edit'),
+  validate({ params: supplierIdParams, body: supplierUpdateSchema }),
+  supplierController.update,
 );

@@ -65,8 +65,8 @@ const customersRoute = {
   ),
 };
 
-// Listado, ficha y alta a pantalla completa de Proveedores (010): ver para la ficha, editar para el alta
-// (FR-002); sin permiso, la pantalla de acceso denegado de 005.
+// Listado, ficha, alta y edición a pantalla completa de Proveedores (010): ver para la ficha, editar para el
+// alta y la edición (FR-002); sin permiso, la pantalla de acceso denegado de 005.
 const suppliersRoute = {
   path: 'proveedores',
   children: [
@@ -91,6 +91,14 @@ const suppliersRoute = {
       element: (
         <RequireAuth module="proveedores">
           <SupplierDetailPage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: ':id/editar',
+      element: (
+        <RequireAuth module="proveedores" level="edit">
+          <SupplierFormPage />
         </RequireAuth>
       ),
     },

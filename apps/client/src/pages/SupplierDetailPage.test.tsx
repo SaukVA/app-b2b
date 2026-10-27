@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
-import type { SupplierDetail } from '@app/shared';
+import type { AppModule, PermissionLevel, SupplierDetail } from '@app/shared';
 import { fetchSupplier } from '../features/suppliers/suppliersApi';
 import { setupStore } from '../store/store';
 import { SupplierDetailPage } from './SupplierDetailPage';
@@ -56,9 +56,44 @@ function ListProbe() {
   return <p>Listado</p>;
 }
 
-function renderPage(path = '/proveedores/s1?q=aceites&page=2') {
+const NO_PERMISSIONS: Record<AppModule, PermissionLevel> = {
+  ventas: 'none',
+  clientes: 'none',
+  productos: 'none',
+  proveedores: 'none',
+  cobros: 'none',
+  ajustes: 'none',
+};
+
+/** Store con un usuario cuyo permiso en Proveedores es `level`. */
+function storeAs(level: PermissionLevel) {
+  return setupStore({
+    auth: {
+      user: {
+        id: '1',
+        login: 'marta@empresa.es',
+        name: 'Marta',
+        role: 'Administración',
+        roleName: 'Administración',
+        permissions: { ...NO_PERMISSIONS, proveedores: level },
+        isBootstrap: false,
+        preferences: {
+          theme: 'light',
+          tableDensity: 'comfortable',
+          moneyFormat: 'es',
+          homeScreen: null,
+        },
+      },
+      accessToken: 'jwt',
+      status: 'succeeded',
+      error: null,
+    },
+  });
+}
+
+function renderPage(path = '/proveedores/s1?q=aceites&page=2', store = setupStore()) {
   render(
-    <Provider store={setupStore()}>
+    <Provider store={store}>
       <MemoryRouter initialEntries={[path]}>
         <Routes>
           <Route path="/proveedores" element={<ListProbe />} />
@@ -132,5 +167,21 @@ describe('SupplierDetailPage · errores (FR-015)', () => {
       await screen.findByRole('heading', { level: 1, name: 'Aceites del Sur S.L.' }),
     ).toBeTruthy();
     expect(mockedFetch).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('SupplierDetailPage · «Editar proveedor» (010 US3, FR-002)', () => {
+  it('con permiso de editar enlaza con el formulario, conservando los criterios', async () => {
+    mockedFetch.mockResolvedValue(DETAIL);
+    renderPage('/proveedores/s1?q=aceites', storeAs('edit'));
+    const edit = await screen.findByRole('link', { name: 'Editar proveedor' });
+    expect(edit.getAttribute('href')).toBe('/proveedores/s1/editar?q=aceites');
+  });
+
+  it('solo con permiso de ver no lo muestra', async () => {
+    mockedFetch.mockResolvedValue(DETAIL);
+    renderPage('/proveedores/s1', storeAs('view'));
+    await screen.findByRole('heading', { level: 1, name: 'Aceites del Sur S.L.' });
+    expect(screen.queryByRole('link', { name: 'Editar proveedor' })).toBeNull();
   });
 });

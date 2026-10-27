@@ -7,12 +7,13 @@ import {
   type ListPage,
   type SupplierDetail,
   type SupplierInput,
+  type SupplierUpdateInput,
   type SupplierListItem,
   type SupplierListQuery,
 } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { toSupplierDetail, toSupplierListItem } from './supplier.mapper';
-import { SupplierModel, type SupplierFields } from './supplier.model';
+import { SupplierModel, type SupplierDocument, type SupplierFields } from './supplier.model';
 import { getPurchaseTotals } from './supplierPurchases';
 
 const SPANISH_COLLATION = { locale: 'es', strength: 1 };
@@ -88,6 +89,24 @@ async function toCifTakenError(err: unknown, cif: string): Promise<unknown> {
   return new AppError(SUPPLIER_ERROR_CODES.cifTaken, 409, message);
 }
 
+async function toDetail(doc: SupplierDocument): Promise<SupplierDetail> {
+  const id = doc._id.toString();
+  const totals = await getPurchaseTotals([id]);
+  return toSupplierDetail(doc, totals.get(id)!);
+}
+
+/**
+ * Nada se guardó con esa versión: si el proveedor no existe es 404; si existe, otro usuario lo cambió
+ * antes (409, FR-011, research R6).
+ */
+async function notSavedError(id: string): Promise<AppError> {
+  if (!(await SupplierModel.exists({ _id: id }))) {
+    return new AppError(SUPPLIER_ERROR_CODES.notFound, 404, 'El proveedor no existe.');
+  }
+  const message = 'Otro usuario ha cambiado este proveedor.';
+  return new AppError(SUPPLIER_ERROR_CODES.versionConflict, 409, message);
+}
+
 /** Alta: el proveedor queda activo, en la versión 0, con quien lo da de alta (FR-010, FR-012b). */
 export async function createSupplier(
   input: SupplierInput,
@@ -95,9 +114,31 @@ export async function createSupplier(
 ): Promise<SupplierDetail> {
   try {
     const doc = await SupplierModel.create({ ...input, createdBy: actor, updatedBy: actor });
-    const totals = await getPurchaseTotals([doc._id.toString()]);
-    return toSupplierDetail(doc, totals.get(doc._id.toString())!);
+    return await toDetail(doc);
   } catch (err) {
     throw await toCifTakenError(err, input.cif);
   }
+}
+
+/**
+ * Edición de todos los datos, también estando de baja (FR-007, FR-019). Solo guarda si la `version` es la
+ * leída; sube la versión y deja constancia de quién cambió el proveedor (FR-011, FR-012b).
+ */
+export async function updateSupplier(
+  id: string,
+  { version, ...input }: SupplierUpdateInput,
+  actor: AuditUser,
+): Promise<SupplierDetail> {
+  let doc: SupplierDocument | null;
+  try {
+    doc = await SupplierModel.findOneAndUpdate(
+      { _id: id, version },
+      { $set: { ...input, updatedBy: actor }, $inc: { version: 1 } },
+      { new: true, runValidators: true },
+    );
+  } catch (err) {
+    throw await toCifTakenError(err, input.cif);
+  }
+  if (!doc) throw await notSavedError(id);
+  return toDetail(doc);
 }

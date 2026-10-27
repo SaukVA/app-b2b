@@ -6,7 +6,7 @@ import {
 } from '@app/shared';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { SupplierModel, type SupplierFields } from './supplier.model';
-import { createSupplier, getSupplier, listSuppliers } from './supplier.service';
+import { createSupplier, getSupplier, listSuppliers, updateSupplier } from './supplier.service';
 
 setTestEnv();
 
@@ -254,5 +254,67 @@ describe('createSupplier (FR-004, FR-010, FR-012b)', () => {
       reason: { code: SUPPLIER_ERROR_CODES.cifTaken },
     });
     expect(await SupplierModel.countDocuments()).toBe(1);
+  });
+});
+
+/** Proveedor guardado por el admin; devuelve su id. */
+async function savedId(overrides: Partial<SupplierFields> = {}): Promise<string> {
+  const doc = await SupplierModel.create(supplierData({ cif: 'B12345674', ...overrides }));
+  return doc._id.toString();
+}
+
+describe('updateSupplier · guardar (FR-007, FR-012b, FR-019)', () => {
+  beforeEach(() => SupplierModel.init());
+
+  it('con la versión leída guarda, sube la versión y cambia solo updatedBy', async () => {
+    const id = await savedId();
+    const detail = await updateSupplier(
+      id,
+      { ...input({ name: 'Nuevo nombre' }), version: 0 },
+      ACTOR,
+    );
+    expect(detail).toMatchObject({
+      id,
+      name: 'Nuevo nombre',
+      version: 1,
+      createdBy: ADMIN,
+      updatedBy: ACTOR,
+    });
+    expect((await SupplierModel.findById(id))?.name).toBe('Nuevo nombre');
+  });
+
+  it('un proveedor dado de baja también se puede editar, y sigue de baja', async () => {
+    const id = await savedId({ active: false });
+    const detail = await updateSupplier(id, { ...input(), version: 0 }, ACTOR);
+    expect(detail).toMatchObject({ active: false, version: 1 });
+  });
+});
+
+describe('updateSupplier · errores (FR-005, FR-011)', () => {
+  beforeEach(() => SupplierModel.init());
+
+  it('con una versión antigua responde 409 SUPPLIER_VERSION_CONFLICT y no guarda', async () => {
+    const id = await savedId({ name: 'Original', version: 3 });
+    await expect(
+      updateSupplier(id, { ...input({ name: 'Pisado' }), version: 2 }, ACTOR),
+    ).rejects.toMatchObject({ code: SUPPLIER_ERROR_CODES.versionConflict, status: 409 });
+    expect(await SupplierModel.findById(id)).toMatchObject({ name: 'Original', version: 3 });
+  });
+
+  it('un id que no existe responde 404 SUPPLIER_NOT_FOUND', async () => {
+    await expect(
+      updateSupplier('0123456789abcdef01234567', { ...input(), version: 0 }, ACTOR),
+    ).rejects.toMatchObject({ code: SUPPLIER_ERROR_CODES.notFound, status: 404 });
+  });
+
+  it('el CIF de otro proveedor responde 409 SUPPLIER_CIF_TAKEN con su nombre', async () => {
+    await savedId({ name: 'Levante', cif: 'B46000002' });
+    const id = await savedId();
+    await expect(
+      updateSupplier(id, { ...input({ cif: 'B46000002' }), version: 0 }, ACTOR),
+    ).rejects.toMatchObject({
+      code: SUPPLIER_ERROR_CODES.cifTaken,
+      message: 'Ya existe un proveedor con este CIF: Levante.',
+    });
   });
 });
