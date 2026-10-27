@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-26T18:02:09Z",
-  "updated_at": "2026-10-27T09:35:29Z",
+  "updated_at": "2026-10-27T11:40:09Z",
   "spec": "010-suppliers-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -391,7 +391,7 @@
           "key": "AB2B-683",
           "id": "T038",
           "summary": "T038: Tests de supplierInputSchema en supplier.validation.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-683"
         },
@@ -399,7 +399,7 @@
           "key": "AB2B-684",
           "id": "T039",
           "summary": "T039: Tests de createSupplier en supplier.service.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-684"
         },
@@ -407,7 +407,7 @@
           "key": "AB2B-685",
           "id": "T040",
           "summary": "T040: Tests de POST /api/suppliers en supplier.routes.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-685"
         },
@@ -415,7 +415,7 @@
           "key": "AB2B-686",
           "id": "T041",
           "summary": "T041: Tests de supplierForm.ts (toSupplierInput, fromSupplierDetail, validateSupplierForm)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-686"
         },
@@ -423,7 +423,7 @@
           "key": "AB2B-687",
           "id": "T042",
           "summary": "T042: Tests del componente SupplierContactsField",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-687"
         },
@@ -431,7 +431,7 @@
           "key": "AB2B-688",
           "id": "T043",
           "summary": "T043: Tests del componente SupplierForm",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-688"
         },
@@ -439,7 +439,7 @@
           "key": "AB2B-689",
           "id": "T044",
           "summary": "T044: Tests del thunk createSupplier y de SupplierFormPage en modo alta",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-689"
         },
@@ -447,7 +447,7 @@
           "key": "AB2B-690",
           "id": "T045",
           "summary": "T045: Tests de parseValidationMessage en supplierForm.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-690"
         },
@@ -455,7 +455,7 @@
           "key": "AB2B-691",
           "id": "T046",
           "summary": "T046: Añadir supplierInputSchema en supplier.validation.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T038"
           ],
@@ -465,7 +465,7 @@
           "key": "AB2B-692",
           "id": "T047",
           "summary": "T047: Implementar createSupplier en supplier.service.ts con mapeo de CIF duplicado",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T039"
           ],
@@ -475,7 +475,7 @@
           "key": "AB2B-693",
           "id": "T048",
           "summary": "T048: Añadir controlador create y ruta POST /api/suppliers con @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T040"
           ],
@@ -485,7 +485,7 @@
           "key": "AB2B-694",
           "id": "T049",
           "summary": "T049: Crear supplierForm.ts en el cliente",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T041"
           ],
@@ -495,7 +495,7 @@
           "key": "AB2B-695",
           "id": "T050",
           "summary": "T050: Crear el componente SupplierContactsField",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T042"
           ],
@@ -505,7 +505,7 @@
           "key": "AB2B-696",
           "id": "T051",
           "summary": "T051: Crear el componente SupplierForm según el tablero Proveedores",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T043"
           ],
@@ -515,7 +515,7 @@
           "key": "AB2B-697",
           "id": "T052",
           "summary": "T052: createSupplier en API y slice, y página SupplierFormPage en modo alta",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T044"
           ],
@@ -525,7 +525,7 @@
           "key": "AB2B-698",
           "id": "T053",
           "summary": "T053: Implementar parseValidationMessage en supplierForm.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T045"
           ],
@@ -535,14 +535,14 @@
           "key": "AB2B-699",
           "id": "T054",
           "summary": "T054: Ruta proveedores/nuevo, botón «Nuevo proveedor» y aviso «Proveedor creado.»",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T052"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-699"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-643",
