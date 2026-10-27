@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-26T18:02:09Z",
-  "updated_at": "2026-10-26T18:03:46Z",
+  "updated_at": "2026-10-27T09:35:29Z",
   "spec": "010-suppliers-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -275,7 +275,7 @@
           "key": "AB2B-671",
           "id": "T026",
           "summary": "T026: Tests de getSupplier en supplier.service.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-671"
         },
@@ -283,7 +283,7 @@
           "key": "AB2B-672",
           "id": "T027",
           "summary": "T027: Tests de GET /api/suppliers/:id en supplier.routes.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-672"
         },
@@ -291,7 +291,7 @@
           "key": "AB2B-673",
           "id": "T028",
           "summary": "T028: Tests del thunk loadSupplier en suppliersSlice.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-673"
         },
@@ -299,7 +299,7 @@
           "key": "AB2B-674",
           "id": "T029",
           "summary": "T029: Tests del componente SupplierDetailView",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-674"
         },
@@ -307,7 +307,7 @@
           "key": "AB2B-675",
           "id": "T030",
           "summary": "T030: Tests de la página SupplierDetailPage",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-675"
         },
@@ -315,7 +315,7 @@
           "key": "AB2B-676",
           "id": "T031",
           "summary": "T031: Ampliar tests de SuppliersPage y SuppliersTable (filas enlace, foco al volver, aviso notFound)",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-676"
         },
@@ -323,7 +323,7 @@
           "key": "AB2B-677",
           "id": "T032",
           "summary": "T032: Implementar getSupplier(id) en supplier.service.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T026"
           ],
@@ -333,7 +333,7 @@
           "key": "AB2B-678",
           "id": "T033",
           "summary": "T033: Añadir controlador get y ruta GET /api/suppliers/:id con @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T027"
           ],
@@ -343,7 +343,7 @@
           "key": "AB2B-679",
           "id": "T034",
           "summary": "T034: Añadir fetchSupplier en suppliersApi.ts y estado detail con thunk loadSupplier",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T028"
           ],
@@ -353,7 +353,7 @@
           "key": "AB2B-680",
           "id": "T035",
           "summary": "T035: Crear el componente SupplierDetailView",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T029"
           ],
@@ -363,7 +363,7 @@
           "key": "AB2B-681",
           "id": "T036",
           "summary": "T036: Crear la página SupplierDetailPage con BackLink y estados de carga y error",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T030"
           ],
@@ -373,14 +373,14 @@
           "key": "AB2B-682",
           "id": "T037",
           "summary": "T037: Ruta proveedores/:id, filas enlace en SuppliersTable, foco al volver y aviso notFound",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T031"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-682"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-642",
