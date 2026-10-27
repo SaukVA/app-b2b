@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-26T18:02:09Z",
-  "updated_at": "2026-10-27T11:40:09Z",
+  "updated_at": "2026-10-27T11:56:35Z",
   "spec": "010-suppliers-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -553,7 +553,7 @@
           "key": "AB2B-700",
           "id": "T055",
           "summary": "T055: Tests de updateSupplier en supplier.service.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-700"
         },
@@ -561,7 +561,7 @@
           "key": "AB2B-701",
           "id": "T056",
           "summary": "T056: Tests de PUT /api/suppliers/:id en supplier.routes.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-701"
         },
@@ -569,7 +569,7 @@
           "key": "AB2B-702",
           "id": "T057",
           "summary": "T057: Tests del thunk updateSupplier y de SupplierFormPage en modo edición",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-702"
         },
@@ -577,7 +577,7 @@
           "key": "AB2B-703",
           "id": "T058",
           "summary": "T058: Añadir supplierUpdateSchema e implementar updateSupplier con control de versión",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T055"
           ],
@@ -587,7 +587,7 @@
           "key": "AB2B-704",
           "id": "T059",
           "summary": "T059: Añadir controlador update y ruta PUT /api/suppliers/:id con @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T056"
           ],
@@ -597,14 +597,14 @@
           "key": "AB2B-705",
           "id": "T060",
           "summary": "T060: updateSupplier en API y slice, modo edición de SupplierFormPage y ruta de edición",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T057"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-705"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-644",
