@@ -20,16 +20,19 @@ export interface SuppliersTableProps {
   focusId?: string;
 }
 
-type RowLink = { search: string; focusId?: string; focusRef: RefObject<HTMLAnchorElement | null> };
+interface FocusRefs {
+  row: RefObject<HTMLAnchorElement | null>;
+  card: RefObject<HTMLAnchorElement | null>;
+}
+
+type RowLink = { search: string; focusId?: string; focusRefs: FocusRefs };
 
 const detailUrl = (id: string, search: string) => `/proveedores/${id}${search ? `?${search}` : ''}`;
 
-// En móvil se ven las tarjetas y no la tabla (las dos están en el DOM): se enfoca la que se ve.
-const isNarrow = () => window.matchMedia?.('(max-width: 759px)').matches ?? false;
-
-/** Enlace a la ficha que, si es el proveedor de `focusId`, recibe la referencia del foco. */
+/** Enlace (de la fila o de la tarjeta) que, si es el proveedor de `focusId`, recibe una referencia del foco. */
 function linkRef(supplier: SupplierListItem, link: RowLink, card: boolean) {
-  return supplier.id === link.focusId && card === isNarrow() ? link.focusRef : undefined;
+  if (supplier.id !== link.focusId) return undefined;
+  return card ? link.focusRefs.card : link.focusRefs.row;
 }
 
 // Un proveedor dado de baja no es una alerta: sello neutro, que se entiende por el texto (FR-004a).
@@ -101,21 +104,24 @@ function SupplierCard({ supplier, link }: { supplier: SupplierListItem; link: Ro
 }
 
 /** Enfoca la fila de `focusId` en cuanto aparece en el listado (al volver de la ficha, FR-014). */
-function useRowFocus(rows: readonly SupplierListItem[], focusId?: string) {
-  const focusRef = useRef<HTMLAnchorElement>(null);
+function useRowFocus(rows: readonly SupplierListItem[], focusId?: string): FocusRefs {
+  const row = useRef<HTMLAnchorElement>(null);
+  const card = useRef<HTMLAnchorElement>(null);
   const done = useRef(false);
   useEffect(() => {
-    if (done.current || !focusRef.current) return;
+    if (done.current || !row.current) return;
     done.current = true;
-    focusRef.current.focus();
+    // Tabla y tarjetas están en el DOM y el CSS (container query) elige: se enfoca la que se ve.
+    const cardVisible = (card.current?.getClientRects().length ?? 0) > 0;
+    (cardVisible ? card.current! : row.current).focus();
   }, [rows, focusId]);
-  return focusRef;
+  return { row, card };
 }
 
 /** Listado de Proveedores: tabla en escritorio y tarjetas en móvil; cada fila abre su ficha. */
 export function SuppliersTable(props: SuppliersTableProps) {
   const { rows, quarter, status, busy, search, focusId } = props;
-  const link: RowLink = { search, focusId, focusRef: useRowFocus(rows, focusId) };
+  const link: RowLink = { search, focusId, focusRefs: useRowFocus(rows, focusId) };
   return (
     <Table
       caption="Proveedores"

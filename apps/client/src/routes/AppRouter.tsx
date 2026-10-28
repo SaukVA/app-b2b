@@ -66,7 +66,7 @@ const customersRoute = {
 };
 
 // Listado, ficha, alta y edición a pantalla completa de Proveedores (010): ver para la ficha, editar para el
-// alta y la edición (FR-002); sin permiso, la pantalla de acceso denegado de 005.
+// alta y la edición (FR-002); sin permiso, RequireAuth lleva a la pantalla de inicio (005).
 const suppliersRoute = {
   path: 'proveedores',
   children: [

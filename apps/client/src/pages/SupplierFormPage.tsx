@@ -18,7 +18,7 @@ import {
   updateSupplier,
 } from '../features/suppliers/suppliersSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { SUPPLIER_LOAD_ERROR_MESSAGE } from './SupplierDetailPage';
+import { SupplierLoadError } from './SupplierDetailPage';
 import styles from './SupplierFormPage.module.css';
 
 const CONFLICT_MESSAGE =
@@ -224,12 +224,7 @@ function EditLoading({ status, onRetry }: { status: string; onRetry: () => void 
   return (
     <section className={styles.page} aria-busy={status !== 'error' || undefined}>
       {status === 'error' ? (
-        <div className={styles.notice}>
-          <Alert variant="error">{SUPPLIER_LOAD_ERROR_MESSAGE}</Alert>
-          <Button variant="secondary" onClick={onRetry}>
-            Reintentar
-          </Button>
-        </div>
+        <SupplierLoadError onRetry={onRetry} />
       ) : (
         <p role="status">Cargando proveedor…</p>
       )}

@@ -331,12 +331,12 @@ baja» aparece con «Baja»; «Reactivar» lo devuelve; no existe forma de borra
 
 ### Tests de US4 (primero, deben fallar) ⚠️
 
-- [ ] T061 [P] [US4] Tests de `setSupplierActive` en `supplier.service.test.ts`: baja y reactivación suben
+- [X] T061 [P] [US4] Tests de `setSupplierActive` en `supplier.service.test.ts`: baja y reactivación suben
   `version` y cambian `updatedBy` sin tocar otros datos; versión antigua → 409; 404.
-- [ ] T062 [P] [US4] Tests de `PATCH /api/suppliers/:id/status` en `supplier.routes.test.ts`: 200; 400 (`active`
+- [X] T062 [P] [US4] Tests de `PATCH /api/suppliers/:id/status` en `supplier.routes.test.ts`: 200; 400 (`active`
   o `version` ausentes); 404; 409; 403 Almacén; y que `DELETE /api/suppliers/:id` responde 404 `NOT_FOUND`
   (no hay ruta, FR-018).
-- [ ] T063 [P] [US4] Tests de `SupplierStatusDialog` en
+- [X] T063 [P] [US4] Tests de `SupplierStatusDialog` en
   `apps/client/src/features/suppliers/components/SupplierStatusDialog.test.tsx` y de la ficha: «Dar de baja» abre
   «¿Dar de baja a <nombre>?» con el texto de contracts/suppliers-ui.md, «Cancelar» y «Dar de baja»; al confirmar
   aparece «<nombre> dado de baja.» y el sello «Baja»; «Reactivar» sin diálogo → «<nombre> reactivado.»; error dentro
@@ -344,12 +344,12 @@ baja» aparece con «Baja»; «Reactivar» lo devuelve; no existe forma de borra
 
 ### Implementación de US4
 
-- [ ] T064 [US4] Añadir `supplierStatusSchema` (`active` booleano + `version`) en `supplier.validation.ts` e
+- [X] T064 [US4] Añadir `supplierStatusSchema` (`active` booleano + `version`) en `supplier.validation.ts` e
   implementar `setSupplierActive(id, input, actor)` en `supplier.service.ts` con la misma comprobación de versión
   que `updateSupplier`, hasta poner en verde T061.
-- [ ] T065 [US4] Añadir `setStatus` en `supplier.controller.ts` y `PATCH /:id/status` (editar) con su `@openapi`
+- [X] T065 [US4] Añadir `setStatus` en `supplier.controller.ts` y `PATCH /:id/status` (editar) con su `@openapi`
   en `supplier.routes.ts`, hasta poner en verde T062.
-- [ ] T066 [US4] Añadir `setSupplierStatus` en `suppliersApi.ts` y el thunk `setSupplierActive` en
+- [X] T066 [US4] Añadir `setSupplierStatus` en `suppliersApi.ts` y el thunk `setSupplierActive` en
   `suppliersSlice.ts`; crear `SupplierStatusDialog.tsx` y conectar «Dar de baja» / «Reactivar» en
   `SupplierDetailPage.tsx` (solo con permiso de editar), hasta poner en verde T063.
 
@@ -359,16 +359,16 @@ baja» aparece con «Baja»; «Reactivar» lo devuelve; no existe forma de borra
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T067 Reescribir `e2e/suppliers.spec.ts` con `seedSuppliers`/`removeSuppliers`: listado con datos y
+- [X] T067 Reescribir `e2e/suppliers.spec.ts` con `seedSuppliers`/`removeSuppliers`: listado con datos y
   trimestre; ficha a pantalla completa y vuelta con la flecha conservando criterios; alta con errores y correcta;
   CIF duplicado; edición y diálogo de descartar; baja y reactivación; Almacén sin acciones de edición y con acceso
   denegado en `/proveedores/nuevo`; enlace a proveedor inexistente; versión móvil.
-- [ ] T068 [P] Documentar `BackLink` y `TextArea` en la sección Componentes de `docs/design/README.md`.
-- [ ] T069 [P] Comprobar en `/api-docs` que los 5 endpoints coinciden con
+- [X] T068 [P] Documentar `BackLink` y `TextArea` en la sección Componentes de `docs/design/README.md`.
+- [X] T069 [P] Comprobar en `/api-docs` que los 5 endpoints coinciden con
   `specs/010-suppliers-management/contracts/suppliers-api.openapi.yaml`.
-- [ ] T070 Revisar el tamaño y la responsabilidad única de las funciones nuevas (principio IV) y que no hay UI
+- [X] T070 Revisar el tamaño y la responsabilidad única de las funciones nuevas (principio IV) y que no hay UI
   duplicada (principio VIII) en `apps/server/src/modules/suppliers/` y `apps/client/src/features/suppliers/`.
-- [ ] T071 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde, y recorrer la prueba
+- [X] T071 Ejecutar `npm run lint`, `npm test --workspaces` y `npm run test:e2e` en verde, y recorrer la prueba
   manual de `specs/010-suppliers-management/quickstart.md`.
 
 ---
