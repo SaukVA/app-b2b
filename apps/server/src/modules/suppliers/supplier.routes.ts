@@ -7,6 +7,7 @@ import {
   supplierIdParams,
   supplierInputSchema,
   supplierListQuerySchema,
+  supplierStatusSchema,
   supplierUpdateSchema,
 } from './supplier.validation';
 
@@ -323,4 +324,58 @@ supplierRouter.put(
   requirePermission('proveedores', 'edit'),
   validate({ params: supplierIdParams, body: supplierUpdateSchema }),
   supplierController.update,
+);
+
+/**
+ * @openapi
+ * /suppliers/{id}/status:
+ *   patch:
+ *     tags: [Suppliers]
+ *     summary: Da de baja o reactiva un proveedor (permiso de editar)
+ *     description: >
+ *       Nunca se borra un proveedor (FR-018): no hay DELETE. version debe ser la de la última lectura; si
+ *       otro usuario lo ha cambiado, responde 409 SUPPLIER_VERSION_CONFLICT y no cambia nada.
+ *     security: [{ bearerAuth: [] }]
+ *     parameters:
+ *       - $ref: '#/components/parameters/SupplierId'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [active, version]
+ *             properties:
+ *               active: { type: boolean, description: 'false = dar de baja; true = reactivar' }
+ *               version: { type: integer, minimum: 0 }
+ *     responses:
+ *       '200':
+ *         description: Estado cambiado, con version + 1
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessEnvelope'
+ *                 - type: object
+ *                   properties:
+ *                     data: { $ref: '#/components/schemas/SupplierDetail' }
+ *       '400': { $ref: '#/components/responses/ValidationError' }
+ *       '401': { $ref: '#/components/responses/Unauthenticated' }
+ *       '403':
+ *         description: AUTH_FORBIDDEN (el rol no puede editar Proveedores)
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ *       '404': { $ref: '#/components/responses/SupplierNotFound' }
+ *       '409':
+ *         description: SUPPLIER_VERSION_CONFLICT
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+ */
+supplierRouter.patch(
+  '/:id/status',
+  requirePermission('proveedores', 'edit'),
+  validate({ params: supplierIdParams, body: supplierStatusSchema }),
+  supplierController.setStatus,
 );

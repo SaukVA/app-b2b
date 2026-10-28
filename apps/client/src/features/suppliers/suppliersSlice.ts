@@ -17,6 +17,7 @@ import {
   createSupplier as postSupplier,
   fetchSupplier,
   fetchSuppliers,
+  setSupplierStatus,
   updateSupplier as putSupplier,
 } from './suppliersApi';
 
@@ -48,6 +49,8 @@ export interface SuppliersState {
     /** 409 de versión: otro usuario cambió el proveedor mientras se editaba (FR-011). */
     conflict: boolean;
   };
+  /** Baja o reactivación desde la ficha (010 US4); el aviso de éxito va en `save.notice`. */
+  statusChange: { status: 'idle' | 'saving' | 'error'; error: string | null };
 }
 
 const INITIAL_SAVE: SuppliersState['save'] = {
@@ -67,6 +70,7 @@ const initialState: SuppliersState = {
   requestId: null,
   detail: { status: 'idle', data: null },
   save: INITIAL_SAVE,
+  statusChange: { status: 'idle', error: null },
 };
 
 /** Mensaje fijo del error de carga (FR-013): nunca se muestran los detalles técnicos del servidor. */
@@ -145,6 +149,33 @@ export const updateSupplier = createAsyncThunk<
   }
 });
 
+export const SUPPLIER_STATUS_ERROR_MESSAGE =
+  'No se ha podido cambiar el estado del proveedor. Vuelve a intentarlo.';
+export const SUPPLIER_STATUS_CONFLICT_MESSAGE =
+  'Otro usuario ha cambiado este proveedor. Vuelve a abrir la ficha y repite la acción.';
+
+function toStatusError(err: unknown): string {
+  const response = (err as { response?: { status?: number; data?: ApiError } }).response;
+  if (response?.data?.error?.code === SUPPLIER_ERROR_CODES.versionConflict) {
+    return SUPPLIER_STATUS_CONFLICT_MESSAGE;
+  }
+  if (response?.status === 403) return SUPPLIER_FORBIDDEN_MESSAGE;
+  return SUPPLIER_STATUS_ERROR_MESSAGE;
+}
+
+/** Baja (`active: false`) o reactivación con la versión leída (FR-017, FR-019). */
+export const setSupplierActive = createAsyncThunk<
+  SupplierDetail,
+  { id: string; active: boolean; version: number },
+  { rejectValue: string }
+>('suppliers/setActive', async ({ id, active, version }, { rejectWithValue }) => {
+  try {
+    return await setSupplierStatus(id, { active, version });
+  } catch (err) {
+    return rejectWithValue(toStatusError(err));
+  }
+});
+
 type Builder = ActionReducerMapBuilder<SuppliersState>;
 
 function addListCases(builder: Builder): void {
@@ -205,6 +236,25 @@ function addSaveCases(builder: Builder): void {
   }
 }
 
+const statusNotice = ({ name, active }: SupplierDetail) =>
+  active ? `${name} reactivado.` : `${name} dado de baja.`;
+
+function addStatusCases(builder: Builder): void {
+  builder
+    .addCase(setSupplierActive.pending, (state) => {
+      state.statusChange = { status: 'saving', error: null };
+    })
+    .addCase(setSupplierActive.fulfilled, (state, action) => {
+      state.statusChange = { status: 'idle', error: null };
+      state.detail = { status: 'ready', data: action.payload };
+      state.save.notice = statusNotice(action.payload);
+    })
+    .addCase(setSupplierActive.rejected, (state, action) => {
+      const error = action.payload ?? SUPPLIER_STATUS_ERROR_MESSAGE;
+      state.statusChange = { status: 'error', error };
+    });
+}
+
 const suppliersSlice = createSlice({
   name: 'suppliers',
   initialState,
@@ -217,6 +267,10 @@ const suppliersSlice = createSlice({
     clearSaveNotice(state) {
       state.save.notice = null;
     },
+    /** Al cerrar el diálogo de baja: sin el error del intento anterior. */
+    resetStatusChange(state) {
+      state.statusChange = { status: 'idle', error: null };
+    },
     /** Al abrir el formulario: sin errores ni avisos de un guardado anterior. */
     resetSave(state) {
       state.save = INITIAL_SAVE;
@@ -226,8 +280,10 @@ const suppliersSlice = createSlice({
     addListCases(builder);
     addDetailCases(builder);
     addSaveCases(builder);
+    addStatusCases(builder);
   },
 });
 
-export const { clearSaveNotice, closeSupplier, resetSave } = suppliersSlice.actions;
+export const { clearSaveNotice, closeSupplier, resetSave, resetStatusChange } =
+  suppliersSlice.actions;
 export const suppliersReducer = suppliersSlice.reducer;

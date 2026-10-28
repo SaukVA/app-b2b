@@ -7,7 +7,14 @@ import { Button } from '../components/Button';
 import { StatusStamp } from '../components/StatusStamp';
 import { selectCan } from '../features/auth/authSelectors';
 import { SupplierDetailView } from '../features/suppliers/components/SupplierDetailView';
-import { clearSaveNotice, closeSupplier, loadSupplier } from '../features/suppliers/suppliersSlice';
+import { SupplierStatusDialog } from '../features/suppliers/components/SupplierStatusDialog';
+import {
+  clearSaveNotice,
+  closeSupplier,
+  loadSupplier,
+  resetStatusChange,
+  setSupplierActive,
+} from '../features/suppliers/suppliersSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import styles from './SupplierDetailPage.module.css';
 
@@ -30,26 +37,73 @@ function useLoadSupplier(id: string): () => void {
 }
 
 /**
- * Aviso breve tras guardar («Proveedor creado.», FR-009): se recoge al abrir la ficha y se borra de la store
- * para que no se repita. Con StrictMode el estado local sobrevive al montaje doble.
+ * Aviso breve tras guardar o cambiar el estado («Proveedor creado.», «<nombre> dado de baja.», FR-009): se
+ * recoge en estado local y se borra de la store para que no se repita al volver a abrir la ficha. Con
+ * StrictMode el estado local sobrevive al montaje doble.
  */
 function useSaveNotice(): string | null {
   const dispatch = useAppDispatch();
   const pending = useAppSelector((state) => state.suppliers.save.notice);
-  const [notice] = useState(pending);
+  const [notice, setNotice] = useState(pending);
   useEffect(() => {
-    if (pending) dispatch(clearSaveNotice());
+    if (!pending) return;
+    setNotice(pending);
+    dispatch(clearSaveNotice());
   }, [dispatch, pending]);
   return notice;
 }
 
-/** Nombre, sello «Baja», CIF y, con permiso de editar, «Editar proveedor» (contracts/suppliers-ui.md). */
+/** «Dar de baja» con confirmación y «Reactivar» sin ella (FR-017, FR-019). */
+function useStatusActions(supplier: SupplierDetail) {
+  const dispatch = useAppDispatch();
+  const statusChange = useAppSelector((state) => state.suppliers.statusChange);
+  const [confirming, setConfirming] = useState(false);
+  const change = async (active: boolean) => {
+    const { id, version } = supplier;
+    const result = await dispatch(setSupplierActive({ id, active, version }));
+    if (setSupplierActive.fulfilled.match(result)) setConfirming(false);
+  };
+  const open = () => {
+    dispatch(resetStatusChange());
+    setConfirming(true);
+  };
+  return { statusChange, confirming, open, close: () => setConfirming(false), change };
+}
+
+interface HeaderActions {
+  editUrl: string;
+  onDeactivate: () => void;
+  onReactivate: () => void;
+  busy: boolean;
+}
+
+/** «Editar proveedor» y «Dar de baja» / «Reactivar», solo con permiso de editar. */
+function SupplierActions({ active, actions }: { active: boolean; actions: HeaderActions }) {
+  return (
+    <div className={styles.actions}>
+      <Link to={actions.editUrl} className={styles.editButton}>
+        Editar proveedor
+      </Link>
+      {active ? (
+        <Button variant="secondary" onClick={actions.onDeactivate}>
+          Dar de baja
+        </Button>
+      ) : (
+        <Button variant="secondary" onClick={actions.onReactivate} disabled={actions.busy}>
+          Reactivar
+        </Button>
+      )}
+    </div>
+  );
+}
+
+/** Nombre, sello «Baja», CIF y las acciones si hay permiso de editar (contracts/suppliers-ui.md). */
 function SupplierHeader({
   supplier,
-  editUrl,
+  actions,
 }: {
   supplier: SupplierDetail;
-  editUrl: string | null;
+  actions: HeaderActions | null;
 }) {
   return (
     <header className={styles.header}>
@@ -61,18 +115,13 @@ function SupplierHeader({
         CIF {supplier.cif}
         {supplier.foreign && ' (extranjero)'}
       </span>
-      {editUrl && (
-        <div className={styles.actions}>
-          <Link to={editUrl} className={styles.editButton}>
-            Editar proveedor
-          </Link>
-        </div>
-      )}
+      {actions && <SupplierActions active={supplier.active} actions={actions} />}
     </header>
   );
 }
 
-function LoadError({ onRetry }: { onRetry: () => void }) {
+/** Error al cargar el proveedor con «Reintentar»; también lo usa el formulario de edición. */
+export function SupplierLoadError({ onRetry }: { onRetry: () => void }) {
   return (
     <div className={styles.error}>
       <Alert variant="error">{SUPPLIER_LOAD_ERROR_MESSAGE}</Alert>
@@ -80,6 +129,39 @@ function LoadError({ onRetry }: { onRetry: () => void }) {
         Reintentar
       </Button>
     </div>
+  );
+}
+
+/** Ficha cargada: cabecera con acciones, secciones y diálogo de baja (010 US2, US4). */
+function LoadedSupplier({ supplier, canEdit }: { supplier: SupplierDetail; canEdit: boolean }) {
+  const { search } = useLocation();
+  const statusActions = useStatusActions(supplier);
+  const busy = statusActions.statusChange.status === 'saving';
+  const actions: HeaderActions | null = canEdit
+    ? {
+        editUrl: `/proveedores/${supplier.id}/editar${search}`,
+        onDeactivate: statusActions.open,
+        onReactivate: () => void statusActions.change(true),
+        busy,
+      }
+    : null;
+  return (
+    <>
+      {!statusActions.confirming && statusActions.statusChange.error && (
+        <Alert variant="error">{statusActions.statusChange.error}</Alert>
+      )}
+      <SupplierHeader supplier={supplier} actions={actions} />
+      <SupplierDetailView supplier={supplier} year={new Date().getFullYear()} />
+      {statusActions.confirming && (
+        <SupplierStatusDialog
+          supplierName={supplier.name}
+          error={statusActions.statusChange.error}
+          busy={busy}
+          onConfirm={() => void statusActions.change(false)}
+          onCancel={statusActions.close}
+        />
+      )}
+    </>
   );
 }
 
@@ -112,16 +194,8 @@ export function SupplierDetailPage() {
           Cargando proveedor…
         </p>
       )}
-      {status === 'error' && <LoadError onRetry={retry} />}
-      {ready && (
-        <>
-          <SupplierHeader
-            supplier={data}
-            editUrl={canEdit ? `/proveedores/${id}/editar${search}` : null}
-          />
-          <SupplierDetailView supplier={data} year={new Date().getFullYear()} />
-        </>
-      )}
+      {status === 'error' && <SupplierLoadError onRetry={retry} />}
+      {ready && <LoadedSupplier supplier={data} canEdit={canEdit} />}
     </section>
   );
 }

@@ -414,3 +414,70 @@ describe('PUT /api/suppliers/:id · CIF, existencia y acceso (FR-002, FR-005)', 
     expect((await SupplierModel.findById(id))?.version).toBe(0);
   });
 });
+
+const patchStatus = (token: string, supplierId: string, body: unknown) =>
+  request(app())
+    .patch(`/api/suppliers/${supplierId}/status`)
+    .set('Authorization', `Bearer ${token}`)
+    .send(body);
+
+describe('PATCH /api/suppliers/:id/status (FR-017, FR-019)', () => {
+  let id: string;
+  beforeEach(async () => {
+    id = await seedForDetail();
+  });
+
+  it('200 al dar de baja y al reactivar, con la versión siguiente', async () => {
+    const token = await tokenFor('Administración');
+    const off = await patchStatus(token, id, { active: false, version: 0 });
+    expect(off.status).toBe(200);
+    expect(off.body.data).toMatchObject({ id, active: false, version: 1 });
+    const on = await patchStatus(token, id, { active: true, version: 1 });
+    expect(on.body.data).toMatchObject({ active: true, version: 2 });
+  });
+
+  it.each([
+    ['sin active', { version: 0 }],
+    ['sin version', { active: false }],
+    ['con active no booleano', { active: 'no', version: 0 }],
+  ])('400 VALIDATION_ERROR %s', async (_case, body) => {
+    const res = await patchStatus(await tokenFor('Administración'), id, body);
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('VALIDATION_ERROR');
+  });
+});
+
+describe('PATCH /api/suppliers/:id/status · errores y acceso (FR-002, FR-011, FR-018)', () => {
+  let id: string;
+  beforeEach(async () => {
+    id = await seedForDetail();
+  });
+
+  it('409 con una versión antigua y 404 si no existe', async () => {
+    const token = await tokenFor('Administración');
+    const stale = await patchStatus(token, id, { active: false, version: 7 });
+    expect(stale.status).toBe(409);
+    expect(stale.body.error.code).toBe('SUPPLIER_VERSION_CONFLICT');
+    const missing = await patchStatus(token, '0123456789abcdef01234567', {
+      active: false,
+      version: 0,
+    });
+    expect(missing.status).toBe(404);
+    expect(missing.body.error.code).toBe('SUPPLIER_NOT_FOUND');
+  });
+
+  it('403 AUTH_FORBIDDEN para Almacén', async () => {
+    const res = await patchStatus(await tokenFor('Almacén'), id, { active: false, version: 0 });
+    expect(res.status).toBe(403);
+    expect((await SupplierModel.findById(id))?.active).toBe(true);
+  });
+
+  it('no hay forma de borrar: DELETE responde 404 NOT_FOUND y el proveedor sigue', async () => {
+    const res = await request(app())
+      .delete(`/api/suppliers/${id}`)
+      .set('Authorization', `Bearer ${await tokenFor('Administrador')}`);
+    expect(res.status).toBe(404);
+    expect(res.body.error.code).toBe('NOT_FOUND');
+    expect(await SupplierModel.findById(id)).not.toBeNull();
+  });
+});

@@ -6,7 +6,13 @@ import {
 } from '@app/shared';
 import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
 import { SupplierModel, type SupplierFields } from './supplier.model';
-import { createSupplier, getSupplier, listSuppliers, updateSupplier } from './supplier.service';
+import {
+  createSupplier,
+  getSupplier,
+  listSuppliers,
+  setSupplierActive,
+  updateSupplier,
+} from './supplier.service';
 
 setTestEnv();
 
@@ -316,5 +322,42 @@ describe('updateSupplier · errores (FR-005, FR-011)', () => {
       code: SUPPLIER_ERROR_CODES.cifTaken,
       message: 'Ya existe un proveedor con este CIF: Levante.',
     });
+  });
+});
+
+describe('setSupplierActive · baja y reactivación (FR-017, FR-019)', () => {
+  it('dar de baja sube la versión y cambia updatedBy sin tocar otros datos', async () => {
+    const id = await savedId({ name: 'Aceites del Sur', leadTimeDays: 3 });
+    const detail = await setSupplierActive(id, { active: false, version: 0 }, ACTOR);
+    expect(detail).toMatchObject({
+      active: false,
+      version: 1,
+      name: 'Aceites del Sur',
+      leadTimeDays: 3,
+      createdBy: ADMIN,
+      updatedBy: ACTOR,
+    });
+  });
+
+  it('reactivar lo devuelve a activo', async () => {
+    const id = await savedId({ active: false, version: 4 });
+    const detail = await setSupplierActive(id, { active: true, version: 4 }, ACTOR);
+    expect(detail).toMatchObject({ active: true, version: 5 });
+  });
+});
+
+describe('setSupplierActive · errores (FR-011)', () => {
+  it('con una versión antigua responde 409 y no cambia el estado', async () => {
+    const id = await savedId({ version: 2 });
+    await expect(setSupplierActive(id, { active: false, version: 1 }, ACTOR)).rejects.toMatchObject(
+      { code: SUPPLIER_ERROR_CODES.versionConflict, status: 409 },
+    );
+    expect(await SupplierModel.findById(id)).toMatchObject({ active: true, version: 2 });
+  });
+
+  it('un id que no existe responde 404', async () => {
+    await expect(
+      setSupplierActive('0123456789abcdef01234567', { active: false, version: 0 }, ACTOR),
+    ).rejects.toMatchObject({ code: SUPPLIER_ERROR_CODES.notFound, status: 404 });
   });
 });

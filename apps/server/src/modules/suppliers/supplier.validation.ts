@@ -152,3 +152,11 @@ export const supplierUpdateSchema = supplierFields
   .superRefine(checkTaxIdAndPostalCode);
 
 export type SupplierUpdateBody = z.infer<typeof supplierUpdateSchema>;
+
+/** Baja (`active: false`) o reactivación (`active: true`) con la versión leída (FR-017, research R6). */
+export const supplierStatusSchema = z.object({
+  active: z.boolean(),
+  version: z.number().int().min(0),
+});
+
+export type SupplierStatusBody = z.infer<typeof supplierStatusSchema>;

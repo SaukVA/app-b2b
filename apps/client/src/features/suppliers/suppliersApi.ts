@@ -4,6 +4,7 @@ import {
   type ListPage,
   type SupplierDetail,
   type SupplierInput,
+  type SupplierStatusInput,
   type SupplierUpdateInput,
   type SupplierListItem,
   type SupplierListQuery,
@@ -53,5 +54,17 @@ export async function updateSupplier(
   input: SupplierUpdateInput,
 ): Promise<SupplierDetail> {
   const { data } = await httpClient.put<ApiSuccess<SupplierDetail>>(`/suppliers/${id}`, input);
+  return data.data;
+}
+
+/** Baja o reactivación (PATCH /suppliers/:id/status) con la `version` leída. */
+export async function setSupplierStatus(
+  id: string,
+  input: SupplierStatusInput,
+): Promise<SupplierDetail> {
+  const { data } = await httpClient.patch<ApiSuccess<SupplierDetail>>(
+    `/suppliers/${id}/status`,
+    input,
+  );
   return data.data;
 }

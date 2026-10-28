@@ -2,11 +2,18 @@ import type { Request, Response } from 'express';
 import type { AuditUser, ListPage, SupplierDetail, SupplierListItem } from '@app/shared';
 import { AppError } from '../../utils/AppError';
 import { sendSuccess } from '../../utils/sendSuccess';
-import { createSupplier, getSupplier, listSuppliers, updateSupplier } from './supplier.service';
+import {
+  createSupplier,
+  getSupplier,
+  listSuppliers,
+  setSupplierActive,
+  updateSupplier,
+} from './supplier.service';
 import type {
   SupplierIdParams,
   SupplierInputBody,
   SupplierListQueryInput,
+  SupplierStatusBody,
   SupplierUpdateBody,
 } from './supplier.validation';
 
@@ -35,6 +42,12 @@ export const supplierController = {
   async update(req: Request, res: Response): Promise<void> {
     const { id } = req.params as SupplierIdParams;
     const detail = await updateSupplier(id, req.body as SupplierUpdateBody, actorOf(req));
+    sendSuccess<SupplierDetail>(res, detail);
+  },
+
+  async setStatus(req: Request, res: Response): Promise<void> {
+    const { id } = req.params as SupplierIdParams;
+    const detail = await setSupplierActive(id, req.body as SupplierStatusBody, actorOf(req));
     sendSuccess<SupplierDetail>(res, detail);
   },
 };

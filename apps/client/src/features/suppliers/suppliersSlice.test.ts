@@ -55,6 +55,7 @@ describe('suppliersSlice', () => {
         notice: null,
         conflict: false,
       },
+      statusChange: { status: 'idle', error: null },
     });
   });
 

@@ -1,18 +1,20 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import type { AppModule, PermissionLevel, SupplierDetail } from '@app/shared';
-import { fetchSupplier } from '../features/suppliers/suppliersApi';
+import { fetchSupplier, setSupplierStatus } from '../features/suppliers/suppliersApi';
 import { setupStore } from '../store/store';
 import { SupplierDetailPage } from './SupplierDetailPage';
 
 jest.mock('../features/suppliers/suppliersApi', () => ({
   fetchSuppliers: jest.fn(),
   fetchSupplier: jest.fn(),
+  setSupplierStatus: jest.fn(),
 }));
 
 const mockedFetch = jest.mocked(fetchSupplier);
+const mockedStatus = jest.mocked(setSupplierStatus);
 
 const DETAIL: SupplierDetail = {
   id: 's1',
@@ -183,5 +185,70 @@ describe('SupplierDetailPage · «Editar proveedor» (010 US3, FR-002)', () => {
     renderPage('/proveedores/s1', storeAs('view'));
     await screen.findByRole('heading', { level: 1, name: 'Aceites del Sur S.L.' });
     expect(screen.queryByRole('link', { name: 'Editar proveedor' })).toBeNull();
+  });
+});
+
+describe('SupplierDetailPage · dar de baja (010 US4, FR-017)', () => {
+  beforeEach(() => {
+    mockedStatus.mockReset();
+    mockedFetch.mockResolvedValue({ ...DETAIL, version: 2 });
+  });
+
+  async function openDialog() {
+    renderPage('/proveedores/s1', storeAs('edit'));
+    await userEvent.click(await screen.findByRole('button', { name: 'Dar de baja' }));
+    return screen.getByRole('dialog', { name: '¿Dar de baja a Aceites del Sur S.L.?' });
+  }
+
+  it('pide confirmación y, al confirmar, avisa y muestra el sello «Baja»', async () => {
+    mockedStatus.mockResolvedValue({ ...DETAIL, active: false, version: 3 });
+    const dialog = await openDialog();
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Dar de baja' }));
+    expect(await screen.findByText('Aceites del Sur S.L. dado de baja.')).toBeTruthy();
+    expect(mockedStatus).toHaveBeenCalledWith('s1', { active: false, version: 2 });
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getByText('Baja')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Reactivar' })).toBeTruthy();
+  });
+
+  it('«Cancelar» cierra el diálogo sin cambiar nada', async () => {
+    const dialog = await openDialog();
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Cancelar' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(mockedStatus).not.toHaveBeenCalled();
+  });
+
+  it('un error al guardar se muestra dentro del diálogo', async () => {
+    mockedStatus.mockRejectedValue(new Error('Network Error'));
+    const dialog = await openDialog();
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Dar de baja' }));
+    expect(
+      await within(dialog).findByText(
+        'No se ha podido cambiar el estado del proveedor. Vuelve a intentarlo.',
+      ),
+    ).toBeTruthy();
+  });
+});
+
+describe('SupplierDetailPage · reactivar y permisos (010 US4, FR-002, FR-019)', () => {
+  beforeEach(() => mockedStatus.mockReset());
+
+  it('«Reactivar» no pide confirmación y avisa', async () => {
+    mockedFetch.mockResolvedValue({ ...DETAIL, active: false, version: 5 });
+    mockedStatus.mockResolvedValue({ ...DETAIL, active: true, version: 6 });
+    renderPage('/proveedores/s1', storeAs('edit'));
+    await userEvent.click(await screen.findByRole('button', { name: 'Reactivar' }));
+    expect(await screen.findByText('Aceites del Sur S.L. reactivado.')).toBeTruthy();
+    expect(mockedStatus).toHaveBeenCalledWith('s1', { active: true, version: 5 });
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.queryByText('Baja')).toBeNull();
+  });
+
+  it('solo con permiso de ver no ofrece dar de baja ni reactivar', async () => {
+    mockedFetch.mockResolvedValue({ ...DETAIL, active: false });
+    renderPage('/proveedores/s1', storeAs('view'));
+    await screen.findByRole('heading', { level: 1, name: 'Aceites del Sur S.L.' });
+    expect(screen.queryByRole('button', { name: 'Reactivar' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Dar de baja' })).toBeNull();
   });
 });

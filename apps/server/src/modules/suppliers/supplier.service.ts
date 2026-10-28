@@ -7,6 +7,7 @@ import {
   type ListPage,
   type SupplierDetail,
   type SupplierInput,
+  type SupplierStatusInput,
   type SupplierUpdateInput,
   type SupplierListItem,
   type SupplierListQuery,
@@ -139,6 +140,24 @@ export async function updateSupplier(
   } catch (err) {
     throw await toCifTakenError(err, input.cif);
   }
+  if (!doc) throw await notSavedError(id);
+  return toDetail(doc);
+}
+
+/**
+ * Baja o reactivación: nunca se borra nada (FR-017, FR-018). Misma comprobación de versión que la edición
+ * y deja constancia de quién lo hizo (FR-011, FR-012b).
+ */
+export async function setSupplierActive(
+  id: string,
+  { active, version }: SupplierStatusInput,
+  actor: AuditUser,
+): Promise<SupplierDetail> {
+  const doc = await SupplierModel.findOneAndUpdate(
+    { _id: id, version },
+    { $set: { active, updatedBy: actor }, $inc: { version: 1 } },
+    { new: true },
+  );
   if (!doc) throw await notSavedError(id);
   return toDetail(doc);
 }
