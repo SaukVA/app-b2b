@@ -1,19 +1,37 @@
-/* Tablero «Proveedores»: búsqueda y, a su lado, la casilla de bajas, alineadas por la base. */
+/* Tablero «Proveedores»: búsqueda, casilla de bajas y, a la derecha, el trimestre del gasto. */
 .filters {
   display: grid;
-  grid-template-columns: minmax(220px, 420px) auto;
+  grid-template-columns: minmax(220px, 420px) auto 1fr;
   justify-content: start;
   align-items: end;
-  gap: var(--space-3);
+  gap: var(--space-3) var(--space-6);
 }
 
 .search {
   min-width: 0;
 }
 
-/* En estrecho, búsqueda a todo el ancho y la casilla debajo (ProveedoresMovil.dc.html). */
+.quarter {
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quarterLabel {
+  font: var(--text-label);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+
+/* En estrecho, todo en una columna (ProveedoresMovil.dc.html). */
 @media (max-width: 759px) {
   .filters {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quarter {
+    justify-self: start;
   }
 }

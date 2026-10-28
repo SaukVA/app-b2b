@@ -1,26 +1,363 @@
-import { listSuppliers } from './supplier.service';
+import {
+  SUPPLIER_ERROR_CODES,
+  SUPPLIERS_PAGE_SIZE,
+  type SupplierInput,
+  type SupplierListQuery,
+} from '@app/shared';
+import { clearTestDb, setTestEnv, startTestDb, stopTestDb } from '../../utils/testDb';
+import { SupplierModel, type SupplierFields } from './supplier.model';
+import {
+  createSupplier,
+  getSupplier,
+  listSuppliers,
+  setSupplierActive,
+  updateSupplier,
+} from './supplier.service';
 
-describe('listSuppliers (provisional, FR-009)', () => {
-  it('sin búsqueda devuelve una página vacía de 10 proveedores', async () => {
-    await expect(listSuppliers({ includeInactive: false, page: 1 })).resolves.toEqual({
-      items: [],
-      total: 0,
-      page: 1,
-      pageSize: 10,
+setTestEnv();
+
+beforeAll(startTestDb, 30_000);
+afterEach(clearTestDb);
+afterAll(stopTestDb);
+
+const ADMIN = { id: '000000000000000000000001', login: 'admin' };
+let sequence = 0;
+
+/** Proveedor mínimo válido para el modelo; el CIF solo tiene que ser único. */
+function supplierData(overrides: Partial<SupplierFields> = {}): Partial<SupplierFields> {
+  sequence += 1;
+  return {
+    name: `Proveedor ${sequence}`,
+    cif: `B${String(sequence).padStart(8, '0')}`,
+    address: 'Calle Mayor, 1',
+    postalCode: '46001',
+    city: 'Valencia',
+    createdBy: ADMIN,
+    updatedBy: ADMIN,
+    ...overrides,
+  };
+}
+
+async function seed(...overrides: Partial<SupplierFields>[]): Promise<void> {
+  await SupplierModel.insertMany(overrides.map((item) => supplierData(item)));
+}
+
+function query(overrides: Partial<SupplierListQuery> = {}): SupplierListQuery {
+  return { includeInactive: false, quarter: 1, page: 1, ...overrides };
+}
+
+const names = (page: { items: { name: string }[] }) => page.items.map((item) => item.name);
+
+describe('listSuppliers · orden y estado (FR-020, FR-004a de 009)', () => {
+  it('ordena alfabéticamente sin distinguir acentos ni mayúsculas', async () => {
+    await seed({ name: 'bebidas Sur' }, { name: 'Ávila Distribuciones' }, { name: 'Aceites' });
+    const page = await listSuppliers(query());
+    expect(names(page)).toEqual(['Aceites', 'Ávila Distribuciones', 'bebidas Sur']);
+  });
+
+  it('sin includeInactive solo devuelve los activos', async () => {
+    await seed({ name: 'Activo' }, { name: 'De baja', active: false });
+    const page = await listSuppliers(query());
+    expect(names(page)).toEqual(['Activo']);
+    expect(page.total).toBe(1);
+  });
+
+  it('con includeInactive devuelve también los dados de baja, marcados', async () => {
+    await seed({ name: 'Activo' }, { name: 'De baja', active: false });
+    const page = await listSuppliers(query({ includeInactive: true }));
+    expect(page.items.map((item) => [item.name, item.active])).toEqual([
+      ['Activo', true],
+      ['De baja', false],
+    ]);
+  });
+});
+
+describe('listSuppliers · búsqueda (FR-020)', () => {
+  beforeEach(() =>
+    seed(
+      { name: 'Ávila Distribuciones', cif: 'B12345674' },
+      { name: 'Lácteos Valle Verde', cif: 'B33000008' },
+      { name: 'Conservas (Atlántico)', cif: 'IT00000000009', foreign: true },
+    ),
+  );
+
+  it('busca por nombre sin acentos ni mayúsculas', async () => {
+    expect(names(await listSuppliers(query({ q: 'avila' })))).toEqual(['Ávila Distribuciones']);
+    expect(names(await listSuppliers(query({ q: 'LACTEOS' })))).toEqual(['Lácteos Valle Verde']);
+  });
+
+  it('busca por CIF aunque se escriba con otro formato', async () => {
+    expect(names(await listSuppliers(query({ q: 'b-12.345.674' })))).toEqual([
+      'Ávila Distribuciones',
+    ]);
+  });
+
+  it('trata los caracteres especiales de la búsqueda como texto', async () => {
+    expect(names(await listSuppliers(query({ q: '(atlántico)' })))).toEqual([
+      'Conservas (Atlántico)',
+    ]);
+    expect(names(await listSuppliers(query({ q: '.*' })))).toEqual([]);
+  });
+});
+
+describe('listSuppliers · paginación y forma del item (FR-010 de 009, FR-021)', () => {
+  it(`pagina de ${SUPPLIERS_PAGE_SIZE} en ${SUPPLIERS_PAGE_SIZE}`, async () => {
+    await seed(
+      ...Array.from({ length: 12 }, (_, i) => ({ name: `P${String(i).padStart(2, '0')}` })),
+    );
+    const second = await listSuppliers(query({ page: 2 }));
+    expect(second).toMatchObject({ total: 12, page: 2, pageSize: SUPPLIERS_PAGE_SIZE });
+    expect(names(second)).toEqual(['P10', 'P11']);
+  });
+
+  it('cada item lleva cif, población, plazo, estado y compras a 0', async () => {
+    await seed({ name: 'Aceites del Sur', cif: 'B12345674', city: 'Paterna', leadTimeDays: 3 });
+    const [item] = (await listSuppliers(query({ quarter: 2 }))).items;
+    expect(item).toEqual({
+      id: expect.any(String),
+      name: 'Aceites del Sur',
+      cif: 'B12345674',
+      city: 'Paterna',
+      leadTimeDays: 3,
+      quarterPurchases: 0,
+      yearPurchases: 0,
+      active: true,
+    });
+  });
+});
+
+describe('SupplierModel · índices (research R1)', () => {
+  it('tiene índice único por cif, índice por nombre con collation es y por active', async () => {
+    await SupplierModel.init();
+    const indexes = await SupplierModel.listIndexes();
+    const byKey = (key: string) => indexes.find((index) => Object.keys(index.key).join() === key);
+    expect(byKey('cif')).toMatchObject({ unique: true });
+    expect(byKey('name')).toMatchObject({ collation: { locale: 'es', strength: 1 } });
+    expect(byKey('active')).toBeDefined();
+  });
+
+  it('rechaza dos proveedores con el mismo CIF', async () => {
+    await SupplierModel.init();
+    await seed({ cif: 'B12345674' });
+    await expect(seed({ cif: 'B12345674' })).rejects.toMatchObject({ code: 11000 });
+  });
+});
+
+describe('listSuppliers · rendimiento (SC-006, research R1)', () => {
+  it('con 1.000 proveedores, la búsqueda responde en menos de 500 ms', async () => {
+    await SupplierModel.init();
+    await seed(...Array.from({ length: 1000 }, (_, i) => ({ name: `Proveedor de prueba ${i}` })));
+    const start = performance.now();
+    const page = await listSuppliers(query({ q: 'prueba 99' }));
+    expect(performance.now() - start).toBeLessThan(500);
+    expect(page.total).toBe(11);
+  }, 30_000);
+});
+
+const FULL_SUPPLIER: Partial<SupplierFields> = {
+  name: 'Aceites del Sur',
+  cif: 'B12345674',
+  phones: [{ label: 'Pedidos', value: '961 234 567' }],
+  emails: [{ label: null, value: 'pedidos@aceites.es' }],
+  leadTimeDays: 3,
+  minOrder: 150,
+};
+
+describe('getSupplier (FR-012, FR-013)', () => {
+  it('devuelve la ficha completa de un proveedor activo', async () => {
+    const doc = await SupplierModel.create(supplierData(FULL_SUPPLIER));
+    const detail = await getSupplier(doc._id.toString());
+    expect(detail).toMatchObject({
+      id: doc._id.toString(),
+      name: 'Aceites del Sur',
+      cif: 'B12345674',
+      phones: [{ label: 'Pedidos', value: '961 234 567' }],
+      emails: [{ label: null, value: 'pedidos@aceites.es' }],
+      leadTimeDays: 3,
+      minOrder: 150,
+      active: true,
+      version: 0,
+      yearPurchases: 0,
+      quarterPurchases: [0, 0, 0, 0],
+      createdBy: ADMIN,
+      updatedBy: ADMIN,
+    });
+    expect(detail).not.toHaveProperty('_id');
+  });
+
+  it('devuelve también la ficha de un proveedor dado de baja (FR-019)', async () => {
+    const doc = await SupplierModel.create(supplierData({ name: 'De baja', active: false }));
+    expect(await getSupplier(doc._id.toString())).toMatchObject({ name: 'De baja', active: false });
+  });
+
+  it('lanza SUPPLIER_NOT_FOUND 404 si no existe', async () => {
+    await expect(getSupplier('0123456789abcdef01234567')).rejects.toMatchObject({
+      code: SUPPLIER_ERROR_CODES.notFound,
+      status: 404,
+    });
+  });
+});
+
+const ACTOR = { id: '000000000000000000000002', login: 'marta' };
+
+/** Alta ya validada por supplierInputSchema (CIF normalizado). */
+function input(overrides: Partial<SupplierInput> = {}): SupplierInput {
+  return {
+    name: 'Aceites del Sur',
+    cif: 'B12345674',
+    foreign: false,
+    address: 'Calle Mayor, 1',
+    postalCode: '46001',
+    city: 'Valencia',
+    contactPerson: null,
+    phones: [{ label: 'Pedidos', value: '961 234 567' }],
+    emails: [],
+    paymentMethod: 'CASH',
+    iban: null,
+    web: 'https://www.aceites.es',
+    leadTimeDays: 3,
+    minOrder: 150,
+    notes: null,
+    ...overrides,
+  };
+}
+
+describe('createSupplier (FR-004, FR-010, FR-012b)', () => {
+  beforeEach(() => SupplierModel.init());
+
+  it('crea el proveedor activo, en la versión 0, con quien lo da de alta', async () => {
+    const detail = await createSupplier(input(), ACTOR);
+    expect(detail).toMatchObject({
+      ...input(),
+      id: expect.any(String),
+      active: true,
+      version: 0,
+      createdBy: ACTOR,
+      updatedBy: ACTOR,
+    });
+    expect(await SupplierModel.countDocuments()).toBe(1);
+  });
+
+  it.each([
+    ['activo', true],
+    ['dado de baja', false],
+  ])('un CIF ya usado por un proveedor %s responde 409 con su nombre', async (_case, active) => {
+    await seed({ name: 'Distribuciones Levante', cif: 'B12345674', active });
+    await expect(createSupplier(input(), ACTOR)).rejects.toMatchObject({
+      code: SUPPLIER_ERROR_CODES.cifTaken,
+      status: 409,
+      message: 'Ya existe un proveedor con este CIF: Distribuciones Levante.',
     });
   });
 
-  it('con búsqueda y bajas devuelve igualmente vacío, con la página pedida', async () => {
-    const page = await listSuppliers({ q: 'levante', includeInactive: true, page: 3 });
-    expect(page).toEqual({ items: [], total: 0, page: 3, pageSize: 10 });
+  it('de dos altas simultáneas con el mismo CIF solo se guarda una', async () => {
+    const results = await Promise.allSettled([
+      createSupplier(input({ name: 'Uno' }), ACTOR),
+      createSupplier(input({ name: 'Dos' }), ACTOR),
+    ]);
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    expect(results.find((r) => r.status === 'rejected')).toMatchObject({
+      reason: { code: SUPPLIER_ERROR_CODES.cifTaken },
+    });
+    expect(await SupplierModel.countDocuments()).toBe(1);
+  });
+});
+
+/** Proveedor guardado por el admin; devuelve su id. */
+async function savedId(overrides: Partial<SupplierFields> = {}): Promise<string> {
+  const doc = await SupplierModel.create(supplierData({ cif: 'B12345674', ...overrides }));
+  return doc._id.toString();
+}
+
+describe('updateSupplier · guardar (FR-007, FR-012b, FR-019)', () => {
+  beforeEach(() => SupplierModel.init());
+
+  it('con la versión leída guarda, sube la versión y cambia solo updatedBy', async () => {
+    const id = await savedId();
+    const detail = await updateSupplier(
+      id,
+      { ...input({ name: 'Nuevo nombre' }), version: 0 },
+      ACTOR,
+    );
+    expect(detail).toMatchObject({
+      id,
+      name: 'Nuevo nombre',
+      version: 1,
+      createdBy: ADMIN,
+      updatedBy: ACTOR,
+    });
+    expect((await SupplierModel.findById(id))?.name).toBe('Nuevo nombre');
   });
 
-  it('no importa Mongoose: no lee ni escribe proveedores en la base de datos', () => {
-    jest.isolateModules(() => {
-      jest.doMock('mongoose', () => {
-        throw new Error('el servicio de proveedores no debe importar Mongoose');
-      });
-      expect(() => jest.requireActual('./supplier.service')).not.toThrow();
+  it('un proveedor dado de baja también se puede editar, y sigue de baja', async () => {
+    const id = await savedId({ active: false });
+    const detail = await updateSupplier(id, { ...input(), version: 0 }, ACTOR);
+    expect(detail).toMatchObject({ active: false, version: 1 });
+  });
+});
+
+describe('updateSupplier · errores (FR-005, FR-011)', () => {
+  beforeEach(() => SupplierModel.init());
+
+  it('con una versión antigua responde 409 SUPPLIER_VERSION_CONFLICT y no guarda', async () => {
+    const id = await savedId({ name: 'Original', version: 3 });
+    await expect(
+      updateSupplier(id, { ...input({ name: 'Pisado' }), version: 2 }, ACTOR),
+    ).rejects.toMatchObject({ code: SUPPLIER_ERROR_CODES.versionConflict, status: 409 });
+    expect(await SupplierModel.findById(id)).toMatchObject({ name: 'Original', version: 3 });
+  });
+
+  it('un id que no existe responde 404 SUPPLIER_NOT_FOUND', async () => {
+    await expect(
+      updateSupplier('0123456789abcdef01234567', { ...input(), version: 0 }, ACTOR),
+    ).rejects.toMatchObject({ code: SUPPLIER_ERROR_CODES.notFound, status: 404 });
+  });
+
+  it('el CIF de otro proveedor responde 409 SUPPLIER_CIF_TAKEN con su nombre', async () => {
+    await savedId({ name: 'Levante', cif: 'B46000002' });
+    const id = await savedId();
+    await expect(
+      updateSupplier(id, { ...input({ cif: 'B46000002' }), version: 0 }, ACTOR),
+    ).rejects.toMatchObject({
+      code: SUPPLIER_ERROR_CODES.cifTaken,
+      message: 'Ya existe un proveedor con este CIF: Levante.',
     });
+  });
+});
+
+describe('setSupplierActive · baja y reactivación (FR-017, FR-019)', () => {
+  it('dar de baja sube la versión y cambia updatedBy sin tocar otros datos', async () => {
+    const id = await savedId({ name: 'Aceites del Sur', leadTimeDays: 3 });
+    const detail = await setSupplierActive(id, { active: false, version: 0 }, ACTOR);
+    expect(detail).toMatchObject({
+      active: false,
+      version: 1,
+      name: 'Aceites del Sur',
+      leadTimeDays: 3,
+      createdBy: ADMIN,
+      updatedBy: ACTOR,
+    });
+  });
+
+  it('reactivar lo devuelve a activo', async () => {
+    const id = await savedId({ active: false, version: 4 });
+    const detail = await setSupplierActive(id, { active: true, version: 4 }, ACTOR);
+    expect(detail).toMatchObject({ active: true, version: 5 });
+  });
+});
+
+describe('setSupplierActive · errores (FR-011)', () => {
+  it('con una versión antigua responde 409 y no cambia el estado', async () => {
+    const id = await savedId({ version: 2 });
+    await expect(setSupplierActive(id, { active: false, version: 1 }, ACTOR)).rejects.toMatchObject(
+      { code: SUPPLIER_ERROR_CODES.versionConflict, status: 409 },
+    );
+    expect(await SupplierModel.findById(id)).toMatchObject({ active: true, version: 2 });
+  });
+
+  it('un id que no existe responde 404', async () => {
+    await expect(
+      setSupplierActive('0123456789abcdef01234567', { active: false, version: 0 }, ACTOR),
+    ).rejects.toMatchObject({ code: SUPPLIER_ERROR_CODES.notFound, status: 404 });
   });
 });

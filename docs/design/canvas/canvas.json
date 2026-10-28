@@ -2,6 +2,23 @@
   "v": 3,
   "attachments": {},
   "boards": {
+    "Acciones.dc.html": {
+      "expand": "fill",
+      "h": 1180,
+      "is_interactive": true,
+      "title": "Acciones",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "AccionesMovil.dc.html": {
+      "h": 2000,
+      "is_interactive": true,
+      "title": "Acciones · móvil",
+      "w": 390,
+      "x": 2350,
+      "y": 4000
+    },
     "Ajustes.dc.html": {
       "expand": "fill",
       "h": 1100,
@@ -79,7 +96,7 @@
     },
     "Proveedores.dc.html": {
       "expand": "fill",
-      "h": 1060,
+      "h": 1100,
       "is_interactive": true,
       "title": "Proveedores",
       "w": 1440,
@@ -87,7 +104,7 @@
       "y": 2520
     },
     "ProveedoresMovil.dc.html": {
-      "h": 1600,
+      "h": 1800,
       "is_interactive": true,
       "title": "Proveedores · móvil",
       "w": 390,
@@ -106,7 +123,7 @@
   "notes": {
     "movil": {
       "kind": "title1",
-      "maxW": 2270,
+      "maxW": 2740,
       "text": "Móvil · 390 px",
       "w": 240,
       "x": 0,
@@ -124,7 +141,9 @@
     "ClientesMovil.dc.html",
     "ProveedoresMovil.dc.html",
     "AjustesMovil.dc.html",
-    "LoginMovil.dc.html"
+    "LoginMovil.dc.html",
+    "Acciones.dc.html",
+    "AccionesMovil.dc.html"
   ],
   "pages": [],
   "title": "Diseño visual — Venta a mayoristas"

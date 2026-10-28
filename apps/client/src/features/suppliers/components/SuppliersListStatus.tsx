@@ -9,6 +9,8 @@ export interface SuppliersListStatusProps {
   total: number;
   /** Vuelve a pedir el listado con los mismos criterios (US3). */
   onRetry: () => void;
+  /** Con permiso de editar, el aviso vacío invita a dar de alta uno (010 FR-022). */
+  canEdit?: boolean;
 }
 
 /** Error que se anuncia de inmediato y se distingue del listado vacío por su texto (FR-013, FR-014). */
@@ -27,7 +29,12 @@ function LoadError({ onRetry }: Pick<SuppliersListStatusProps, 'onRetry'>) {
  * Zona de estado bajo las cabeceras del listado: cargando, aviso de proveedores pendientes de carga o
  * error, nunca dos a la vez (FR-011 a FR-013). Con proveedores no muestra nada.
  */
-export function SuppliersListStatus({ status, total, onRetry }: SuppliersListStatusProps) {
+export function SuppliersListStatus({
+  status,
+  total,
+  onRetry,
+  canEdit = false,
+}: SuppliersListStatusProps) {
   if (status === 'loading') {
     return (
       <p role="status" className={styles.loading}>
@@ -40,6 +47,12 @@ export function SuppliersListStatus({ status, total, onRetry }: SuppliersListSta
     return (
       <EmptyState title="Todavía no hay proveedores">
         Los proveedores se cargarán desde el sistema anterior.
+        {canEdit && (
+          <>
+            {' '}
+            <span>Mientras tanto, puedes dar de alta uno con «Nuevo proveedor».</span>
+          </>
+        )}
       </EmptyState>
     );
   }

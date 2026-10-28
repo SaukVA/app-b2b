@@ -6,6 +6,8 @@ import { DatabaseSettingsPage } from '../pages/DatabaseSettingsPage';
 import { CustomersPage } from '../pages/CustomersPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { SettingsIndexRedirect, SettingsPage } from '../pages/SettingsPage';
+import { SupplierDetailPage } from '../pages/SupplierDetailPage';
+import { SupplierFormPage } from '../pages/SupplierFormPage';
 import { SuppliersPage } from '../pages/SuppliersPage';
 import { UsersSettingsPage } from '../pages/UsersSettingsPage';
 import { useAppSelector } from '../store/store';
@@ -63,14 +65,44 @@ const customersRoute = {
   ),
 };
 
-// Ver o editar Proveedores muestran la misma pantalla en 009: no hay acciones de edición (FR-003).
+// Listado, ficha, alta y edición a pantalla completa de Proveedores (010): ver para la ficha, editar para el
+// alta y la edición (FR-002); sin permiso, RequireAuth lleva a la pantalla de inicio (005).
 const suppliersRoute = {
   path: 'proveedores',
-  element: (
-    <RequireAuth module="proveedores">
-      <SuppliersPage />
-    </RequireAuth>
-  ),
+  children: [
+    {
+      index: true,
+      element: (
+        <RequireAuth module="proveedores">
+          <SuppliersPage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: 'nuevo',
+      element: (
+        <RequireAuth module="proveedores" level="edit">
+          <SupplierFormPage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: ':id',
+      element: (
+        <RequireAuth module="proveedores">
+          <SupplierDetailPage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: ':id/editar',
+      element: (
+        <RequireAuth module="proveedores" level="edit">
+          <SupplierFormPage />
+        </RequireAuth>
+      ),
+    },
+  ],
 };
 
 // Pública y solo en escritorio (002 FR-007/FR-008): en web la ruta cae en la protegida /ajustes.

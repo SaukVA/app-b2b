@@ -8,9 +8,23 @@
 }
 
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+}
+
+/* «Nuevo proveedor» es un enlace con el aspecto del botón principal (constitución VIII). */
+.newButton {
+  composes: button md primary from '../components/Button.module.css';
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.newButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .title {
@@ -22,6 +36,13 @@
 .count {
   font: var(--text-figure);
   color: var(--ink2);
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 @media (max-width: 759px) {

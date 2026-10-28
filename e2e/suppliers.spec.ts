@@ -1,9 +1,44 @@
 import { expect, test, type Page } from '@playwright/test';
-import { removeUsers, seedUsers, type SeedUser } from './support/db';
+import {
+  removeSuppliers,
+  removeUsers,
+  seedSuppliers,
+  seedUsers,
+  type SeedSupplier,
+  type SeedUser,
+} from './support/db';
 
-// 009: pantalla provisional de Proveedores. Los proveedores aún no están cargados: el servidor responde vacío.
+// 010: gestión de proveedores de principio a fin (listado, ficha, alta, edición, baja y reactivación).
+// Cada bloque siembra sus proveedores y los borra al terminar: los dos proyectos comparten la base de datos.
 
 const PASSWORD = 'secreto123';
+
+const SUPPLIERS: SeedSupplier[] = [
+  {
+    name: 'Aceites del Sur',
+    cif: 'B12345674',
+    address: 'Calle del Olivo, 12',
+    postalCode: '46988',
+    city: 'Paterna',
+    leadTimeDays: 3,
+    phones: [{ label: 'Pedidos', value: '961 234 567' }],
+  },
+  {
+    name: 'Bebidas Mediterráneo',
+    cif: 'B46000006',
+    address: 'Calle Mayor, 1',
+    postalCode: '46023',
+    city: 'Valencia',
+  },
+  {
+    name: 'Higiene Norte',
+    cif: 'B48000004',
+    address: 'Gran Vía, 8',
+    postalCode: '48001',
+    city: 'Bilbao',
+    active: false,
+  },
+];
 
 async function loginAs(page: Page, login: string, password: string): Promise<void> {
   await page.goto('/login');
@@ -17,25 +52,6 @@ const loginAsAdmin = (page: Page) => loginAs(page, 'admin', 'admin');
 const mainNav = (page: Page) => page.getByRole('navigation', { name: 'Principal' });
 const isMobile = () => test.info().project.name === 'mobile';
 
-/**
- * Título, «0 activos», búsqueda, casilla de bajas y, en ancho, las cabeceras del listado. En móvil no hay
- * tabla visible ni tarjetas con el listado vacío, así que tampoco se ve «Plazo».
- */
-async function expectSuppliersStructure(page: Page): Promise<void> {
-  await expect(page.getByRole('heading', { level: 1, name: 'Proveedores' })).toBeVisible();
-  await expect(page.getByText('0 activos')).toBeVisible();
-  const search = page.getByRole('search', { name: 'Buscar proveedores' });
-  await expect(search.getByRole('searchbox', { name: 'Buscar' })).toBeVisible();
-  await expect(search.getByRole('checkbox', { name: 'Mostrar dados de baja' })).not.toBeChecked();
-  if (isMobile()) {
-    await expect(page.getByRole('columnheader', { name: 'Plazo' })).toBeHidden();
-    return;
-  }
-  await expect(
-    page.getByRole('table', { name: 'Proveedores' }).getByRole('columnheader'),
-  ).toHaveText(['Proveedor', 'Plazo', 'Compras año']);
-}
-
 /** Abre Proveedores desde el menú y espera la petición del listado. */
 async function openSuppliers(page: Page): Promise<void> {
   const listed = page.waitForRequest((req) => new URL(req.url()).pathname === '/api/suppliers');
@@ -46,24 +62,213 @@ async function openSuppliers(page: Page): Promise<void> {
   await listed;
 }
 
-test.describe('Proveedores · abrir y ver su estructura (US1)', () => {
-  test('se abre desde el menú, marcado como activo y sin «Pendiente»', async ({ page }) => {
+/** Enlace visible a la ficha de un proveedor: fila en escritorio, tarjeta en móvil. */
+const supplierLink = (page: Page, name: string) =>
+  page
+    .getByRole('link', { name: new RegExp(name) })
+    .filter({ visible: true })
+    .first();
+
+const heading = (page: Page, name: string) => page.getByRole('heading', { level: 1, name });
+
+async function openSupplier(page: Page, name: string): Promise<void> {
+  await supplierLink(page, name).click();
+  await expect(heading(page, name)).toBeVisible();
+}
+
+test.describe('Proveedores · listado con datos (010 FR-020, FR-021a)', () => {
+  test.beforeEach(async ({ page }) => {
+    await seedSuppliers(SUPPLIERS);
     await loginAsAdmin(page);
     await openSuppliers(page);
+  });
+  test.afterEach(removeSuppliers);
 
-    const link = mainNav(page).getByRole('link', { name: /Proveedores/ });
-    await expect(link).not.toContainText('Pendiente');
-    await expect(link).toHaveAttribute('aria-current', 'page');
-    await expectSuppliersStructure(page);
-    await expect(page.getByRole('button', { name: /Nuevo proveedor/ })).toHaveCount(0);
+  test('muestra los activos en orden alfabético con su población', async ({ page }) => {
+    await expect(page.getByText('2 activos')).toBeVisible();
+    await expect(supplierLink(page, 'Aceites del Sur')).toBeVisible();
+    await expect(page.getByText('Paterna').filter({ visible: true })).toBeVisible();
+    await expect(supplierLink(page, 'Higiene Norte')).toHaveCount(0);
+    if (isMobile()) return;
+    await expect(
+      page.getByRole('table', { name: 'Proveedores' }).getByRole('columnheader'),
+    ).toHaveText(['Proveedor', 'CIF', 'Plazo', /^Gasto \dT$/, 'Compras año']);
   });
 
-  test('en Ajustes › Apariencia, «Pantalla de inicio» ofrece Proveedores', async ({ page }) => {
+  test('«Mostrar dados de baja» incluye las bajas con su sello', async ({ page }) => {
+    await page.getByRole('checkbox', { name: 'Mostrar dados de baja' }).click();
+    await expect(page).toHaveURL(/includeInactive=true/);
+    await expect(page.getByText('3 proveedores')).toBeVisible();
+    await expect(supplierLink(page, 'Higiene Norte')).toBeVisible();
+    await expect(page.getByText('Baja', { exact: true }).filter({ visible: true })).toBeVisible();
+  });
+
+  test('el selector de trimestre cambia la columna y la dirección', async ({ page }) => {
+    const quarters = page.getByRole('radiogroup', { name: /Gasto por trimestre/ });
+    const other = quarters.getByRole('radio', { checked: false }).first();
+    const label = (await other.textContent())?.trim() ?? '';
+    await other.click();
+    await expect(page).toHaveURL(new RegExp(`quarter=${label[0]}`));
+    await expect(quarters.getByRole('radio', { name: label })).toBeChecked();
+    if (isMobile()) return;
+    await expect(page.getByRole('columnheader', { name: `Gasto ${label}` })).toBeVisible();
+  });
+});
+
+test.describe('Proveedores · ficha (010 FR-012 a FR-015)', () => {
+  test.beforeEach(async ({ page }) => {
+    await seedSuppliers(SUPPLIERS);
     await loginAsAdmin(page);
-    await mainNav(page).getByRole('link', { name: 'Ajustes' }).click();
-    await expect(page).toHaveURL(/\/ajustes\/apariencia$/);
-    const homeScreen = page.getByRole('combobox', { name: 'Pantalla de inicio' });
-    await expect(homeScreen.getByRole('option', { name: 'Proveedores' })).toHaveCount(1);
+    await openSuppliers(page);
+  });
+  test.afterEach(removeSuppliers);
+
+  test('se abre a pantalla completa y la flecha vuelve con los mismos criterios', async ({
+    page,
+  }) => {
+    await page.getByRole('searchbox', { name: 'Buscar' }).fill('aceites');
+    await expect(page).toHaveURL(/q=aceites/);
+    await openSupplier(page, 'Aceites del Sur');
+    await expect(page).toHaveURL(/\/proveedores\/[a-f0-9]{24}\?q=aceites$/);
+    await expect(page.getByRole('region', { name: 'Datos fiscales' })).toBeVisible();
+    await expect(page.getByRole('link', { name: '961 234 567' })).toHaveAttribute(
+      'href',
+      'tel:961234567',
+    );
+
+    await page.getByRole('link', { name: 'Volver al listado de proveedores' }).click();
+    await expect(page).toHaveURL(/\/proveedores\?q=aceites$/);
+    await expect(supplierLink(page, 'Aceites del Sur')).toBeFocused();
+  });
+
+  test('un enlace a un proveedor inexistente vuelve al listado con un aviso', async ({ page }) => {
+    await page.goto('/proveedores/0123456789abcdef01234567');
+    await expect(page).toHaveURL(/\/proveedores$/);
+    await expect(
+      page.getByText(
+        'El enlace apunta a un proveedor que no existe. Busca el proveedor en el listado.',
+      ),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Entendido' }).click();
+    await expect(page.getByText(/El enlace apunta a un proveedor/)).toHaveCount(0);
+  });
+});
+
+const field = (page: Page, label: string) => page.getByLabel(label, { exact: true });
+
+async function fillRequired(page: Page, values: Record<string, string>): Promise<void> {
+  for (const [label, value] of Object.entries(values)) await field(page, label).fill(value);
+}
+
+const NEW_SUPPLIER = {
+  'Nombre *': 'Lácteos Valle Verde',
+  'CIF *': 'b-33.000.001',
+  'Dirección *': 'Polígono Norte, 4',
+  'Código postal *': '33001',
+  'Población *': 'Oviedo',
+};
+
+test.describe('Proveedores · alta (010 US1, FR-004 a FR-010)', () => {
+  test.beforeEach(async ({ page }) => {
+    await seedSuppliers(SUPPLIERS);
+    await loginAsAdmin(page);
+    await openSuppliers(page);
+    await page.getByRole('link', { name: 'Nuevo proveedor' }).click();
+    await expect(heading(page, 'Nuevo proveedor')).toBeVisible();
+  });
+  test.afterEach(removeSuppliers);
+
+  test('sin datos marca los obligatorios y, completo, crea y abre la ficha', async ({ page }) => {
+    await page.getByRole('button', { name: 'Crear proveedor' }).click();
+    await expect(page.getByText(/^Revisa estos campos: Nombre, CIF/)).toBeVisible();
+    await expect(field(page, 'Nombre *')).toBeFocused();
+
+    await fillRequired(page, NEW_SUPPLIER);
+    await page.getByRole('button', { name: 'Crear proveedor' }).click();
+    await expect(heading(page, 'Lácteos Valle Verde')).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: 'Proveedor creado.' })).toBeVisible();
+    await expect(page.getByText('CIF B33000001')).toBeVisible();
+
+    await page.getByRole('link', { name: 'Volver al listado de proveedores' }).click();
+    await expect(page.getByText('3 activos')).toBeVisible();
+  });
+
+  test('un CIF repetido, escrito con otro formato, se rechaza con el nombre del proveedor', async ({
+    page,
+  }) => {
+    await fillRequired(page, { ...NEW_SUPPLIER, 'CIF *': 'B-12.345.674' });
+    await page.getByRole('button', { name: 'Crear proveedor' }).click();
+    await expect(
+      page.getByText('Ya existe un proveedor con este CIF: Aceites del Sur.'),
+    ).toBeVisible();
+    await expect(field(page, 'CIF *')).toHaveAttribute('aria-invalid', 'true');
+  });
+});
+
+test.describe('Proveedores · edición (010 US3, FR-007, FR-009)', () => {
+  test.beforeEach(async ({ page }) => {
+    await seedSuppliers(SUPPLIERS);
+    await loginAsAdmin(page);
+    await openSuppliers(page);
+    await openSupplier(page, 'Bebidas Mediterráneo');
+    await page.getByRole('link', { name: 'Editar proveedor' }).click();
+    await expect(heading(page, 'Editar proveedor')).toBeVisible();
+  });
+  test.afterEach(removeSuppliers);
+
+  test('guardar vuelve a la ficha con los cambios y «Cambios guardados.»', async ({ page }) => {
+    await expect(field(page, 'Nombre *')).toHaveValue('Bebidas Mediterráneo');
+    await field(page, 'Nombre *').fill('Bebidas Mediterráneo S.L.');
+    await field(page, 'Plazo de entrega (días)').fill('5');
+    await page.getByRole('button', { name: 'Guardar cambios' }).click();
+    await expect(heading(page, 'Bebidas Mediterráneo S.L.')).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: 'Cambios guardados.' })).toBeVisible();
+    await expect(page.getByText('5 días')).toBeVisible();
+  });
+
+  test('salir con cambios pide confirmación y «Descartar cambios» no guarda', async ({ page }) => {
+    await field(page, 'Población *').fill('Alicante');
+    await page.getByRole('link', { name: 'Volver a la ficha del proveedor' }).click();
+    const dialog = page.getByRole('dialog', { name: '¿Descartar los cambios?' });
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole('button', { name: 'Seguir editando' }).click();
+    await expect(field(page, 'Población *')).toHaveValue('Alicante');
+
+    await page.getByRole('button', { name: 'Cancelar' }).click();
+    await dialog.getByRole('button', { name: 'Descartar cambios' }).click();
+    await expect(heading(page, 'Bebidas Mediterráneo')).toBeVisible();
+    await expect(page.getByText('Alicante')).toHaveCount(0);
+  });
+});
+
+test.describe('Proveedores · baja y reactivación (010 US4, FR-017 a FR-019)', () => {
+  test.beforeEach(async ({ page }) => {
+    await seedSuppliers(SUPPLIERS);
+    await loginAsAdmin(page);
+    await openSuppliers(page);
+    await openSupplier(page, 'Aceites del Sur');
+  });
+  test.afterEach(removeSuppliers);
+
+  test('dar de baja lo saca del listado y «Reactivar» lo devuelve', async ({ page }) => {
+    await page.getByRole('button', { name: 'Dar de baja' }).click();
+    const dialog = page.getByRole('dialog', { name: '¿Dar de baja a Aceites del Sur?' });
+    await dialog.getByRole('button', { name: 'Dar de baja' }).click();
+    await expect(page.getByText('Aceites del Sur dado de baja.')).toBeVisible();
+    await expect(page.getByText('Baja', { exact: true })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Reactivar' }).click();
+    await expect(page.getByText('Aceites del Sur reactivado.')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Dar de baja' })).toBeVisible();
+  });
+
+  test('un proveedor dado de baja no aparece en el listado por defecto', async ({ page }) => {
+    await page.getByRole('button', { name: 'Dar de baja' }).click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Dar de baja' }).click();
+    await expect(page.getByText('Aceites del Sur dado de baja.')).toBeVisible();
+    await page.getByRole('link', { name: 'Volver al listado de proveedores' }).click();
+    await expect(page.getByText('1 activo')).toBeVisible();
+    await expect(supplierLink(page, 'Aceites del Sur')).toHaveCount(0);
   });
 });
 
@@ -84,22 +289,33 @@ function roleUsers(project: string): Record<'almacen' | 'comercial', SeedUser> {
   };
 }
 
-test.describe('Proveedores · acceso por rol (US1, FR-002, FR-003)', () => {
+test.describe('Proveedores · acceso por rol (FR-002)', () => {
   let users: ReturnType<typeof roleUsers>;
 
   test.beforeAll(async () => {
     users = roleUsers(test.info().project.name);
     await seedUsers(Object.values(users));
   });
-
+  test.beforeEach(() => seedSuppliers(SUPPLIERS));
+  test.afterEach(removeSuppliers);
   test.afterAll(async () => {
     await removeUsers(Object.values(users).map((user) => user.login));
   });
 
-  test('Almacén (solo ver) ve la misma pantalla que el Administrador', async ({ page }) => {
+  test('Almacén consulta la ficha sin acciones de edición y no puede dar de alta', async ({
+    page,
+  }) => {
     await loginAs(page, users.almacen.login, PASSWORD);
     await openSuppliers(page);
-    await expectSuppliersStructure(page);
+    await expect(page.getByRole('link', { name: 'Nuevo proveedor' })).toHaveCount(0);
+    await openSupplier(page, 'Aceites del Sur');
+    for (const name of ['Editar proveedor', 'Dar de baja']) {
+      await expect(page.getByRole('link', { name })).toHaveCount(0);
+      await expect(page.getByRole('button', { name })).toHaveCount(0);
+    }
+    await page.goto('/proveedores/nuevo');
+    await expect(page).not.toHaveURL(/\/proveedores\/nuevo/);
+    await expect(heading(page, 'Nuevo proveedor')).toHaveCount(0);
   });
 
   test('Comercial no ve Proveedores en el menú y la dirección lo lleva a su inicio', async ({
@@ -109,97 +325,24 @@ test.describe('Proveedores · acceso por rol (US1, FR-002, FR-003)', () => {
     await expect(mainNav(page).getByRole('link', { name: /Proveedores/ })).toHaveCount(0);
     await page.goto('/proveedores');
     await expect(page).not.toHaveURL(/\/proveedores/);
-    await expect(page.getByRole('heading', { level: 1, name: 'Proveedores' })).toHaveCount(0);
+    await expect(heading(page, 'Proveedores')).toHaveCount(0);
   });
 });
 
-const searchBox = (page: Page) => page.getByRole('searchbox', { name: 'Buscar' });
-const inactiveBox = (page: Page) => page.getByRole('checkbox', { name: 'Mostrar dados de baja' });
-const emptyNotice = (page: Page) => page.getByText('Todavía no hay proveedores');
-
-/** Espera la petición del listado cuyos parámetros cumplen la condición. */
-function waitForList(page: Page, matches: (params: URLSearchParams) => boolean) {
-  return page.waitForRequest((req) => {
-    const url = new URL(req.url());
-    return url.pathname === '/api/suppliers' && matches(url.searchParams);
-  });
-}
-
-/** Escribe en la búsqueda y espera la petición que se lanza tras dejar de teclear. */
-async function searchFor(page: Page, text: string): Promise<void> {
-  const requested = waitForList(page, (params) => params.get('q') === text);
-  await searchBox(page).fill(text);
-  await requested;
-}
-
-/** Entra como Administrador en Proveedores y espera el aviso de proveedores pendientes. */
-async function openWithNotice(page: Page): Promise<void> {
-  await loginAsAdmin(page);
-  await openSuppliers(page);
-  await expect(emptyNotice(page)).toBeVisible();
-}
-
-/** Marca la casilla de bajas (controlada por la dirección) y espera la petición con includeInactive. */
-async function showInactive(page: Page): Promise<void> {
-  const requested = waitForList(page, (params) => params.get('includeInactive') === 'true');
-  await inactiveBox(page).click();
-  await requested;
-  await expect(inactiveBox(page)).toBeChecked();
-}
-
-test.describe('Proveedores · pendientes de carga (US2)', () => {
-  test.beforeEach(async ({ page }) => openWithNotice(page));
-
-  test('se ve el aviso y la búsqueda pide el listado y cambia la dirección', async ({ page }) => {
+test.describe('Proveedores · sin datos y con error (009)', () => {
+  test('sin proveedores, el aviso invita a darlos de alta a quien puede editar', async ({
+    page,
+  }) => {
+    await loginAsAdmin(page);
+    await openSuppliers(page);
+    await expect(page.getByText('Todavía no hay proveedores')).toBeVisible();
     await expect(
-      page.getByText('Los proveedores se cargarán desde el sistema anterior.'),
+      page.getByText('Mientras tanto, puedes dar de alta uno con «Nuevo proveedor».'),
     ).toBeVisible();
-    await searchFor(page, 'levante');
-    await expect(page).toHaveURL(/\/proveedores\?q=levante$/);
-    await expect(emptyNotice(page)).toBeVisible();
   });
 
-  test('una dirección con valores no válidos se corrige y muestra el aviso, sin error', async ({
-    page,
-  }) => {
-    await page.goto('/proveedores?page=abc&includeInactive=si');
-    await expect(page).toHaveURL(/\/proveedores$/);
-    await expect(emptyNotice(page)).toBeVisible();
-    await expect(page.getByRole('alert')).toHaveCount(0);
-  });
-});
-
-test.describe('Proveedores · filtro de bajas (US2, FR-004a)', () => {
-  test.beforeEach(async ({ page }) => openWithNotice(page));
-
-  test('pide el listado, cambia el contador y «Atrás» lo desmarca', async ({ page }) => {
-    await showInactive(page);
-    await expect(page).toHaveURL(/\/proveedores\?includeInactive=true$/);
-    await expect(page.getByText('0 proveedores')).toBeVisible();
-    await expect(emptyNotice(page)).toBeVisible();
-
-    await page.goBack();
-    await expect(page).toHaveURL(/\/proveedores$/);
-    await expect(inactiveBox(page)).not.toBeChecked();
-    await expect(page.getByText('0 activos')).toBeVisible();
-  });
-
-  test('recargar conserva la búsqueda y el filtro de bajas', async ({ page }) => {
-    await searchFor(page, 'levante');
-    await showInactive(page);
-    await expect(page).toHaveURL(/\/proveedores\?q=levante&includeInactive=true$/);
-    await page.reload();
-    await expect(searchBox(page)).toHaveValue('levante');
-    await expect(inactiveBox(page)).toBeChecked();
-    await expect(emptyNotice(page)).toBeVisible();
-  });
-});
-
-test.describe('Proveedores · error del listado (US3)', () => {
-  test('con el servidor en error se ve el mensaje, no el aviso; «Reintentar» lo resuelve', async ({
-    page,
-  }) => {
-    await page.route('**/api/suppliers**', (route) =>
+  test('con el servidor en error se ve el mensaje; «Reintentar» lo resuelve', async ({ page }) => {
+    await page.route('**/api/suppliers?**', (route) =>
       route.fulfill({
         status: 500,
         contentType: 'application/json',
@@ -207,17 +350,20 @@ test.describe('Proveedores · error del listado (US3)', () => {
       }),
     );
     await loginAsAdmin(page);
-    await mainNav(page)
-      .getByRole('link', { name: /Proveedores/ })
-      .click();
+    await page.goto('/proveedores?page=2');
     const error = page.getByRole('alert');
     await expect(error).toContainText('No se ha podido cargar el listado de proveedores.');
     await expect(error).not.toContainText('detalle');
-    await expect(emptyNotice(page)).toHaveCount(0);
 
-    await page.unroute('**/api/suppliers**');
+    await page.unroute('**/api/suppliers?**');
     await page.getByRole('button', { name: 'Reintentar' }).click();
-    await expect(emptyNotice(page)).toBeVisible();
     await expect(page.getByRole('alert')).toHaveCount(0);
+  });
+
+  test('en Ajustes › Apariencia, «Pantalla de inicio» ofrece Proveedores', async ({ page }) => {
+    await loginAsAdmin(page);
+    await mainNav(page).getByRole('link', { name: 'Ajustes' }).click();
+    const homeScreen = page.getByRole('combobox', { name: 'Pantalla de inicio' });
+    await expect(homeScreen.getByRole('option', { name: 'Proveedores' })).toHaveCount(1);
   });
 });

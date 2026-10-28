@@ -1,0 +1,134 @@
+00:12
+Al punto de que vosotros lo tengáis que vender y pagar todo lo que tenga que ser. Te otra parte y todo esto en principio porque yo tengo entendido sería vosotros tenéis? Un proveedor al cual hacéis x pedido mensuales. Y esos pedidos o vienen con un cierto tiempo de retardo?
+
+00:39
+Siempre es el mismo o va variando? Depende del proveedor porque hay algunos que sí que fijo pero otros que. Que no? O sea sí que algunas empresas que yo te puedo decir. Le he hecho el pedido hoy y dentro de dos días me llega el pedido o hay otras que a lo mejor hecho y el pedido y me llega dentro de un mes.
+
+01:02
+Depende de por ejemplo hay pedidos diferentes porque yo le digo qué día quiero que me traigan el pedido o por ejemplo como lo de la Navidad que yo lo pido en enero pero hasta octubre no me lo mandan. Vale y vosotros cuando hacéis los pedidos? En principio que necesitáis saber de cada uno de los proveedores.
+
+01:33
+Yo entiendo de que tú cuando vais a generar un proveedor nuevo que por ejemplo os llega ahora venigas sin inmobiliaria y no se sería más un cliente, pero. Que os llega un proveedor nuevo de suministro de Noa lejía? Vosotros tenéis que tener información de imaginar? Esa información es uno mínimo el nombre.
+
+02:00
+El CIF el CIF, la dirección, la dirección física que la necesites para hacer el pedido la necesitamos para los datos de las factura. La facturas tienen que ir con datos. O sea yo cuando me viene un pedido, aunque ellos me manden una factura, yo en mi ordenador tengo que generar esa factura?
+
+02:22
+Para que coincidan para que coincida la cantidad que ellos me han servido con la que yo doy de alta en mi programa. Que me ha llegado. Entonces! Yo necesito la dirección código postal. Población un número de contacto? O sea tengo que tener un sitio donde poner un número de contacto, un sitio donde poner un mail?
+
+02:47
+Y un sitio donde poner? Algo sobre la página web de la empresa, a lo mejor o dónde hago los pedidos de esa empresa? Y también está bien a veces que haya un apartado de observaciones. Porque ahí puedo yo añadir cosas aparte de yo que sé quién es el representante de la empresa con el que yo contacto o si tienen un correo aparte para otras cosas porque hay veces que tienen correos de información correos de facturación.
+
+03:20
+Si yo tengo que llamar para algo a lo mejor, los números son distintos. Vale yo muchas veces cuando. Cuando tienen una página web? Yo también me apunto en los proveedores. Los datos con los que yo tengo que entrar a esa página web? O sea el nombre de usuario y la contraseña que yo necesito para entrar a esa web que eso no me eso no me sale en la factura.
+
+03:51
+Pero yo lo necesito para para tener yo porque cada Páez cada empresa me da un usuario y una contraseña totalmente diferentes para entrar a su página. Entonces yo lo tengo que tener. Catálogos. Vale, entonces de momento tú tienes como la información básica que eso sería más o menos lo que se puede ver ya aquí normalmente tienes pedido mínimos para los clientes para los proveedores?
+
+04:19
+Algunos sí, otros no. Así que a lo mejor, pues también sería interesante que hubiese aunque sea una casilla que marque. Vale y soléis pedir siempre las mismas cantidades de los productos o vais variando. Dependiendo variando depende de lo que se venda en esa época. O la aceptación que esté teniendo el producto?
+
+04:43
+Vale y entiendo de que tú por ejemplo puedes hacer. Un pedido y en ese pedido que hayan producto nuevos. Por ejemplo, yo aquí de momento la página tal y como está tenemos ahora mismo sería que tú tuvieras una lista de proveedores. Aquí que te aparece información. Te diría número de productos que te quedan bajos de todo.
+
+05:13
+Te dice desde dentro del proveedor. Sí que tú que ya estamos en la sección de proveedores. Aquí te aparecería el listado de todos los proveedores que tú tienes sí. Y entonces tú dices vale? Quiero hacer una búsqueda para encontrar el proveedor que o tengo que hacer un pedido a x proveedor.
+
+05:34
+Entonces tú aquí lo buscarías. Cómo sería? Por ejemplo, aceite del Sur? Tendrás como por ejemplo una información que te pudiera decir los productos que tienen pajos de stock, que por ejemplo si te falta de esto para tenerlo en cuenta para poder hacer los pedidos luego los que no tengan bajo texto.
+
+05:54
+Y pero lo único que faltaría sería. Que en este caso si tú le quieres añadir un nuevo producto que no esté que no estuviera ya dado de alta imagino. Pero eso es más fácil hacerlo. Como eso sí que es más fácil hacerlo como lo tenemos en este momento que es que tú cuando.
+
+06:17
+Dar de alta un producto en ese producto. Pones el proveedor que te lo ha surtido o después porque a ver yo tengo varias empresas que me suministran las mismas cosas. Y depende de qué precio me interese más? Se lo compro a unos o a otros? También necesito que pueda tener como.
+
+06:42
+Una memoria de. La de las anteriores veces a quién le compró el producto, o sea que en un mismo producto me aparezca la fecha y el proveedor al que se lo compra por última vez, pero no solo la última vez sea necesito que. Vale que un producto te lo puede estar suministrando diferentes proveedores diferentes porque yo droguería y papel higiénico y todo eso se lo puedo comprar a distintos proveedores depende.
+
+07:17
+De cómo lo tengan de precio? Vale, yo imagino vale, vamos a poner. Vamos a empezar con la página de proveedores. Tendríamos aquí lo que sería esto, que sería el listado que ocuparía todo al principio. Y que en caso de que tú quieras en uno, en concreto le picaría y te aparecerían en el lateral.
+
+07:38
+El proveedor te aparecería información como sería el CIF la entrega, en cuanto tiempo el pedido, mínimo y tal y los productos que ya tienes metidos dentro de lo que sería.
+
+07:56
+Y lo que te puede hacer aquí es. Tú podrías seleccionar los productos que tú quisieras? Para generar un nuevo pedido de compra. Para hacerte tú un pedido para hacer esa esa factura que cuadre con la del cliente. Lo único que faltaría sería que tú tiras de alta un nuevo producto para ese proveedor.
+
+08:23
+Aunque tú, por ejemplo, ya un producto existente le añadas más al proveedor, pero yo tendría que ir al proveedor añadir ese producto concreto, o sea, tú deberías a la sección. Entiendo yo que lo suyo sería irte a la sección de productos añadas el producto. Colocándole el proveedor si fuera un producto totalmente nuevo.
+
+08:44
+El producto y le colocas el proveedor en concreto. Hay una cosa que tengo en el programa de ahora que está muy bien porque? Yo cuando estoy haciendo la factura del que me ha llegado. Tengo directamente desde esa factura. Una posibilidad de dar directamente de alta el artículo? O sea yo no me tengo que salir de la factura.
+
+09:13
+Para bueno factura del albarán de compra no? O sea yo cuando estoy metiendo el albarán de compras en el sistema. Tengo un apartado. En el cual yo le clico y en vez de dar de alta un producto que ya tengo o sea de meter en el albarán. Un producto que ya tengo.
+
+09:33
+Creo directamente el producto nuevo que me ha llegado. Y entonces se mete directamente en proveedor y a la factura. Al mismo tiempo no me tengo que salir del albarán dar el producto de alta. Yo yo lo que imagino que sería más cómodo en esta situación sería? Tú aquí llegas vamos a hacer un pedido aceites del sur.
+
+09:56
+Selecciono de tú tendrás? Imagino que tendría la factura ya del proveedor? Si me ha llegado sí o que tú tienes el pedido que ya vas a hacer? Sí, eso sí calculado y entonces tú coges aquí marcas las que tú necesitarías. Generarías el pedido de compra. Pero es el pedido de compra.
+
+10:23
+Se puede? Te aparecería el listado que sería el albarán con los productos que ya tiene y lo único que faltaría serían los productos nuevos. Te refieres que directamente yo me meto al proveedor? Buscas el proveedor que te toca seleccionar los productos que sí que tienes ya metidos. Generas el pedido la factura.
+
+10:46
+Si voy a meter productos nuevos, no puedo hacer la factura. O sea, no puedo hacer el albarán de compra antes de que me llegue la factura porque además yo no era el barán de comprar la fecha. Lo puedes poner como no finalizado? En plan como si fuera un borrador ya pero y la fecha.
+
+11:04
+Porque la fecha tiene que coincidir? La factura el borrador tú siempre que o entiendo yo que tú siempre que generes un documento. Se debería de generar con el from borrador para que tú si en cualquier momento necesitas editarlo editarlo previo a que se guarde la factura. Sí, eso sí, previo que se guarda la factura sí, pero una vez hecha la factura no se tiene que poder editar.
+
+11:37
+Seguí en principio lo que tú estarías haciendo sería? Vamos a vamos a tener que pedir a disona. Vamos a coger los productos que sí que tenemos generamos un pedido. De compra pero ese pedido de compra no es que se haga ya directamente y se guarde y no se puede editar sino que ese pedido de compra se guardará en base de datos.
+
+11:59
+Y que lo que tú podrás hacer será conforme ya lo tengas o tengas o tengas la factura o tengas lo que necesitas. Editarlo añadir los productos nuevos. Y cambiar la fecha también se podría editar? Por ejemplo, si un producto no me llega exacto que tú lo que estarías haciendo sería como una lista de compra que tú seleccionaste seleccionas el proveedor general, la lista de compra y te hace un esquema con la lista de compra que sería algo parecido a esto, que tú seleccionas lo que tú tengas.
+
+12:35
+Y luego? Cuando tú ya lo tenga, ya tengas la factura del proveedor. Te podrán meter a esa lista? Añadir los productos que te hagan falta cambiarle la fecha de facturación. Cambiar cualquier dato que tú necesites para generar el albarán. No hacerlo factura y hacerlo ya una factura. Ya o sea que directamente desde la lista esa de compras se pueda pasar al Varane y a facturo.
+
+13:06
+Claro que aquí no tendría que estar metiendo los códigos a mano. Como tengo que estar haciendo exactamente tú? Aquí lo podrías ir buscando? Sería porque de un proveedor con tu producto puede llegar a tener. Depende del proveedor que sea. Me refiero el máximo que habéis podido tener por decirme.
+
+13:24
+Por lo digo más que nada por hacer un buscador aquí dentro para poder hacerlo un poquito más intuitivo. Tienes que hacer un buscador sí o sí? Porque por ejemplo yo si le pido a marvimundo. Yo no le pido siempre las mismas cosas, porque por ejemplo ahora en Navidad. A lo mejor le pido unas colonias.
+
+13:43
+Luego al año que viene le pido otras o por ejemplo en verano le puedo pedir un set para no sé qué de ir a la playa o ahora le estoy pidiendo calendario de Adviento, incluso así eso es infinito. Me refiero, yo tengo que tener reflejados los productos que tengo y los que he tenido porque si a día del día de mañana me viene un inspector de productos y me dice este producto porque me ha pasado alguna vez de que me dicen.
+
+14:19
+Si tienes este producto te lo tenemos que retirar. Porque han descubierto que puede ser peligroso porque yo que sé a lo mejor son juguetes y dice porque la pila el conector de la pila hace que se incendie. El juguete déjenme lo tienen que retirar. Entonces yo tengo que tener en el ordenador un historial de los productos que tengo y he tenido no se pueden borrar o sea que tiene que ser infinito?
+
+14:45
+Sí sí, pero me refiero que en principio. Va a ir creciendo siempre sí o sí o sí vale, entonces si tú necesitas aquí desde proveedores generar cualquier cosa. Podrías coger y editar el pedido? Añadir más más? Productos seleccionar los que te hagan falta buscar entre ellos los que tú necesitarás para generar ese pedido de compra esa lista de compra.
+
+15:22
+Y del proveedor en sí, podrías editar la información del proveedor, entiendo? Y del proveedor, necesitaríamos algo más crear un nuevo proveedor que el crear nuevo proveedor sería hacerlo? Cuando cuando tú haces la lista, lo que te va a pasar va a ser que tú, en este caso seleccionaría los productos que ya tienes que ya tienes seleccionado pondrías las cantidades que quieres de cada uno más o menos el precio.
+
+16:01
+En principio lo tomamos de la última compra que hayáis hecho, porque imagino que lo tendréis que ir actualizando. Sí sí cuando cuando haces el albarán de compra. Puede modificar los precios? Claro sí, pero por eso me refiero de que tú en principio el producto va a tener un valor de antes que normalmente cambiará de vez en cuando, pero más o menos el precio sigue siendo el mismo.
+
+16:36
+Lo digo más que nada porque cuando tú generes el albarán más o menos el precio ya lo tendrás visualizado. Claro que por ejemplo aquí si tú dices que vas a coger estos vas a seleccionar 66 para pedir es importante que me salga. En el bueno, pero sobre del producto no del proveedor.
+
+16:56
+Ahora estamos con todas las acciones que se pueden hacer con el proveedor. En principio podríamos hacer eso. Ir navegando por las páginas para ver los proveedores que tenemos con esto. Vendría bien que os lo ordenara? Proveedor que tenéis más productos en falta. Sí y acuérdate de que tienes que poner lo que dijo mi madre.
+
+17:23
+El volumen de compra, o sea la suma del volumen de compra que le hemos hecho por trimestres y por año. Para lo del 347. Vale, necesito necesito un apartado dentro de proveedores que me diga por ejemplo lo que sale aquí que pone compras año. Necesito que aquí salga otro otra columna que sea de trimestres.
+
+17:54
+Porque necesito saber. Exactamente la cantidad que se ha comprado cada trimestre y que luego cuadre con la compra anual. O con la venta anual? Porque eso lo tendrías que poner tanto en proveedores como en clientes.
+
+18:15
+Vale! Vamos a hacer una pequeña cosa aquí como puedo estar editando Y hacer un pequeño pequeños cambios en sí. Vale tenemos esto? Que yo tendría en la página de proveedores? Te aparece un listado de los de los proveedores, los plazos y las compras al año y por cada uno de los trimestres.
+
+18:49
+Quiero que el listado de.
+
+19:03
+Vale, una cosa que tengo que tener en cuenta para cuando se generen los albaranes y las facturas de los albarán, una vez que la factura ya está, o sea una vez con el varón ya se ha facturado. Se ha convertido en factura. Esa factura no tiene que poder ni borrarse ni editarse.
+
+19:21
+Eso lo tienes que tener en cuenta porque si no se nos cae el pelo a ti a mí. En principio.

@@ -1,4 +1,11 @@
-/* Nombre y, si está dado de baja, el sello «Baja» a su lado. */
+/* Nombre (con el sello «Baja» si lo está) y, debajo, la población. */
+.who {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 .name {
   display: inline-flex;
   flex-wrap: wrap;
@@ -8,14 +15,55 @@
   color: var(--ink);
 }
 
+.city {
+  font-size: 12px;
+  color: var(--ink3);
+}
+
 .mono {
   font: var(--text-figure);
   white-space: nowrap;
 }
 
+/* El enlace del nombre cubre toda la fila (010 FR-012). */
+:global(tr):has(.rowLink) {
+  position: relative;
+}
+
+:global(tr):has(.rowLink):hover {
+  background: var(--surface2);
+}
+
+.rowLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rowLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.rowLink:focus-visible {
+  outline: none;
+}
+
+.rowLink:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
 .card {
+  color: inherit;
+  text-decoration: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--space-4);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

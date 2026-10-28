@@ -1,0 +1,21 @@
+/* Mismo aspecto que el input de TextField, con altura libre y redimensionable en vertical. */
+.textarea {
+  min-height: 96px;
+  padding: 10px 12px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font: 400 15px/1.5 var(--font-sans);
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border: 2px solid var(--accent);
+  padding: 9px 11px;
+}
+
+.textarea[aria-invalid='true'] {
+  border: 1px solid var(--danger);
+}
