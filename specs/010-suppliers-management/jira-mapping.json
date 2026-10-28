@@ -1,6 +1,6 @@
 {
   "created_at": "2026-10-26T18:02:09Z",
-  "updated_at": "2026-10-27T11:56:35Z",
+  "updated_at": "2026-10-27T15:35:11Z",
   "spec": "010-suppliers-management",
   "project": "AB2B",
   "jira_base_url": "https://sauk.atlassian.net",
@@ -615,7 +615,7 @@
           "key": "AB2B-706",
           "id": "T061",
           "summary": "T061: Tests de setSupplierActive en supplier.service.test.ts",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-706"
         },
@@ -623,7 +623,7 @@
           "key": "AB2B-707",
           "id": "T062",
           "summary": "T062: Tests de PATCH /api/suppliers/:id/status y ausencia de DELETE",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-707"
         },
@@ -631,7 +631,7 @@
           "key": "AB2B-708",
           "id": "T063",
           "summary": "T063: Tests de SupplierStatusDialog y de baja/reactivación en la ficha",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-708"
         },
@@ -639,7 +639,7 @@
           "key": "AB2B-709",
           "id": "T064",
           "summary": "T064: Añadir supplierStatusSchema e implementar setSupplierActive",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T061"
           ],
@@ -649,7 +649,7 @@
           "key": "AB2B-710",
           "id": "T065",
           "summary": "T065: Añadir controlador setStatus y ruta PATCH /api/suppliers/:id/status con @openapi",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T062"
           ],
@@ -659,14 +659,14 @@
           "key": "AB2B-711",
           "id": "T066",
           "summary": "T066: setSupplierStatus en API y slice, SupplierStatusDialog y botones de baja/reactivar",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [
             "T063"
           ],
           "url": "https://sauk.atlassian.net/browse/AB2B-711"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "key": "AB2B-645",
@@ -677,7 +677,7 @@
           "key": "AB2B-712",
           "id": "T067",
           "summary": "T067: Reescribir el E2E e2e/suppliers.spec.ts con el flujo completo de proveedores",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-712"
         },
@@ -685,7 +685,7 @@
           "key": "AB2B-713",
           "id": "T068",
           "summary": "T068: Documentar BackLink y TextArea en docs/design/README.md",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-713"
         },
@@ -693,7 +693,7 @@
           "key": "AB2B-714",
           "id": "T069",
           "summary": "T069: Comprobar en /api-docs que los 5 endpoints coinciden con el contrato OpenAPI",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-714"
         },
@@ -701,7 +701,7 @@
           "key": "AB2B-715",
           "id": "T070",
           "summary": "T070: Revisar tamaño y responsabilidad única de funciones y ausencia de UI duplicada",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-715"
         },
@@ -709,12 +709,12 @@
           "key": "AB2B-716",
           "id": "T071",
           "summary": "T071: Ejecutar lint, tests y E2E en verde y recorrer la prueba manual del quickstart",
-          "status": "pending",
+          "status": "completed",
           "depends_on": [],
           "url": "https://sauk.atlassian.net/browse/AB2B-716"
         }
       ],
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "links": [
