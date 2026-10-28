@@ -95,7 +95,7 @@ genéricos nuevos.
   dirección; omitido o no válido → trimestre en curso; se serializa solo si no es el en curso.
 - [X] T010 [P] Ampliar `apps/client/src/features/suppliers/components/SuppliersTable.test.tsx` y
   `SupplierFilters.test.tsx`: columnas CIF, Plazo, «Gasto <T>», Compras año, población bajo el nombre, sello
-  «Baja»; selector «Gasto por trimestre · <año>» con 1T–4T y `aria-pressed`; en estrecho solo Proveedor y Compras
+  «Baja»; selector «Gasto por trimestre · <año>» con 1T–4T como grupo de radios (`aria-checked`); en estrecho solo Proveedor y Compras
   año.
 
 ### Implementación de la base
@@ -145,7 +145,7 @@ genéricos nuevos.
 - [X] T023 Ampliar `apps/client/src/features/suppliers/supplierCriteria.ts` con `quarter` (hasta poner en verde
   T009) y `suppliersApi.ts` para enviar `quarter` (actualizar `suppliersApi.test.ts`).
 - [X] T024 Ampliar `apps/client/src/features/suppliers/components/SupplierFilters.tsx` (selector de trimestre con
-  `aria-pressed`) y `SuppliersTable.tsx` (CIF, población, «Gasto <T>» con `UserMoney`), y conectar el trimestre en
+  `OptionGroup`, grupo de radios) y `SuppliersTable.tsx` (CIF, población, «Gasto <T>» con `UserMoney`), y conectar el trimestre en
   `apps/client/src/pages/SuppliersPage.tsx`, hasta poner en verde T010.
 - [X] T025 [P] Añadir `seedSuppliers(list)` y `removeSuppliers()` en `e2e/support/db.ts` con el patrón de
   `seedUsers` (importa `SupplierModel`, `insertMany` con `version: 0` y `createdBy`/`updatedBy` del admin).
@@ -361,8 +361,8 @@ baja» aparece con «Baja»; «Reactivar» lo devuelve; no existe forma de borra
 
 - [X] T067 Reescribir `e2e/suppliers.spec.ts` con `seedSuppliers`/`removeSuppliers`: listado con datos y
   trimestre; ficha a pantalla completa y vuelta con la flecha conservando criterios; alta con errores y correcta;
-  CIF duplicado; edición y diálogo de descartar; baja y reactivación; Almacén sin acciones de edición y con acceso
-  denegado en `/proveedores/nuevo`; enlace a proveedor inexistente; versión móvil.
+  CIF duplicado; edición y diálogo de descartar; baja y reactivación; Almacén sin acciones de edición y redirigido a su
+  inicio en `/proveedores/nuevo`; enlace a proveedor inexistente; versión móvil.
 - [X] T068 [P] Documentar `BackLink` y `TextArea` en la sección Componentes de `docs/design/README.md`.
 - [X] T069 [P] Comprobar en `/api-docs` que los 5 endpoints coinciden con
   `specs/010-suppliers-management/contracts/suppliers-api.openapi.yaml`.

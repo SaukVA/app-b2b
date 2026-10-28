@@ -56,7 +56,7 @@ npm run test:e2e -- suppliers
 10. **Baja y reactivación**: «Dar de baja» → diálogo con el nombre → desaparece del listado y el contador baja;
     con «Mostrar dados de baja» aparece con «Baja»; «Reactivar» lo devuelve.
 11. **Permisos**: con Almacén no hay «Nuevo proveedor», «Editar proveedor» ni «Dar de baja», y
-    `/proveedores/nuevo` muestra acceso denegado.
+    `/proveedores/nuevo` lleva a su pantalla de inicio, sin abrir el formulario.
 12. **Enlace roto**: abre `/proveedores/000000000000000000000000` → listado con el aviso de proveedor inexistente.
 13. **Móvil** (< 760 px): listado con Proveedor y Compras año; ficha y formulario en una columna.
 

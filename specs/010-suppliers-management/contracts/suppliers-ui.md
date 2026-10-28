@@ -8,9 +8,9 @@ y `ProveedoresMovil.dc.html`).
 | Dirección | Pantalla | Acceso |
 |---|---|---|
 | `/proveedores?q&includeInactive&quarter&page` | Listado | ver |
-| `/proveedores/nuevo` | Alta (pantalla completa) | editar; sin permiso → pantalla de acceso denegado de 005 |
+| `/proveedores/nuevo` | Alta (pantalla completa) | editar; sin permiso → pantalla de inicio del rol (protección de rutas de 001/003, como en 005) |
 | `/proveedores/:id?<criterios del listado>` | Ficha (pantalla completa) | ver |
-| `/proveedores/:id/editar?<criterios del listado>` | Edición (pantalla completa) | editar |
+| `/proveedores/:id/editar?<criterios del listado>` | Edición (pantalla completa) | editar; sin permiso → pantalla de inicio del rol |
 
 - `quarter` (1–4) se omite cuando es el trimestre en curso; un valor no válido se sustituye por el en curso.
 - Ficha inexistente (404) → `/proveedores` con aviso «El enlace apunta a un proveedor que no existe. Busca el
@@ -26,7 +26,7 @@ y `ProveedoresMovil.dc.html`).
 - Cabecera: «Proveedores», contador «N activos» / «N proveedores» (009) y, con permiso de editar, botón
   «Nuevo proveedor».
 - Filtros: búsqueda «Nombre o CIF», «Mostrar dados de baja» y grupo «Gasto por trimestre · <año>» con 1T–4T
-  (`aria-pressed`).
+  (grupo de radios `OptionGroup`: `role="radiogroup"`, una opción marcada con `aria-checked`).
 - Columnas: Proveedor (nombre, población debajo y sello «Baja»), CIF, Plazo, «Gasto <T>», Compras año. En
   estrecho (< 760 px): solo Proveedor y Compras año.
 - Cada fila es un enlace a su ficha.
